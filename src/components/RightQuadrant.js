@@ -8,6 +8,8 @@ import { Suspense } from 'react'
 
 
 const RightQuadrant =(props)=>{
+    console.log("rigcuadrant")
+    console.log(props.token)
     const dataLocations=useFetch('groups/municipios','',props.token,'GET')
     const dataSubtype=useFetch('groups/subtypes','',props.token)
     const dataDevices=useFetch('groups/devices','',props.token,'GET')

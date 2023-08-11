@@ -4,6 +4,7 @@
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
   "main": "index.js",
   "dependencies": {
+<<<<<<< HEAD
     "abab": "^2.0.6",
     "acorn-import-assertions": "^1.9.0",
     "abs-svg-path": "^0.1.1",
@@ -777,11 +778,25 @@
     "react-dev-utils": "^12.0.1",
     "raw-body": "^2.5.1",
     "randomfill": "^1.0.4",
+=======
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "assert": "^2.0.0",
+    "axios": "^1.4.0",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.0",
+    "https-browserify": "^1.0.0",
+    "maki": "^2.1.0",
+    "mapbox-gl": "^2.15.0",
+    "plotly.js": "^2.23.2",
+>>>>>>> e5309525021de7ece157cf214135334d4c895cca
     "react": "^18.2.0",
     "react-lifecycles-compat": "^3.0.4",
     "react-dom": "^18.2.0",
     "react-modal": "^3.16.1",
     "react-plotly.js": "^2.6.0",
+<<<<<<< HEAD
     "react-select": "^5.7.3",
     "react-refresh": "^0.11.0",
     "react-transition-group": "^4.4.5",
@@ -1090,6 +1105,16 @@
     "yocto-queue": "^0.1.0",
     "y18n": "^5.0.8",
     "yargs-parser": "^20.2.9"
+=======
+    "react-router-dom": "^6.14.2",
+    "react-scripts": "^5.0.1",
+    "react-select": "^5.7.3",
+    "reactplosive-modal": "^1.0.5",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0",
+    "turf": "^3.0.14",
+    "web-vitals": "^2.1.4"
+>>>>>>> e5309525021de7ece157cf214135334d4c895cca
   },
   "devDependencies": {},
   "scripts": {
@@ -1099,10 +1124,29 @@
     "type": "git",
     "url": "git+https://github.com/PabloMarcialSeguritech/cassia-front-v2.git"
   },
+<<<<<<< HEAD
   "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/PabloMarcialSeguritech/cassia-front-v2/issues"
   },
   "homepage": "https://github.com/PabloMarcialSeguritech/cassia-front-v2#readme"
+=======
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "browser": {
+    "image-size": false,
+    "assert": false
+  }
+>>>>>>> e5309525021de7ece157cf214135334d4c895cca
 }

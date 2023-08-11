@@ -36,15 +36,15 @@ const PingModal = ({isOpen, data,statusPing,closePingModal }) => {
                 </div>
                 <div className='contAnimation'>
                     {
-                        dataPing.loading===true?<section class="dots-container">
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
+                        dataPing.loading===true?<section className="dots-container">
+                        <div className="dot"></div>
+                        <div className="dot"></div>
+                        <div className="dot"></div>
+                        <div className="dot"></div>
+                        <div className="dot"></div>
+                        <div className="dot"></div>
+                        <div className="dot"></div>
+                        <div className="dot"></div>
                     </section>:
                     <p className={dataPing.data.data.online==="true"?'msgPing':'msgErrorPing '} >
                          {dataPing.data.data.online==="true"?'Conexión correcta':'Sin conexión'}

@@ -1,0 +1,74 @@
+.main-perfil{
+    width: 100%;
+    height: 100%;
+    position: relative;background-color: rgb(1, 17, 31);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.welcome-card{
+    position: relative;
+    top: 5px;
+    left: 5px;
+    width: 30%;
+    height: 80%;
+   background: transparent;
+   /* border: 1px solid #dddddd; */
+    /* background: rgba(255, 255, 255, .95); */
+    /* background: linear-gradient(90deg, rgba(255,254,255,1) 0%, rgba(195,195,195,1) 100%); */
+    backdrop-filter: blur(24px);
+    border-radius: 10px;
+    
+    display: block;
+}
+.top-welcome{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20%;
+    width: 100%;
+}
+.mid-welcome{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20%;
+    width: 100%;
+}
+.bottom-welcome{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40%;
+    width: 100%;
+}
+
+.icon-perfil{
+    position: relative;
+    height: 80%;
+    animation: swing 2s ease-in-out infinite;
+    /* transform: rotate(90deg); */
+}
+
+
+@keyframes swing {
+    0%, 100% {
+        transform: rotate(0);
+    }
+    20% {
+        transform: rotate(10deg);
+    }
+    40% {
+        transform: rotate(-10deg);
+    }
+    60% {
+        transform: rotate(10deg);
+    }
+    80% {
+        transform: rotate(-10deg);
+    }
+  }

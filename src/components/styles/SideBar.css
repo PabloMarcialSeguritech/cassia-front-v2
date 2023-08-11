@@ -1,3 +1,5 @@
+/* blanco #dddddd */
+/* oscuro #414141*/
 .sidebar {
     width: 4%;
     /* background-color: rgba(242, 242, 242, 0.777); */
@@ -6,6 +8,8 @@
     height: 100px;
     height: 92%;
     display: inline;
+    transition: width 0.3s ease;
+    z-index: 2;
   }
   .sideLogo{
     position: absolute;
@@ -21,12 +25,29 @@
     cursor: pointer;
 }
 .sidebar:hover .sidebarCont{
-    justify-content: left;
+    justify-content: center;
+    cursor: pointer;
+}
+.sidebarCont:hover{
+  background: #c0c0c0;
+  border-radius: 5px;
+  transform:scale(1.1);
+}
+.sideSelected:hover{
+  background: #012c44;
+  transform:scale(1.1);
+  color: #fff !important;
+}
+.sideSelected{
+  background: #003757;
+  border-radius: 5px;
+  color: #fff !important;
 }
 .sidebar:hover{
     width: 10%;
     z-index: 2;
     background-color: #444;
+    transition: width 0.3s ease;
 }
   .sideLogo img{
     height: 100%;
@@ -36,10 +57,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border-bottom: 3px solid rgba(84, 84, 84, 0.34);
+    /* border-bottom: 3px solid rgba(84, 84, 84, 0.34); */
     width: 90%;
-    height: 90%;
+    height: 70%;
     transition: width 0.3s ease;
+    color: #696969;
+    
+  }
+  .sideRowSelected{
+    background: #003757;
   }
   .sidebarRow{
     position: relative;
@@ -48,6 +74,33 @@
     align-items: center;
     /* border: 1px solid gray; */
     width: 100%;
-    height: 10%;
+    height: 8%;
+    transition: width 0.3s ease;
+    border-bottom: 3px solid rgba(84, 84, 84, 0.34);
+  }
+  .textSideCont{
+    display: none;
+    letter-spacing: 1px;
+    font-size: smaller;
+    width: 70%;
+    height: 100%;
     transition: width 0.3s ease;
   }
+  .sidebar:hover .textSideCont{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: width 0.3s ease;
+}
+.sidebar:hover .imgSideCont{
+  display: flex;
+  width: 30%;
+  transition: width 0.3s ease;
+}
+.imgSideCont{
+  width: 30%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  transition: width 0.3s ease;
+}
