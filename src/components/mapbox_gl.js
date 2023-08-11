@@ -87,7 +87,7 @@ const MapBox = ({devices,markers,lines,downs,towers,ubicacion,handleMarkerClick}
       style: 'mapbox://styles/giorocha/clkirdmmx00ox01qm7js2bdas',
       // style:'mapbox://styles/giorocha/clklfh8h8011001qm5hah2vje',
       // style: 'mapbox://styles/mapbox/dark-v11',
-      zoom: 10,
+      zoom: 11,
       center: [ubicacion.longitud, ubicacion.latitud],
     });
     let Popup;
