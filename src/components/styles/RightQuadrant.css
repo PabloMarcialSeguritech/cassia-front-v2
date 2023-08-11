@@ -1,0 +1,136 @@
+.rowQuadrant
+{
+    
+    height: 100%;
+    
+}
+.rightQuadrant{
+    /* width: 25%;
+    display: block; */
+    width: 100%;
+display: flex;
+height: 12% !important;
+justify-content: center;
+align-items: center;
+z-index: 1;
+position: absolute;
+}
+.columnEstatusProblem
+{
+    height: 30%;
+width: 19%;
+bottom: 0;
+position: absolute;
+}
+.column{
+    /* height: 40%; */
+    height:95%;
+    /* width: 80%; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.columnSmall{
+    /* height: 20%; */
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card{
+    position: relative;
+
+/* background-color: #292929; */
+/* background-color: #2020207d; */
+background-color: #161935bd;
+width: 90%;
+height: 90%;
+/* box-shadow: 5px 5px 10px rgb(32, 32, 32); */
+box-shadow: 3px 3px 10px rgba(67, 67, 67, 0.4);
+border-radius: 10px;
+border: 1px solid #f0f8ff3d;
+}
+
+.menuSearch{
+    display: block;
+}
+.menuSearchData{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+.menuSearchColumn{
+    width: 25%;
+    height: 100%;
+    /* border-bottom: 1px solid rgba(255, 255, 255, 0.127); */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.menuSearchTitle{
+    height: 20%;
+    width: 100%;
+}
+.menuActiontitle{
+    height: 14%;
+}
+.menuInfotitle{
+    height: 15%;
+}
+.menuInfo{
+    display: block;
+}
+.menuAction{
+    display: block;
+}
+.cardTitle{
+    color: white;
+font-size: small;
+/* background: linear-gradient( #0b1e55, #004d79); */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px 10px 0px 0px;
+    background: transparent;
+/* border-bottom: 1px solid #004d79; */
+}
+.cardTitleG{
+    color: #292929;
+    background: linear-gradient( #808080, #f9f9f9);
+    border-radius: unset;
+}
+.menuInfo{
+display: block;
+}
+.menuInfoData{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 85%;
+}
+
+.dataContent{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: 100%;
+    border-left: 1px solid rgba(240, 248, 255, 0.167);
+}
+
+.menuActionData{
+    display: grid;
+    justify-content: center;
+    width: 100%;
+    height: 86%;
+    grid-template-columns: 50% 50% ;
+    /* grid-template-rows: 50%; */
+}
+.menuActionCell{
+    border: 1px solid rgba(240, 248, 255, 0.105);
+}
