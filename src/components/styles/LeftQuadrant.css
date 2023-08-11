@@ -150,6 +150,7 @@ max-height: 25px;
 /***************************MODAL***********************************/
 .ReactModal__Overlay {
     background-color: #151515b5    !important;
+    z-index: 2;
 }
 .ReactModal__Content {
     padding: unset !important;

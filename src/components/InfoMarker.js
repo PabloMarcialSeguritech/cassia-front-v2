@@ -66,7 +66,7 @@ const InfoMarker = ({isOpen, data,closeInfoMarker }) => {
                             </div>
                             <div className='imgCardTitle'>
                               <div className='imgContent'>
-                              {/* <img src={props.modalIsOpen?"/iconos/minimize.svg":"/iconos/maximize.svg"}  className="expandLogo" alt="Logo" onClick={props.action}/> */}
+                              <img src="/iconos/close.png"  className="expandLogo" alt="Logo" onClick={closeInfoMarker}/>
                               </div>
                             </div>
                         </div>
@@ -212,7 +212,7 @@ const InfoMarker = ({isOpen, data,closeInfoMarker }) => {
                               <Action origen='General' disabled={true} titulo='Accion 3'/>
                           </div>
                           <div className='menuActionCell' style={{border: 'unset',width:'25%'}}>
-                          <Action origen='Alert' disabled={false} titulo='Salir' action={closeInfoMarker} />
+                          {/* <Action origen='Alert' disabled={false} titulo='Salir' action={closeInfoMarker} /> */}
                               {/* <Action origen='General' disabled={true} titulo='Accion 4'/> */}
                           </div>
                       </div>
