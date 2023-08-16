@@ -1,8 +1,7 @@
 {
-  "name": "front-cassia_v2",
-  "version": "1.0.0",
-  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
-  "main": "index.js",
+  "name": "front-cassia",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -16,7 +15,6 @@
     "mapbox-gl": "^2.15.0",
     "plotly.js": "^2.23.2",
     "react": "^18.2.0",
-    "react-lifecycles-compat": "^3.0.4",
     "react-dom": "^18.2.0",
     "react-modal": "^3.16.1",
     "react-plotly.js": "^2.6.0",
@@ -29,13 +27,17 @@
     "turf": "^3.0.14",
     "web-vitals": "^2.1.4"
   },
-  "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/PabloMarcialSeguritech/cassia-front-v2.git"
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
   "browserslist": {
     "production": [
