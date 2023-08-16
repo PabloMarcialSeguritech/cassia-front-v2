@@ -8,68 +8,73 @@ const MapBox = ({devices,markers,lines,downs,towers,ubicacion,handleMarkerClick}
   console.log("markers")
   console.log(ubicacion)
   console.log(markers)
+  let latitud_provicional=(ubicacion.groupid===0?'20.93236':ubicacion.latitud)
+  let longitud_provicional=(ubicacion.groupid===0?'-101.21700':ubicacion.longitud)
+  const zoom_provicional=(ubicacion.groupid===0?8:11)
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
-  const host=[
-    {
-      type: 'Feature',
-      properties:{
-        correlarionid: 444,
-        hostidP: 21655,
-        hostidC: 16880,
-        init_lat: "21.101700",
-        init_lon: "-101.636770",
-        end_lat: "21.109167",
-        end_lon: "-101.594167",
-        hostid: 16880,
-        Alineacion: -74,
-        color_alineacion:1
-      },
-      geometry: {
-        type: 'Point',
-        coordinates: [-101.636770, 21.101700],
-      },
-    },
-    {
-      type: 'Feature',
-      properties:{
-        correlarionid: 444,
-        hostidP: 21655,
-        hostidC: 16880,
-        init_lat: "21.101700",
-        init_lon: "-101.636770",
-        end_lat: "21.109167",
-        end_lon: "-101.594167",
-        hostid: 16880,
-        Alineacion: -74,
-        color_alineacion:1
-      },
-      geometry: {
-        type: 'Point',
-        coordinates: [-101.646770, 21.101700],
-      },
-    },
-    {
-      type: 'Feature',
-      properties:{
-        correlarionid: 444,
-        hostidP: 21655,
-        hostidC: 16880,
-        init_lat: "21.101700",
-        init_lon: "-101.636770",
-        end_lat: "21.109167",
-        end_lon: "-101.594167",
-        hostid: 16880,
-        Alineacion: -74,
-        color_alineacion:1
-      },
-      geometry: {
-        type: 'Point',
-        coordinates: [-101.656770, 21.101700],
-      },
-    },
-  ]
-  console.log(host)
+  console.log("longitud_provicional")
+  console.log(longitud_provicional)
+  // const host=[
+  //   {
+  //     type: 'Feature',
+  //     properties:{
+  //       correlarionid: 444,
+  //       hostidP: 21655,
+  //       hostidC: 16880,
+  //       init_lat: "21.101700",
+  //       init_lon: "-101.636770",
+  //       end_lat: "21.109167",
+  //       end_lon: "-101.594167",
+  //       hostid: 16880,
+  //       Alineacion: -74,
+  //       color_alineacion:1
+  //     },
+  //     geometry: {
+  //       type: 'Point',
+  //       coordinates: [-101.636770, 21.101700],
+  //     },
+  //   },
+  //   {
+  //     type: 'Feature',
+  //     properties:{
+  //       correlarionid: 444,
+  //       hostidP: 21655,
+  //       hostidC: 16880,
+  //       init_lat: "21.101700",
+  //       init_lon: "-101.636770",
+  //       end_lat: "21.109167",
+  //       end_lon: "-101.594167",
+  //       hostid: 16880,
+  //       Alineacion: -74,
+  //       color_alineacion:1
+  //     },
+  //     geometry: {
+  //       type: 'Point',
+  //       coordinates: [-101.646770, 21.101700],
+  //     },
+  //   },
+  //   {
+  //     type: 'Feature',
+  //     properties:{
+  //       correlarionid: 444,
+  //       hostidP: 21655,
+  //       hostidC: 16880,
+  //       init_lat: "21.101700",
+  //       init_lon: "-101.636770",
+  //       end_lat: "21.109167",
+  //       end_lon: "-101.594167",
+  //       hostid: 16880,
+  //       Alineacion: -74,
+  //       color_alineacion:1
+  //     },
+  //     geometry: {
+  //       type: 'Point',
+  //       coordinates: [-101.656770, 21.101700],
+  //     },
+  //   },
+  // ]
+  // console.log(host)
   mapboxgl.accessToken =
     'pk.eyJ1IjoiZ2lvcm9jaGEiLCJhIjoiY2xpZWJyZTR3MHpqcjNlcWRvaHR1em5sayJ9._SOrMWsc39Coa2dTHR072Q';
     
@@ -87,8 +92,9 @@ const MapBox = ({devices,markers,lines,downs,towers,ubicacion,handleMarkerClick}
       style: 'mapbox://styles/giorocha/clkirdmmx00ox01qm7js2bdas',
       // style:'mapbox://styles/giorocha/clklfh8h8011001qm5hah2vje',
       // style: 'mapbox://styles/mapbox/dark-v11',
-      zoom: 11,
-      center: [ubicacion.longitud, ubicacion.latitud],
+      zoom: zoom_provicional,
+      // center: [ubicacion.longitud, ubicacion.latitud],
+      center:[longitud_provicional,latitud_provicional]
     });
     let Popup;
     const map = mapRef.current;
@@ -186,6 +192,7 @@ const MapBox = ({devices,markers,lines,downs,towers,ubicacion,handleMarkerClick}
         handleMarkerClick(e.features[0].properties)
       });
       /************************************************************ CAPA DOWNS ************************************************************************ */
+      console.log(downs)
       map.addLayer({
         id: 'host-down',
         type: 'circle',
@@ -199,7 +206,7 @@ const MapBox = ({devices,markers,lines,downs,towers,ubicacion,handleMarkerClick}
         filter: ['!', ['has', 'point_count']],
         paint: {
           'circle-color': "#FF0000",
-          'circle-radius': 6,
+          'circle-radius': 7,
           'circle-stroke-width':1,
           'circle-stroke-color': '#fff',
         },

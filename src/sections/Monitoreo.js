@@ -19,8 +19,8 @@ const Monitoreo=({token_item})=>{
   
   token_item=localStorage.getItem('access_token')
 
-    const [ubicacion,setUbicacion]=useState({latitud:'21.01808757489169',longitud:'-101.25789252823293',groupid:81,dispId:0,templateId:0})
-    const [zoom,setZoom]=useState(6)
+    const [ubicacion,setUbicacion]=useState({latitud:'20.01808757489169',longitud:'-101.21789252823293',groupid:0,dispId:0,templateId:0})
+    const [zoom,setZoom]=useState(11)
     const [latitudes,setLatitudes]=useState([])
     const [longitudes,setLongitudes]=useState([])
     const [locations,setLocations]=useState([])
@@ -42,24 +42,34 @@ const Monitoreo=({token_item})=>{
     console.log(ubicacion)
     
     const [dataProblems,setDataProblems]=useState({data:[],loading:true,error:null})
-    const downs_list=useFetch('layers/downs',0,token_item,'GET')
+    // const downs_list=useFetch('layers/downs',0,token_item,'GET')
+    const[downs_list,setDownsList]=useState({data:[],loading:true,error:null});
+    const tower_list=useFetch('layers/aps',0,token_item,'GET')
     console.log("down list",ubicacion.groupid)
     console.log(downs_list.data)
+    console.log("tower_list",ubicacion.groupid)
+    console.log(tower_list.data)
     
     useEffect(()=>{
       
       search_problems()
-      objeto_towers(aps)
+      // objeto_towers(aps)
       
     },[])
     
     useEffect(()=>{
       if(downs_list.data.length!==0){
         console.log("pinta")
-        objeto_downs(downs_list.data.data.downs)
+        objeto_downs(downs_list.data.downs)
         }
     },[downs_list.data])
-    
+
+    useEffect(()=>{
+      if(tower_list.data.length!==0){
+        console.log("pinta")
+        objeto_towers(tower_list.data.data.aps)
+        }
+    },[tower_list.data])
     function objeto_towers(aps){
       aps.map((host, index, array)=>
           {
@@ -96,15 +106,15 @@ const Monitoreo=({token_item})=>{
                 type: 'Feature',
                 properties:{
                   Name: host.name,
-                  latitude: host.latitude,
-                  longitude: host.longitude,
+                  latitude: host.latitude.replace(",", "."),
+                  longitude: host.longitude.replace(",", "."),
                   hostid: host.hostid,
                   descripcion:host.description,
                   value:host.value
                 },
                 geometry: {
                   type: 'Point',
-                  coordinates: [host.longitude, host.latitude],
+                  coordinates: [host.longitude.replace(",", "."), host.latitude.replace(",", ".")],
                 },
               }])
               
@@ -156,8 +166,37 @@ const Monitoreo=({token_item})=>{
     
     useEffect(()=>{
       search_devices()
-    
+      search_downs()
     },[])
+    function search_downs(){
+      setDowns([])
+      console.log("use efect",ubicacion)
+        setDownsList({data:downs_list.data,loading:true,error:downs_list.error})
+        const fetchData = async () => {
+          try {
+            
+         const response = await fetch('http://172.18.200.14:8002/api/v1/zabbix/layers/downs/'+ubicacion.groupid, {                 
+                                headers: {
+                                  'Content-Type': 'application/json',
+                                  Authorization: `Bearer ${token_item}`,
+                                },
+                              });
+            if (response.ok) {
+              const response_data = await response.json();
+              setDownsList({data:response_data.data,loading:false,error:downs_list.error})
+              // console.log(response_data)
+              
+            } else {
+              throw new Error('Error en la solicitud');
+            }
+          } catch (error) {
+            // Manejo de errores
+            setDownsList({data:downs_list.data,loading:downs_list.loading,error:error})
+            console.error(error);
+          }
+        };
+        fetchData();
+    }
     function search_devices(){
       console.log("use efect",ubicacion)
         setMarkers([])
@@ -433,7 +472,7 @@ const Monitoreo=({token_item})=>{
       };
     return (
         <>
-        <RightQuadrant  search_devices={search_devices} search_problems={search_problems} token={token_item} ubicacion={ubicacion} markers={markers}  dataHosts={devices} setUbicacion={setUbicacion} />
+        <RightQuadrant  search_devices={search_devices}  search_downs={search_downs} search_problems={search_problems} token={token_item} ubicacion={ubicacion} markers={markers}  dataHosts={devices} setUbicacion={setUbicacion} />
         {devices.loading?<LoadData/>:
         // false?<LoadData/>:
         <>
