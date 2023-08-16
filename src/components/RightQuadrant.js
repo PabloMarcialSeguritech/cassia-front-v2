@@ -28,6 +28,7 @@ const RightQuadrant =(props)=>{
         console.log("buscar")
         props.search_problems()
         props.search_devices()
+        props.search_downs()
     }
 //    console.log(props.dataHosts.data)
     return(

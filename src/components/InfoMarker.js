@@ -147,7 +147,7 @@ const InfoMarker = ({isOpen, data,closeInfoMarker }) => {
                     </div>
                   </div>
                   </div>
-                  { data.Alineacion===0?
+                  { 0===0?
                   <>
                   <div className='rowcontActions' style={{width: "100%",height:'20%',top: '10%'}}>
                   <div className='menuActiontitle' style={{width: "100%"}}>
