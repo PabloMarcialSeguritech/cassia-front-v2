@@ -11,8 +11,3 @@ services:
       - ./src:/app/src
     ports:
       - 8003:8003
-    networks:
-      - back-net
-networks:
-  back-net:
-    driver: bridge
