@@ -12,7 +12,7 @@ services:
     ports:
       - 8003:8003
     networks:
-      - front_network
+      - front_qa_network
 networks:
   front_network:
     driver: host
