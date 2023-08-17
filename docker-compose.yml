@@ -11,3 +11,7 @@ services:
       - ./src:/app/src
     ports:
       - 8003:8003
+networks:
+  front_network:
+    external: true
+    name: front_qa_network
