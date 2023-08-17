@@ -11,3 +11,7 @@ services:
       - ./src:/app/src
     ports:
       - 8003:8003
+    networks:
+      default:
+        # Use a custom driver
+        driver: front-qa-driver
