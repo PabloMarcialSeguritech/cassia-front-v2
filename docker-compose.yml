@@ -4,7 +4,6 @@ services:
   app:
     container_name: cassia-frontend-qa
     image: cassia-frontend-qa
-    network_mode: "host"
     build:
       context: .
       target: development
@@ -12,3 +11,8 @@ services:
       - ./src:/app/src
     ports:
       - 8003:8003
+    networks:
+      - back-net
+networks:
+  back-net:
+    driver: bridge
