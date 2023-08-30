@@ -8,16 +8,16 @@ import { Suspense } from 'react'
 
 
 const RightQuadrant =(props)=>{
-    console.log("rigcuadrant")
-    console.log(props.token)
-    const dataLocations=useFetch('groups/municipios','',props.token,'GET')
-    const dataSubtype=useFetch('groups/subtypes','',props.token)
-    const dataDevices=useFetch('groups/devices','',props.token,'GET')
+    // console.log("rigcuadrant")
+    // console.log(props.token)
+    const dataLocations=useFetch('zabbix/groups/municipios','',props.token,'GET')
+    const dataSubtype=useFetch('zabbix/groups/subtypes','',props.token)
+    const dataDevices=useFetch('zabbix/groups/devices','',props.token,'GET')
     let s4= undefined
     let s3= undefined
     let s2= undefined
     let s1=undefined
-    console.log(props.dataHosts.data)
+    // console.log(props.dataHosts.data)
     if(props.dataHosts.data.length!=0){
      s4= props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 4)
      s3= props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 3)
@@ -47,15 +47,15 @@ const RightQuadrant =(props)=>{
                     <div className='menuSearchData' >
                     <div className='menuSearchColumn'>
                         
-                        <Selector data={dataLocations.data.data} loading={dataLocations.loading}  titulo='Municipio' props={props}></Selector>
+                        <Selector todos={true} opt_de={'0'} origen={'mapa'} data={dataLocations.data.data} loading={dataLocations.loading}  titulo='Municipio' props={props}></Selector>
                     </div>
                     <div className='menuSearchColumn'>
                         {/* <Selector data={dataSubtype.data.data} loading={dataSubtype.loading}  titulo='Tecnologia'></Selector> */}
-                        <Selector data={dataDevices.data.data} loading={dataDevices.loading}  titulo='Tecnologia' props={props}></Selector>
+                        <Selector  todos={false} opt_de={'10'} origen={'mapa'}  data={dataDevices.data.data} loading={dataDevices.loading}  titulo='Tecnologia' props={props}></Selector>
                     </div>
                     
                     <div className='menuSearchColumn'>
-                    <Selector data={dataSubtype.data.data}  loading={dataSubtype.loading}  titulo='Subtipo' props={props}></Selector>
+                    <Selector todos={false}  opt_de={'3'} origen={'mapa'}  data={dataSubtype.data.data}  loading={dataSubtype.loading}  titulo='Subtipo' props={props}></Selector>
                     </div>
                     <div className='menuSearchColumn'>
                     <Action disabled={false} origen='General' titulo='Buscar'  action={buscar}/>
@@ -74,10 +74,12 @@ const RightQuadrant =(props)=>{
                     </div>
                     <div className='menuInfoData' >
                         <div className='dataContent' style={{borderRadius:' 0px 0px 0px 10px'}}>
-                            <InfoStatus titulo={'UP'} tipo={'UP'}  size='max'value={props.markers.length==0?'...':props.markers.length}/>
+                            {/* <InfoStatus titulo={'UP'} tipo={'UP'}  size='max'value={props.markersWOR.length==0?'...':(props.dataHosts.data.host_availables[0].UP==""?0:props.dataHosts.data.host_availables[0].UP)}/> */}
+                            <InfoStatus titulo={'UP'} tipo={'UP'}  size='max' value={props.markersWOR.length==0?'...':(props.markersWOR.length-props.downs.length)}/>
                         </div>
                         <div className='dataContent'  style={{borderRadius:' 0px 0px 10px 0px'}}>
-                            <InfoStatus titulo={'DOWN'} tipo={'DOWN'} size='max' value={props.markers.length==0?'...':(props.dataHosts.data.host_availables[0].Down==""?0:props.dataHosts.data.host_availables[0].Down)}/>
+                            {/* <InfoStatus titulo={'DOWN'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?'...':(props.dataHosts.data.host_availables[0].Down==""?0:props.dataHosts.data.host_availables[0].Down)}/> */}
+                            <InfoStatus titulo={'DOWN'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?'...':props.downs.length}/>
                         </div>
                     </div>
                 </div>

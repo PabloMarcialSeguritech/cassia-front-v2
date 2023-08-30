@@ -43,7 +43,7 @@ const infoMarkerStyles = {
 };
 const LeftQuadrant =(props)=>{
  
-  // let dataProblems=useFetch('problems',props.ubicacion.groupid,props.token)
+  // let dataProblems=useFetch('zabbix/problems',props.ubicacion.groupid,props.token)
  
 
   const mapContainerRef = useRef(null);
@@ -51,7 +51,7 @@ const LeftQuadrant =(props)=>{
   let subtitle;
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [alertsIsOpen, setAlertsIsOpen] = React.useState(false);
-  console.log("alret oper: ",alertsIsOpen)
+  // console.log("alret oper: ",alertsIsOpen)
   
   function openModal() {
     setIsOpen(true);
@@ -79,7 +79,7 @@ const LeftQuadrant =(props)=>{
   let s3= undefined
   let s2= undefined
   let s1=undefined
-  console.log(props.dataHosts.data)
+  // console.log(props.dataHosts.data)
   if(props.dataHosts.data.length!=0){
    s4= props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 4)
    s3= props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 3)

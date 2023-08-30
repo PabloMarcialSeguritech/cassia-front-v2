@@ -24,16 +24,17 @@ const InfoMarker = ({isOpen, data,closeInfoMarker }) => {
     const [exeptionOpen, setExeptionOpen] = useState(false);
     const [addingException, setAddingException] = useState(false);
     const [validaBtn, setValidaBtn] = useState(true);
-    console.log('Marcador clickeado:', data);
-    // console.log(data.points[0].data.customdata[0])
+    //console.log('Marcador clickeado:', data);
+    //console.log(data.name_hostP)
+    // //console.log(data.points[0].data.customdata[0])
     // const actualInfo = data.points[0].data.customdata.find(obj => obj.name === data.points[0].text)
-    // console.log(actualInfo)
+    // //console.log(actualInfo)
     // const fatherInfo=data.points[0].data.customdata[0]
-    // console.log(fatherInfo)
+    // //console.log(fatherInfo)
     const [pingModalOpen, setPingModalOpen] =useState(false);
     const [statusPing, setStatusPing] =useState(false);
-  console.log('status ping',statusPing)
-  // console.log(data.points[0].data.customdata.length)
+  //console.log('status ping',statusPing)
+  // //console.log(data.points[0].data.customdata.length)
   function openPingModal() {
     setPingModalOpen(true);
   }
@@ -42,7 +43,7 @@ const InfoMarker = ({isOpen, data,closeInfoMarker }) => {
     setPingModalOpen(false);
   }
   const handlePingClick = (data) => {
-    // const dataPing=useFetch('ping','',actualInfo.ip)
+    // const dataPing=useFetch('zabbix/ping','',actualInfo.ip)
     setStatusPing(true)
     openPingModal()
     // Realiza las acciones deseadas al hacer clic en el marcador
@@ -147,7 +148,7 @@ const InfoMarker = ({isOpen, data,closeInfoMarker }) => {
                     </div>
                   </div>
                   </div>
-                  { 0===0?
+                  { data.name_hostP!==undefined?
                   <>
                   <div className='rowcontActions' style={{width: "100%",height:'20%',top: '10%'}}>
                   <div className='menuActiontitle' style={{width: "100%"}}>

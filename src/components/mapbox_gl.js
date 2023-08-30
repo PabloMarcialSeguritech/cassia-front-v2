@@ -3,18 +3,19 @@ import React, { useRef, useEffect } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import towerImg from '../img/torre2_blanca.png';
-const MapBox = ({devices,markers,lines,downs,towers,ubicacion,handleMarkerClick}) => {
-  console.log(downs)
-  console.log("markers")
-  console.log(ubicacion)
-  console.log(markers)
+const MapBox = ({devices,markers,markersWOR,lines,downs,towers,ubicacion,handleMarkerClick}) => {
+ 
+  //console.log("markers*****************************************************")
+  //console.log(ubicacion)
+  //console.log(markers)
+  //console.log(markersWOR)
   let latitud_provicional=(ubicacion.groupid===0?'20.93236':ubicacion.latitud)
   let longitud_provicional=(ubicacion.groupid===0?'-101.21700':ubicacion.longitud)
   const zoom_provicional=(ubicacion.groupid===0?8:11)
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
-  console.log("longitud_provicional")
-  console.log(longitud_provicional)
+  //console.log("longitud_provicional")
+  //console.log(longitud_provicional)
   // const host=[
   //   {
   //     type: 'Feature',
@@ -74,16 +75,16 @@ const MapBox = ({devices,markers,lines,downs,towers,ubicacion,handleMarkerClick}
   //     },
   //   },
   // ]
-  // console.log(host)
+  // //console.log(host)
   mapboxgl.accessToken =
     'pk.eyJ1IjoiZ2lvcm9jaGEiLCJhIjoiY2xpZWJyZTR3MHpqcjNlcWRvaHR1em5sayJ9._SOrMWsc39Coa2dTHR072Q';
     
     
     
     if(markers.length===0){
-      console.log("marker vacio")
+      //console.log("marker vacio")
     }else{
-      console.log("markers lleno")
+      //console.log("markers lleno")
     
     }
   useEffect(() => {
@@ -100,13 +101,67 @@ const MapBox = ({devices,markers,lines,downs,towers,ubicacion,handleMarkerClick}
     const map = mapRef.current;
     map.on('load', () => {
       if(markers.length===0){
-        console.log("marker vacio")
+        //console.log("marker vacio")
       }else{
-        console.log("markers lleno")
+        //console.log("markers lleno")
         // map.remove()
       }
       
-      console.log("onload")
+      //console.log("onload")
+      //console.log(markersWOR)
+       /************************************************************ CAPA MWOR ************************************************************************ */
+       map.addLayer({
+        id: 'host-markerWOR',
+        type: 'circle',
+        source:  {
+          type: 'geojson',
+          data: {
+            type: 'FeatureCollection',
+            features: markersWOR
+          },
+        },
+        filter: ['!', ['has', 'point_count']],
+        paint: {
+          'circle-color': "#4fb7f3",
+          'circle-radius': 3,
+          'circle-stroke-width':1,
+          'circle-stroke-color': '#fff',
+        }
+        ,
+      });
+      map.on('mouseleave', 'host-markerWOR', (e) => {
+        //  //console.log(e)
+        Popup.remove();
+        });
+      map.on('mouseenter', 'host-markerWOR', (e) => {
+        // //console.log(e)
+        if(e.features[0].properties.tooltip){
+
+        
+        const coordinates = e.features[0].geometry.coordinates.slice();
+        const mag = e.features[0].properties.mag;
+        const tsunami = e.features[0].properties.tsunami === 1 ? 'yes' : 'no';
+
+        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+          coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+        }
+        
+        Popup= new mapboxgl.Popup({
+          className: 'custom-popup',
+          closeButton: false,
+      })
+          .setLngLat(coordinates)
+          // .setHTML(`magnitude: ${mag}<br>Was there a tsunami?: ${tsunami}`)
+          .setHTML(`<div class='cont-pop' style='border: 1px solid ${e.features[0].properties.color_alineacion};'>
+          <div>${e.features[0].properties.name_hostC.slice(0, 25)}...</div>
+          
+          </div>`)
+          .addTo(map);
+    }
+      });
+      map.on('click', 'host-markerWOR', (e) => {
+        handleMarkerClick(e.features[0].properties)
+      });
      /************************************************************ CAPA LINEAS ************************************************************************ */
       map.addLayer({
         id: 'line-conection',
@@ -162,11 +217,11 @@ const MapBox = ({devices,markers,lines,downs,towers,ubicacion,handleMarkerClick}
         },
       });
       map.on('mouseleave', 'host-marker', (e) => {
-        //  console.log(e)
+        //  //console.log(e)
         Popup.remove();
         });
       map.on('mouseenter', 'host-marker', (e) => {
-        // console.log(e)
+        // //console.log(e)
         const coordinates = e.features[0].geometry.coordinates.slice();
         const mag = e.features[0].properties.mag;
         const tsunami = e.features[0].properties.tsunami === 1 ? 'yes' : 'no';
@@ -192,7 +247,7 @@ const MapBox = ({devices,markers,lines,downs,towers,ubicacion,handleMarkerClick}
         handleMarkerClick(e.features[0].properties)
       });
       /************************************************************ CAPA DOWNS ************************************************************************ */
-      console.log(downs)
+      //console.log(downs)
       map.addLayer({
         id: 'host-down',
         type: 'circle',
@@ -291,9 +346,9 @@ const MapBox = ({devices,markers,lines,downs,towers,ubicacion,handleMarkerClick}
   // useEffect(() => {
   //   if(markers.length1!==0){
   //     const map = mapRef.current;
-  //     console.log(map.getLayer('host-marker'))
+  //     //console.log(map.getLayer('host-marker'))
   //   }else{
-  //     console.log("primera vez")
+  //     //console.log("primera vez")
   //   }
   // },[markers])
   return <div id="map" style={{ position: 'absolute', top: 0, bottom: 0, width: '100%' }} />;

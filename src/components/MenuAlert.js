@@ -166,7 +166,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                             <InputForm   titulo='Event ID' text={props.data.eventid} disabled={true} ></InputForm>
                             </div>
                             <div className='formColumn'>
-                            <Selector data={props.dataAgencies.data.data} loading={props.dataAgencies.loading}  titulo='Agencia' props={props}></Selector>
+                            <Selector origen={'mapa'} data={props.dataAgencies.data.data} loading={props.dataAgencies.loading}  titulo='Agencia' props={props}></Selector>
                             </div>
                             <div className='formColumn'>
                             <InputForm data={[]} loading={false} text='' setValidaBtn={setValidaBtn} titulo='Notas' disabled={false}></InputForm>

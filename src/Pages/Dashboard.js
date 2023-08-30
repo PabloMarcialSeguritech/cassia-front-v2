@@ -39,7 +39,7 @@ console.log(devices)
 console.log(ubicacion)
 
 const [dataProblems,setDataProblems]=useState({data:[],loading:true,error:null})
-const downs_list=useFetch('layers/downs',0,token,'GET')
+const downs_list=useFetch('zabbix/layers/downs',0,token,'GET')
 console.log("down list",ubicacion.groupid)
 console.log(downs_list.data)
 
