@@ -27,10 +27,22 @@ const SideBar =({onLogin,pageSelected,setPageSelected})=>{
                 {/* <img src="/iconos/monitoreo-blanco.png"/> */}
                     </div>
                     <div className='textSideCont ' name="monitoreo" >
-                        MONITOR
+                        MONITOREO
                     </div>
                 </div>
             </div>
+            {/* <div className={'sidebarRow '+(pageSelected==="panel-admin"?'sideRowSelected':'')}>
+                <div className={'sidebarCont '+(pageSelected==="panel-admin"?'sideSelected':'')} name="panel-admin" onClick={handleSection}>
+                
+                <div className='imgSideCont' name="panel-admin" >
+                <img src={'/iconos/panel-admin'+(pageSelected==="panel-admin"?'-blanco.png':'.png')} name="panel-admin" />
+                
+                    </div>
+                    <div className='textSideCont ' name="panel-admin" >
+                        ADMIN.
+                    </div>
+                </div>
+            </div> */}
             <div className="sidebarRow">
                 <div className='sidebarCont ' onClick={onLogin} >
                     <div className='imgSideCont'>
