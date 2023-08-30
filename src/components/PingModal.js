@@ -11,7 +11,7 @@ const PingModal = ({isOpen, data,statusPing,closePingModal }) => {
     const host=data.length===1?data[0]:data[1]
     console.log("host")
     console.log(host)
-    const dataPing=useFetch('hosts/ping',data.hostidC,'','POST')
+    const dataPing=useFetch('zabbix/hosts/ping',data.hostidC,'','POST')
     
     return (
       <>

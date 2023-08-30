@@ -1,13 +1,30 @@
 import './styles/Selector.css'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Select from 'react-select'
 import data_ubi from './ubicaciones'
 import { useFetch } from '../hooks/useFetch'
-const Selector=({titulo,data,loading,props})=>{
-    
-    const opt_default=[{ dispId: 0, name: "Todos" }]
+const Selector=({todos,opt_de,titulo,data,loading,props,origen})=>{
+    const customStyles = {
+        // Estilos para el contenedor del react-select
+        control: (provided, state) => ({
+          ...provided,
+          color:'#003757',
+          borderColor: state.isFocused ? '#80bdff' : '#ccc',
+          boxShadow: state.isFocused ? '0 0 0 1px #80bdff' : null,
+          '&:hover': {
+            borderColor: state.isFocused ? '#80bdff' : '#999',
+          },
+        }),
+        // Estilos para las opciones en el menú desplegable
+        option: (provided, state) => ({
+          ...provided,
+          backgroundColor: state.isFocused ? '#80bdff' : null,
+        }),
+      };
+    const opt_default=(todos)?[{ dispId: 0, name: "Todos" }]:[]
     const data_aux=opt_default.concat(data)
 //    console.log(props.ubicacion)
+    
     const options=loading?{filter:titulo, value: 0, label: 'cargando...' }:data_aux.map(datas=>{
         let op;
         switch(titulo){
@@ -25,41 +42,67 @@ const Selector=({titulo,data,loading,props})=>{
         }
         return op                           // <option key={datas.uuid}> {datas.name} </option>
 })
+    // console.log(options)
+    // console.log(opt_de)
+    // console.log(options[opt_de].label)
+    const [value,setValue]=useState([])
     
-    const [value,setValue]=useState({Municipio:''})
+    // console.log(value,'value') 
     const HandleChange=(selected,name)=>{
-        console.log(selected.filter)
-        setValue((state)=>({
-            ...state,[name]:selected.label
-        }))
-        switch(selected.filter){
-            case 'Municipio': props.setUbicacion({latitud:props.ubicacion.latitud,longitud:props.ubicacion.longitud,groupid:selected.value,dispId:props.ubicacion.dispId,templateId:props.ubicacion.templateId})
-                                break;
-            case 'Tecnologia': props.setUbicacion({latitud:props.ubicacion.latitud,longitud:props.ubicacion.longitud,groupid:props.ubicacion.groupid,dispId:selected.value,templateId:props.ubicacion.templateId})
-                                break; 
-            case 'Subtipo': props.setUbicacion({latitud:props.ubicacion.latitud,longitud:props.ubicacion.longitud,groupid:props.ubicacion.groupid,dispId:props.ubicacion.dispId,templateId:selected.value})
-                                break;                    
-            default:
-                    break;                        
+        console.log(selected)
+        // setValue((state)=>({
+        //     ...state,[name]:selected.label
+        // }))
+        setValue(selected)
+        if(origen==='mapa'){
+            switch(selected.filter){
+                case 'Municipio': props.setUbicacion({latitud:props.ubicacion.latitud,longitud:props.ubicacion.longitud,groupid:selected.value,dispId:props.ubicacion.dispId,templateId:props.ubicacion.templateId})
+                                    break;
+                case 'Tecnologia': props.setUbicacion({latitud:props.ubicacion.latitud,longitud:props.ubicacion.longitud,groupid:props.ubicacion.groupid,dispId:selected.value,templateId:props.ubicacion.templateId})
+                                    break; 
+                case 'Subtipo': props.setUbicacion({latitud:props.ubicacion.latitud,longitud:props.ubicacion.longitud,groupid:props.ubicacion.groupid,dispId:props.ubicacion.dispId,templateId:selected.value})
+                                    break;                    
+                default:
+                        break;                        
+            }
+        }else if(origen==='admin'){
+                console.log("admin",selected.value)
         }
+        
         
     }
    
     return(
         <div className='menuSearchOption'>
-            <div className='compactSelector'>
+            <div className={origen==='mapa'?'compactSelector':'compactSelectorAdmin'}>
                 <label htmlFor='selector' className='labelSelector'>{titulo}:</label>
+                {
+                    origen==='mapa'?
+                        <Select
+                        options={options}
+                        value={(value.length===0)?options[opt_de]:value}
+                        // options={{filter:titulo, value: 0, label: 'cargando...' }}
+                        className="react-select-container"
+                        classNamePrefix="react-select"
+                        onChange={(selected)=>HandleChange(selected,titulo)}
+                        placeholder={loading?'cargando..':options[0].label}
+                        noOptionsMessage={() => "No existe"}
+                        isDisabled={loading}
+                    />
+                    :
+                    <Select
+                        options={options}
+                        
+                        // options={{filter:titulo, value: 0, label: 'cargando...' }}
+                        className="react-select-container-admin"
+                        classNamePrefix="react-select-admin"
+                        onChange={(selected)=>HandleChange(selected,titulo)}
+                        placeholder={loading?'cargando..':titulo}
+                        noOptionsMessage={() => "No existe"}
+                        isDisabled={loading}
+                    />
+                }
                 
-                <Select
-                    options={options}
-                    // options={{filter:titulo, value: 0, label: 'cargando...' }}
-                    className="react-select-container"
-                    classNamePrefix="react-select"
-                    onChange={(selected)=>HandleChange(selected,titulo)}
-                    placeholder={loading?'cargando..':titulo}
-                    noOptionsMessage={() => "No existe"}
-                    isDisabled={loading}
-                />
                 
             </div>
         </div>

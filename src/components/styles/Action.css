@@ -73,6 +73,63 @@ height: 100%;
     -moz-transition: all 0.2s ease-in;
     transition: all 0.2s ease-in;
   }
+  .actRed{
+    font-size: 14px;
+    font-size: 14px;
+    background: rgb(235, 42, 42);
+    color: #ffffff;
+    border-radius: 5px;
+    height: 5vh;
+    width: 20vh;
+    overflow: hidden;
+    box-shadow: 0 0 0 0 transparent;
+    -webkit-transition: all 0.2s ease-in;
+    -moz-transition: all 0.2s ease-in;
+    transition: all 0.2s ease-in;
+  }
+  .actRed.actDisabled{
+    font-size: 14px;
+    font-size: 14px;
+    background: #979797;
+    color: #ffffff;
+    border-radius: 5px;
+    height: 5vh;
+    width: 20vh;
+    overflow: hidden;
+    box-shadow: 0 0 0 0 transparent;
+    -webkit-transition: all 0.2s ease-in;
+    -moz-transition: all 0.2s ease-in;
+    transition: all 0.2s ease-in;
+  }
+  .actCancelar{
+    font-size: 14px;
+    font-size: 14px;
+    background: #fff;
+    color: rgb(235, 42, 42);
+    border: 2px solid rgb(235, 42, 42);
+    border-radius: 5px;
+    height: 5vh;
+    width: 20vh;
+    overflow: hidden;
+    box-shadow: 0 0 0 0 transparent;
+    -webkit-transition: all 0.2s ease-in;
+    -moz-transition: all 0.2s ease-in;
+    transition: all 0.2s ease-in;
+  }
+  .actCancelar.actDisabled{
+    font-size: 14px;
+    font-size: 14px;
+    background: #979797;
+    color: #ffffff;
+    border-radius: 5px;
+    height: 5vh;
+    width: 20vh;
+    overflow: hidden;
+    box-shadow: 0 0 0 0 transparent;
+    -webkit-transition: all 0.2s ease-in;
+    -moz-transition: all 0.2s ease-in;
+    transition: all 0.2s ease-in;
+  }
   .actAlert{
     letter-spacing: 1px;
     color: #940000;
@@ -104,6 +161,26 @@ height: 100%;
     /* border: 1px solid rgb(61, 106, 255);
     color: #003757; */
   }
+  .actRed:hover{
+    -webkit-transition: all 0.2s ease-out;
+    -moz-transition: all 0.2s ease-out;
+    transition: all 0.2s ease-out;
+    transform: scale(1.1) translateY(-1px);
+    cursor: pointer;
+    /* box-shadow: 0 0 6px 2px rgba(0, 142, 236, 0.815); */
+    /* border: 1px solid rgb(61, 106, 255);
+    color: #003757; */
+  }
+  .actCancelar:hover{
+    -webkit-transition: all 0.2s ease-out;
+    -moz-transition: all 0.2s ease-out;
+    transition: all 0.2s ease-out;
+    transform: scale(1.1) translateY(-1px);
+    cursor: pointer;
+    /* box-shadow: 0 0 6px 2px rgba(0, 142, 236, 0.815); */
+    /* border: 1px solid rgb(61, 106, 255);
+    color: #003757; */
+  }
   .actAlert:hover{
     /* box-shadow: 0 0 6px 2px rgba(236, 0, 0, 0.815); */
     border: 1px solid rgb(255, 61, 61);
@@ -114,6 +191,17 @@ height: 100%;
     -moz-animation: sh02 0.5s 0s linear;
     animation: sh02 0.5s 0s linear;
   }
+  .actRed:hover::before {
+    -webkit-animation: sh02 0.5s 0s linear;
+    -moz-animation: sh02 0.5s 0s linear;
+    animation: sh02 0.5s 0s linear;
+  }
+  .actCancelar:hover::before {
+    -webkit-animation: sh02 0.5s 0s linear;
+    -moz-animation: sh02 0.5s 0s linear;
+    animation: sh02 0.5s 0s linear;
+  }
+  
   
   .actLogin::before {
     content: '';
@@ -126,6 +214,42 @@ height: 100%;
     opacity: 0;
     color: #fff;
     background: #003757;
+    box-shadow: 0 0 50px 30px #fff;
+    -webkit-transform: skewX(-20deg);
+    -moz-transform: skewX(-20deg);
+    -ms-transform: skewX(-20deg);
+    -o-transform: skewX(-20deg);
+    transform: skewX(-20deg);
+  }
+  .actRed::before {
+    content: '';
+    display: block;
+    width: 0px;
+    height: 86%;
+    position: absolute;
+    top: 7%;
+    left: 0%;
+    opacity: 0;
+    color: #fff;
+    background: rgb(235, 42, 42);
+    box-shadow: 0 0 50px 30px #fff;
+    -webkit-transform: skewX(-20deg);
+    -moz-transform: skewX(-20deg);
+    -ms-transform: skewX(-20deg);
+    -o-transform: skewX(-20deg);
+    transform: skewX(-20deg);
+  }
+  .actCancelar::before {
+    content: '';
+    display: block;
+    width: 0px;
+    height: 86%;
+    position: absolute;
+    top: 7%;
+    left: 0%;
+    opacity: 0;
+    color: rgb(235, 42, 42);
+    background: #fff;
     box-shadow: 0 0 50px 30px #fff;
     -webkit-transform: skewX(-20deg);
     -moz-transform: skewX(-20deg);

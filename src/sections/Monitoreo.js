@@ -19,13 +19,14 @@ const Monitoreo=({token_item})=>{
   
   token_item=localStorage.getItem('access_token')
 
-    const [ubicacion,setUbicacion]=useState({latitud:'20.01808757489169',longitud:'-101.21789252823293',groupid:0,dispId:0,templateId:0})
+    const [ubicacion,setUbicacion]=useState({latitud:'20.01808757489169',longitud:'-101.21789252823293',groupid:0,dispId:11,templateId:375090})
     const [zoom,setZoom]=useState(11)
     const [latitudes,setLatitudes]=useState([])
     const [longitudes,setLongitudes]=useState([])
     const [locations,setLocations]=useState([])
     
     const [markers,setMarkers]=useState([])
+    const [markersWOR,setMarkersWOR]=useState([])
     const [lines,setLines]=useState([])
     const [downs,setDowns]=useState([])
     const [towers,setTowers]=useState([])
@@ -35,20 +36,18 @@ const Monitoreo=({token_item})=>{
     const [loading,setLoading]=useState(true);
     const [error,setError]=useState(null);
     const [devices,setDevices]=useState({data:[],loading:true,error:null});
-    console.log("aps")
-    console.log(aps)
-    console.log(towers)
-    console.log(devices)
-    console.log(ubicacion)
+    //console.log("devices")
+    //console.log(devices)
+    //console.log("markersWOR")
+    //console.log(markersWOR)
+    // //console.log(devices)
+    // //console.log(ubicacion)
     
     const [dataProblems,setDataProblems]=useState({data:[],loading:true,error:null})
-    // const downs_list=useFetch('layers/downs',0,token_item,'GET')
+    // const downs_list=useFetch('zabbix/layers/downs',0,token_item,'GET')
     const[downs_list,setDownsList]=useState({data:[],loading:true,error:null});
-    const tower_list=useFetch('layers/aps',0,token_item,'GET')
-    console.log("down list",ubicacion.groupid)
-    console.log(downs_list.data)
-    console.log("tower_list",ubicacion.groupid)
-    console.log(tower_list.data)
+    const tower_list=useFetch('zabbix/layers/aps',0,token_item,'GET')
+    
     
     useEffect(()=>{
       
@@ -59,14 +58,14 @@ const Monitoreo=({token_item})=>{
     
     useEffect(()=>{
       if(downs_list.data.length!==0){
-        console.log("pinta")
+        //console.log("pinta")
         objeto_downs(downs_list.data.downs)
         }
     },[downs_list.data])
 
     useEffect(()=>{
       if(tower_list.data.length!==0){
-        console.log("pinta")
+        //console.log("pinta")
         objeto_towers(tower_list.data.data.aps)
         }
     },[tower_list.data])
@@ -91,7 +90,7 @@ const Monitoreo=({token_item})=>{
               }])
               
             }else{
-              console.log(host)
+              //console.log(host)
             }
         }
         )
@@ -119,14 +118,13 @@ const Monitoreo=({token_item})=>{
               }])
               
             }else{
-              console.log(host)
+              //console.log(host)
             }
         }
         )
     }
      /****************************************************************** */
     function search_problems(){
-      console.log(`Authorization: Bearer ${token_item}`)
     setDataProblems({data:dataProblems.data,loading:true,error:dataProblems.error})
       const fetchData = async () => {
         try {
@@ -135,7 +133,7 @@ const Monitoreo=({token_item})=>{
       const subtypefilter=ubicacion.templateId!==0?'subtype='+ubicacion.templateId:''
       let andAux=(devicefilter!=='' )?'&':'?'
             andAux=(subtypefilter!=='')?andAux:''
-      console.log('http://172.18.200.14:8002/api/v1/zabbix/problems/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter)
+      //console.log('http://172.18.200.14:8002/api/v1/zabbix/problems/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter)
           const response = await fetch('http://172.18.200.14:8002/api/v1/zabbix/problems/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter, {                 
                               headers: {
                                 'Content-Type': 'application/json',
@@ -145,7 +143,7 @@ const Monitoreo=({token_item})=>{
           if (response.ok) {
             const response_data = await response.json();
             setDataProblems({data:response_data.data,loading:false,error:dataProblems.error})
-            // console.log(response_data)
+            // //console.log(response_data)
             
           } else {
             throw new Error('Error en la solicitud');
@@ -153,7 +151,7 @@ const Monitoreo=({token_item})=>{
         } catch (error) {
           // Manejo de errores
           setDataProblems({data:dataProblems.data,loading:dataProblems.loading,error:error})
-          console.error(error);
+          //console.error(error);
         }
       };
       fetchData();
@@ -170,12 +168,12 @@ const Monitoreo=({token_item})=>{
     },[])
     function search_downs(){
       setDowns([])
-      console.log("use efect",ubicacion)
+      //console.log("use efect",ubicacion)
         setDownsList({data:downs_list.data,loading:true,error:downs_list.error})
         const fetchData = async () => {
           try {
-            
-         const response = await fetch('http://172.18.200.14:8002/api/v1/zabbix/layers/downs/'+ubicacion.groupid, {                 
+            let body = (ubicacion.dispId===0)?'':'/?dispId='+ubicacion.dispId
+         const response = await fetch('http://172.18.200.14:8002/api/v1/zabbix/layers/downs/'+ubicacion.groupid+''+body, {                 
                                 headers: {
                                   'Content-Type': 'application/json',
                                   Authorization: `Bearer ${token_item}`,
@@ -184,7 +182,7 @@ const Monitoreo=({token_item})=>{
             if (response.ok) {
               const response_data = await response.json();
               setDownsList({data:response_data.data,loading:false,error:downs_list.error})
-              // console.log(response_data)
+              // //console.log(response_data)
               
             } else {
               throw new Error('Error en la solicitud');
@@ -192,14 +190,15 @@ const Monitoreo=({token_item})=>{
           } catch (error) {
             // Manejo de errores
             setDownsList({data:downs_list.data,loading:downs_list.loading,error:error})
-            console.error(error);
+            //console.error(error);
           }
         };
         fetchData();
     }
     function search_devices(){
-      console.log("use efect",ubicacion)
+      //console.log("use efect",ubicacion)
         setMarkers([])
+        setMarkersWOR([])
         setLines([])
         setLocations([])
         setDevices({data:devices.data,loading:true,error:devices.error})
@@ -207,13 +206,14 @@ const Monitoreo=({token_item})=>{
         
         const fetchData = async () => {
           try {
+            //console.log(`Bearer ${token_item}`)
             const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWFuLm1hcmNpYWwiLCJleHAiOjE2OTExNjg3ODZ9.LETk5Nu-2WXF571qMqTd__RxHGcyOHzg4GfAbiFejJY'; // Reemplaza con tu token de autenticación
             // const response = await fetch('http://172.18.200.14:8002/api/v1/zabbix/db/hosts/relations/'+ubicacion.groupid, {
               const devicefilter=ubicacion.dispId!==0?'?dispId='+ubicacion.dispId:''
         const subtypefilter=ubicacion.templateId!==0?'subtype_id='+ubicacion.templateId:''
         let andAux=(devicefilter!=='' )?'&':'?'
               andAux=(subtypefilter!=='')?andAux:''
-        console.log('http://172.18.200.14:8002/api/v1/zabbix/hosts/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter)
+        //console.log('http://172.18.200.14:8002/api/v1/zabbix/hosts/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter)
               const response = await fetch('http://172.18.200.14:8002/api/v1/zabbix/hosts/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter, {                 
                                 headers: {
                                   'Content-Type': 'application/json',
@@ -223,7 +223,7 @@ const Monitoreo=({token_item})=>{
             if (response.ok) {
               const response_data = await response.json();
               setDevices({data:response_data.data,loading:false,error:devices.error})
-              // console.log(response_data)
+              // //console.log(response_data)
               
             } else {
               throw new Error('Error en la solicitud');
@@ -231,20 +231,26 @@ const Monitoreo=({token_item})=>{
           } catch (error) {
             // Manejo de errores
             setDevices({data:devices.data,loading:devices.loading,error:error})
-            console.error(error);
+            //console.error(error);
           }
         };
         fetchData();
     }
     useEffect(()=>{
-      
+      //console.log("entra devices")
       if(devices.data.length!=0){
         
         setLatitudes([]) 
         setLongitudes([])
+        if(devices.data.hosts.length!=0){
+          objeto_markers_wor(devices.data)
+          
+        }
         if(devices.data.relations.length!=0){
+          //console.log("entra a relaciones!!!!!!!!")
           objeto_relaciones(devices.data)
-        }else if(devices.data.subgroup_info.length!=0){
+        }
+        if(devices.data.subgroup_info.length!=0){
           objeto_subgroup_info(devices.data)
         }else if(devices.data.hosts.length!=0 && ubicacion.dispId===2){
           objeto_antenas(devices.data)
@@ -259,12 +265,19 @@ const Monitoreo=({token_item})=>{
           {
             if (index === 1) {
               setUbicacion({latitud:host.latitude,longitud:host.longitude,groupid:ubicacion.groupid,dispId:ubicacion.dispId,templateId:ubicacion.templateId})
-              console.log('Recorrido completo');
+              //console.log('Recorrido completo');
             }
             if(host.length!==0 && host.latitude.replace(",", ".")>=-90 && host.latitude.replace(",", ".")<=90 ){
               let colorSG='#00ff70'
-              const hostidC = devices_data.hosts.find(obj => obj.hostid === host.hostid)
+              // let colorSG='#ffffff'
+              // const hostidC = devices_data.hosts.find(obj => obj.hostid === host.hostid)
+              const relation = devices_data.relations.find(obj => obj.hostid === host.hostid)
               
+              let hostidP={}
+              if(relation!==undefined){
+               hostidP = devices_data.hosts.find(obj => obj.hostid === relation.hostidP)
+              // //console.log(hostidP)
+              }
                 let severity=0
               if(host.Alineacion>=-59 && host.Alineacion<=-50){
                 colorSG='#ffee00'
@@ -285,20 +298,21 @@ const Monitoreo=({token_item})=>{
                 type: 'Feature',
                 properties:{
                   correlarionid: host.correlarionid,
-                  hostidP: 0,
-                  hostidC: hostidC.hostid,
-                  init_lat: 0,
-                  init_lon: 0,
-                  end_lat: host.latitude,
-                  end_lon: host.longitude,
+                  hostidP: hostidP.hostid,
+                  hostidC: host.hostid,
+                  init_lat: hostidP.latitude,
+                  init_lon: hostidP.longitude,
+                  end_lat: host.latitude.replace(",", "."),
+                  end_lon: host.longitude.replace(",", "."),
                   hostid: host.hostid,
-                  name_hostP:0,
-                  name_hostC:hostidC.Host,
-                  name_hostipP:0,
-                  name_hostipC:hostidC.ip,
+                  name_hostP:hostidP.Host,
+                  name_hostC:host.name,
+                  name_hostipP:hostidP.ip,
+                  name_hostipC:host.ip,
                   Alineacion: host.Alineacion,
                   color_alineacion:colorSG,
                   severity:severity,
+                  lg:'lg'
                 },
                 geometry: {
                   type: 'Point',
@@ -307,65 +321,76 @@ const Monitoreo=({token_item})=>{
               }]) 
              
             }else{
-              console.log(host)
+              //console.log(host)
             }
         }
         )
     }
     
     function objeto_relaciones(devices_data){
+      //console.log(devices_data.hosts)
+      //console.log(devices_data.relations)
       devices_data.relations.map((host, index, array)=>
           {
             if (index === 1) {
               setUbicacion({latitud:host.init_lat,longitud:host.init_lon,groupid:ubicacion.groupid,dispId:ubicacion.dispId,templateId:ubicacion.templateId})
-              console.log('Recorrido completo');
+              //console.log('Recorrido completo');
             }
             if(host.length!==0 && host.init_lat.replace(",", ".")>=-90 && host.init_lat.replace(",", ".")<=90 && host.end_lat.replace(",", ".")>=-90 && host.end_lat.replace(",", ".")<=90){
               
               const hostidC = devices_data.hosts.find(obj => obj.hostid === host.hostidC)
               const hostidP = devices_data.hosts.find(obj => obj.hostid === host.hostidP)
+              let hostSub=devices_data.subgroup_info.find(obj => obj.hostid === host.hostidC)
+              //console.log(host.hostidC)
+              // //console.log(hostidP)
+              let alineacion=0
+              if(hostSub!==undefined){
+                alineacion=hostSub.Alineacion
+              }
+              //console.log(hostSub)
               // if(host.length!==0 && host.latitude.replace(",", ".")>=-90 && host.latitude.replace(",", ".")<=90 ){
+               //console.log(hostidP.hostid)
                 let colorSG='#00ff70'
                 let severity=0
-              if(host.Alineacion>-60 && host.Alineacion<=-50){
+              if(alineacion>-60 && alineacion<=-50){
                 colorSG='#ffee00'
                 severity=1
-              }else if(host.Alineacion>-70 && host.Alineacion<=-60){
+              }else if(alineacion>-70 && alineacion<=-60){
                 colorSG='#ee9d08'
                 severity=2
-              }else if(host.Alineacion>-80 && host.Alineacion<=-70){
+              }else if(alineacion>-80 && alineacion<=-70){
                 colorSG='#ee5c08'
                 severity=3
-              }else if(host.Alineacion<=-80){
+              }else if(alineacion<=-80){
                 colorSG='#ee0808'
                 severity=4
               }
               //azul #4fb7f3
               // verde "#1fee08"
-              setMarkers(markers=>[...markers,{
-                type: 'Feature',
-                properties:{
-                  correlarionid: host.correlarionid,
-                  hostidP: hostidP.hostid,
-                  hostidC: hostidC.hostid,
-                  init_lat: host.init_lat,
-                  init_lon: host.init_lon,
-                  end_lat: host.end_lat,
-                  end_lon: host.end_lon,
-                  hostid: host.id,
-                  name_hostP:hostidP.Host,
-                  name_hostC:hostidC.Host,
-                  name_hostipP:hostidP.ip,
-                  name_hostipC:hostidC.ip,
-                  Alineacion: host.Alineacion,
-                  color_alineacion:colorSG,
-                  severity:severity,
-                },
-                geometry: {
-                  type: 'Point',
-                  coordinates: [host.end_lon, host.end_lat],
-                },
-              }]) 
+              // setMarkers(markers=>[...markers,{
+              //   type: 'Feature',
+              //   properties:{
+              //     correlarionid: host.correlarionid,
+              //     hostidP: hostidP.hostid,
+              //     hostidC: hostidC.hostid,
+              //     init_lat: host.init_lat.replace(",", "."),
+              //     init_lon: host.init_lon.replace(",", "."),
+              //     end_lat: host.end_lat.replace(",", "."),
+              //     end_lon: host.end_lon.replace(",", "."),
+              //     hostid: host.id,
+              //     name_hostP:hostidP.Host,
+              //     name_hostC:hostidC.Host,
+              //     name_hostipP:hostidP.ip,
+              //     name_hostipC:hostidC.ip,
+              //     Alineacion: host.Alineacion,
+              //     color_alineacion:colorSG,
+              //     severity:severity,
+              //   },
+              //   geometry: {
+              //     type: 'Point',
+              //     coordinates: [host.end_lon, host.end_lat],
+              //   },
+              // }]) 
               
               setLines(lines=>[...lines,{
                 type: 'Feature',
@@ -380,7 +405,7 @@ const Monitoreo=({token_item})=>{
                   hostid: host.id,
                   name_hostP:hostidP.Host,
                   name_hostC:hostidC.Host,
-                  Alineacion: host.Alineacion,
+                  Alineacion: alineacion,
                   color_alineacion:colorSG,
                   severity:severity,
                 },
@@ -392,7 +417,65 @@ const Monitoreo=({token_item})=>{
               /****************************************************************** */
               
             }else{
-              console.log(host)
+              //console.log(host)
+            }
+        }
+        )
+    }
+    /************************************************************************************ */
+    function objeto_markers_wor(devices_data){
+      //console.log("WOR")
+      devices_data.hosts.map((host, index, array)=>
+          {
+            if (index === 1) {
+              setUbicacion({latitud:host.latitude,longitud:host.longitude,groupid:ubicacion.groupid,dispId:ubicacion.dispId,templateId:ubicacion.templateId})
+              //console.log('Recorrido completo WOR');
+            }
+            if(host.length!==0 && host.latitude.replace(",", ".")>=-90 && host.latitude.replace(",", ".")<=90){
+              
+              // const hostidC = devices_data.relations.find(obj => obj.hostidC === host.hostid)
+              // const hostidP = devices_data.relations.find(obj => obj.hostidCP === host.hostid)
+              
+              // const lon = devices_data.relations.find(obj => obj.end_lon === host.longitude)
+              // const lat = devices_data.relations.find(obj => obj.end_lat === host.latitude)
+              const lon = devices_data.subgroup_info.find(obj => obj.longitude === host.longitude)
+              const lat = devices_data.subgroup_info.find(obj => obj.latitude === host.latitude)
+               
+               let colorSG='#4fb7f3'
+               let severity=0
+               let tooltip=false;
+               if(lon===undefined && lon===undefined){
+                tooltip=true
+               
+               }
+               else{
+                tooltip=false
+               }
+              //azul #4fb7f3
+              // verde "#1fee08"
+              setMarkersWOR(markersWOR=>[...markersWOR,{
+                type: 'Feature',
+                properties:{
+                  hostidC: host.hostid,
+                  hostidP: '',
+                  init_lat: host.latitude.replace(",", "."),
+                  init_lon: host.longitude.replace(",", "."),
+                  name_hostC:host.Host,
+                  name_hostipC:host.ip,
+                  color_alineacion:colorSG,
+                  tooltip:tooltip,
+                },
+                geometry: {
+                  type: 'Point',
+                  coordinates: [host.longitude, host.latitude],
+                },
+              }]) 
+              
+              
+              /****************************************************************** */
+              
+            }else{
+              // //console.log(host)
             }
         }
         )
@@ -402,7 +485,7 @@ const Monitoreo=({token_item})=>{
           {
             if (index === 1) {
               setUbicacion({latitud:host.latitude,longitud:host.longitude,groupid:ubicacion.groupid,dispId:ubicacion.dispId,templateId:ubicacion.templateId})
-              console.log('Recorrido completo');
+              //console.log('Recorrido completo');
             }
             if(host.length!==0 && host.latitude.replace(",", ".")>=-90 && host.latitude.replace(",", ".")<=90 ){
               
@@ -436,7 +519,7 @@ const Monitoreo=({token_item})=>{
               /****************************************************************** */
               
             }else{
-              console.log(host)
+              //console.log(host)
             }
         }
         )
@@ -465,18 +548,18 @@ const Monitoreo=({token_item})=>{
         setInfoMarkerOpen(false);
       }
       const handleMarkerClick = (data) => {
-        console.log(data)
+        //console.log(data)
         setInfoMarker(data)
         openInfoMarker()
         // Realiza las acciones deseadas al hacer clic en el marcador
       };
     return (
         <>
-        <RightQuadrant  search_devices={search_devices}  search_downs={search_downs} search_problems={search_problems} token={token_item} ubicacion={ubicacion} markers={markers}  dataHosts={devices} setUbicacion={setUbicacion} />
-        {devices.loading?<LoadData/>:
+        <RightQuadrant  search_devices={search_devices} markersWOR={markersWOR}  search_downs={search_downs} downs={downs} search_problems={search_problems} token={token_item} ubicacion={ubicacion} markers={markers}  dataHosts={devices} setUbicacion={setUbicacion} />
+        {devices.loading && markersWOR?<LoadData/>:
         // false?<LoadData/>:
         <>
-        <MapBox devices={devices} markers={markers} lines={lines} downs={downs}towers={towers} ubicacion={ubicacion} handleMarkerClick={handleMarkerClick}/>
+        <MapBox devices={devices} markers={markers} markersWOR={markersWOR} lines={lines} downs={downs}towers={towers} ubicacion={ubicacion} handleMarkerClick={handleMarkerClick}/>
         
         <LeftQuadrant zoom={zoom} setZoom={setZoom} token ={token_item} setLatitudes={setLatitudes} setLongitudes={setLongitudes} setLocations={setLocations}
           latitudes={markers} longitudes={longitudes} locations={locations}

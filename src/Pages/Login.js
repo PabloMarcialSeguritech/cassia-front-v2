@@ -9,8 +9,7 @@ const [loginData,setLoginData]=useState({email:"",password:""})
 const [disabled,setDisabled]=useState(true)
 
 const [userVal,setUserVal]=useState(true)
-  console.log(data)
-  console.log(loading)
+  
 
   const handleChange=(e)=>{
     const {name,value}=e.target
