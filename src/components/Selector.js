@@ -3,7 +3,9 @@ import React, { useEffect, useState } from 'react'
 import Select from 'react-select'
 import data_ubi from './ubicaciones'
 import { useFetch } from '../hooks/useFetch'
-const Selector=({todos,opt_de,titulo,data,loading,props,origen})=>{
+const Selector=({opGeneral,txtOpGen,opt_de,titulo,data,loading,props,origen})=>{
+    // console.log(titulo)
+    // console.log(data)
     const customStyles = {
         // Estilos para el contenedor del react-select
         control: (provided, state) => ({
@@ -21,20 +23,25 @@ const Selector=({todos,opt_de,titulo,data,loading,props,origen})=>{
           backgroundColor: state.isFocused ? '#80bdff' : null,
         }),
       };
-    const opt_default=(todos)?[{ dispId: 0, name: "Todos" }]:[]
+    const opt_default=(opGeneral)?[{ dispId: 0, name: txtOpGen ,id:0}]:[]
     const data_aux=opt_default.concat(data)
 //    console.log(props.ubicacion)
-    
-    const options=loading?{filter:titulo, value: 0, label: 'cargando...' }:data_aux.map(datas=>{
+    let cont_i=0;
+    let opcion_default=0
+    const options=loading?{filter:titulo, value: 0, label: 'cargando...' ,id:0}:data_aux.map(datas=>{
+        if(datas.id==opt_de){
+            opcion_default=cont_i
+        }
+        cont_i++
         let op;
         switch(titulo){
-            case 'Municipio': op={ filter:titulo,value: datas.groupid === undefined?0:datas.groupid , label: datas.name };
+            case 'Municipio': op={ filter:titulo,value: datas.groupid === undefined?0:datas.groupid , label: datas.name ,id:datas.id};
                                 break;
-            case 'Tecnologia': op={ filter:titulo,value: datas.dispId=== undefined?0:datas.dispId, label: datas.name };
+            case 'Tecnología': op={ filter:titulo,value: datas.dispId=== undefined?0:datas.dispId, label: datas.name ,id:datas.id};
                                 break; 
-            case 'Subtipo': op={ filter:titulo,value: datas.templateId=== undefined?0:datas.templateId, label: datas.name };
+            case 'Métrica': op={ filter:titulo,value: datas.templateId=== undefined?0:datas.templateId, label:(datas.id===0?datas.name:(datas.id===375090?'Alineacíon':'Sin conexíon')),id:datas.id};
                                 break;  
-            case 'Agencia': op={ filter:titulo,value: datas.exception_agency_id=== undefined?0:datas.exception_agency_id, label: datas.name };
+            case 'Agencia': op={ filter:titulo,value: datas.exception_agency_id=== undefined?0:datas.exception_agency_id, label: datas.name ,id:datas.id};
                                 break;                   
             default:
                 op={ value: '', label: '' };
@@ -42,8 +49,10 @@ const Selector=({todos,opt_de,titulo,data,loading,props,origen})=>{
         }
         return op                           // <option key={datas.uuid}> {datas.name} </option>
 })
-    // console.log(options)
-    // console.log(opt_de)
+console.log(options)
+console.log(opt_de)
+    
+    
     // console.log(options[opt_de].label)
     const [value,setValue]=useState([])
     
@@ -58,9 +67,9 @@ const Selector=({todos,opt_de,titulo,data,loading,props,origen})=>{
             switch(selected.filter){
                 case 'Municipio': props.setUbicacion({latitud:props.ubicacion.latitud,longitud:props.ubicacion.longitud,groupid:selected.value,dispId:props.ubicacion.dispId,templateId:props.ubicacion.templateId})
                                     break;
-                case 'Tecnologia': props.setUbicacion({latitud:props.ubicacion.latitud,longitud:props.ubicacion.longitud,groupid:props.ubicacion.groupid,dispId:selected.value,templateId:props.ubicacion.templateId})
+                case 'Tecnología': props.setUbicacion({latitud:props.ubicacion.latitud,longitud:props.ubicacion.longitud,groupid:props.ubicacion.groupid,dispId:selected.value,templateId:props.ubicacion.templateId})
                                     break; 
-                case 'Subtipo': props.setUbicacion({latitud:props.ubicacion.latitud,longitud:props.ubicacion.longitud,groupid:props.ubicacion.groupid,dispId:props.ubicacion.dispId,templateId:selected.value})
+                case 'Métrica': props.setUbicacion({latitud:props.ubicacion.latitud,longitud:props.ubicacion.longitud,groupid:props.ubicacion.groupid,dispId:props.ubicacion.dispId,templateId:selected.value})
                                     break;                    
                 default:
                         break;                        
@@ -77,30 +86,32 @@ const Selector=({todos,opt_de,titulo,data,loading,props,origen})=>{
             <div className={origen==='mapa'?'compactSelector':'compactSelectorAdmin'}>
                 <label htmlFor='selector' className='labelSelector'>{titulo}:</label>
                 {
-                    origen==='mapa'?
+                    
+                        origen==='mapa'?
+                            <Select
+                            options={options}
+                            value={(value.length===0)?options[opcion_default]:value}
+                            // options={{filter:titulo, value: 0, label: 'cargando...' }}
+                            className="react-select-container"
+                            classNamePrefix="react-select"
+                            onChange={(selected)=>HandleChange(selected,titulo)}
+                            placeholder={loading?'cargando..':options[0].label}
+                            noOptionsMessage={() => "No existe"}
+                            isDisabled={loading}
+                        />
+                        :
                         <Select
-                        options={options}
-                        value={(value.length===0)?options[opt_de]:value}
-                        // options={{filter:titulo, value: 0, label: 'cargando...' }}
-                        className="react-select-container"
-                        classNamePrefix="react-select"
-                        onChange={(selected)=>HandleChange(selected,titulo)}
-                        placeholder={loading?'cargando..':options[0].label}
-                        noOptionsMessage={() => "No existe"}
-                        isDisabled={loading}
-                    />
-                    :
-                    <Select
-                        options={options}
+                            options={options}
+                            
+                            // options={{filter:titulo, value: 0, label: 'cargando...' }}
+                            className="react-select-container-admin"
+                            classNamePrefix="react-select-admin"
+                            onChange={(selected)=>HandleChange(selected,titulo)}
+                            placeholder={loading?'cargando..':titulo}
+                            noOptionsMessage={() => "No existe"}
+                            isDisabled={loading}
+                        />
                         
-                        // options={{filter:titulo, value: 0, label: 'cargando...' }}
-                        className="react-select-container-admin"
-                        classNamePrefix="react-select-admin"
-                        onChange={(selected)=>HandleChange(selected,titulo)}
-                        placeholder={loading?'cargando..':titulo}
-                        noOptionsMessage={() => "No existe"}
-                        isDisabled={loading}
-                    />
                 }
                 
                 

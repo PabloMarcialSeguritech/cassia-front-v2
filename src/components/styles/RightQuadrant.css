@@ -77,13 +77,15 @@ border: 1px solid #f0f8ff3d;
     height: 14%;
 }
 .menuInfotitle{
-    height: 15%;
+    height: 17%;
 }
 .menuInfo{
     display: block;
+    width: 45%;
 }
 .menuAction{
     display: block;
+    width: 95%;
 }
 .cardTitle{
     color: white;

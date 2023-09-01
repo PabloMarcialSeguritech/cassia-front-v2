@@ -53,24 +53,32 @@ letter-spacing: 1px;
     color:  #ee0808;
 }
 
-.inpDOWN3{
+.inpDOWN4{
     border-color: #ee5c08;
     color: #ee5c08;
 }
-.lblDOWN3{
+.lblDOWN4{
     color:  #ee5c08;
 }
-.inpDOWN2{
+.inpDOWN3{
     border-color: #ee9d08;
     color: #ee9d08;
 }
-.lblDOWN2{
+.lblDOWN3{
     color:  #ee9d08;
 }
-.inpDOWN1{
+.inpDOWN2{
     border-color: #ffee00;
     color: #ffee00;
 }
-.lblDOWN1{
+.lblDOWN2{
     color:  #ffee00;
+}
+
+.inpDOWN1{
+    border-color: #00ffdd;
+    color: #00ffdd;
+}
+.lblDOWN1{
+    color:  #00ffdd;
 }
