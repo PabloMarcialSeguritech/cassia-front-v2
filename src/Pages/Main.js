@@ -25,23 +25,26 @@ const verificateUserModalStyles = {
 const Main=({ onLogin,token,setToken })=>{
    
     const [pageSelected,setPageSelected]=useState("perfil")
+    const [rol_id,setRolID]=useState("")
     const [verificateUserModalOpen, setVerificateUserModalOpen] =useState(true);
     console.log('verificateUserModalOpen',verificateUserModalOpen)
     useEffect(()=>{
       
       try {
         let userSession=JSON.parse(localStorage.getItem('user_session'))
-        console.log(userSession.verified_at)
-        if (userSession.verificated_at == null) {
-          console.log('null')
-          setVerificateUserModalOpen(false);
+        console.log(userSession.roles[0].rol_id)
+        setRolID(userSession.roles[0].rol_id)
+        if (userSession.verified_at=== null) {
+          setVerificateUserModalOpen(true)
+         
         }else{
           console.log(userSession.verified_at)
           console.log('no null')
-          setVerificateUserModalOpen(true);
+          setVerificateUserModalOpen(false)
         }
       } catch (error) {
-        onLogin(false)
+        console.log(error)
+        // onLogin(false)
       }
       
     },[])
@@ -54,7 +57,7 @@ const Main=({ onLogin,token,setToken })=>{
     return(
         <div className='main' style={{height:'100%',width:'100%',position: 'absolute'}}>
       <NavBar/>
-      <SideBar onLogin={onLogin} pageSelected={pageSelected} setPageSelected={setPageSelected}/>
+      <SideBar rolId={rol_id} onLogin={onLogin} pageSelected={pageSelected} setPageSelected={setPageSelected}/>
       <Container>
       {(() => {
         if (pageSelected === "perfil") {
@@ -68,8 +71,8 @@ const Main=({ onLogin,token,setToken })=>{
         
       </Container>
       <Modal
-        // isOpen={verificateUserModalOpen}
-        isOpen={false}
+        isOpen={verificateUserModalOpen}
+        // isOpen={false}
         // onAfterOpen={afterOpenExeption}
         onRequestClose={closVerificateUserModal}
         style={verificateUserModalStyles}

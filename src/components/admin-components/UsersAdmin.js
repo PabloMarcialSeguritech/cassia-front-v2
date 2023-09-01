@@ -10,7 +10,7 @@ import LoadSimple from '../LoadSimple'
 import UserList from './UserList'
 const UsersAdmin=()=>{
     const [nivelForm,setNivelForm]=useState(1)
-    const [userData,setUserData]=useState({name:"",mail:"",roles:"1"})
+    const [userData,setUserData]=useState({name:"",mail:"",roles:"2"})
     const [disabled,setDisabled]=useState(true)
     const [correoIsValid, setCorreoIsValid] = useState(true);
     const [nombreIsValid, setNombreIsValid] = useState(true);
@@ -20,7 +20,8 @@ const UsersAdmin=()=>{
     const [loading,setLoading]=useState(false);
     const [error,setError]=useState(null);
     const [userId,setUserId]=useState(0)
-    
+    console.log(userData)
+
     const [checkboxes, setCheckboxes] = useState({
         checkbox1: false,
         checkbox2: false,
@@ -29,6 +30,17 @@ const UsersAdmin=()=>{
         checkbox5: false,
       });
     
+    const addRoles=(e)=>{
+        console.log(e)
+        setUserData((prevState)=>{
+            return {
+                ...prevState,
+                ['roles']:''+e
+            }
+            
+        })
+
+    }
     const handleChange=(e)=>{
         console.log(e.target.name)
         const {name,value}=e.target
@@ -215,19 +227,19 @@ const Registrar=()=>{
                                         
                                     </div>
                                    <div className="user-box-admin roles">
-                                   <div class="container-tabs-roles"> 
-                                                <div class="tabs-roles">
+                                   <div className="container-tabs-roles"> 
+                                                <div className="tabs-roles">
                                                     <div className='box-text'>
                                                         <div className='txt-box-text'>Rol:</div>
                                                     </div>
                                                     <div className='box-options'>
-                                                    <input type="radio" id="radio-1" name="tabs-roles" />
-                                                    <label class="option-role" for="radio-1" checked="checked">Administrador</label>
-                                                    <input type="radio" id="radio-2" name="tabs-roles"/>
-                                                    <label class="option-role" for="radio-2">Basico</label>
+                                                    <input type="radio" id="radio-1" name="tabs-roles" defaultChecked  />
+                                                    <label className="option-role" htmlFor="radio-1"  onClick={()=>addRoles(2)}>Basico</label>
+                                                    <input type="radio" id="radio-2" name="tabs-roles"  onClick={()=>addRoles(1)}/>
+                                                    <label className="option-role" htmlFor="radio-2">Administrador</label>
                                                     {/* <input type="radio" id="radio-3" name="tabs-roles"/>
-                                                    <label class="option-role" for="radio-3">Rol2</label> */}
-                                                    <span class="glider"></span>
+                                                    <label className="option-role" htmlFor="radio-3">Rol2</label> */}
+                                                    <span className="glider"></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -246,77 +258,8 @@ const Registrar=()=>{
                                     </div>
                                 </div>
                                     </> 
-                                    :
-                                    <div className="form-admin-box"> 
-                                    <div className='title-user-box-admin'>
-                                        <div className='txt-title-user-box-admin'>
-                                            Permisos
-                                        </div>
-                                    </div>
-                                    <div className='content-box-admin'>
-                                        <div className='content-roles'>
-                                            <div class="container-tabs-roles"> 
-                                                <div class="tabs-roles">
-                                                    <div className='box-text'>
-                                                        <div className='txt-box-text'>Tipo:</div>
-                                                    </div>
-                                                    <div className='box-options'>
-                                                    <input type="radio" id="radio-1" name="tabs-roles" />
-                                                    <label class="option-role" for="radio-1" checked="checked">Administrador</label>
-                                                    <input type="radio" id="radio-2" name="tabs-roles"/>
-                                                    <label class="option-role" for="radio-2">Rol 1</label>
-                                                    <input type="radio" id="radio-3" name="tabs-roles"/>
-                                                    <label class="option-role" for="radio-3">Rol2</label>
-                                                    <span class="glider"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                        </div>
-                                        <div className='content-permissions'>
-                                            <div className='table-permissions'>
-                                                <div className='head-card-users'>
-                                                    <div className='title-head-card-users'>
-                                                        Seleccione permisos
-                                                    </div>
-                                                </div>
-                                                <div className='content-list-permissions'>
-                                                    <div className='center-content-list'>
-                                                        <div className='compact-option-permission'>
-                                                        <label class="cyberpunk-checkbox-label">
-                                                        <input type="checkbox" class="cyberpunk-checkbox"/>
-                                                        permiso 1</label>
-                                                        </div>
-                                                        <div className='compact-option-permission'>
-                                                        <label class="cyberpunk-checkbox-label">
-                                                        <input type="checkbox" class="cyberpunk-checkbox"/>
-                                                        permiso 2</label>
-                                                        </div>
-                                                        <div className='compact-option-permission'>
-                                                        <label class="cyberpunk-checkbox-label">
-                                                        <input type="checkbox" class="cyberpunk-checkbox"/>
-                                                        permiso 3</label>
-                                                        </div>
-                                                        <div className='compact-option-permission'>
-                                                        <label class="cyberpunk-checkbox-label">
-                                                        <input type="checkbox" class="cyberpunk-checkbox"/>
-                                                        permiso 4</label>
-                                                        </div>
-                                                        <div className='compact-option-permission'>
-                                                        <label class="cyberpunk-checkbox-label">
-                                                        <input type="checkbox" class="cyberpunk-checkbox"/>
-                                                        permiso 5</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="user-box-admin">
-                                    <Action disabled={false} origen='Login' titulo='Atras'  action={handleChangform}/>
-                                    <Action disabled={true} origen='Login' titulo='Guardar'  action={handleChangform}/>
-                                    </div>
-                                </div>   
+                                    :''
+                                 
                             }
                             </div>
                     </div>
