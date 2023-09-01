@@ -32,7 +32,7 @@ const TableAlerts=(props)=>{
 <div className={props.alertsIsOpen?'menuAlertTitle' :'menuAlertTitleMin' }onClick={expandAlerts}>
                         <div className='cardTitle cardTitleAlert'>
                             <div className='textCardTitle'>
-                            ALERTAS 
+                            ALERTAS ({props.dataProblems.data.length})
                             </div>
                             <div className='imgCardTitleMin'>
                               <div className='imgContent'>
@@ -57,7 +57,7 @@ const TableAlerts=(props)=>{
                   </div>
                   <div className='headerCell' style={{width:'20%'}}>
                     <div className='txtHeaderCell'>
-                        Problema
+                        Incidencia
                     </div>
                   </div>
                   <div className='headerCell' style={{width:'10%'}}>
