@@ -80,7 +80,7 @@ const RolesAdmin=()=>{
                                         </div>
                                     </div>
                                     <div className="user-box-admin">
-                                    <Selector origen={'admin'} data={dataLocations.data.data} loading={dataLocations.loading}  titulo='Municipio' props={[]}></Selector>
+                                    <Selector opGeneral={false}   txtOpGen={''} origen={'admin'} data={dataLocations.data.data} loading={dataLocations.loading}  titulo='Municipio' props={[]}></Selector>
                                     </div>
                                     
                                     <div className="user-box-admin">

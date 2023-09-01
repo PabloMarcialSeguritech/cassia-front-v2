@@ -37,7 +37,8 @@ const RowProblem=(props)=>{
                         {props.severity}
                     </div> */}
                     {/* <div className={'sphere s'+props.data.severity}></div> */}
-                    <img  src={'/iconos/alert-s'+props.data.severity+'.svg'} className={' s'+props.data.severity} alt="Logo"></img>
+                    <img  src={'/iconos/alerts'+props.data.severity+'.svg'} className={' s'+props.data.severity} alt="Logo"></img>
+                    <p className='txtSeverity'>{'S-'+props.data.severity}</p>
                   </div>
                   <div className='problemCell' style={{width:'33%'}}>
                     <div className='txtProblemCell' >

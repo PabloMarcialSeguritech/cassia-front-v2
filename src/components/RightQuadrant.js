@@ -9,6 +9,7 @@ import { Suspense } from 'react'
 
 const RightQuadrant =(props)=>{
     // console.log("rigcuadrant")
+    // console.log()
     // console.log(props.token)
     const dataLocations=useFetch('zabbix/groups/municipios','',props.token,'GET')
     const dataSubtype=useFetch('zabbix/groups/subtypes','',props.token)
@@ -34,7 +35,7 @@ const RightQuadrant =(props)=>{
     return(
         
         <div className='rowQuadrant rightQuadrant'>
-            <div className='column' style={{width:'80%'}}>
+            <div className='column' style={{width:'70%'}}>
                 <div className='card menuSearch'>
                     {/* <div className='menuSearchColumn menuSearchTitle'>
                         <div className='cardTitle'>
@@ -47,42 +48,66 @@ const RightQuadrant =(props)=>{
                     <div className='menuSearchData' >
                     <div className='menuSearchColumn'>
                         
-                        <Selector todos={true} opt_de={'0'} origen={'mapa'} data={dataLocations.data.data} loading={dataLocations.loading}  titulo='Municipio' props={props}></Selector>
+                        <Selector opGeneral={true} txtOpGen={'todos'}  opt_de={'0'} origen={'mapa'} data={dataLocations.data.data} loading={dataLocations.loading}  titulo='Municipio' props={props}></Selector>
                     </div>
                     <div className='menuSearchColumn'>
                         {/* <Selector data={dataSubtype.data.data} loading={dataSubtype.loading}  titulo='Tecnologia'></Selector> */}
-                        <Selector  todos={false} opt_de={'10'} origen={'mapa'}  data={dataDevices.data.data} loading={dataDevices.loading}  titulo='Tecnologia' props={props}></Selector>
+                        <Selector  opGeneral={false} txtOpGen={''} opt_de={'11'} origen={'mapa'}  data={dataDevices.data.data} loading={dataDevices.loading}  titulo='Tecnología' props={props}></Selector>
                     </div>
                     
                     <div className='menuSearchColumn'>
-                    <Selector todos={false}  opt_de={'3'} origen={'mapa'}  data={dataSubtype.data.data}  loading={dataSubtype.loading}  titulo='Subtipo' props={props}></Selector>
+                        <Selector opGeneral={true}   txtOpGen={'N/A'} opt_de={'0'} origen={'mapa'}  data={dataSubtype.data.data}  loading={dataSubtype.loading}  titulo='Métrica' props={props}></Selector>
                     </div>
                     <div className='menuSearchColumn'>
-                    <Action disabled={false} origen='General' titulo='Buscar'  action={buscar}/>
+                        <Action disabled={false} origen='General' titulo='Buscar'  action={buscar}/>
                     </div>
                     </div>
                 </div>
             </div>
-            <div className='column' style={{width:'20%'}}>
-                <div className='card menuInfo'>
+            <div className='column' style={{width:'30%',justifyContent: 'space-around'}}>
+                <div className='card menuInfo' style={{background:'rgba(29, 29, 29, 0.62)'}}>
                     <div className='menuInfotitle'>
                         <div className='cardTitle'>
                             <div className='textCardTitle'>
-                            Estatus de dispositivos:
+                            Conexiones por estado:
                             </div>
                         </div>
                     </div>
                     <div className='menuInfoData' >
                         <div className='dataContent' style={{borderRadius:' 0px 0px 0px 10px'}}>
                             {/* <InfoStatus titulo={'UP'} tipo={'UP'}  size='max'value={props.markersWOR.length==0?'...':(props.dataHosts.data.host_availables[0].UP==""?0:props.dataHosts.data.host_availables[0].UP)}/> */}
-                            <InfoStatus titulo={'UP'} tipo={'UP'}  size='max' value={props.markersWOR.length==0?'...':(props.markersWOR.length-props.downs.length)}/>
+                            <InfoStatus titulo={'UP'} tipo={'UP'}  size='max' value={props.markersWOR.length==0?'...':(props.dataHosts.data.global_host_availables[0].UP)}/>
                         </div>
                         <div className='dataContent'  style={{borderRadius:' 0px 0px 10px 0px'}}>
                             {/* <InfoStatus titulo={'DOWN'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?'...':(props.dataHosts.data.host_availables[0].Down==""?0:props.dataHosts.data.host_availables[0].Down)}/> */}
-                            <InfoStatus titulo={'DOWN'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?'...':props.downs.length}/>
+                            <InfoStatus titulo={'DOWN'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?'...':props.dataHosts.data.global_host_availables[0].Down}/>
                         </div>
                     </div>
                 </div>
+                {
+                    (props.ubicacion.groupid!==0)?
+                
+                <div className='card menuInfo'>
+                    <div className='menuInfotitle'>
+                        <div className='cardTitle' style={{}}>
+                            <div className='textCardTitle'>
+                            Conexiones por municipio:
+                            </div>
+                        </div>
+                    </div>
+                    <div className='menuInfoData' >
+                        <div className='dataContent' style={{borderRadius:' 0px 0px 0px 10px'}}>
+                            <InfoStatus titulo={'UP'} tipo={'UP'}  size='max'value={props.markersWOR.length==0?'...':(props.dataHosts.data.host_availables[0].UP==""?0:props.dataHosts.data.host_availables[0].UP)}/>
+                            {/* <InfoStatus titulo={'UP'} tipo={'UP'}  size='max' value={props.markersWOR.length==0?'...':(props.markersWOR.length)}/> */}
+                        </div>
+                        <div className='dataContent'  style={{borderRadius:' 0px 0px 10px 0px'}}>
+                            <InfoStatus titulo={'DOWN'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?'...':(props.dataHosts.data.host_availables[0].Down==""?0:props.dataHosts.data.host_availables[0].Down)}/>
+                            {/* <InfoStatus titulo={'DOWN'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?'...':props.downs.length}/> */}
+                        </div>
+                    </div>
+                </div>
+                :''
+                }
             </div>
             {/* <div className='column' style={{height:'30%'}}>
                 <div className='card menuAction'>

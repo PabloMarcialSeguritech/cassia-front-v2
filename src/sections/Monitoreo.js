@@ -19,7 +19,7 @@ const Monitoreo=({token_item})=>{
   
   token_item=localStorage.getItem('access_token')
 
-    const [ubicacion,setUbicacion]=useState({latitud:'20.01808757489169',longitud:'-101.21789252823293',groupid:0,dispId:11,templateId:375090})
+    const [ubicacion,setUbicacion]=useState({latitud:'20.01808757489169',longitud:'-101.21789252823293',groupid:0,dispId:11,templateId:0})
     const [zoom,setZoom]=useState(11)
     const [latitudes,setLatitudes]=useState([])
     const [longitudes,setLongitudes]=useState([])
@@ -36,12 +36,12 @@ const Monitoreo=({token_item})=>{
     const [loading,setLoading]=useState(true);
     const [error,setError]=useState(null);
     const [devices,setDevices]=useState({data:[],loading:true,error:null});
-    //console.log("devices")
-    //console.log(devices)
+    console.log("devices")
+    console.log(devices)
     //console.log("markersWOR")
     //console.log(markersWOR)
     // //console.log(devices)
-    // //console.log(ubicacion)
+    console.log(ubicacion)
     
     const [dataProblems,setDataProblems]=useState({data:[],loading:true,error:null})
     // const downs_list=useFetch('zabbix/layers/downs',0,token_item,'GET')
@@ -213,7 +213,7 @@ const Monitoreo=({token_item})=>{
         const subtypefilter=ubicacion.templateId!==0?'subtype_id='+ubicacion.templateId:''
         let andAux=(devicefilter!=='' )?'&':'?'
               andAux=(subtypefilter!=='')?andAux:''
-        //console.log('http://172.18.200.14:8002/api/v1/zabbix/hosts/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter)
+        console.log('http://172.18.200.14:8002/api/v1/zabbix/hosts/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter)
               const response = await fetch('http://172.18.200.14:8002/api/v1/zabbix/hosts/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter, {                 
                                 headers: {
                                   'Content-Type': 'application/json',
@@ -279,13 +279,14 @@ const Monitoreo=({token_item})=>{
               // //console.log(hostidP)
               }
                 let severity=0
-              if(host.Alineacion>=-59 && host.Alineacion<=-50){
+             
+              if(host.Alineacion>-60 && host.Alineacion<=-50){
                 colorSG='#ffee00'
                 severity=1
-              }else if(host.Alineacion>=-69 && host.Alineacion<=-60){
+              }else if(host.Alineacion>-70 && host.Alineacion<=-60){
                 colorSG='#ee9d08'
                 severity=2
-              }else if(host.Alineacion>=-79 && host.Alineacion<=-70){
+              }else if(host.Alineacion>-80 && host.Alineacion<=-70){
                 colorSG='#ee5c08'
                 severity=3
               }else if(host.Alineacion<=-80){
@@ -556,13 +557,16 @@ const Monitoreo=({token_item})=>{
     return (
         <>
         <RightQuadrant  search_devices={search_devices} markersWOR={markersWOR}  search_downs={search_downs} downs={downs} search_problems={search_problems} token={token_item} ubicacion={ubicacion} markers={markers}  dataHosts={devices} setUbicacion={setUbicacion} />
-        {devices.loading && markersWOR?<LoadData/>:
+        {devices.loading ?<LoadData/>:
         // false?<LoadData/>:
         <>
-        <MapBox devices={devices} markers={markers} markersWOR={markersWOR} lines={lines} downs={downs}towers={towers} ubicacion={ubicacion} handleMarkerClick={handleMarkerClick}/>
+        {
+          markersWOR.length!==0?<MapBox devices={devices} markers={markers} markersWOR={markersWOR} lines={lines} downs={downs}towers={towers} ubicacion={ubicacion} handleMarkerClick={handleMarkerClick}/>:''
+        }
         
-        <LeftQuadrant zoom={zoom} setZoom={setZoom} token ={token_item} setLatitudes={setLatitudes} setLongitudes={setLongitudes} setLocations={setLocations}
-          latitudes={markers} longitudes={longitudes} locations={locations}
+        
+        <LeftQuadrant zoom={zoom} setZoom={setZoom}   markersWOR={markersWOR} markers={markers} token ={token_item} setLatitudes={setLatitudes} setLongitudes={setLongitudes} setLocations={setLocations}
+           longitudes={longitudes} locations={locations}
           ubicacion={ubicacion} dataHosts={devices} setUbicacion={setUbicacion} dataProblems={dataProblems} setDataProblems={setDataProblems}/>
         <Modal
           isOpen={infoMarkerOpen}
