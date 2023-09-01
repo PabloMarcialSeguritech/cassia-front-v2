@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './styles/SideBar.css'
-const SideBar =({onLogin,pageSelected,setPageSelected})=>{
+const SideBar =({rolId,onLogin,pageSelected,setPageSelected})=>{
     const handleSection=(e)=>{
        
         console.log(e.target.attributes.name.value)
@@ -31,7 +31,10 @@ const SideBar =({onLogin,pageSelected,setPageSelected})=>{
                     </div>
                 </div>
             </div>
-            {/* <div className={'sidebarRow '+(pageSelected==="panel-admin"?'sideRowSelected':'')}>
+            {
+                (rolId===1)?
+            
+             <div className={'sidebarRow '+(pageSelected==="panel-admin"?'sideRowSelected':'')}>
                 <div className={'sidebarCont '+(pageSelected==="panel-admin"?'sideSelected':'')} name="panel-admin" onClick={handleSection}>
                 
                 <div className='imgSideCont' name="panel-admin" >
@@ -42,7 +45,10 @@ const SideBar =({onLogin,pageSelected,setPageSelected})=>{
                         ADMIN.
                     </div>
                 </div>
-            </div> */}
+            </div> 
+            :
+            ''
+            }
             <div className="sidebarRow">
                 <div className='sidebarCont ' onClick={onLogin} >
                     <div className='imgSideCont'>

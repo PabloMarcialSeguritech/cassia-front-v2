@@ -8,6 +8,7 @@ const RolesAdmin=()=>{
     const [nivelForm,setNivelForm]=useState(1)
     const [userData,setUserData]=useState({nombre:"",correo:"",username:""})
     const [disabled,setDisabled]=useState(true)
+    const [permisos,setPermisos]=useState([])
     const [checkboxes, setCheckboxes] = useState({
         checkbox1: false,
         checkbox2: false,
@@ -16,6 +17,31 @@ const RolesAdmin=()=>{
         checkbox5: false,
       });
     const dataLocations=useFetch('zabbix/groups/municipios','',localStorage.getItem('access_token'),'GET')
+    console.log(permisos)
+    const addPermiso=(e)=>{
+        console.log('addPermiso')
+        
+        if (permisos.includes(e)) {
+            // Eliminar el valor si ya existe
+            const nuevoArreglo = permisos.filter(valor => valor !== e);
+            setPermisos(nuevoArreglo);
+          } else {
+            // Agregar el valor si no existe
+            const nuevoArreglo = [...permisos, e];
+            setPermisos(nuevoArreglo);
+          }
+        // const nuevoArreglo = [...permisos, e]
+        
+        
+    }
+    useEffect(()=>{
+        console.log(permisos.length)
+        if(permisos.length===0){
+            setDisabled(true)
+        }else{
+            setDisabled(false)
+        }
+    },[permisos])
     const handleChange=(e)=>{
         console.log(e)
         const {name,value}=e.target
@@ -28,16 +54,7 @@ const RolesAdmin=()=>{
         })
         
       }
-      useEffect(()=>{
-    console.log(userData.nombre,userData.correo,userData.username)
-        if(userData.nombre==="" || userData.correo===""  || userData.username===""){
-            console.log('disabled')
-            setDisabled(true)
-        }else{
-            console.log('no disabled')
-            setDisabled(false)
-        }
-  },[userData])
+      
 
   const handleChangform=()=>{
         nivelForm===1?setNivelForm(2):setNivelForm(1)
@@ -65,11 +82,7 @@ const RolesAdmin=()=>{
                                     <div className="user-box-admin">
                                     <Selector origen={'admin'} data={dataLocations.data.data} loading={dataLocations.loading}  titulo='Municipio' props={[]}></Selector>
                                     </div>
-                                    <div className="user-box-admin">
-                                        <input required name="nombre"  type="text" value={nombre}
-                                    onChange={handleChange} />
-                                        <label className='label-admin'>Nombre</label>
-                                    </div>
+                                    
                                     <div className="user-box-admin">
                                         <input required name="correo"  type="text" value={correo}
                                     onChange={handleChange} />
@@ -96,14 +109,14 @@ const RolesAdmin=()=>{
                                     </div>
                                     <div className='content-box-admin'>
                                         <div className='content-roles'>
-                                            <div class="container-tabs-roles"> 
+                                            {/* <div class="container-tabs-roles"> 
                                                 <div class="tabs-roles">
                                                     <div className='box-text'>
                                                         <div className='txt-box-text'>Tipo:</div>
                                                     </div>
                                                     <div className='box-options'>
-                                                    <input type="radio" id="radio-1" name="tabs-roles" />
-                                                    <label class="option-role" for="radio-1" checked="checked">Administrador</label>
+                                                    <input type="radio" id="radio-1" name="tabs-roles" defaultChecked />
+                                                    <label class="option-role" for="radio-1" >Administrador</label>
                                                     <input type="radio" id="radio-2" name="tabs-roles"/>
                                                     <label class="option-role" for="radio-2">Rol 1</label>
                                                     <input type="radio" id="radio-3" name="tabs-roles"/>
@@ -111,11 +124,15 @@ const RolesAdmin=()=>{
                                                     <span class="glider"></span>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            
+                                            </div> */}
+                                            <div className="user-box-admin">
+                                        <input required name="nombre"  type="text" value={nombre}
+                                    onChange={handleChange}  style={{top: '14%',position: 'absolute'}}/>
+                                        <label className='label-admin' style={{top:'10px'}}>Nombre</label>
+                                    </div>
                                         </div>
                                         <div className='content-permissions'>
-                                            <div className='table-permissions'>
+                                            <div className='table-permissions' style={{top: '7%'}}>
                                                 <div className='head-card-users'>
                                                     <div className='title-head-card-users'>
                                                         Seleccione permisos
@@ -125,27 +142,27 @@ const RolesAdmin=()=>{
                                                     <div className='center-content-list'>
                                                         <div className='compact-option-permission'>
                                                         <label class="cyberpunk-checkbox-label">
-                                                        <input type="checkbox" class="cyberpunk-checkbox"/>
-                                                        permiso 1</label>
+                                                        <input type="checkbox" class="cyberpunk-checkbox" onClick={()=>addPermiso(1)}/>
+                                                        Usuarios</label>
                                                         </div>
                                                         <div className='compact-option-permission'>
                                                         <label class="cyberpunk-checkbox-label">
-                                                        <input type="checkbox" class="cyberpunk-checkbox"/>
-                                                        permiso 2</label>
+                                                        <input type="checkbox" class="cyberpunk-checkbox" onClick={()=>addPermiso(2)}/>
+                                                        Monitoreo</label>
                                                         </div>
                                                         <div className='compact-option-permission'>
                                                         <label class="cyberpunk-checkbox-label">
-                                                        <input type="checkbox" class="cyberpunk-checkbox"/>
+                                                        <input type="checkbox" class="cyberpunk-checkbox" onClick={()=>addPermiso(3)}/>
                                                         permiso 3</label>
                                                         </div>
                                                         <div className='compact-option-permission'>
                                                         <label class="cyberpunk-checkbox-label">
-                                                        <input type="checkbox" class="cyberpunk-checkbox"/>
+                                                        <input type="checkbox" class="cyberpunk-checkbox" onClick={()=>addPermiso(3)}/>
                                                         permiso 4</label>
                                                         </div>
                                                         <div className='compact-option-permission'>
                                                         <label class="cyberpunk-checkbox-label">
-                                                        <input type="checkbox" class="cyberpunk-checkbox"/>
+                                                        <input type="checkbox" class="cyberpunk-checkbox" onClick={()=>addPermiso(4)}/>
                                                         permiso 5</label>
                                                         </div>
                                                     </div>
@@ -154,8 +171,8 @@ const RolesAdmin=()=>{
                                         </div>
                                     </div>
                                     <div className="user-box-admin">
-                                    <Action disabled={false} origen='Login' titulo='Atras'  action={handleChangform}/>
-                                    <Action disabled={true} origen='Login' titulo='Guardar'  action={handleChangform}/>
+                                    {/* <Action disabled={false} origen='Login' titulo='Atras'  action={handleChangform}/> */}
+                                    <Action disabled={disabled} origen='Login' titulo='Guardar'  action={handleChangform}/>
                                     </div>
                                 </div>   
                             }
@@ -167,6 +184,85 @@ const RolesAdmin=()=>{
                         <div className='head-card-users'>
                                 <div className='title-head-card-users'>
                                     Roles
+                                </div>
+                            </div>
+                            <div className='content-card-users'>
+                                <div className='cont-table-users'>
+                                    <div className='head-table-users'>
+                                        {/* <div className='field-head-table-users field-acciones'>
+                                            Acciones
+                                        </div> */}
+                                        <div className='field-head-table-users field-nombre' style={{width:'30%'}}>
+                                            Rol
+                                        </div>
+                                        <div className='field-head-table-users field-nombre' style={{width:'15%'}}>
+                                            Usuarios
+                                        </div>
+                                        <div className='field-head-table-users field-nombre' style={{width:'15%'}}>
+                                            Monitoreo
+                                        </div>
+                                        <div className='field-head-table-users field-nombre' style={{width:'15%'}}>
+                                        permiso 3
+                                        </div>
+                                        <div className='field-head-table-users field-nombre' style={{width:'15%'}}>
+                                        permiso 4
+                                        </div>
+                                        <div className='field-head-table-users field-nombre' style={{width:'15%'}}>
+                                        permiso 5
+                                        </div>
+                                        
+                                        
+
+                                    </div>
+                                    <div className='body-table-users'>
+                                    <div className='cont-row-user-list'>
+        
+        
+            <div className='row-table-users' key={0}>
+              <div className='field-body-table-users field-nombre' style={{width:'30%'}}>
+                Administrador
+              </div>
+              <div className='field-body-table-users field-correo' style={{width:'15%',fontWeight:'bold'}}>
+              X
+              </div>
+              <div className='field-body-table-users field-correo' style={{width:'15%',fontWeight:'bold'}}>
+              X
+              </div>
+              <div className='field-body-table-users field-correo' style={{width:'15%',fontWeight:'bold'}}>
+              X
+              </div>
+              <div className='field-body-table-users field-correo' style={{width:'15%',fontWeight:'bold'}}>
+                X
+              </div>
+              <div className='field-body-table-users field-correo' style={{width:'15%',fontWeight:'bold'}}>
+                X
+              </div>
+            </div>
+            <div className='row-table-users' key={0}>
+              <div className='field-body-table-users field-nombre' style={{width:'30%'}}>
+                Basico
+              </div>
+              <div className='field-body-table-users field-correo' style={{width:'15%',fontWeight:'bold'}}>
+              
+              </div>
+              <div className='field-body-table-users field-correo' style={{width:'15%',fontWeight:'bold'}}>
+              X
+              </div>
+              <div className='field-body-table-users field-correo' style={{width:'15%',fontWeight:'bold'}}>
+              
+              </div>
+              <div className='field-body-table-users field-correo' style={{width:'15%',fontWeight:'bold'}}>
+                
+              </div>
+              <div className='field-body-table-users field-correo' style={{width:'15%',fontWeight:'bold'}}>
+                
+              </div>
+            </div>
+        
+        
+      </div>
+                                        
+                                    </div>
                                 </div>
                             </div>
                     </div>
