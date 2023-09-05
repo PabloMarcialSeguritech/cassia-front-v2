@@ -4,7 +4,7 @@ import InfoStatus from './InfoStatus'
 import Action from './Action'
 import {fetchData} from '../hooks/fetchData'
 import { useFetch } from '../hooks/useFetch'
-import { Suspense } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 
 
 const RightQuadrant =(props)=>{
@@ -14,10 +14,15 @@ const RightQuadrant =(props)=>{
     const dataLocations=useFetch('zabbix/groups/municipios','',props.token,'GET')
     const dataSubtype=useFetch('zabbix/groups/subtypes','',props.token)
     const dataDevices=useFetch('zabbix/groups/devices','',props.token,'GET')
+    const [dataTec,setDataTec]=useState({data:[],loading:true,error:null})
+    const [dataDisp,setDataDisp]=useState({data:[],loading:true,error:null})
+    const [ubiActual,setUbiActual]=useState({municipio:'todos',groupid:0,dispId:11,templateId:0})
+   
     let s4= undefined
     let s3= undefined
     let s2= undefined
     let s1=undefined
+    const token_item=localStorage.getItem('access_token')
     // console.log(props.dataHosts.data)
     if(props.dataHosts.data.length!=0){
      s4= props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 4)
@@ -26,12 +31,114 @@ const RightQuadrant =(props)=>{
      s1= props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 1)
     }
     function buscar(){
-        console.log("buscar")
+       
+        let aux_municipio=dataLocations.data.data.find(obj => obj.groupid === props.ubicacion.groupid)
+        if(aux_municipio===undefined){
+            aux_municipio='Todos'
+        }
+        setUbiActual({municipio:aux_municipio.name,groupid:props.ubicacion.groupid,dispId:props.ubicacion.dispId,templateId:props.ubicacion.templateId})
         props.search_problems()
         props.search_devices()
         props.search_downs()
     }
-//    console.log(props.dataHosts.data)
+    
+    useEffect(()=>{
+        console.log("cambio la ubicacion")
+        search_tecnologias()
+    },[props.ubicacion.groupid])
+    useEffect(()=>{
+        if(dataTec.data.length!==0){
+       
+        let aux_deft=dataTec.data.find(obj => obj.dispId === 11)
+        if(aux_deft===undefined){
+            console.log("undefined",dataTec.data[0].dispId)
+
+            props.setUbicacion({latitud:props.ubicacion.latitud,longitud:props.ubicacion.longitud,groupid:props.ubicacion.groupid,dispId:dataTec.data[0].dispId,templateId:props.ubicacion.templateId})
+        }else{
+            props.setUbicacion({latitud:props.ubicacion.latitud,longitud:props.ubicacion.longitud,groupid:props.ubicacion.groupid,dispId:11,templateId:props.ubicacion.templateId})
+        }
+    }
+    },[dataTec])
+    function search_tecnologias(){
+        
+        // console.log("search_tecnologias")
+        // console.log('http://172.18.200.14:8002/api/v1/zabbix/groups/devices/'+props.ubicacion.groupid)
+        setDataTec({data:dataTec.data,loading:true,error:dataTec.error})
+          const fetchData = async () => {
+            try {
+           const response = await fetch('http://172.18.200.14:8002/api/v1/zabbix/groups/devices/'+props.ubicacion.groupid, {                 
+                                  headers: {
+                                    'Content-Type': 'application/json',
+                                    Authorization: `Bearer ${token_item}`,
+                                  },
+                                });
+                                // console.log(response)
+              if (response.ok) {
+                const response_data = await response.json();
+                setDataTec({data:response_data.data,loading:false,error:dataTec.error})
+               
+                // //console.log(response_data)
+                
+              } else {
+                throw new Error('Error en la solicitud');
+              }
+            } catch (error) {
+              // Manejo de errores
+              setDataTec({data:dataTec.data,loading:dataTec.loading,error:error})
+              //console.error(error);
+            }
+          };
+          fetchData();
+      }
+      useEffect(()=>{
+        console.log("cambio la tecnologia")
+        search_metricas()
+    },[props.ubicacion.dispId])
+    useEffect(()=>{
+        if(dataDisp.data.length!==0){
+       
+            let aux_deft=dataDisp.data.find(obj => obj.id === 0)
+            if(aux_deft===undefined){
+                console.log("undefined",dataDisp.data[0])
+    
+                props.setUbicacion({latitud:props.ubicacion.latitud,longitud:props.ubicacion.longitud,groupid:props.ubicacion.groupid,dispId:props.ubicacion.dispId,templateId:dataDisp.data[0].id})
+            }else{
+                props.setUbicacion({latitud:props.ubicacion.latitud,longitud:props.ubicacion.longitud,groupid:props.ubicacion.groupid,dispId:props.ubicacion.dispId,templateId:0})
+            }
+        
+    }
+    },[dataDisp])
+    function search_metricas(){
+        
+        // console.log("search_tecnologias")
+        // console.log('http://172.18.200.14:8002/api/v1/zabbix/groups/devices/'+props.ubicacion.groupid)
+        setDataDisp({data:dataTec.data,loading:true,error:dataTec.error})
+          const fetchData = async () => {
+            try {
+           const response = await fetch('http://172.18.200.14:8002/api/v1/zabbix/groups/subtypes/'+props.ubicacion.dispId, {                 
+                                  headers: {
+                                    'Content-Type': 'application/json',
+                                    Authorization: `Bearer ${token_item}`,
+                                  },
+                                });
+                                // console.log(response)
+              if (response.ok) {
+                const response_data = await response.json();
+                setDataDisp({data:response_data.data,loading:false,error:dataTec.error})
+               
+                // //console.log(response_data)
+                
+              } else {
+                throw new Error('Error en la solicitud');
+              }
+            } catch (error) {
+              // Manejo de errores
+              setDataDisp({data:dataTec.data,loading:dataTec.loading,error:error})
+              //console.error(error);
+            }
+          };
+          fetchData();
+      }
     return(
         
         <div className='rowQuadrant rightQuadrant'>
@@ -52,11 +159,20 @@ const RightQuadrant =(props)=>{
                     </div>
                     <div className='menuSearchColumn'>
                         {/* <Selector data={dataSubtype.data.data} loading={dataSubtype.loading}  titulo='Tecnologia'></Selector> */}
-                        <Selector  opGeneral={false} txtOpGen={''} opt_de={'11'} origen={'mapa'}  data={dataDevices.data.data} loading={dataDevices.loading}  titulo='Tecnología' props={props}></Selector>
+                        {(!dataTec.loading)?
+                          <Selector  opGeneral={false} txtOpGen={''} opt_de={'11'} origen={'mapa'}  data={dataTec.data} loading={dataTec.loading}  titulo='Tecnología' props={props}></Selector>
+                        :<p className='loadSelect'>cargando...</p>
+                    }
+                        {/* <Selector  opGeneral={false} txtOpGen={''} opt_de={'11'} origen={'mapa'}  data={dataTec.data} loading={dataTec.loading}  titulo='Tecnología' props={props}></Selector> */}
                     </div>
                     
                     <div className='menuSearchColumn'>
-                        <Selector opGeneral={true}   txtOpGen={'N/A'} opt_de={'0'} origen={'mapa'}  data={dataSubtype.data.data}  loading={dataSubtype.loading}  titulo='Métrica' props={props}></Selector>
+                        {/* <Selector data={dataSubtype.data.data} loading={dataSubtype.loading}  titulo='Tecnologia'></Selector> */}
+                        {(!dataDisp.loading)?
+                          <Selector opGeneral={false}   txtOpGen={'N/A'} opt_de={'0'} origen={'mapa'}  data={dataDisp.data}  loading={dataDisp.loading}  titulo='Métrica' props={props}></Selector>
+                        :<p className='loadSelect'>cargando...</p>
+                    }
+                        
                     </div>
                     <div className='menuSearchColumn'>
                         <Action disabled={false} origen='General' titulo='Buscar'  action={buscar}/>
@@ -65,7 +181,7 @@ const RightQuadrant =(props)=>{
                 </div>
             </div>
             <div className='column' style={{width:'30%',justifyContent: 'space-around'}}>
-                <div className='card menuInfo' style={{background:'rgba(29, 29, 29, 0.62)'}}>
+                <div className='card menuInfo' style={{background:'rgba(94, 99, 115, 0.62)'}}>
                     <div className='menuInfotitle'>
                         <div className='cardTitle'>
                             <div className='textCardTitle'>
@@ -85,13 +201,14 @@ const RightQuadrant =(props)=>{
                     </div>
                 </div>
                 {
-                    (props.ubicacion.groupid!==0)?
+                    (ubiActual.groupid!==0)?
                 
                 <div className='card menuInfo'>
                     <div className='menuInfotitle'>
                         <div className='cardTitle' style={{}}>
                             <div className='textCardTitle'>
-                            Conexiones por municipio:
+                            {/* {Conexiones por municipio:} */}
+                            {ubiActual.municipio}
                             </div>
                         </div>
                     </div>

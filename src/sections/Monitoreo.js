@@ -36,8 +36,9 @@ const Monitoreo=({token_item})=>{
     const [loading,setLoading]=useState(true);
     const [error,setError]=useState(null);
     const [devices,setDevices]=useState({data:[],loading:true,error:null});
-    console.log("devices")
-    console.log(devices)
+    // console.log("devices")
+    // console.log(devices)
+    
     //console.log("markersWOR")
     //console.log(markersWOR)
     // //console.log(devices)
@@ -213,7 +214,7 @@ const Monitoreo=({token_item})=>{
         const subtypefilter=ubicacion.templateId!==0?'subtype_id='+ubicacion.templateId:''
         let andAux=(devicefilter!=='' )?'&':'?'
               andAux=(subtypefilter!=='')?andAux:''
-        console.log('http://172.18.200.14:8002/api/v1/zabbix/hosts/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter)
+        // console.log('http://172.18.200.14:8002/api/v1/zabbix/hosts/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter)
               const response = await fetch('http://172.18.200.14:8002/api/v1/zabbix/hosts/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter, {                 
                                 headers: {
                                   'Content-Type': 'application/json',
@@ -239,7 +240,9 @@ const Monitoreo=({token_item})=>{
     useEffect(()=>{
       //console.log("entra devices")
       if(devices.data.length!=0){
-        
+        // console.log("*************************************  UP  ************************************")
+        // console.log(devices.data.hosts.length)
+        // console.log("con severidad: ",devices.data.problems_by_severity)
         setLatitudes([]) 
         setLongitudes([])
         if(devices.data.hosts.length!=0){

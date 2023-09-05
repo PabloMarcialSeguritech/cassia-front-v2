@@ -20,6 +20,7 @@ const UsersAdmin=()=>{
     const [loading,setLoading]=useState(false);
     const [error,setError]=useState(null);
     const [userId,setUserId]=useState(0)
+    const [rol, setRol] = useState(2);
     console.log(userData)
 
     const [checkboxes, setCheckboxes] = useState({
@@ -43,6 +44,7 @@ const UsersAdmin=()=>{
     }
     const handleChange=(e)=>{
         console.log(e.target.name)
+        setRol(parseInt(e.target.value, 10))
         const {name,value}=e.target
         setUserData((prevState)=>{
             return {
@@ -74,7 +76,7 @@ const UsersAdmin=()=>{
     if(data.length!==0){
         if(data.success===true ){
             setRegisterIsValid(true) 
-            setUserData({name:"",mail:"",roles:"1"})
+            setUserData({name:"",mail:"",roles:"2"})
             
         }
     }
@@ -93,7 +95,7 @@ const UsersAdmin=()=>{
         nivelForm===1?setNivelForm(2):setNivelForm(1)
   }
   const Regresar=()=>{
-    setUserData({name:"",mail:"",roles:"1"})
+    setUserData({name:"",mail:"",roles:"2"})
     setEditActive(false)
     setLoading(false)
   }
@@ -106,6 +108,7 @@ const UsersAdmin=()=>{
     setEditActive(true)
     setUserData({name:user.name,mail:user.mail,roles:""+rolIds})
     setUserId(user.user_id)
+    setRol(rolIds)
 }
 const Registrar=()=>{
     console.log("registra")
@@ -123,6 +126,9 @@ const Registrar=()=>{
       const fetchDataPost = async () => {
         
      try {
+        console.log(method,'http://172.18.200.14:8002/api/v1/cassia/users/'+url_add)
+        console.log(JSON.stringify(userData))
+        console.log(localStorage.getItem('access_token'))
           const response = await fetch('http://172.18.200.14:8002/api/v1/cassia/users/'+url_add, {
             method: method,  
             headers: {
@@ -143,8 +149,16 @@ const Registrar=()=>{
             throw new Error('Error en la solicitud');
           }
         } catch (error) {
+            setUserData({name:"",mail:"",roles:"2"})
+    
+    setLoading(false)
           // Manejo de errores
           setError(error)
+          setRegisterIsValid(true)
+          const timer = setTimeout(() => {
+            setRegisterIsValid(false)
+            setEditActive(false)
+          }, 3000);
           console.error(error);
         }
       };
@@ -230,13 +244,18 @@ const Registrar=()=>{
                                    <div className="container-tabs-roles"> 
                                                 <div className="tabs-roles">
                                                     <div className='box-text'>
-                                                        <div className='txt-box-text'>Rol:</div>
+                                                        <div className='txt-box-text'>Rol: </div>
                                                     </div>
                                                     <div className='box-options'>
-                                                    <input type="radio" id="radio-1" name="tabs-roles" defaultChecked  />
-                                                    <label className="option-role" htmlFor="radio-1"  onClick={()=>addRoles(2)}>Basico</label>
-                                                    <input type="radio" id="radio-2" name="tabs-roles"  onClick={()=>addRoles(1)}/>
-                                                    <label className="option-role" htmlFor="radio-2">Administrador</label>
+                                                    
+                                                        <input type="radio" id="radio-1" name="tabs-roles" defaultChecked={rol === 2}   />
+                                                    
+                                                    
+                                                    <label className="option-role" htmlFor="radio-1" onClick={()=>addRoles(2)}>Basico</label>
+                                                    
+                                                        <input type="radio" id="radio-2" name="tabs-roles" defaultChecked={rol===1}/>
+                                                     
+                                                    <label className="option-role" htmlFor="radio-2"   onClick={()=>addRoles(1)}>Administrador</label>
                                                     {/* <input type="radio" id="radio-3" name="tabs-roles"/>
                                                     <label className="option-role" htmlFor="radio-3">Rol2</label> */}
                                                     <span className="glider"></span>
@@ -252,7 +271,7 @@ const Registrar=()=>{
                                         }
                                             
                                     {
-                                        (registerIsValid && data.message!=="User deleted successfully")?<span className='form-msg-ok'>Usuario registrado correctamente</span>:''
+                                        (registerIsValid && data.message!=="User deleted successfully")?<span className='form-msg-ok'>{'Usuario '+(editActive? 'editado':'registrado' )+' correctamente'}</span>:''
                                     }
                                         
                                     </div>
