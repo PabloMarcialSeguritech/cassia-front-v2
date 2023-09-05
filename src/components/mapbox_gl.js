@@ -5,10 +5,10 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import towerImg from '../img/torre2_blanca.png';
 const MapBox = ({devices,markers,markersWOR,lines,downs,towers,ubicacion,handleMarkerClick}) => {
  
-  console.log("markers*****************************************************")
+  // console.log("markers*****************************************************")
   //console.log(ubicacion)
   //console.log(markers)
-  console.log(markersWOR)
+  // console.log(markersWOR)
   let latitud_provicional=(ubicacion.groupid===0?'20.93236':ubicacion.latitud)
   let longitud_provicional=(ubicacion.groupid===0?'-101.21700':ubicacion.longitud)
   const zoom_provicional=(ubicacion.groupid===0?8:11)
@@ -101,9 +101,9 @@ const MapBox = ({devices,markers,markersWOR,lines,downs,towers,ubicacion,handleM
     const map = mapRef.current;
     map.on('load', () => {
       if(markersWOR.length===0){
-        console.log("marker vacio")
+        // console.log("marker vacio")
       }else{
-        console.log("markers lleno")
+        // console.log("markers lleno")
         // map.remove()
       }
       

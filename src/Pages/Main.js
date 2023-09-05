@@ -7,7 +7,7 @@ import Admin from '../sections/Admin'
 import Monitoreo from '../sections/Monitoreo'
 import Modal from 'react-modal';
 import ModalVerificateUser from "../components/main-components/ModalVerificateUser";
-import { useState,useEffect } from 'react';
+import { useState,useEffect,Component  } from 'react';
 const verificateUserModalStyles = {
     content: {
       top: '50%',
@@ -27,24 +27,30 @@ const Main=({ onLogin,token,setToken })=>{
     const [pageSelected,setPageSelected]=useState("perfil")
     const [rol_id,setRolID]=useState("")
     const [verificateUserModalOpen, setVerificateUserModalOpen] =useState(true);
-    console.log('verificateUserModalOpen',verificateUserModalOpen)
+    
     useEffect(()=>{
       
       try {
         let userSession=JSON.parse(localStorage.getItem('user_session'))
-        console.log(userSession.roles[0].rol_id)
+        
+        const expirationDate = new Date(userSession.refresh_token_expires);
+    const currentDate = new Date();
+
+    
+    
         setRolID(userSession.roles[0].rol_id)
         if (userSession.verified_at=== null) {
           setVerificateUserModalOpen(true)
          
         }else{
-          console.log(userSession.verified_at)
-          console.log('no null')
           setVerificateUserModalOpen(false)
+          if(expirationDate<currentDate){
+            onLogin(false)
+          }
         }
       } catch (error) {
         console.log(error)
-        // onLogin(false)
+        onLogin(false)
       }
       
     },[])

@@ -5,6 +5,7 @@ import data_ubi from './ubicaciones'
 import { useFetch } from '../hooks/useFetch'
 const Selector=({opGeneral,txtOpGen,opt_de,titulo,data,loading,props,origen})=>{
     // console.log(titulo)
+    // console.log(opt_de)
     // console.log(data)
     const customStyles = {
         // Estilos para el contenedor del react-select
@@ -25,13 +26,21 @@ const Selector=({opGeneral,txtOpGen,opt_de,titulo,data,loading,props,origen})=>{
       };
     const opt_default=(opGeneral)?[{ dispId: 0, name: txtOpGen ,id:0}]:[]
     const data_aux=opt_default.concat(data)
-//    console.log(props.ubicacion)
+//    //console.log(props.ubicacion)
     let cont_i=0;
     let opcion_default=0
     const options=loading?{filter:titulo, value: 0, label: 'cargando...' ,id:0}:data_aux.map(datas=>{
-        if(datas.id==opt_de){
-            opcion_default=cont_i
+        if(opt_de==0){
+            // console.log("es 0")
+            opcion_default=0
+        }else{
+            // console.log("no es 0")
+            if(datas.id==opt_de){
+                // console.log(" el valor es" ,cont_i)
+                opcion_default=cont_i
+            }
         }
+        
         cont_i++
         let op;
         switch(titulo){
@@ -39,7 +48,7 @@ const Selector=({opGeneral,txtOpGen,opt_de,titulo,data,loading,props,origen})=>{
                                 break;
             case 'Tecnología': op={ filter:titulo,value: datas.dispId=== undefined?0:datas.dispId, label: datas.name ,id:datas.id};
                                 break; 
-            case 'Métrica': op={ filter:titulo,value: datas.templateId=== undefined?0:datas.templateId, label:(datas.id===0?datas.name:(datas.id===375090?'Alineacíon':'Sin conexíon')),id:datas.id};
+            case 'Métrica': op={ filter:titulo,value: datas.template_id=== undefined?0:datas.template_id, label:datas.nickname,id:datas.id};
                                 break;  
             case 'Agencia': op={ filter:titulo,value: datas.exception_agency_id=== undefined?0:datas.exception_agency_id, label: datas.name ,id:datas.id};
                                 break;                   
@@ -49,16 +58,17 @@ const Selector=({opGeneral,txtOpGen,opt_de,titulo,data,loading,props,origen})=>{
         }
         return op                           // <option key={datas.uuid}> {datas.name} </option>
 })
-console.log(options)
-console.log(opt_de)
+// console.log(options[opcion_default].label)
+//console.log(options)
+//console.log(opt_de)
     
     
-    // console.log(options[opt_de].label)
+    
     const [value,setValue]=useState([])
     
-    // console.log(value,'value') 
+    // //console.log(value,'value') 
     const HandleChange=(selected,name)=>{
-        console.log(selected)
+        //console.log(selected)
         // setValue((state)=>({
         //     ...state,[name]:selected.label
         // }))
@@ -75,7 +85,7 @@ console.log(opt_de)
                         break;                        
             }
         }else if(origen==='admin'){
-                console.log("admin",selected.value)
+                //console.log("admin",selected.value)
         }
         
         

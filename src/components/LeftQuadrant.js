@@ -87,7 +87,7 @@ const LeftQuadrant =(props)=>{
    s3= props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 3)
    s2= props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 2)
    s1= props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 1)
-  }
+ }
     return(
       <>
       
