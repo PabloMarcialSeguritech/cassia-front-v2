@@ -8,7 +8,7 @@ import Selector from '../Selector'
 import LoadAdding from '../LoadAdding'
 import LoadSimple from '../LoadSimple'
 import UserList from './UserList'
-const UsersAdmin=()=>{
+const UsersAdmin=({server})=>{
     const [nivelForm,setNivelForm]=useState(1)
     const [userData,setUserData]=useState({name:"",mail:"",roles:"2"})
     const [disabled,setDisabled]=useState(true)
@@ -126,10 +126,10 @@ const Registrar=()=>{
       const fetchDataPost = async () => {
         
      try {
-        console.log(method,'http://172.18.200.14:8002/api/v1/cassia/users/'+url_add)
+        console.log(method,'http://'+server.ip+':'+server.port+'/api/v1/cassia/users/'+url_add)
         console.log(JSON.stringify(userData))
         console.log(localStorage.getItem('access_token'))
-          const response = await fetch('http://172.18.200.14:8002/api/v1/cassia/users/'+url_add, {
+          const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/cassia/users/'+url_add, {
             method: method,  
             headers: {
               'Content-Type': 'application/json',
@@ -306,7 +306,7 @@ const Registrar=()=>{
                                     <div className='body-table-users'>
                                         {
                                             ( registerIsValid)?<div className='cont-load-user-list'><LoadSimple></LoadSimple></div>:
-                                            <UserList handleChangEdit={handleChangEdit} setData={setData} setLoading={setLoading} setError={setError}></UserList>
+                                            <UserList server={server} handleChangEdit={handleChangEdit} setData={setData} setLoading={setLoading} setError={setError}></UserList>
                                         
                                           }
                                         

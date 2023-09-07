@@ -11,13 +11,11 @@ const RightQuadrant =(props)=>{
     // console.log("rigcuadrant")
     // console.log()
     // console.log(props.token)
-    const dataLocations=useFetch('zabbix/groups/municipios','',props.token,'GET')
-    const dataSubtype=useFetch('zabbix/groups/subtypes','',props.token)
-    const dataDevices=useFetch('zabbix/groups/devices','',props.token,'GET')
+    const dataLocations=useFetch('zabbix/groups/municipios','',props.token,'GET',props.server)
     const [dataTec,setDataTec]=useState({data:[],loading:true,error:null})
     const [dataDisp,setDataDisp]=useState({data:[],loading:true,error:null})
     const [ubiActual,setUbiActual]=useState({municipio:'todos',groupid:0,dispId:11,templateId:0})
-   
+   console.log(dataDisp)
     let s4= undefined
     let s3= undefined
     let s2= undefined
@@ -61,12 +59,10 @@ const RightQuadrant =(props)=>{
     },[dataTec])
     function search_tecnologias(){
         
-        // console.log("search_tecnologias")
-        // console.log('http://172.18.200.14:8002/api/v1/zabbix/groups/devices/'+props.ubicacion.groupid)
         setDataTec({data:dataTec.data,loading:true,error:dataTec.error})
           const fetchData = async () => {
             try {
-           const response = await fetch('http://172.18.200.14:8002/api/v1/zabbix/groups/devices/'+props.ubicacion.groupid, {                 
+           const response = await fetch('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/groups/devices/'+props.ubicacion.groupid, {                 
                                   headers: {
                                     'Content-Type': 'application/json',
                                     Authorization: `Bearer ${token_item}`,
@@ -110,12 +106,12 @@ const RightQuadrant =(props)=>{
     },[dataDisp])
     function search_metricas(){
         
-        // console.log("search_tecnologias")
-        // console.log('http://172.18.200.14:8002/api/v1/zabbix/groups/devices/'+props.ubicacion.groupid)
+       
+        
         setDataDisp({data:dataTec.data,loading:true,error:dataTec.error})
           const fetchData = async () => {
             try {
-           const response = await fetch('http://172.18.200.14:8002/api/v1/zabbix/groups/subtypes/'+props.ubicacion.dispId, {                 
+           const response = await fetch('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/groups/subtypes/'+props.ubicacion.dispId, {                 
                                   headers: {
                                     'Content-Type': 'application/json',
                                     Authorization: `Bearer ${token_item}`,

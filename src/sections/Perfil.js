@@ -1,6 +1,7 @@
 
 import './styles/perfil.css'
-const Perfil=()=>{
+const Perfil=({server})=>{
+    console.log(server)
     return (
         <div className="main-perfil">
             <div className='welcome-card'>

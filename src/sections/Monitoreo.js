@@ -15,11 +15,17 @@ import Modal from 'react-modal';
 import InfoMarker from '../components/InfoMarker'
 import '../components/styles/MapBox.css'
 
-const Monitoreo=({token_item})=>{
-  
+const Monitoreo=({token_item,dataGlobals,server})=>{
+  console.log(dataGlobals)
+  const global_longitud=dataGlobals.find(obj => obj.name === 'state_longitude')
+  const global_latitude=dataGlobals.find(obj => obj.name === 'state_latitude')
+  const global_zoom=dataGlobals.find(obj => obj.name === 'zoom')
+  console.log(global_longitud)
+  console.log(global_latitude)
   token_item=localStorage.getItem('access_token')
 
-    const [ubicacion,setUbicacion]=useState({latitud:'20.01808757489169',longitud:'-101.21789252823293',groupid:0,dispId:11,templateId:0})
+    // const [ubicacion,setUbicacion]=useState({latitud:'20.01808757489169',longitud:'-101.21789252823293',groupid:0,dispId:11,templateId:0})
+    const [ubicacion,setUbicacion]=useState({latitud:global_latitude.value,longitud:global_longitud.value,groupid:0,dispId:11,templateId:0})
     const [zoom,setZoom]=useState(11)
     const [latitudes,setLatitudes]=useState([])
     const [longitudes,setLongitudes]=useState([])
@@ -47,7 +53,7 @@ const Monitoreo=({token_item})=>{
     const [dataProblems,setDataProblems]=useState({data:[],loading:true,error:null})
     // const downs_list=useFetch('zabbix/layers/downs',0,token_item,'GET')
     const[downs_list,setDownsList]=useState({data:[],loading:true,error:null});
-    const tower_list=useFetch('zabbix/layers/aps',0,token_item,'GET')
+    const tower_list=useFetch('zabbix/layers/aps',0,token_item,'GET',server)
     
     
     useEffect(()=>{
@@ -134,8 +140,8 @@ const Monitoreo=({token_item})=>{
       const subtypefilter=ubicacion.templateId!==0?'subtype='+ubicacion.templateId:''
       let andAux=(devicefilter!=='' )?'&':'?'
             andAux=(subtypefilter!=='')?andAux:''
-      //console.log('http://172.18.200.14:8002/api/v1/zabbix/problems/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter)
-          const response = await fetch('http://172.18.200.14:8002/api/v1/zabbix/problems/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter, {                 
+      //console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/problems/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter)
+          const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/problems/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter, {                 
                               headers: {
                                 'Content-Type': 'application/json',
                                 Authorization: `Bearer ${token_item}`,
@@ -174,7 +180,7 @@ const Monitoreo=({token_item})=>{
         const fetchData = async () => {
           try {
             let body = (ubicacion.dispId===0)?'':'/?dispId='+ubicacion.dispId
-         const response = await fetch('http://172.18.200.14:8002/api/v1/zabbix/layers/downs/'+ubicacion.groupid+''+body, {                 
+         const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/layers/downs/'+ubicacion.groupid+''+body, {                 
                                 headers: {
                                   'Content-Type': 'application/json',
                                   Authorization: `Bearer ${token_item}`,
@@ -209,13 +215,13 @@ const Monitoreo=({token_item})=>{
           try {
             //console.log(`Bearer ${token_item}`)
             const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWFuLm1hcmNpYWwiLCJleHAiOjE2OTExNjg3ODZ9.LETk5Nu-2WXF571qMqTd__RxHGcyOHzg4GfAbiFejJY'; // Reemplaza con tu token de autenticación
-            // const response = await fetch('http://172.18.200.14:8002/api/v1/zabbix/db/hosts/relations/'+ubicacion.groupid, {
+            // const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/db/hosts/relations/'+ubicacion.groupid, {
               const devicefilter=ubicacion.dispId!==0?'?dispId='+ubicacion.dispId:''
         const subtypefilter=ubicacion.templateId!==0?'subtype_id='+ubicacion.templateId:''
         let andAux=(devicefilter!=='' )?'&':'?'
               andAux=(subtypefilter!=='')?andAux:''
-        // console.log('http://172.18.200.14:8002/api/v1/zabbix/hosts/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter)
-              const response = await fetch('http://172.18.200.14:8002/api/v1/zabbix/hosts/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter, {                 
+        // console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter)
+              const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter, {                 
                                 headers: {
                                   'Content-Type': 'application/json',
                                   Authorization: `Bearer ${token_item}`,
@@ -559,16 +565,16 @@ const Monitoreo=({token_item})=>{
       };
     return (
         <>
-        <RightQuadrant  search_devices={search_devices} markersWOR={markersWOR}  search_downs={search_downs} downs={downs} search_problems={search_problems} token={token_item} ubicacion={ubicacion} markers={markers}  dataHosts={devices} setUbicacion={setUbicacion} />
+        <RightQuadrant server={server} search_devices={search_devices} markersWOR={markersWOR}  search_downs={search_downs} downs={downs} search_problems={search_problems} token={token_item} ubicacion={ubicacion} markers={markers}  dataHosts={devices} setUbicacion={setUbicacion} />
         {devices.loading ?<LoadData/>:
         // false?<LoadData/>:
         <>
         {
-          markersWOR.length!==0?<MapBox devices={devices} markers={markers} markersWOR={markersWOR} lines={lines} downs={downs}towers={towers} ubicacion={ubicacion} handleMarkerClick={handleMarkerClick}/>:''
+          markersWOR.length!==0?<MapBox global_latitude={global_latitude} global_longitud={global_longitud} global_zoom={global_zoom} devices={devices} markers={markers} markersWOR={markersWOR} lines={lines} downs={downs}towers={towers} ubicacion={ubicacion} handleMarkerClick={handleMarkerClick}/>:''
         }
         
         
-        <LeftQuadrant zoom={zoom} setZoom={setZoom}   markersWOR={markersWOR} markers={markers} token ={token_item} setLatitudes={setLatitudes} setLongitudes={setLongitudes} setLocations={setLocations}
+        <LeftQuadrant server={server} zoom={zoom} setZoom={setZoom}   markersWOR={markersWOR} markers={markers} token ={token_item} setLatitudes={setLatitudes} setLongitudes={setLongitudes} setLocations={setLocations}
            longitudes={longitudes} locations={locations}
           ubicacion={ubicacion} dataHosts={devices} setUbicacion={setUbicacion} dataProblems={dataProblems} setDataProblems={setDataProblems}/>
         <Modal
@@ -579,7 +585,7 @@ const Monitoreo=({token_item})=>{
           contentLabel="Example Modal2"
           // shouldCloseOnOverlayClick={false}
           >
-            <InfoMarker isOpen={infoMarkerOpen} data={infoMarker} closeInfoMarker={closeInfoMarker}></InfoMarker>
+            <InfoMarker server={server} isOpen={infoMarkerOpen} data={infoMarker} closeInfoMarker={closeInfoMarker}></InfoMarker>
         </Modal>
         </>
         }

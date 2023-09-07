@@ -4,7 +4,7 @@ import './styles/ArrastreHost.css'
 import Action from '../Action'
 import { useFetch } from '../../hooks/useFetch'
 import Selector from '../Selector'
-const ArrastreHost=()=>{
+const ArrastreHost=({server})=>{
     const [nivelForm,setNivelForm]=useState(1)
     const [userData,setUserData]=useState({nombre:"",correo:"",username:""})
     const [disabled,setDisabled]=useState(true)
@@ -15,7 +15,7 @@ const ArrastreHost=()=>{
         checkbox4: false,
         checkbox5: false,
       });
-    const dataLocations=useFetch('zabbix/groups/municipios','',localStorage.getItem('access_token'),'GET')
+    const dataLocations=useFetch('zabbix/groups/municipios','',localStorage.getItem('access_token'),'GET',server)
     const handleChange=(e)=>{
         console.log(e)
         const {name,value}=e.target

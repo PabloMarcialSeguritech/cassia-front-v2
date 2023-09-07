@@ -17,12 +17,12 @@ const deleteUserModalStyles = {
       padding:'20px'
     },
   };
-const UserList =({handleChangEdit,setData,setLoading,setError})=>{
-    const dataUsers=useFetch('cassia/users','',localStorage.getItem('access_token'),'GET')
-    console.log(dataUsers)
+const UserList =({handleChangEdit,setData,setLoading,setError,server})=>{
+    const dataUsers=useFetch('cassia/users','',localStorage.getItem('access_token'),'GET',server)
+    // console.log(dataUsers)
     const [deleteUserModalOpen, setDeleteUserModalOpen] =useState(false);
     const [userSelected,setUserSelected]=useState({})
-    console.log(userSelected)
+    // console.log(userSelected)
     function openDeleteUserModal() {
         setDeleteUserModalOpen(true);
       }
@@ -31,7 +31,6 @@ const UserList =({handleChangEdit,setData,setLoading,setError})=>{
         setDeleteUserModalOpen(false);
       }
       const handledeleteUserClick = (data) => {
-        // const datadeleteUser=useFetch('zabbix/deleteUser','',actualInfo.ip)
         
         openDeleteUserModal()
         setUserSelected(data)
@@ -70,7 +69,7 @@ const UserList =({handleChangEdit,setData,setLoading,setError})=>{
         contentLabel="Example Modal2"
         // shouldCloseOnOverlayClick={false}
         >
-          <ModalDeleteUSer setData={setData} setLoading={setLoading} setError={setError} user={userSelected} closDeleteUserModal={closDeleteUserModal}></ModalDeleteUSer>
+          <ModalDeleteUSer server={server} setData={setData} setLoading={setLoading} setError={setError} user={userSelected} closDeleteUserModal={closDeleteUserModal}></ModalDeleteUSer>
     </Modal>
     </>
     )

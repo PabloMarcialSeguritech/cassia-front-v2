@@ -5,7 +5,7 @@ import UsersAdmin from '../components/admin-components/UsersAdmin'
 import Herramienta1 from '../components/admin-components/Herramienta1'
 import RolesAdmin from '../components/admin-components/RolesAdmin'
 import ArrastreHost from '../components/admin-components/ArrastreHost'
-const Admin=()=>{
+const Admin=({server})=>{
     const [listSelected,setListSelected]=useState(1)
     const hadleChangeList=(e)=>{
         setListSelected(e)
@@ -30,13 +30,13 @@ const Admin=()=>{
             </div>
             <div className='cont-admin'>
             {listSelected === 1 ? (
-                    <UsersAdmin/>
+                    <UsersAdmin server={server}/>
                 ) : listSelected === 2 ? (
-                    <RolesAdmin/>
+                    <RolesAdmin server={server}/>
                 ) : listSelected === 3 ? (
-                    <ArrastreHost/>
+                    <ArrastreHost server={server}/>
                 ) : (
-                    <Herramienta1/>
+                    <Herramienta1 server={server}/>
                 )}
                 
             </div>
