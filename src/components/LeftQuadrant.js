@@ -4,7 +4,6 @@ import Map from './Map'
 import {fetchData} from '../hooks/fetchData'
 import hosts from './devices'
 import { Suspense, useEffect, useState,useRef } from 'react'
-import { useFetch } from '../hooks/useFetch'
 import ReactDOM from 'react-dom';
 import React from 'react';
 import Modal from 'react-modal';
@@ -43,8 +42,7 @@ const infoMarkerStyles = {
 };
 const LeftQuadrant =(props)=>{
  
-  // let dataProblems=useFetch('zabbix/problems',props.ubicacion.groupid,props.token)
- 
+
 
   const mapContainerRef = useRef(null);
   
@@ -146,19 +144,9 @@ const LeftQuadrant =(props)=>{
         style={customStyles}
         contentLabel="Example Modal"
       >
-        <TableAlerts action={closeModal}  modalIsOpen={true} alertsIsOpen={alertsIsOpen} setAlertsIsOpen={setAlertsIsOpen} dataProblems={props.dataProblems} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion} ></TableAlerts>
+        <TableAlerts server={props.server} action={closeModal}  modalIsOpen={true} alertsIsOpen={alertsIsOpen} setAlertsIsOpen={setAlertsIsOpen} dataProblems={props.dataProblems} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion} ></TableAlerts>
       </Modal>
 
-      {/* <Modal
-          isOpen={infoMarkerOpen}
-          // onAfterOpen={afterOpenExeption}
-          onRequestClose={closeInfoMarker}
-          style={infoMarkerStyles}
-          contentLabel="Example Modal2"
-          // shouldCloseOnOverlayClick={false}
-          >
-            <InfoMarker isOpen={infoMarkerOpen} data={infoMarker} closeInfoMarker={closeInfoMarker}></InfoMarker>
-      </Modal> */}
       </>
     )
 }

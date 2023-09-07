@@ -4,7 +4,7 @@ import { useState ,useEffect} from 'react';
 import LoadSimple from '../LoadSimple';
 import InputAdmin from '../InputAdmin';
 
-const ModalverificateUSer =({user,onLogin,closverificateUserModal,setData,setLoading,setError})=>{
+const ModalverificateUSer =({user,server,onLogin,closverificateUserModal,setData,setLoading,setError})=>{
     const [loadingM,setLoadingM]=useState(false);
     const [passwordValid,setPasswordValid]=useState(false)
     const [matchPassword,setMatchPassword]=useState(false)
@@ -51,7 +51,7 @@ const ModalverificateUSer =({user,onLogin,closverificateUserModal,setData,setLoa
             
          try {
 
-              const response = await fetch('http://172.18.200.14:8002/api/v1/auth/profile/update-password', {
+              const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/auth/profile/update-password', {
                 method: 'PUT',  
                 headers: {
                   'Content-Type': 'application/json',

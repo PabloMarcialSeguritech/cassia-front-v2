@@ -8,6 +8,7 @@ import Monitoreo from '../sections/Monitoreo'
 import Modal from 'react-modal';
 import ModalVerificateUser from "../components/main-components/ModalVerificateUser";
 import { useState,useEffect,Component  } from 'react';
+import { useFetch } from '../hooks/useFetch'
 const verificateUserModalStyles = {
     content: {
       top: '50%',
@@ -22,12 +23,13 @@ const verificateUserModalStyles = {
       padding:'20px'
     },
   };
-const Main=({ onLogin,token,setToken })=>{
+const Main=({ onLogin,token,setToken,server })=>{
    
     const [pageSelected,setPageSelected]=useState("perfil")
     const [rol_id,setRolID]=useState("")
     const [verificateUserModalOpen, setVerificateUserModalOpen] =useState(true);
-    
+    // const [globals,setGlobals]=useState([])
+    const dataGlobals=useFetch('cassia/configuration','','','GET',server)
     useEffect(()=>{
       
       try {
@@ -67,11 +69,11 @@ const Main=({ onLogin,token,setToken })=>{
       <Container>
       {(() => {
         if (pageSelected === "perfil") {
-            return <Perfil />;
+            return <Perfil server={server} />;
         } else  if (pageSelected === "monitoreo"){
-            return <Monitoreo token={token}/>;
+            return <Monitoreo server={server} token={token} dataGlobals={dataGlobals.data.data}/>;
         }else if (pageSelected === "panel-admin"){
-          return <Admin />;
+          return <Admin server={server} />;
       }
     })()}
         
@@ -85,7 +87,7 @@ const Main=({ onLogin,token,setToken })=>{
         contentLabel="Example Modal2"
         // shouldCloseOnOverlayClick={false}
         >
-          <ModalVerificateUser onLogin={onLogin} closVerificateUserModal={closVerificateUserModal}></ModalVerificateUser>
+          <ModalVerificateUser server={server} onLogin={onLogin} closVerificateUserModal={closVerificateUserModal}></ModalVerificateUser>
     </Modal>
     </div>
     )

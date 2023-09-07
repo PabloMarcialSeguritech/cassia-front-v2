@@ -26,7 +26,7 @@ function getSuspender(promise){
     return {read}
 }
 export function fetchData(body){
-    const promise =fetch("http://172.18.200.14/zabbix/api_jsonrpc.php",{
+    const promise =fetch("http://'+server.ip+'/zabbix/api_jsonrpc.php",{
         method:'POST',
         headers:{
           'Content-Type':'application/json',

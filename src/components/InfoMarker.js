@@ -20,7 +20,7 @@ const pingModalStyles = {
     padding:'20px'
   },
 };
-const InfoMarker = ({isOpen, data,closeInfoMarker }) => {
+const InfoMarker = ({isOpen, data,closeInfoMarker,server }) => {
     const [exeptionOpen, setExeptionOpen] = useState(false);
     const [addingException, setAddingException] = useState(false);
     const [validaBtn, setValidaBtn] = useState(true);
@@ -43,7 +43,6 @@ const InfoMarker = ({isOpen, data,closeInfoMarker }) => {
     setPingModalOpen(false);
   }
   const handlePingClick = (data) => {
-    // const dataPing=useFetch('zabbix/ping','',actualInfo.ip)
     setStatusPing(true)
     openPingModal()
     // Realiza las acciones deseadas al hacer clic en el marcador
@@ -229,7 +228,7 @@ const InfoMarker = ({isOpen, data,closeInfoMarker }) => {
           contentLabel="Example Modal2"
           // shouldCloseOnOverlayClick={false}
           >
-            <PingModal isOpen={pingModalOpen} data={data} statusPing={statusPing} closePingModal={closePingModal}></PingModal>
+            <PingModal server={server}isOpen={pingModalOpen} data={data} statusPing={statusPing} closePingModal={closePingModal}></PingModal>
       </Modal>
 </>
     );

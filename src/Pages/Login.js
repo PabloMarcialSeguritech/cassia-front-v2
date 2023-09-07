@@ -1,7 +1,7 @@
 import React,{useEffect, useState} from 'react';
 import '../components/styles/Login.css'
 import Action from '../components/Action'
-const Login = ({ onLogin,token,setToken,userData,setUserData}) => {
+const Login = ({ onLogin,token,setToken,userData,setUserData,server}) => {
   const [data,setData]=useState([]);
   const [loading,setLoading]=useState(true);
   const [error,setError]=useState(null);
@@ -9,7 +9,6 @@ const [loginData,setLoginData]=useState({email:"",password:""})
 const [disabled,setDisabled]=useState(true)
 
 const [userVal,setUserVal]=useState(true)
-  
 
   const handleChange=(e)=>{
     const {name,value}=e.target
@@ -44,7 +43,7 @@ const [userVal,setUserVal]=useState(true)
         formData.append("client_secret", "");
       
         try {
-          const response = await fetch("http://172.18.200.14:8002/api/v1/auth/login", {
+          const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/auth/login', {
             method: "POST",
             headers: {
               "Accept": "application/json",

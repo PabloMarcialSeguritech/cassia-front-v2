@@ -7,7 +7,7 @@ export function useFetch(body){
     useEffect(()=>{
         console.log("llamado")
         setLoading(true)
-      fetch("http://172.18.200.14/zabbix/api_jsonrpc.php",{
+      fetch("http://'+server.ip+'/zabbix/api_jsonrpc.php",{
       method:'POST',
         headers:{
           'Content-Type':'application/json',

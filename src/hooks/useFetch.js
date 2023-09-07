@@ -1,6 +1,6 @@
 import { useEffect,useState } from "react"
 import axios from 'axios';
-export function useFetch(url,body,token,method){
+export function useFetch(url,body,token,method,server){
     const [data,setData]=useState([]);
     const [loading,setLoading]=useState(true);
     const [error,setError]=useState(null);
@@ -12,10 +12,10 @@ export function useFetch(url,body,token,method){
       setLoading(true)
       const fetchData = async () => {
         
-      // console.log('http://172.18.200.14:8002/api/v1/zabbix/db/'+url+"/"+body)
+      // console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/db/'+url+"/"+body)
         try {
           // const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWFuLm1hcmNpYWwiLCJleHAiOjE2OTE4NDI5MTd9.-qw7OFS4QYkgtglBByECAoEsHE2tiCwjkeaZLUyZMBw'; // Reemplaza con tu token de autenticación
-          const response = await fetch('http://172.18.200.14:8002/api/v1/'+url+"/"+body, {
+          const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/'+url+"/"+body, {
             method: method,  
           headers: {
               'Content-Type': 'application/json',
