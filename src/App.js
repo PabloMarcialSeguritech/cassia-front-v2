@@ -10,8 +10,7 @@ function App() {
   const [userData,setUserData]=useState({})
   const [token,setToken] = useState(localStorage.getItem('access_token'));
 
-  console.log(token)
-
+  const [server,setServer]=useState({ip:'172.18.200.14',port:8002})
   useEffect(()=>{
     if(token===null){
          console.log("es null")
@@ -39,10 +38,10 @@ function App() {
   //  <Dashboard></Dashboard>
     // <Login></Login>
     <Routes>
-      <Route path="/" element={loggedIn ? <Navigate to="/main" /> : <Login onLogin={handleLogin}  token={token} setToken={setToken} userData={userData} setUserData={setUserData}/>}>
+      <Route path="/" element={loggedIn ? <Navigate to="/main" /> : <Login onLogin={handleLogin} server={server} token={token} setToken={setToken} userData={userData} setUserData={setUserData}/>}>
         
       </Route>
-      <Route path="/main" element={loggedIn ? <Main  onLogin={handleLogin} token={token}  setToken={setToken} userData={userData} setUserData={setUserData}/> : <Navigate to="/" />}>
+      <Route path="/main" element={loggedIn ? <Main  onLogin={handleLogin} token={token}  server={server} setToken={setToken} userData={userData} setUserData={setUserData}/> : <Navigate to="/" />}>
         
       </Route>
     </Routes>

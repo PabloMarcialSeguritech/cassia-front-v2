@@ -17,7 +17,7 @@ const customStyles = {
   };
 
 const TableAlerts=(props)=>{
-  const dataAgencies=useFetch('zabbix/exception_agencies','',props.token,'GET')
+  const dataAgencies=useFetch('zabbix/exception_agencies','',props.token,'GET',props.server)
   // console.log(dataAgencies)
   
   function expandAlerts(){

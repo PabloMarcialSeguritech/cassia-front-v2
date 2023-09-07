@@ -2,7 +2,7 @@ import Action from '../Action'
 import './styles/ModalDeleteUSer.css'
 import { useState } from 'react';
 import LoadSimple from '../LoadSimple';
-const ModalDeleteUSer =({user,closDeleteUserModal,setData,setLoading,setError})=>{
+const ModalDeleteUSer =({user,closDeleteUserModal,setData,setLoading,setError,server})=>{
     const [loadingM,setLoadingM]=useState(false);
     const Eliminar=()=>{
         console.log("eliminar")
@@ -11,7 +11,7 @@ const ModalDeleteUSer =({user,closDeleteUserModal,setData,setLoading,setError})=
           const fetchDataPost = async () => {
             
          try {
-              const response = await fetch('http://172.18.200.14:8002/api/v1/cassia/users/'+user.user_id, {
+              const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/cassia/users/'+user.user_id, {
                 method: 'DELETE',  
                 headers: {
                   'Content-Type': 'application/json',

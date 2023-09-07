@@ -4,7 +4,7 @@ import './styles/RolesAdmin.css'
 import Action from '../Action'
 import { useFetch } from '../../hooks/useFetch'
 import Selector from '../Selector'
-const RolesAdmin=()=>{
+const RolesAdmin=({server})=>{
     const [nivelForm,setNivelForm]=useState(1)
     const [userData,setUserData]=useState({nombre:"",correo:"",username:""})
     const [disabled,setDisabled]=useState(true)
@@ -16,7 +16,7 @@ const RolesAdmin=()=>{
         checkbox4: false,
         checkbox5: false,
       });
-    const dataLocations=useFetch('zabbix/groups/municipios','',localStorage.getItem('access_token'),'GET')
+    const dataLocations=useFetch('zabbix/groups/municipios','',localStorage.getItem('access_token'),'GET',server)
     console.log(permisos)
     const addPermiso=(e)=>{
         console.log('addPermiso')

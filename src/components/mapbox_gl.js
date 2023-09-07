@@ -3,15 +3,16 @@ import React, { useRef, useEffect } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import towerImg from '../img/torre2_blanca.png';
-const MapBox = ({devices,markers,markersWOR,lines,downs,towers,ubicacion,handleMarkerClick}) => {
+const MapBox = ({global_longitud,global_latitude,global_zoom,devices,markers,markersWOR,lines,downs,towers,ubicacion,handleMarkerClick}) => {
  
   // console.log("markers*****************************************************")
   //console.log(ubicacion)
   //console.log(markers)
   // console.log(markersWOR)
-  let latitud_provicional=(ubicacion.groupid===0?'20.93236':ubicacion.latitud)
-  let longitud_provicional=(ubicacion.groupid===0?'-101.21700':ubicacion.longitud)
-  const zoom_provicional=(ubicacion.groupid===0?8:11)
+  console.log(global_latitude,global_longitud)
+  let latitud_provicional=(ubicacion.groupid===0?global_latitude.value:ubicacion.latitud)
+  let longitud_provicional=(ubicacion.groupid===0?global_longitud.value:ubicacion.longitud)
+  const zoom_provicional=(ubicacion.groupid===0?global_zoom.value:11)
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
   //console.log("longitud_provicional")

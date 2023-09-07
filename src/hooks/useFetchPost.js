@@ -1,51 +1,51 @@
-import { useEffect,useState } from "react"
-export function useFetchPost(url,body,token,method){
-    const [data,setData]=useState([]);
-    const [loading,setLoading]=useState(true);
-    const [error,setError]=useState(null);
-    token=localStorage.getItem('access_token')
-    console.log(token)
+// import { useEffect,useState } from "react"
+// export function useFetchPost(url,body,token,method){
+//     const [data,setData]=useState([]);
+//     const [loading,setLoading]=useState(true);
+//     const [error,setError]=useState(null);
+//     token=localStorage.getItem('access_token')
+//     console.log(token)
    
-    useEffect(() => {
+//     useEffect(() => {
       
-      setLoading(true)
-      const fetchDataPost = async () => {
+//       setLoading(true)
+//       const fetchDataPost = async () => {
         
-      // console.log('http://172.18.200.14:8002/api/v1/zabbix/db/'+url+"/"+body)
-        try {
-          // const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWFuLm1hcmNpYWwiLCJleHAiOjE2OTE4NDI5MTd9.-qw7OFS4QYkgtglBByECAoEsHE2tiCwjkeaZLUyZMBw'; // Reemplaza con tu token de autenticación
-          const response = await fetch('http://172.18.200.14:8002/api/v1/'+url, {
-            method: method,  
-          headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify(body),
-          });
-          console.log(`Bearer ${token}`)
-          if (response.ok) {
+//       // console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/db/'+url+"/"+body)
+//         try {
+//           // const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWFuLm1hcmNpYWwiLCJleHAiOjE2OTE4NDI5MTd9.-qw7OFS4QYkgtglBByECAoEsHE2tiCwjkeaZLUyZMBw'; // Reemplaza con tu token de autenticación
+//           const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/'+url, {
+//             method: method,  
+//           headers: {
+//               'Content-Type': 'application/json',
+//               Authorization: `Bearer ${token}`,
+//             },
+//             body: JSON.stringify(body),
+//           });
+//           console.log(`Bearer ${token}`)
+//           if (response.ok) {
             
-            const data1 = await response.json();
-            setLoading(false)
-            // Manejo de la respuesta
-            setData(data1)
-            // console.log(data1);
-          } else {
-            throw new Error('Error en la solicitud');
-          }
-        } catch (error) {
-          // Manejo de errores
-          setError(error)
-          console.error(error);
-        }
-      };
+//             const data1 = await response.json();
+//             setLoading(false)
+//             // Manejo de la respuesta
+//             setData(data1)
+//             // console.log(data1);
+//           } else {
+//             throw new Error('Error en la solicitud');
+//           }
+//         } catch (error) {
+//           // Manejo de errores
+//           setError(error)
+//           console.error(error);
+//         }
+//       };
   
-      fetchDataPost();
-    },[]);
-    console.log(data)
-//   return {data,loading,error}
-return {data,loading,error}
+//       fetchDataPost();
+//     },[]);
+//     console.log(data)
+// //   return {data,loading,error}
+// return {data,loading,error}
 
 
-  }
+//   }
 
