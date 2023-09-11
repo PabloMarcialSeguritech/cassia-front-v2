@@ -1,0 +1,10 @@
+.card-users.modal-verificate{
+    width: 100% !important;
+    height: 99% !important;
+}
+
+.txt-title-user-box-admin.modal-verificate{
+    text-align: center;
+    word-wrap: break-word;
+    width: 80%;
+}

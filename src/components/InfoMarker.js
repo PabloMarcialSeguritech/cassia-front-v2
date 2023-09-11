@@ -20,20 +20,21 @@ const pingModalStyles = {
     padding:'20px'
   },
 };
-const InfoMarker = ({isOpen, data,closeInfoMarker }) => {
+const InfoMarker = ({isOpen, data,closeInfoMarker,server }) => {
     const [exeptionOpen, setExeptionOpen] = useState(false);
     const [addingException, setAddingException] = useState(false);
     const [validaBtn, setValidaBtn] = useState(true);
-    console.log('Marcador clickeado:', data);
-    // console.log(data.points[0].data.customdata[0])
+    //console.log('Marcador clickeado:', data);
+    //console.log(data.name_hostP)
+    // //console.log(data.points[0].data.customdata[0])
     // const actualInfo = data.points[0].data.customdata.find(obj => obj.name === data.points[0].text)
-    // console.log(actualInfo)
+    // //console.log(actualInfo)
     // const fatherInfo=data.points[0].data.customdata[0]
-    // console.log(fatherInfo)
+    // //console.log(fatherInfo)
     const [pingModalOpen, setPingModalOpen] =useState(false);
     const [statusPing, setStatusPing] =useState(false);
-  console.log('status ping',statusPing)
-  // console.log(data.points[0].data.customdata.length)
+  //console.log('status ping',statusPing)
+  // //console.log(data.points[0].data.customdata.length)
   function openPingModal() {
     setPingModalOpen(true);
   }
@@ -42,7 +43,6 @@ const InfoMarker = ({isOpen, data,closeInfoMarker }) => {
     setPingModalOpen(false);
   }
   const handlePingClick = (data) => {
-    // const dataPing=useFetch('ping','',actualInfo.ip)
     setStatusPing(true)
     openPingModal()
     // Realiza las acciones deseadas al hacer clic en el marcador
@@ -66,7 +66,7 @@ const InfoMarker = ({isOpen, data,closeInfoMarker }) => {
                             </div>
                             <div className='imgCardTitle'>
                               <div className='imgContent'>
-                              {/* <img src={props.modalIsOpen?"/iconos/minimize.svg":"/iconos/maximize.svg"}  className="expandLogo" alt="Logo" onClick={props.action}/> */}
+                              <img src="/iconos/close.png"  className="expandLogo" alt="Logo" onClick={closeInfoMarker}/>
                               </div>
                             </div>
                         </div>
@@ -147,7 +147,7 @@ const InfoMarker = ({isOpen, data,closeInfoMarker }) => {
                     </div>
                   </div>
                   </div>
-                  { data.Alineacion===0?
+                  { data.name_hostP!==undefined?
                   <>
                   <div className='rowcontActions' style={{width: "100%",height:'20%',top: '10%'}}>
                   <div className='menuActiontitle' style={{width: "100%"}}>
@@ -212,7 +212,7 @@ const InfoMarker = ({isOpen, data,closeInfoMarker }) => {
                               <Action origen='General' disabled={true} titulo='Accion 3'/>
                           </div>
                           <div className='menuActionCell' style={{border: 'unset',width:'25%'}}>
-                          <Action origen='Alert' disabled={false} titulo='Salir' action={closeInfoMarker} />
+                          {/* <Action origen='Alert' disabled={false} titulo='Salir' action={closeInfoMarker} /> */}
                               {/* <Action origen='General' disabled={true} titulo='Accion 4'/> */}
                           </div>
                       </div>
@@ -228,7 +228,7 @@ const InfoMarker = ({isOpen, data,closeInfoMarker }) => {
           contentLabel="Example Modal2"
           // shouldCloseOnOverlayClick={false}
           >
-            <PingModal isOpen={pingModalOpen} data={data} statusPing={statusPing} closePingModal={closePingModal}></PingModal>
+            <PingModal server={server}isOpen={pingModalOpen} data={data} statusPing={statusPing} closePingModal={closePingModal}></PingModal>
       </Modal>
 </>
     );

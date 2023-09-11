@@ -1,27 +1,28 @@
 import { useEffect,useState } from "react"
 import axios from 'axios';
-export function useFetch(url,body,token,method){
+export function useFetch(url,body,token,method,server){
     const [data,setData]=useState([]);
     const [loading,setLoading]=useState(true);
     const [error,setError]=useState(null);
-    
+    token=localStorage.getItem('access_token')
+ 
    
     useEffect(() => {
       
       setLoading(true)
       const fetchData = async () => {
         
-      // console.log('http://172.18.200.14:8000/api/v1/zabbix/db/'+url+"/"+body)
+      // console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/db/'+url+"/"+body)
         try {
-          const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWFuLm1hcmNpYWwiLCJleHAiOjE2OTExNjg3ODZ9.LETk5Nu-2WXF571qMqTd__RxHGcyOHzg4GfAbiFejJY'; // Reemplaza con tu token de autenticación
-          const response = await fetch('http://172.18.200.14:8000/api/v1/zabbix/'+url+"/"+body, {
+          // const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWFuLm1hcmNpYWwiLCJleHAiOjE2OTE4NDI5MTd9.-qw7OFS4QYkgtglBByECAoEsHE2tiCwjkeaZLUyZMBw'; // Reemplaza con tu token de autenticación
+          const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/'+url+"/"+body, {
             method: method,  
           headers: {
               'Content-Type': 'application/json',
               Authorization: `Bearer ${token}`,
             },
           });
-  
+          // console.log(`Bearer ${token}`)
           if (response.ok) {
             
             const data1 = await response.json();
@@ -41,8 +42,6 @@ export function useFetch(url,body,token,method){
   
       fetchData();
     },[]);
-    // console.log(data)
-//   return {data,loading,error}
 return {data,loading,error}
 
 

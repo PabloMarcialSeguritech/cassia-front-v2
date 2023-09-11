@@ -4,18 +4,24 @@ import InfoStatus from './InfoStatus'
 import Action from './Action'
 import {fetchData} from '../hooks/fetchData'
 import { useFetch } from '../hooks/useFetch'
-import { Suspense } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 
 
 const RightQuadrant =(props)=>{
-    const dataLocations=useFetch('groups/municipios','',props.token,'GET')
-    const dataSubtype=useFetch('groups/subtypes','',props.token)
-    const dataDevices=useFetch('groups/devices','',props.token,'GET')
+    // console.log("rigcuadrant")
+    // console.log()
+    // console.log(props.token)
+    const dataLocations=useFetch('zabbix/groups/municipios','',props.token,'GET',props.server)
+    const [dataTec,setDataTec]=useState({data:[],loading:true,error:null})
+    const [dataDisp,setDataDisp]=useState({data:[],loading:true,error:null})
+    const [ubiActual,setUbiActual]=useState({municipio:'todos',groupid:0,dispId:11,templateId:0})
+   console.log(dataDisp)
     let s4= undefined
     let s3= undefined
     let s2= undefined
     let s1=undefined
-    console.log(props.dataHosts.data)
+    const token_item=localStorage.getItem('access_token')
+    // console.log(props.dataHosts.data)
     if(props.dataHosts.data.length!=0){
      s4= props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 4)
      s3= props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 3)
@@ -23,15 +29,116 @@ const RightQuadrant =(props)=>{
      s1= props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 1)
     }
     function buscar(){
-        console.log("buscar")
+       
+        let aux_municipio=dataLocations.data.data.find(obj => obj.groupid === props.ubicacion.groupid)
+        if(aux_municipio===undefined){
+            aux_municipio='Todos'
+        }
+        setUbiActual({municipio:aux_municipio.name,groupid:props.ubicacion.groupid,dispId:props.ubicacion.dispId,templateId:props.ubicacion.templateId})
         props.search_problems()
         props.search_devices()
+        props.search_downs()
     }
-//    console.log(props.dataHosts.data)
+    
+    useEffect(()=>{
+        console.log("cambio la ubicacion")
+        search_tecnologias()
+    },[props.ubicacion.groupid])
+    useEffect(()=>{
+        if(dataTec.data.length!==0){
+       
+        let aux_deft=dataTec.data.find(obj => obj.dispId === 11)
+        if(aux_deft===undefined){
+            console.log("undefined",dataTec.data[0].dispId)
+
+            props.setUbicacion({latitud:props.ubicacion.latitud,longitud:props.ubicacion.longitud,groupid:props.ubicacion.groupid,dispId:dataTec.data[0].dispId,templateId:props.ubicacion.templateId})
+        }else{
+            props.setUbicacion({latitud:props.ubicacion.latitud,longitud:props.ubicacion.longitud,groupid:props.ubicacion.groupid,dispId:11,templateId:props.ubicacion.templateId})
+        }
+    }
+    },[dataTec])
+    function search_tecnologias(){
+        
+        setDataTec({data:dataTec.data,loading:true,error:dataTec.error})
+          const fetchData = async () => {
+            try {
+           const response = await fetch('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/groups/devices/'+props.ubicacion.groupid, {                 
+                                  headers: {
+                                    'Content-Type': 'application/json',
+                                    Authorization: `Bearer ${token_item}`,
+                                  },
+                                });
+                                // console.log(response)
+              if (response.ok) {
+                const response_data = await response.json();
+                setDataTec({data:response_data.data,loading:false,error:dataTec.error})
+               
+                // //console.log(response_data)
+                
+              } else {
+                throw new Error('Error en la solicitud');
+              }
+            } catch (error) {
+              // Manejo de errores
+              setDataTec({data:dataTec.data,loading:dataTec.loading,error:error})
+              //console.error(error);
+            }
+          };
+          fetchData();
+      }
+      useEffect(()=>{
+        console.log("cambio la tecnologia")
+        search_metricas()
+    },[props.ubicacion.dispId])
+    useEffect(()=>{
+        if(dataDisp.data.length!==0){
+       
+            let aux_deft=dataDisp.data.find(obj => obj.id === 0)
+            if(aux_deft===undefined){
+                console.log("undefined",dataDisp.data[0])
+    
+                props.setUbicacion({latitud:props.ubicacion.latitud,longitud:props.ubicacion.longitud,groupid:props.ubicacion.groupid,dispId:props.ubicacion.dispId,templateId:dataDisp.data[0].id})
+            }else{
+                props.setUbicacion({latitud:props.ubicacion.latitud,longitud:props.ubicacion.longitud,groupid:props.ubicacion.groupid,dispId:props.ubicacion.dispId,templateId:0})
+            }
+        
+    }
+    },[dataDisp])
+    function search_metricas(){
+        
+       
+        
+        setDataDisp({data:dataTec.data,loading:true,error:dataTec.error})
+          const fetchData = async () => {
+            try {
+           const response = await fetch('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/groups/subtypes/'+props.ubicacion.dispId, {                 
+                                  headers: {
+                                    'Content-Type': 'application/json',
+                                    Authorization: `Bearer ${token_item}`,
+                                  },
+                                });
+                                // console.log(response)
+              if (response.ok) {
+                const response_data = await response.json();
+                setDataDisp({data:response_data.data,loading:false,error:dataTec.error})
+               
+                // //console.log(response_data)
+                
+              } else {
+                throw new Error('Error en la solicitud');
+              }
+            } catch (error) {
+              // Manejo de errores
+              setDataDisp({data:dataTec.data,loading:dataTec.loading,error:error})
+              //console.error(error);
+            }
+          };
+          fetchData();
+      }
     return(
         
         <div className='rowQuadrant rightQuadrant'>
-            <div className='column' style={{width:'80%'}}>
+            <div className='column' style={{width:'70%'}}>
                 <div className='card menuSearch'>
                     {/* <div className='menuSearchColumn menuSearchTitle'>
                         <div className='cardTitle'>
@@ -44,40 +151,76 @@ const RightQuadrant =(props)=>{
                     <div className='menuSearchData' >
                     <div className='menuSearchColumn'>
                         
-                        <Selector data={dataLocations.data.data} loading={dataLocations.loading}  titulo='Municipio' props={props}></Selector>
+                        <Selector opGeneral={true} txtOpGen={'todos'}  opt_de={'0'} origen={'mapa'} data={dataLocations.data.data} loading={dataLocations.loading}  titulo='Municipio' props={props}></Selector>
                     </div>
                     <div className='menuSearchColumn'>
                         {/* <Selector data={dataSubtype.data.data} loading={dataSubtype.loading}  titulo='Tecnologia'></Selector> */}
-                        <Selector data={dataDevices.data.data} loading={dataDevices.loading}  titulo='Tecnologia' props={props}></Selector>
+                        {(!dataTec.loading)?
+                          <Selector  opGeneral={false} txtOpGen={''} opt_de={'11'} origen={'mapa'}  data={dataTec.data} loading={dataTec.loading}  titulo='Tecnología' props={props}></Selector>
+                        :<p className='loadSelect'>cargando...</p>
+                    }
+                        {/* <Selector  opGeneral={false} txtOpGen={''} opt_de={'11'} origen={'mapa'}  data={dataTec.data} loading={dataTec.loading}  titulo='Tecnología' props={props}></Selector> */}
                     </div>
                     
                     <div className='menuSearchColumn'>
-                    <Selector data={dataSubtype.data.data}  loading={dataSubtype.loading}  titulo='Subtipo' props={props}></Selector>
+                        {/* <Selector data={dataSubtype.data.data} loading={dataSubtype.loading}  titulo='Tecnologia'></Selector> */}
+                        {(!dataDisp.loading)?
+                          <Selector opGeneral={false}   txtOpGen={'N/A'} opt_de={'0'} origen={'mapa'}  data={dataDisp.data}  loading={dataDisp.loading}  titulo='Métrica' props={props}></Selector>
+                        :<p className='loadSelect'>cargando...</p>
+                    }
+                        
                     </div>
                     <div className='menuSearchColumn'>
-                    <Action disabled={false} origen='General' titulo='Buscar'  action={buscar}/>
+                        <Action disabled={false} origen='General' titulo='Buscar'  action={buscar}/>
                     </div>
                     </div>
                 </div>
             </div>
-            <div className='column' style={{width:'20%'}}>
-                <div className='card menuInfo'>
+            <div className='column' style={{width:'30%',justifyContent: 'space-around'}}>
+                <div className='card menuInfo' style={{background:'rgba(94, 99, 115, 0.62)'}}>
                     <div className='menuInfotitle'>
                         <div className='cardTitle'>
                             <div className='textCardTitle'>
-                            Estatus de dispositivos:
+                            Conexiones por estado:
                             </div>
                         </div>
                     </div>
                     <div className='menuInfoData' >
                         <div className='dataContent' style={{borderRadius:' 0px 0px 0px 10px'}}>
-                            <InfoStatus titulo={'UP'} tipo={'UP'}  size='max'value={props.markers.length==0?'...':props.markers.length}/>
+                            {/* <InfoStatus titulo={'UP'} tipo={'UP'}  size='max'value={props.markersWOR.length==0?'...':(props.dataHosts.data.host_availables[0].UP==""?0:props.dataHosts.data.host_availables[0].UP)}/> */}
+                            <InfoStatus titulo={'UP'} tipo={'UP'}  size='max' value={props.markersWOR.length==0?'...':(props.dataHosts.data.global_host_availables[0].UP)}/>
                         </div>
                         <div className='dataContent'  style={{borderRadius:' 0px 0px 10px 0px'}}>
-                            <InfoStatus titulo={'DOWN'} tipo={'DOWN'} size='max' value={props.markers.length==0?'...':(props.dataHosts.data.host_availables[0].Down==""?0:props.dataHosts.data.host_availables[0].Down)}/>
+                            {/* <InfoStatus titulo={'DOWN'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?'...':(props.dataHosts.data.host_availables[0].Down==""?0:props.dataHosts.data.host_availables[0].Down)}/> */}
+                            <InfoStatus titulo={'DOWN'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?'...':props.dataHosts.data.global_host_availables[0].Down}/>
                         </div>
                     </div>
                 </div>
+                {
+                    (ubiActual.groupid!==0)?
+                
+                <div className='card menuInfo'>
+                    <div className='menuInfotitle'>
+                        <div className='cardTitle' style={{}}>
+                            <div className='textCardTitle'>
+                            {/* {Conexiones por municipio:} */}
+                            {ubiActual.municipio}
+                            </div>
+                        </div>
+                    </div>
+                    <div className='menuInfoData' >
+                        <div className='dataContent' style={{borderRadius:' 0px 0px 0px 10px'}}>
+                            <InfoStatus titulo={'UP'} tipo={'UP'}  size='max'value={props.markersWOR.length==0?'...':(props.dataHosts.data.host_availables[0].UP==""?0:props.dataHosts.data.host_availables[0].UP)}/>
+                            {/* <InfoStatus titulo={'UP'} tipo={'UP'}  size='max' value={props.markersWOR.length==0?'...':(props.markersWOR.length)}/> */}
+                        </div>
+                        <div className='dataContent'  style={{borderRadius:' 0px 0px 10px 0px'}}>
+                            <InfoStatus titulo={'DOWN'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?'...':(props.dataHosts.data.host_availables[0].Down==""?0:props.dataHosts.data.host_availables[0].Down)}/>
+                            {/* <InfoStatus titulo={'DOWN'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?'...':props.downs.length}/> */}
+                        </div>
+                    </div>
+                </div>
+                :''
+                }
             </div>
             {/* <div className='column' style={{height:'30%'}}>
                 <div className='card menuAction'>

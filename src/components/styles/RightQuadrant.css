@@ -43,7 +43,7 @@ position: absolute;
 
 /* background-color: #292929; */
 /* background-color: #2020207d; */
-background-color: #1b1d2fbd;
+background-color: #161935bd;
 width: 90%;
 height: 90%;
 /* box-shadow: 5px 5px 10px rgb(32, 32, 32); */
@@ -77,13 +77,15 @@ border: 1px solid #f0f8ff3d;
     height: 14%;
 }
 .menuInfotitle{
-    height: 15%;
+    height: 17%;
 }
 .menuInfo{
     display: block;
+    width: 45%;
 }
 .menuAction{
     display: block;
+    width: 95%;
 }
 .cardTitle{
     color: white;
@@ -133,4 +135,8 @@ display: block;
 }
 .menuActionCell{
     border: 1px solid rgba(240, 248, 255, 0.105);
+}
+.loadSelect{
+    font-size: larger;
+    color: aliceblue;
 }

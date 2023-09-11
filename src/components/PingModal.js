@@ -6,12 +6,12 @@ import Selector from './Selector'
 import InputForm from './InputForm';
 import LoadAdding from './LoadAdding';
 import { useFetch } from '../hooks/useFetch'
-const PingModal = ({isOpen, data,statusPing,closePingModal }) => {
+const PingModal = ({isOpen, data,statusPing,closePingModal ,server}) => {
     console.log(data)
     const host=data.length===1?data[0]:data[1]
     console.log("host")
     console.log(host)
-    const dataPing=useFetch('hosts/ping',data.hostidC,'','POST')
+    const dataPing=useFetch('zabbix/hosts/ping',data.hostidC,'','POST',server)
     
     return (
       <>
@@ -36,15 +36,15 @@ const PingModal = ({isOpen, data,statusPing,closePingModal }) => {
                 </div>
                 <div className='contAnimation'>
                     {
-                        dataPing.loading===true?<section class="dots-container">
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
+                        dataPing.loading===true?<section className="dots-container">
+                        <div className="dot"></div>
+                        <div className="dot"></div>
+                        <div className="dot"></div>
+                        <div className="dot"></div>
+                        <div className="dot"></div>
+                        <div className="dot"></div>
+                        <div className="dot"></div>
+                        <div className="dot"></div>
                     </section>:
                     <p className={dataPing.data.data.online==="true"?'msgPing':'msgErrorPing '} >
                          {dataPing.data.data.online==="true"?'Conexión correcta':'Sin conexión'}

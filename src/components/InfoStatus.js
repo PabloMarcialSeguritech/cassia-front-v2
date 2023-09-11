@@ -5,7 +5,7 @@ const InfoStatus=({titulo,value,tipo,size})=>{
         <div className='dataContentColumn'>
             <div className='compactData'>
                 
-                <label style={{fontSize:size==='min'?'small':'medium'}} className={'labelData lbl'+tipo}>{titulo}</label>
+                <label style={{fontSize:size==='min'?'x-small':'medium'}} className={'labelData lbl'+tipo}>{titulo}</label>
                 <input className={'InfoData inp'+tipo} value={value} disabled/>
             </div>
 
