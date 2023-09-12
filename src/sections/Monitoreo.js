@@ -20,8 +20,7 @@ const Monitoreo=({token_item,dataGlobals,server})=>{
   const global_longitud=dataGlobals.find(obj => obj.name === 'state_longitude')
   const global_latitude=dataGlobals.find(obj => obj.name === 'state_latitude')
   const global_zoom=dataGlobals.find(obj => obj.name === 'zoom')
-  console.log(global_longitud)
-  console.log(global_latitude)
+  
   token_item=localStorage.getItem('access_token')
 
     // const [ubicacion,setUbicacion]=useState({latitud:'20.01808757489169',longitud:'-101.21789252823293',groupid:0,dispId:11,templateId:0})
@@ -42,8 +41,8 @@ const Monitoreo=({token_item,dataGlobals,server})=>{
     const [loading,setLoading]=useState(true);
     const [error,setError]=useState(null);
     const [devices,setDevices]=useState({data:[],loading:true,error:null});
-    // console.log("devices")
-    // console.log(devices)
+    console.log("devices")
+    console.log(devices)
     
     //console.log("markersWOR")
     //console.log(markersWOR)
@@ -357,9 +356,7 @@ const Monitoreo=({token_item,dataGlobals,server})=>{
               if(hostSub!==undefined){
                 alineacion=hostSub.Alineacion
               }
-              //console.log(hostSub)
-              // if(host.length!==0 && host.latitude.replace(",", ".")>=-90 && host.latitude.replace(",", ".")<=90 ){
-               //console.log(hostidP.hostid)
+              
                 let colorSG='#00ff70'
                 let severity=0
               if(alineacion>-60 && alineacion<=-50){
@@ -377,30 +374,7 @@ const Monitoreo=({token_item,dataGlobals,server})=>{
               }
               //azul #4fb7f3
               // verde "#1fee08"
-              // setMarkers(markers=>[...markers,{
-              //   type: 'Feature',
-              //   properties:{
-              //     correlarionid: host.correlarionid,
-              //     hostidP: hostidP.hostid,
-              //     hostidC: hostidC.hostid,
-              //     init_lat: host.init_lat.replace(",", "."),
-              //     init_lon: host.init_lon.replace(",", "."),
-              //     end_lat: host.end_lat.replace(",", "."),
-              //     end_lon: host.end_lon.replace(",", "."),
-              //     hostid: host.id,
-              //     name_hostP:hostidP.Host,
-              //     name_hostC:hostidC.Host,
-              //     name_hostipP:hostidP.ip,
-              //     name_hostipC:hostidC.ip,
-              //     Alineacion: host.Alineacion,
-              //     color_alineacion:colorSG,
-              //     severity:severity,
-              //   },
-              //   geometry: {
-              //     type: 'Point',
-              //     coordinates: [host.end_lon, host.end_lat],
-              //   },
-              // }]) 
+              
               
               setLines(lines=>[...lines,{
                 type: 'Feature',
@@ -463,13 +437,14 @@ const Monitoreo=({token_item,dataGlobals,server})=>{
                }
               //azul #4fb7f3
               // verde "#1fee08"
+              
               setMarkersWOR(markersWOR=>[...markersWOR,{
                 type: 'Feature',
                 properties:{
                   hostidC: host.hostid,
                   hostidP: '',
-                  init_lat: host.latitude.replace(",", "."),
-                  init_lon: host.longitude.replace(",", "."),
+                  end_lat: host.latitude.replace(",", "."),
+                  end_lon: host.longitude.replace(",", "."),
                   name_hostC:host.Host,
                   name_hostipC:host.ip,
                   color_alineacion:colorSG,
@@ -544,7 +519,7 @@ const Monitoreo=({token_item,dataGlobals,server})=>{
         marginRight: '-50%',
         transform: 'translate(-50%, -50%)',
         width:'70%',
-        height:'40%',
+        height:'60%',
         padding:'20px'
       },
     };
@@ -585,7 +560,7 @@ const Monitoreo=({token_item,dataGlobals,server})=>{
           contentLabel="Example Modal2"
           // shouldCloseOnOverlayClick={false}
           >
-            <InfoMarker server={server} isOpen={infoMarkerOpen} data={infoMarker} closeInfoMarker={closeInfoMarker}></InfoMarker>
+            <InfoMarker  devices={devices} server={server} isOpen={infoMarkerOpen} data={infoMarker} closeInfoMarker={closeInfoMarker}></InfoMarker>
         </Modal>
         </>
         }

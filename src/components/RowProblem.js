@@ -13,16 +13,16 @@ const RowProblem=(props)=>{
     // console.log(props.data.latitude)
     // console.log(props.data.longitude)
     // console.log(props.ubicacion.groupid)
-    props.setUbicacion({latitud:props.data.latitude.replace(",", "."),longitud:props.data.longitude.replace(",", "."),zoom:16,groupid:props.ubicacion.groupid,dispId:props.ubicacion.dispId,templateId: props.ubicacion.templateId})
+    // props.setUbicacion({latitud:props.data.latitude.replace(",", "."),longitud:props.data.longitude.replace(",", "."),zoom:16,groupid:props.ubicacion.groupid,dispId:props.ubicacion.dispId,templateId: props.ubicacion.templateId})
     setMenuAlertOpen(true);
   };
 
   const closeMenuAlert = () => {
-    if(props.ubicacion.groupid===0){
-      props.setUbicacion({latitud:props.ubicacion.latitud,longitud:props.ubicacion.longitud,zoom:6,groupid:props.ubicacion.groupid,dispId:props.ubicacion.dispId,templateId: props.ubicacion.templateId})
-    }else{
-      props.setUbicacion({latitud:props.ubicacion.latitud,longitud:props.ubicacion.longitud,zoom:11,groupid:props.ubicacion.groupid,dispId:props.ubicacion.dispId,templateId: props.ubicacion.templateId})
-    }
+    // if(props.ubicacion.groupid===0){
+    //   // props.setUbicacion({latitud:props.ubicacion.latitud,longitud:props.ubicacion.longitud,zoom:6,groupid:props.ubicacion.groupid,dispId:props.ubicacion.dispId,templateId: props.ubicacion.templateId})
+    // }else{
+    //   // props.setUbicacion({latitud:props.ubicacion.latitud,longitud:props.ubicacion.longitud,zoom:11,groupid:props.ubicacion.groupid,dispId:props.ubicacion.dispId,templateId: props.ubicacion.templateId})
+    // }
     setMenuAlertOpen(false);
   };
 

@@ -5,7 +5,6 @@ export function useFetch(url,body,token,method,server){
     const [loading,setLoading]=useState(true);
     const [error,setError]=useState(null);
     token=localStorage.getItem('access_token')
- 
    
     useEffect(() => {
       

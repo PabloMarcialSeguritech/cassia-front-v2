@@ -9,7 +9,7 @@
     height: 92%;
     display: inline;
     transition: width 0.3s ease;
-    z-index: 2;
+    z-index: 1;
   }
   .sideLogo{
     position: absolute;
