@@ -2,10 +2,12 @@ import './styles/InfoMarker.css'
 import { useState,useEffect } from 'react';
 import Action from './Action'
 import Modal from 'react-modal';
-import Selector from './Selector'
 import InputForm from './InputForm';
 import LoadAdding from './LoadAdding';
 import PingModal from './PingModal';
+import HostSelector from './HostSelector'
+import AlertsByHost from './AlertsByHost'
+import HealthByHost from './HealthByHost';
 const pingModalStyles = {
   content: {
     top: '50%',
@@ -20,21 +22,47 @@ const pingModalStyles = {
     padding:'20px'
   },
 };
-const InfoMarker = ({isOpen, data,closeInfoMarker,server }) => {
-    const [exeptionOpen, setExeptionOpen] = useState(false);
-    const [addingException, setAddingException] = useState(false);
-    const [validaBtn, setValidaBtn] = useState(true);
-    //console.log('Marcador clickeado:', data);
-    //console.log(data.name_hostP)
-    // //console.log(data.points[0].data.customdata[0])
-    // const actualInfo = data.points[0].data.customdata.find(obj => obj.name === data.points[0].text)
-    // //console.log(actualInfo)
-    // const fatherInfo=data.points[0].data.customdata[0]
-    // //console.log(fatherInfo)
-    const [pingModalOpen, setPingModalOpen] =useState(false);
-    const [statusPing, setStatusPing] =useState(false);
-  //console.log('status ping',statusPing)
-  // //console.log(data.points[0].data.customdata.length)
+const InfoMarker = ({isOpen,devices, data,closeInfoMarker,server }) => {
+  console.log("info marker")
+  console.log(data)
+  console.log(devices.data)
+  const ubicacion_mix=devices.data.hosts.filter(obj => obj.latitude === data.end_lat)
+  let relation = devices.data.relations.find(obj => obj.hostidC === data.hostidC)
+
+  const [pingModalOpen, setPingModalOpen] =useState(false);
+  const [statusPing, setStatusPing] =useState(false);
+  const [infoHostC,setInfoHostC]=useState([])
+  const [infoHostP,setInfoHostP]=useState([])
+  const [hostId,setHostId]=useState(data.hostidC)
+  const [hostIdP,setHostIdP]=useState(0)
+  const [listSelected,setListSelected]=useState(1)
+  const [hostSelected,setHostSelected]=useState(2)
+  console.log("infomarkerP:")
+  
+  console.log(infoHostC)
+    const hadleChangeList=(e)=>{
+        setListSelected(e)
+        
+    }
+  useEffect(() => {
+    if (relation !== undefined) {
+      console.log("el aps es el ", relation.hostidP);
+      setHostIdP(relation.hostidP);
+    }
+  }, [relation]);
+  
+  useEffect(()=>{
+    let hostidC = ubicacion_mix.find(obj => obj.hostid === hostId)
+    setInfoHostC(hostidC)
+    
+  },[hostId])
+
+  useEffect(()=>{
+    let hostidPa = devices.data.hosts.find(obj => obj.hostid === hostIdP)
+    console.log("relation P:",hostIdP)
+    setInfoHostP(hostidPa)
+  },[hostIdP])
+  
   function openPingModal() {
     setPingModalOpen(true);
   }
@@ -57,170 +85,231 @@ const InfoMarker = ({isOpen, data,closeInfoMarker,server }) => {
     // Limpiar el temporizador cuando el componente se desmonte o se actualice
     return () => clearTimeout(timer);
   }, [statusPing]); 
+  const handleChangeOption=(e)=>{
+setHostSelected(e)
+setListSelected(1)
+  }
     return (
       <>
-        <div className='menuAlertTitle'>
-                        <div className='cardTitle cardTitle'>
-                            <div className='textCardTitle'>
-                            Informacion General
-                            </div>
-                            <div className='imgCardTitle'>
-                              <div className='imgContent'>
-                              <img src="/iconos/close.png"  className="expandLogo" alt="Logo" onClick={closeInfoMarker}/>
-                              </div>
-                            </div>
-                        </div>
-                        
-              </div>
-              <div className='menuAlertTabla' >
-                <div className='TableHeader'>
-                  
-                  <div className='headerCell' style={{width:'10%'}}>
-                    <div className='txtHeaderCell' >
-                        {/* Severidad */}
-                    </div>
-                  </div>
-                  <div className='headerCell' style={{width:'30%'}}>
-                    <div className='txtHeaderCell' >
-                        Host
-                    </div>
-                  </div>
-                  <div className='headerCell' style={{width:'20%'}}>
-                    <div className='txtHeaderCell'>
-                        IP
-                    </div>
-                  </div>
-                  <div className='headerCell' style={{width:'10%'}}>
-                    <div className='txtHeaderCell'>
-                        {/* IP */}
-                        ID
-                    </div>
-                  </div>
-                  <div className='headerCell' style={{width:'5%'}}>
-                    <div className='txtHeaderCell'>
-                        Nivel
-                    </div>
-                  </div>
-                  <div className='headerCell' style={{width:'15%'}}>
-                    <div className='txtHeaderCell'>
-                    { data.Alineacion===0?'Estatus':'Alineación'}
-                    </div>
-                  </div>
-                  <div className='headerCell'style={{width:'9%'}}>
-                    <div className='txtHeaderCell'>
-                        Hora
-                    </div>
-                  </div>
+        <div className='mainInfoMarker'>
+            <div className='contInfoMarker'>
+                <div className='titleInfoMarker'>
+                  <div className='txtTitleInfoMarker'>Informacion general de dispositivo</div>
                 </div>
-                <div className='TableBody'>
-                  <div className={'rowInfo '/*+props.data.Estatus*/} >
-                  <div className='problemCell ' style={{width:'6%'}}>
-                   </div>
-                  <div className='problemCell' style={{width:'33%'}}>
-                    <div className='txtProblemCell' >
-                      {data.name_hostC}
+                <div className='bodyInfoMarker'>
+                  <div className='contHost'>
+                    <div className='contCheck'>
+                      <input name="radio" type="radio" className="checkHost" defaultChecked onClick={()=>handleChangeOption(2)} />
+                    </div>
+                    <div className='contInfoHost'>
+                      <label className='lblInfoHost'>Host</label>
+                      <div className='infoHost'>
+                        <div className='titlesInfo'>
+                          
+                          <div className='headerCell' style={{width:'42%'}}>
+                            <div className='txtHeaderCell' >
+                                Host{ubicacion_mix.length===1?'':' ('+ubicacion_mix.length+')'}
+                            </div>
+                          </div>
+                          <div className='headerCell' style={{width:'18%'}}>
+                            <div className='txtHeaderCell'>
+                                IP
+                            </div>
+                          </div>
+                          <div className='headerCell' style={{width:'10%'}}>
+                            <div className='txtHeaderCell'>
+                                {/* IP */}
+                                ID
+                            </div>
+                          </div>
+                          <div className='headerCell' style={{width:'10%'}}>
+                            <div className='txtHeaderCell'>
+                                Nivel
+                            </div>
+                          </div>
+                          <div className='headerCell' style={{width:'15%'}}>
+                            <div className='txtHeaderCell'>
+                            Tecnologia
+                            </div>
+                          </div>
+                          {/* <div className='headerCell'style={{width:'9%'}}>
+                            <div className='txtHeaderCell'>
+                                Hora
+                            </div>
+                          </div> */}
+                        </div>
+                        <div className='rowInfo'>
+                        {/* <div className='hostInfoCell ' style={{width:'6%'}}>
+                   </div> */}
+                  <div className='hostInfoCell' style={{width:'42%'}}>
+                    {ubicacion_mix.length===1?
+                    <div className='txtHostInfoCell' >
+                    {data.name_hostC}
+                  </div>
+                  :
+                  <HostSelector setListSelected={setListSelected} setHostId={setHostId} opGeneral={false}   txtOpGen={'N/A'} opt_de={data.hostidC} origen={'mapa'}  data={ubicacion_mix}  loading={false}  titulo='hosts' />
+                  
+                  }
                     
+                  </div>
+                  <div className='hostInfoCell' style={{width:'18%'}}>
+                    <div className='txtHostInfoCell'>
+                      {/* {data.name_hostipC} */}
+                    {infoHostC.ip}
                     </div>
                   </div>
-                  <div className='problemCell' style={{width:'22%'}}>
-                    <div className='txtProblemCell'>
-                      {data.name_hostipC}
-                    
+                  <div className='hostInfoCell' style={{width:'10%'}}>
+                    <div className='txtHostInfoCell'>
+                      {/* {data.hostidC} */}
+                    {infoHostC.hostid}
                     </div>
                   </div>
-                  <div className='problemCell' style={{width:'10%'}}>
-                    <div className='txtProblemCell'>
-                      {data.hostidC}
-                    
-                    </div>
-                  </div>
-                  <div className='problemCell' style={{width:'5%'}}>
-                    <div className='txtProblemCell'>
+                  <div className='hostInfoCell' style={{width:'10%'}}>
+                    <div className='txtHostInfoCell'>
                       {2}
                     
                     </div>
                   </div>
-                  <div className='problemCell' style={{width:'15%'}}>
-                    <div className='txtProblemCell'>
-                    { data.Alineacion===0?'':data.Alineacion}
+                  <div className='hostInfoCell' style={{width:'15%'}}>
+                    <div className='txtHostInfoCell'>
+                    {/* { data.Alineacion===0?'':data.Alineacion} */}
                     
                     </div>
                   </div>
-                  </div>
-                  { data.name_hostP!==undefined?
-                  <>
-                  <div className='rowcontActions' style={{width: "100%",height:'20%',top: '10%'}}>
-                  <div className='menuActiontitle' style={{width: "100%"}}>
-                    <div className='actionsTitle'>
-                    <div className='textCardTitle'>
-                             ANTENA:
-                              </div>
-                              
+                        </div>
+                      </div>
                     </div>
-                    <hr className='lineTitle'></hr>
                   </div>
-                  </div>
-                  <div className={'rowInfo '/*+props.data.Estatus*/} >
-                  <div className='problemCell ' style={{width:'6%'}}>
+                  <div className='contHost'>
+                    {
+                      infoHostP===undefined || infoHostP.length===0?<h1 className='textWOA'>Sin relacion con algun APS</h1>:
+                    
+                      <>
+                      <div className='contCheck'>
+                        <input name="radio" type="radio" class="checkHost" onClick={()=>handleChangeOption(1)} />
+                      </div>
+                      <div className='contInfoHost'>
+                      <label className='lblInfoHost'>Host padre</label>
+                        <div className='infoHost'>
+                        <div className='titlesInfo'>
+                          
+                          <div className='headerCell' style={{width:'42%'}}>
+                            <div className='txtHeaderCell' >
+                              Host{ubicacion_mix.length===1?'':' ('+ubicacion_mix.length+')'}
+                            </div>
+                          </div>
+                          <div className='headerCell' style={{width:'18%'}}>
+                            <div className='txtHeaderCell'>
+                                IP
+                            </div>
+                          </div>
+                          <div className='headerCell' style={{width:'10%'}}>
+                            <div className='txtHeaderCell'>
+                                {/* IP */}
+                                ID
+                            </div>
+                          </div>
+                          <div className='headerCell' style={{width:'10%'}}>
+                            <div className='txtHeaderCell'>
+                                Nivel
+                            </div>
+                          </div>
+                          <div className='headerCell' style={{width:'15%'}}>
+                            <div className='txtHeaderCell'>
+                            Tecnologia
+                            </div>
+                          </div>
+                          {/* <div className='headerCell'style={{width:'9%'}}>
+                            <div className='txtHeaderCell'>
+                                Hora
+                            </div>
+                          </div> */}
+                        </div>
+                        <div className='rowInfo'>
+                        {/* <div className='hostInfoCell ' style={{width:'6%'}}>
+                   </div> */}
+                  <div className='hostInfoCell' style={{width:'42%'}}>
+                    <div className='txtHostInfoCell' >
+                      {/* {data.name_hostC} */}
+                      {infoHostP.Host}
+                    </div>
                    </div>
-                  <div className='problemCell' style={{width:'33%'}}>
-                    <div className='txtProblemCell' >
-                      {data.name_hostP}
-                    
+                  <div className='hostInfoCell' style={{width:'18%'}}>
+                    <div className='txtHostInfoCell'>
+                      {/* {data.name_hostipC} */}
+                    {infoHostP.ip}
                     </div>
                   </div>
-                  <div className='problemCell' style={{width:'22%'}}>
-                    <div className='txtProblemCell'>
-                      {data.name_hostipP}
-                    
+                  <div className='hostInfoCell' style={{width:'10%'}}>
+                    <div className='txtHostInfoCell'>
+                      {/* {data.hostidC} */}
+                    {infoHostP.hostid}
                     </div>
                   </div>
-                  <div className='problemCell' style={{width:'10%'}}>
-                    <div className='txtProblemCell'>
-                      {data.hostidP}
-                    
-                    </div>
-                  </div>
-                  <div className='problemCell' style={{width:'5%'}}>
-                    <div className='txtProblemCell'>
+                  <div className='hostInfoCell' style={{width:'10%'}}>
+                    <div className='txtHostInfoCell'>
                       {1}
                     
                     </div>
                   </div>
-                  
-                  </div>
-                  </>
-                  :''}
-                  <div className='rowcontActions' style={{width: "100%",height:'30%',top: '10%'}}>
-                  <div className='menuActiontitle' style={{width: "100%"}}>
-                    <div className='actionsTitle'>
-                    <div className='textCardTitle'>
-                              ACCIONES:
-                              </div>
-                              
+                  <div className='hostInfoCell' style={{width:'15%'}}>
+                    <div className='txtHostInfoCell'>
+                    {/* { data.Alineacion===0?'':data.Alineacion} */}
+                    
                     </div>
-                    <hr className='lineTitle'></hr>
                   </div>
-                  <div className='menuActionData' style={{display:'flex'}}>
-                          <div className='menuActionCell' style={{border: 'unset',width:'25%'}}>
-                              <Action origen='General' disabled={false} titulo='PING' action={handlePingClick}/>
-                          </div>
-                          <div className='menuActionCell' style={{border: 'unset',width:'25%'}}>
-                              <Action origen='General' disabled={true} titulo='Accion 2'/>
-                          </div>
-                          <div className='menuActionCell' style={{border: 'unset',width:'25%'}}>
-                              <Action origen='General' disabled={true} titulo='Accion 3'/>
-                          </div>
-                          <div className='menuActionCell' style={{border: 'unset',width:'25%'}}>
-                          {/* <Action origen='Alert' disabled={false} titulo='Salir' action={closeInfoMarker} /> */}
-                              {/* <Action origen='General' disabled={true} titulo='Accion 4'/> */}
-                          </div>
+                        </div>
+                        </div>
                       </div>
+                      </>
+                    }
                   </div>
-                  
                 </div>
-              </div>
-              <Modal
+                <div className='actionsInfoMarker'>
+                  <div className='contActionsInfoMarker'>
+                  <div className='txtHostSelected'>Dispositivo seleccionado (ID): {hostSelected===1?hostIdP:hostId}</div>
+                  <div className='menu-actions'>
+                     <ol className='compactactions-list' >
+                        <li className={listSelected===1?'action-selected':''} onClick={() =>hadleChangeList(1)}>Acciones</li>
+                        <li className={listSelected===2?'action-selected':''}  onClick={() =>hadleChangeList(2)} >Alarmas</li>
+                        <li className={listSelected===3?'action-selected':''} onClick={() =>hadleChangeList(3)}>salud</li>
+                    </ol>
+                    
+                  </div>
+                  <div className='contActions'>
+                  
+                  {listSelected === 1 ? (
+                    <div className='contAcciones'>
+                    <div className='menuActionData' style={{display:'flex'}}>
+                        <div className='menuActionCell' style={{border: 'unset',width:'25%'}}>
+                            <Action origen='General' disabled={false} titulo='PING' action={handlePingClick}/>
+                        </div>
+                        <div className='menuActionCell' style={{border: 'unset',width:'25%'}}>
+                            <Action origen='General' disabled={true} titulo='Accion 2'/>
+                        </div>
+                        <div className='menuActionCell' style={{border: 'unset',width:'25%'}}>
+                            <Action origen='General' disabled={true} titulo='Accion 3'/>
+                        </div>
+                        <div className='menuActionCell' style={{border: 'unset',width:'25%'}}>
+                        {/* <Action origen='Alert' disabled={false} titulo='Salir' action={closeInfoMarker} /> */}
+                            {/* <Action origen='General' disabled={true} titulo='Accion 4'/> */}
+                        </div>
+                    </div>
+                  </div>
+                ) : listSelected === 2 ? (
+                    <AlertsByHost hostId={hostSelected===1?hostIdP:hostId} server={server}></AlertsByHost>
+                ) : listSelected === 3 ? (
+                  <HealthByHost hostId={hostSelected===1?hostIdP:hostId} server={server}></HealthByHost>
+                ) :''
+                    }
+                    
+                  
+                  </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+        <Modal
           isOpen={pingModalOpen}
           // onAfterOpen={afterOpenExeption}
           onRequestClose={closePingModal}
@@ -229,8 +318,8 @@ const InfoMarker = ({isOpen, data,closeInfoMarker,server }) => {
           // shouldCloseOnOverlayClick={false}
           >
             <PingModal server={server}isOpen={pingModalOpen} data={data} statusPing={statusPing} closePingModal={closePingModal}></PingModal>
-      </Modal>
-</>
+        </Modal>
+      </>
     );
   };
 
