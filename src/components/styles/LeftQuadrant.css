@@ -149,15 +149,15 @@ max-height: 25px;
 }
 /***************************MODAL***********************************/
 .ReactModal__Overlay {
-    background-color: #151515b5    !important;
-    z-index: 2;
+    background-color: #0d0d0de5     !important;
+    z-index: 1;
 }
 .ReactModal__Content {
     padding: unset !important;
-    border: 1px solid aliceblue !important;
+    border: 1px solid #f0f8ff91  !important;
     border-radius: 10px !important;
-    /* background-color: #292929 !important; */
-    background-color: #11121be3 !important;
+    background-color: #1e2437d6   !important;
+    /* background-color: #11121be3 !important; */
 }
 /************************************************************************ ESTILOS DE SCROLL BAR**************************************************/
 /********************   chrome  *********************/

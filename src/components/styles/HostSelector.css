@@ -1,0 +1,145 @@
+.hostSearchOption{
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+.compactHostSelector{
+    position: relative;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 70%;
+}
+.compactHostSelectorAdmin{
+    position: relative;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 70%;
+}
+.react-host-select__control{
+    border-color: #b3b3b3 !important;
+    /* border-color: #ee085c; */
+width: 100%;
+height: 100%;
+border-top: none !important;
+border-left: none !important;
+border-radius: 5px;
+background-color: #00000029 !important;
+color: aliceblue !important;
+
+letter-spacing: 1px;
+ text-align: center;
+}
+.react-host-select__input,.react-host-select__placeholder{
+    background-color: transparent !important;
+    color: aliceblue !important;
+    border: none !important;
+    outline: 0 !important;
+}
+.react-host-select-container{
+    outline: 0 !important;
+    top: -4px;
+}
+.react-host-select-container-admin{
+    background: #FFF !important;
+    color: #003757;
+}
+.react-host-select__input-container,.react-host-select__single-value {
+    color: aliceblue !important;
+    font-size: x-small;
+}
+.react-host-select__indicator svg{
+    color: #088eee ;
+ }
+
+.labelHostSelector{
+    /* font-weight: bold; */
+    position: absolute;
+    top: -20%;
+    /* color: #eaeaea; */
+    
+    color:  #c4c4c4;
+}
+.react-host-select__menu:hover{
+    cursor: pointer;
+}
+.react-host-select__menu{
+    border-color:#088eee !important;;
+    background-color:#030915 !important ;
+    color: #088eee !important;
+    border: 1px solid aliceblue !important;
+    align-items: center !important;
+    display: flex !important;
+    text-align: center !important;
+    cursor: pointer;
+    z-index: 4;
+    font-size: x-small;
+}
+.react-host-select__menu-list{
+    width: 100% !important;
+}
+.react-host-select__option{
+    border-bottom-color: rgba(255, 255, 255, 0.127) !important;
+}
+/***************************** SELECTOR ADMIN **************************************/
+
+.react-host-select-admin__control{
+    border-color: #003757 !important;
+    /* border-color: #ee085c; */
+width: 100%;
+height: 100%;
+border-top: none !important;
+border-left: none !important;
+border-radius: 5px;
+border-width: 2px !important;
+/* background-color: #00000029 !important; */
+color: #003757 !important;
+
+letter-spacing: 1px;
+ text-align: left;
+}
+.react-host-select-admin__input,.react-host-select-admin__placeholder{
+    background-color: transparent !important;
+    color: #003757 !important;
+    border: none !important;
+    /* outline: 0 !important; */
+    font-size: large !important;
+}
+.react-host-select-container-admin{
+    outline: 0 !important;
+    /* top: 5px; */
+}
+
+.react-host-select-admin__input-container,.react-host-select-admin__single-value {
+    color: #003757 !important;
+}
+.react-host-select-admin__indicator svg{
+    color: #003757 ;
+ }
+
+
+.react-host-select-admin__menu:hover{
+    cursor: pointer;
+}
+.react-host-select-admin__menu{
+    border-color:#003757 !important;;
+    background-color:aliceblue !important ;
+    color: #003757 !important;
+    border: 1px solid aliceblue !important;
+    align-items: center !important;
+    display: flex !important;
+    text-align: center !important;
+    cursor: pointer;
+}
+.react-host-select-admin__menu-list{
+    width: 100% !important;
+}
+.react-host-select-admin__option{
+    border-bottom-color: rgba(255, 255, 255, 0.127) !important;
+}
