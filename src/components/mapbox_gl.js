@@ -1,9 +1,10 @@
 // import React, { useEffect } from 'react';
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect,useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import './styles/MapBox.css'
 import towerImg from '../img/torre2_blanca.png';
-const MapBox = ({global_longitud,global_latitude,global_zoom,devices,markers,markersWOR,lines,downs,towers,ubicacion,handleMarkerClick}) => {
+const MapBox = ({actualizar_rfi,search_rfid,global_longitud,global_latitude,global_zoom,devices,markers,markersWOR,lines,downs,towers,rfid,ubicacion,handleMarkerClick}) => {
  
   // console.log("markers*****************************************************")
   //console.log(ubicacion)
@@ -15,68 +16,8 @@ const MapBox = ({global_longitud,global_latitude,global_zoom,devices,markers,mar
   const zoom_provicional=(ubicacion.groupid===0?global_zoom.value:11)
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
-  //console.log("longitud_provicional")
-  //console.log(longitud_provicional)
-  // const host=[
-  //   {
-  //     type: 'Feature',
-  //     properties:{
-  //       correlarionid: 444,
-  //       hostidP: 21655,
-  //       hostidC: 16880,
-  //       init_lat: "21.101700",
-  //       init_lon: "-101.636770",
-  //       end_lat: "21.109167",
-  //       end_lon: "-101.594167",
-  //       hostid: 16880,
-  //       Alineacion: -74,
-  //       color_alineacion:1
-  //     },
-  //     geometry: {
-  //       type: 'Point',
-  //       coordinates: [-101.636770, 21.101700],
-  //     },
-  //   },
-  //   {
-  //     type: 'Feature',
-  //     properties:{
-  //       correlarionid: 444,
-  //       hostidP: 21655,
-  //       hostidC: 16880,
-  //       init_lat: "21.101700",
-  //       init_lon: "-101.636770",
-  //       end_lat: "21.109167",
-  //       end_lon: "-101.594167",
-  //       hostid: 16880,
-  //       Alineacion: -74,
-  //       color_alineacion:1
-  //     },
-  //     geometry: {
-  //       type: 'Point',
-  //       coordinates: [-101.646770, 21.101700],
-  //     },
-  //   },
-  //   {
-  //     type: 'Feature',
-  //     properties:{
-  //       correlarionid: 444,
-  //       hostidP: 21655,
-  //       hostidC: 16880,
-  //       init_lat: "21.101700",
-  //       init_lon: "-101.636770",
-  //       end_lat: "21.109167",
-  //       end_lon: "-101.594167",
-  //       hostid: 16880,
-  //       Alineacion: -74,
-  //       color_alineacion:1
-  //     },
-  //     geometry: {
-  //       type: 'Point',
-  //       coordinates: [-101.656770, 21.101700],
-  //     },
-  //   },
-  // ]
-  // //console.log(host)
+  const [rfidInterval,setRfidInterval]=useState(0)
+ 
   mapboxgl.accessToken =
     'pk.eyJ1IjoiZ2lvcm9jaGEiLCJhIjoiY2xpZWJyZTR3MHpqcjNlcWRvaHR1em5sayJ9._SOrMWsc39Coa2dTHR072Q';
     
@@ -88,6 +29,7 @@ const MapBox = ({global_longitud,global_latitude,global_zoom,devices,markers,mar
       //console.log("markers lleno")
     
     }
+    
   useEffect(() => {
     mapRef.current  = new mapboxgl.Map({
       container: 'map',
@@ -101,15 +43,7 @@ const MapBox = ({global_longitud,global_latitude,global_zoom,devices,markers,mar
     let Popup;
     const map = mapRef.current;
     map.on('load', () => {
-      if(markersWOR.length===0){
-        // console.log("marker vacio")
-      }else{
-        // console.log("markers lleno")
-        // map.remove()
-      }
       
-      //console.log("onload")
-      //console.log(markersWOR)
        /************************************************************ CAPA MWOR ************************************************************************ */
        map.addLayer({
         id: 'host-markerWOR',
@@ -123,10 +57,10 @@ const MapBox = ({global_longitud,global_latitude,global_zoom,devices,markers,mar
         },
         filter: ['!', ['has', 'point_count']],
         paint: {
-          'circle-color': "#4fb7f3",
+          'circle-color': "#00ff70",
           'circle-radius': 3,
           'circle-stroke-width':1,
-          'circle-stroke-color': '#fff',
+          'circle-stroke-color': '#d1d1d1',
         }
         ,
       });
@@ -189,6 +123,59 @@ const MapBox = ({global_longitud,global_latitude,global_zoom,devices,markers,mar
           'line-width': 1,
         },
       });
+      /************************************************************ CAPA RFID ************************************************************************ */
+      //console.log(downs)
+      var rfidIval;
+      if(rfid.length!==0){
+        map.addLayer({
+          id: 'host-rfid',
+          type: 'circle',
+          source:  {
+            type: 'geojson',
+            data: {
+              type: 'FeatureCollection',
+              features: rfid
+            },
+          },
+          filter: ['!', ['has', 'point_count']],
+          paint: {
+            'circle-color': "#cacaca",
+            'circle-radius': 3,
+            'circle-stroke-width':1,
+            'circle-stroke-color': '#fff',
+          },
+        });
+        var popup;
+        rfid.forEach((feature) => {
+          const coordinates = feature.geometry.coordinates.slice();
+          const val = feature.properties.lecturas; // Asegúrate de tener esta propiedad en tus datos
+        
+          popup = new mapboxgl.Popup({
+            className: 'custom-popup-rfid',
+            closeButton: false,
+            closeOnClick: false
+        })
+            .setLngLat(coordinates)
+            .setHTML(`<div class='cont-rfid' style='border: 1px solid #ffffff;'>
+            <div class='titleRFID'><div class='txtTitleRfid'>Trafico</div><br></div>
+            <div class='valRFID'><div class='txtRfid'>${val}</div><br><br></div>
+                
+                </div>`)
+                .addTo(map);
+        });
+        rfidIval=setInterval(() => {
+          console.log("rfidInterval ",rfidIval)
+          setRfidInterval(rfidIval)
+        actualizar_rfi(map,popup,rfidIval)
+       }, 5000);
+        
+        // console.log(rfidInterval)
+      }else{
+        console.log("******** no existe rfid *************",rfidInterval)
+        clearInterval(rfidInterval);
+      }
+      
+     
        /************************************************************ CAPA UP ************************************************************************ */
       map.addLayer({
         id: 'host-marker',
@@ -205,7 +192,8 @@ const MapBox = ({global_longitud,global_latitude,global_zoom,devices,markers,mar
           'circle-color': [
             'match', // Utilizamos la función 'match' para evaluar el atributo 'tsunami'
             ['get', 'severity'], // Accedemos al valor del atributo 'tsunami'
-            0, '#00ff70', // Si tsunami es igual a 0, color azul '#11b4da'
+            -1, '#1fee08',
+            0, '#4fb7f3', // Si tsunami es igual a 0, color azul '#11b4da'
             1, '#ffee00', // Si tsunami es igual a 1, color rojo '#ff0000'
             2, '#ee9d08', // Si tsunami es igual a 0, color azul '#11b4da'
             3, '#ee5c08', // Si tsunami es igual a 1, color rojo '#ff0000'
@@ -338,21 +326,20 @@ const MapBox = ({global_longitud,global_latitude,global_zoom,devices,markers,mar
           });
         }
       );
+      // setMapInstance(map)
       
+     
       
     })
-
+   
+    
     return () => map.remove();
   }, [markers]);
-  // useEffect(() => {
-  //   if(markers.length1!==0){
-  //     const map = mapRef.current;
-  //     //console.log(map.getLayer('host-marker'))
-  //   }else{
-  //     //console.log("primera vez")
-  //   }
-  // },[markers])
+ 
+  
   return <div id="map" style={{ position: 'absolute', top: 0, bottom: 0, width: '100%' }} />;
+
 };
+
 
 export default MapBox;

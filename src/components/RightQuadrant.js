@@ -38,6 +38,12 @@ const RightQuadrant =(props)=>{
         props.search_problems()
         props.search_devices()
         props.search_downs()
+        if(props.ubicacion.dispId===9){
+            props.search_rfid()
+        }else{
+            props.setRfid([])
+        }
+        
     }
     
     useEffect(()=>{

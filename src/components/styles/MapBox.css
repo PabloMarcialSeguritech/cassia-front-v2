@@ -15,7 +15,7 @@
     width: 100%;
     height: 100%;
     position: relative;
-    padding: 3px;
+    /* padding: 3px; */
 
   }
 .mapboxgl-popup-content{
@@ -27,4 +27,67 @@
     height: auto;
     padding: unset !important;
     text-align: center !important;
+}
+
+.custom-popup-rfid {
+  font-weight: bold;
+  width: auto !important;
+  height: 7% !important;;
+  position: relative;
+  padding: 3px;
+
+}
+.custom-popup-rfid .mapboxgl-popup-content {
+  
+  width: 100%;
+  height: 100%;
+  position: relative;
+  /* padding: 3px; */
+ background-color: rgba(228, 228, 228, 0.774) !important; 
+
+  top: 5%;
+ width: auto;
+ height: auto;
+ padding: unset !important;
+ border-radius: 0px 0px 20px 20px;
+}
+.cont-rfid {
+  font-weight: bold;
+  border-radius: 0px 0px 20px 20px;
+  position: relative;
+  /* padding: 3px; */
+  display: block;
+  justify-content: center;
+  height: 40px !important;
+}
+.titleRFID{
+  background-color: rgb(9, 34, 102);
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0px 0px 0px 0px;
+  height: 30%;
+}
+.txtTitleRfid{
+font-size: x-small;
+margin: 2%;
+}
+.valRFID{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70%;
+}
+.txtRfid{
+  color: rgb(17, 26, 51) !important;
+  font-size: medium;
+  font-weight: bold;
+ text-align: center !important;
+ width: auto;
+ height: 100%;
+ display: flex;
+ justify-content: center;
+ align-items: center;
 }
