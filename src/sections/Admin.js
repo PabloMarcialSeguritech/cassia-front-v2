@@ -5,7 +5,7 @@ import UsersAdmin from '../components/admin-components/UsersAdmin'
 import Herramienta1 from '../components/admin-components/Herramienta1'
 import RolesAdmin from '../components/admin-components/RolesAdmin'
 import ArrastreHost from '../components/admin-components/ArrastreHost'
-const Admin=({server})=>{
+const Admin=({server,dataGlobals})=>{
     const [listSelected,setListSelected]=useState(1)
     const hadleChangeList=(e)=>{
         setListSelected(e)
