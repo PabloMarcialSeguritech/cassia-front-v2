@@ -14,9 +14,10 @@ import aps from '../components/aps'
 import Modal from 'react-modal';
 import InfoMarker from '../components/InfoMarker'
 import '../components/styles/MapBox.css'
+import { act } from 'react-dom/test-utils'
 
 const Monitoreo=({token_item,dataGlobals,server})=>{
-  console.log(dataGlobals)
+  // console.log(dataGlobals)
   const global_longitud=dataGlobals.find(obj => obj.name === 'state_longitude')
   const global_latitude=dataGlobals.find(obj => obj.name === 'state_latitude')
   const global_zoom=dataGlobals.find(obj => obj.name === 'zoom')
@@ -29,32 +30,28 @@ const Monitoreo=({token_item,dataGlobals,server})=>{
     const [latitudes,setLatitudes]=useState([])
     const [longitudes,setLongitudes]=useState([])
     const [locations,setLocations]=useState([])
-    
+    // console.log(ubicacion)
     const [markers,setMarkers]=useState([])
     const [markersWOR,setMarkersWOR]=useState([])
     const [lines,setLines]=useState([])
     const [downs,setDowns]=useState([])
     const [towers,setTowers]=useState([])
+    const [rfid,setRfid]=useState([])
      
     const [token,setToken]=useState("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWFuLm1hcmNpYWwiLCJleHAiOjE2OTExNjg3ODZ9.LETk5Nu-2WXF571qMqTd__RxHGcyOHzg4GfAbiFejJY")
     const [data,setData]=useState([]);
     const [loading,setLoading]=useState(true);
     const [error,setError]=useState(null);
     const [devices,setDevices]=useState({data:[],loading:true,error:null});
-    console.log("devices")
-    console.log(devices)
-    
-    //console.log("markersWOR")
-    //console.log(markersWOR)
-    // //console.log(devices)
-    console.log(ubicacion)
     
     const [dataProblems,setDataProblems]=useState({data:[],loading:true,error:null})
     // const downs_list=useFetch('zabbix/layers/downs',0,token_item,'GET')
     const[downs_list,setDownsList]=useState({data:[],loading:true,error:null});
     const tower_list=useFetch('zabbix/layers/aps',0,token_item,'GET',server)
-    
-    
+    const[rfid_list,setRfidList]=useState({data:[],loading:true,error:null});
+    const [rfidData,setRfidData]=useState({map:{},getSource:{},popup:null});
+    const [rfidInterval,setRfidInterval]=useState(0)
+   
     useEffect(()=>{
       
       search_problems()
@@ -68,7 +65,21 @@ const Monitoreo=({token_item,dataGlobals,server})=>{
         objeto_downs(downs_list.data.downs)
         }
     },[downs_list.data])
+    useEffect(()=>{
+      if(rfid_list.data.length!==0){
+        objeto_rfid(rfid_list.data)
+        // setTimeout(search_rfid, 10000); 
+        }
 
+    },[rfid_list.data])
+    useEffect(()=>{
+      if(rfid.length!==0){
+        console.log('actualizo rfid')
+        console.log(rfid)
+        actualizar_layer_rfid(rfid)
+        }
+
+    },[rfid])
     useEffect(()=>{
       if(tower_list.data.length!==0){
         //console.log("pinta")
@@ -129,6 +140,35 @@ const Monitoreo=({token_item,dataGlobals,server})=>{
         }
         )
     }
+    /****************************************************************** */
+    function objeto_rfid(rfid_list){
+      console.log("objeto rfid")
+      setRfid([])
+      rfid_list.map((host, index, array)=>
+          {
+            
+            if(host.length!==0 && host.Latitud>=-90 && host.Latitud<=90 ){
+              
+              setRfid(rfid=>[...rfid,{
+                type: 'Feature',
+                properties:{
+                  latitude: host.Latitud,
+                  longitude: host.Longitud,
+                  lecturas:host.Lecturas
+                },
+                geometry: {
+                  type: 'Point',
+                  coordinates: [host.Longitud, host.Latitud],
+                },
+              }])
+              
+            }else{
+              //console.log(host)
+            }
+        }
+        )
+        // setTimeout(search_rfid, 10000); 
+    }
      /****************************************************************** */
     function search_problems(){
     setDataProblems({data:dataProblems.data,loading:true,error:dataProblems.error})
@@ -171,7 +211,38 @@ const Monitoreo=({token_item,dataGlobals,server})=>{
     useEffect(()=>{
       search_devices()
       search_downs()
+      // search_rfid()
     },[])
+    function search_rfid(){
+      setRfid([])
+      console.log()
+      console.log("borra rfid")
+      setRfidList({data:[],loading:true,error:rfid_list.error})
+        const fetchData = async () => {
+          try {
+            console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/layers/carreteros/'+ubicacion.groupid)
+         const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/layers/carreteros/'+ubicacion.groupid, {                 
+                                headers: {
+                                  'Content-Type': 'application/json',
+                                  Authorization: `Bearer ${token_item}`,
+                                },
+                              });
+            if (response.ok) {
+              const response_data = await response.json();
+              setRfidList({data:response_data.data,loading:false,error:rfid_list.error})
+              
+              
+            } else {
+              throw new Error('Error en la solicitud');
+            }
+          } catch (error) {
+            // Manejo de errores
+            setRfidList({data:rfid_list.data,loading:rfid_list.loading,error:error})
+            //console.error(error);
+          }
+        };
+        fetchData();
+    }
     function search_downs(){
       setDowns([])
       //console.log("use efect",ubicacion)
@@ -202,7 +273,11 @@ const Monitoreo=({token_item,dataGlobals,server})=>{
         fetchData();
     }
     function search_devices(){
-      //console.log("use efect",ubicacion)
+      console.log("search device ",rfidInterval)
+      if(rfidInterval!==0){
+        clearInterval(rfidInterval);
+        setRfid([])
+      }
         setMarkers([])
         setMarkersWOR([])
         setLines([])
@@ -276,7 +351,7 @@ const Monitoreo=({token_item,dataGlobals,server})=>{
               //console.log('Recorrido completo');
             }
             if(host.length!==0 && host.latitude.replace(",", ".")>=-90 && host.latitude.replace(",", ".")<=90 ){
-              let colorSG='#00ff70'
+              let colorSG='#4fb7f3'
               // let colorSG='#ffffff'
               // const hostidC = devices_data.hosts.find(obj => obj.hostid === host.hostid)
               const relation = devices_data.relations.find(obj => obj.hostid === host.hostid)
@@ -287,7 +362,10 @@ const Monitoreo=({token_item,dataGlobals,server})=>{
               // //console.log(hostidP)
               }
                 let severity=0
-             
+              if(host.Alineacion===0){
+                  colorSG='#1fee08'
+                  severity=-1
+              }else
               if(host.Alineacion>-60 && host.Alineacion<=-50){
                 colorSG='#ffee00'
                 severity=1
@@ -425,7 +503,7 @@ const Monitoreo=({token_item,dataGlobals,server})=>{
               const lon = devices_data.subgroup_info.find(obj => obj.longitude === host.longitude)
               const lat = devices_data.subgroup_info.find(obj => obj.latitude === host.latitude)
                
-               let colorSG='#4fb7f3'
+               let colorSG='#00ff70'
                let severity=0
                let tooltip=false;
                if(lon===undefined && lon===undefined){
@@ -538,14 +616,66 @@ const Monitoreo=({token_item,dataGlobals,server})=>{
         openInfoMarker()
         // Realiza las acciones deseadas al hacer clic en el marcador
       };
+      function actualizar_rfi(map,popup2,rfidI){
+        
+        try {
+          console.log("actualizar_rfi rfidInterval")
+        console.log(rfidI)
+        setRfidInterval(rfidI)
+          setRfidData({map:map,getSource:map.getSource('host-rfid'),popup:popup2})
+        
+          setRfid([])
+          search_rfid()
+        } catch (error) {
+          console.log(error)
+        }
+        
+        
+      }
+
+      function actualizar_layer_rfid(rfid){
+        
+        const popups = document.querySelectorAll('.custom-popup-rfid');
+      
+      popups.forEach(popup => {
+       
+      popup.remove();
+      });
+      
+      // var popup;
+      if(Object.keys(rfidData.map).length!==0){
+        rfid.forEach((feature) => {
+        const coordinates = feature.geometry.coordinates.slice();
+        const val = feature.properties.lecturas; // Asegúrate de tener esta propiedad en tus datos
+        
+        let popup = new mapboxgl.Popup({
+          className: 'custom-popup-rfid',
+          closeButton: false,
+          closeOnClick: false
+          })
+          .setLngLat(coordinates)
+          .setHTML(`<div class='cont-rfid' style='border: 1px solid #ffffff;'>
+          <div class='titleRFID'><div class='txtTitleRfid'>Trafico</div><br></div>
+          <div class='valRFID'><div class='txtRfid'>${val}</div><br><br></div></div>`)
+              .addTo(rfidData.map);
+        });
+    }
+        // console.log(map.getSource('host-rfid'))
+        // rfidData.map.setData({
+        //   type: 'FeatureCollection',
+        //   features: rfid
+        // })
+        
+
+      }
     return (
         <>
-        <RightQuadrant server={server} search_devices={search_devices} markersWOR={markersWOR}  search_downs={search_downs} downs={downs} search_problems={search_problems} token={token_item} ubicacion={ubicacion} markers={markers}  dataHosts={devices} setUbicacion={setUbicacion} />
+        <RightQuadrant server={server} setRfid={setRfid} search_rfid={search_rfid} search_devices={search_devices} markersWOR={markersWOR}  search_downs={search_downs} downs={downs} search_problems={search_problems} token={token_item} ubicacion={ubicacion} markers={markers}  dataHosts={devices} setUbicacion={setUbicacion} />
         {devices.loading ?<LoadData/>:
         // false?<LoadData/>:
         <>
         {
-          markersWOR.length!==0?<MapBox global_latitude={global_latitude} global_longitud={global_longitud} global_zoom={global_zoom} devices={devices} markers={markers} markersWOR={markersWOR} lines={lines} downs={downs}towers={towers} ubicacion={ubicacion} handleMarkerClick={handleMarkerClick}/>:''
+          markersWOR.length!==0?<MapBox search_rfid={search_rfid}actualizar_rfi={actualizar_rfi} global_latitude={global_latitude} global_longitud={global_longitud} global_zoom={global_zoom} devices={devices} markers={markers} markersWOR={markersWOR} lines={lines} downs={downs}towers={towers} rfid={rfid} ubicacion={ubicacion} handleMarkerClick={handleMarkerClick}/>:''
         }
         
         
