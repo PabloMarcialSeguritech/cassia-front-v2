@@ -1,0 +1,57 @@
+.modal-user-content{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.delete-modal{
+    width: 99% !important;
+    border: 2px solid rgb(235, 42, 42) !important
+}
+.head-card-users.delete-modal{
+    background-color: rgb(235, 42, 42) !important;
+    width: 100% !important;
+}
+.cont-info-modal-delete{
+    position: relative;
+    display: block;
+    width: 95%;
+    height: 95%;
+}
+.cont-message-modal-delete{
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 30%;
+    justify-content: center;
+    align-items: center;
+}
+.txt-message-modal-delete{
+    font-size: large;
+    color: rgb(235, 42, 42);
+    letter-spacing: 1px;
+}
+.cont-user-modal-delete{
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 40%;
+    justify-content: center;
+    align-items: center;
+}
+.txt-user-modal-delete{
+    font-size: x-large;
+    color: rgb(51, 51, 51);
+    letter-spacing: 1px;
+}
+.cont-btn-modal-delete{
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 30%;
+    justify-content: center;
+    align-items: center;
+}

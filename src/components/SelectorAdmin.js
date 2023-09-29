@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import Select from 'react-select'
 import data_ubi from './ubicaciones'
 import { useFetch } from '../hooks/useFetch'
-const Selector=({opGeneral,txtOpGen,opt_de,titulo,data,loading,props,origen})=>{
+const SelectorAdmin=({opGeneral,txtOpGen,opt_de,titulo,data,loading,selectFunction,origen})=>{
     // console.log(titulo)
     // // console.log(opt_de)
     // console.log(data)
@@ -48,9 +48,9 @@ const Selector=({opGeneral,txtOpGen,opt_de,titulo,data,loading,props,origen})=>{
                                 break;
             case 'Tecnología': op={ filter:titulo,value: datas.dispId=== undefined?0:datas.dispId, label: datas.name ,id:datas.id};
                                 break; 
-            case 'Métrica': op={ filter:titulo,value: datas.template_id=== undefined?0:datas.template_id, label:datas.nickname,id:datas.id};
+            case 'Marca': op={ filter:titulo,value: datas.brand_id=== undefined?0:datas.brand_id, label:datas.value,id:datas.id};
                                 break;  
-            case 'Agencia': op={ filter:titulo,value: datas.exception_agency_id=== undefined?0:datas.exception_agency_id, label: datas.name ,id:datas.id};
+            case 'Modelo': op={ filter:titulo,value: datas.id=== undefined?0:datas.id, label: datas.value ,id:datas.id};
                                 break;                   
             default:
                 op={ value: '', label: '' };
@@ -73,20 +73,21 @@ const Selector=({opGeneral,txtOpGen,opt_de,titulo,data,loading,props,origen})=>{
         //     ...state,[name]:selected.label
         // }))
         setValue(selected)
-        if(origen==='mapa'){
-            switch(selected.filter){
-                case 'Municipio': props.setUbicacion({latitud:props.ubicacion.latitud,longitud:props.ubicacion.longitud,groupid:selected.value,dispId:props.ubicacion.dispId,templateId:props.ubicacion.templateId})
-                                    break;
-                case 'Tecnología': props.setUbicacion({latitud:props.ubicacion.latitud,longitud:props.ubicacion.longitud,groupid:props.ubicacion.groupid,dispId:selected.value,templateId:props.ubicacion.templateId})
-                                    break; 
-                case 'Métrica': props.setUbicacion({latitud:props.ubicacion.latitud,longitud:props.ubicacion.longitud,groupid:props.ubicacion.groupid,dispId:props.ubicacion.dispId,templateId:selected.value})
-                                    break;                    
-                default:
-                        break;                        
-            }
-        }else if(origen==='admin'){
-                //console.log("admin",selected.value)
-        }
+        selectFunction(selected)
+        // if(origen==='mapa'){
+        //     switch(selected.filter){
+        //         case 'Municipio': props.setUbicacion({latitud:props.ubicacion.latitud,longitud:props.ubicacion.longitud,groupid:selected.value,dispId:props.ubicacion.dispId,templateId:props.ubicacion.templateId})
+        //                             break;
+        //         case 'Tecnología': props.setUbicacion({latitud:props.ubicacion.latitud,longitud:props.ubicacion.longitud,groupid:props.ubicacion.groupid,dispId:selected.value,templateId:props.ubicacion.templateId})
+        //                             break; 
+        //         case 'Métrica': props.setUbicacion({latitud:props.ubicacion.latitud,longitud:props.ubicacion.longitud,groupid:props.ubicacion.groupid,dispId:props.ubicacion.dispId,templateId:selected.value})
+        //                             break;                    
+        //         default:
+        //                 break;                        
+        //     }
+        // }else if(origen==='admin'){
+        //         //console.log("admin",selected.value)
+        // }
         
         
     }
@@ -114,6 +115,7 @@ const Selector=({opGeneral,txtOpGen,opt_de,titulo,data,loading,props,origen})=>{
                             options={options}
                             
                             // options={{filter:titulo, value: 0, label: 'cargando...' }}
+                            value={(value.length===0)?options[opcion_default]:value}
                             className="react-select-container-admin"
                             classNamePrefix="react-select-admin"
                             onChange={(selected)=>HandleChange(selected,titulo)}
@@ -130,4 +132,4 @@ const Selector=({opGeneral,txtOpGen,opt_de,titulo,data,loading,props,origen})=>{
     )
 }
 
-export default Selector
+export default SelectorAdmin

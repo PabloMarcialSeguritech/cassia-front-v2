@@ -6,10 +6,10 @@ import './styles/MapBox.css'
 import towerImg from '../img/torre2_blanca.png';
 const MapBox = ({actualizar_rfi,search_rfid,global_longitud,global_latitude,global_zoom,devices,markers,markersWOR,lines,downs,towers,rfid,ubicacion,handleMarkerClick}) => {
  
-  // console.log("markers*****************************************************")
+  console.log("markers*****************************************************")
   //console.log(ubicacion)
   //console.log(markers)
-  // console.log(markersWOR)
+  console.log(markersWOR)
   // console.log(global_latitude,global_longitud)
   let latitud_provicional=(ubicacion.groupid===0?global_latitude.value:ubicacion.latitud)
   let longitud_provicional=(ubicacion.groupid===0?global_longitud.value:ubicacion.longitud)
@@ -43,7 +43,7 @@ const MapBox = ({actualizar_rfi,search_rfid,global_longitud,global_latitude,glob
     let Popup;
     const map = mapRef.current;
     map.on('load', () => {
-      
+      console.log("on load map")
        /************************************************************ CAPA MWOR ************************************************************************ */
        map.addLayer({
         id: 'host-markerWOR',
@@ -74,8 +74,7 @@ const MapBox = ({actualizar_rfi,search_rfid,global_longitud,global_latitude,glob
 
         
         const coordinates = e.features[0].geometry.coordinates.slice();
-        const mag = e.features[0].properties.mag;
-        const tsunami = e.features[0].properties.tsunami === 1 ? 'yes' : 'no';
+        
 
         while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
           coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
@@ -86,7 +85,7 @@ const MapBox = ({actualizar_rfi,search_rfid,global_longitud,global_latitude,glob
           closeButton: false,
       })
           .setLngLat(coordinates)
-          // .setHTML(`magnitude: ${mag}<br>Was there a tsunami?: ${tsunami}`)
+          
           .setHTML(`<div class='cont-pop' style='border: 1px solid ${e.features[0].properties.color_alineacion};'>
           <div>${e.features[0].properties.name_hostC.slice(0, 25)}...</div>
           
@@ -111,13 +110,13 @@ const MapBox = ({actualizar_rfi,search_rfid,global_longitud,global_latitude,glob
         },
         paint: {
           'line-color':[
-            'match', // Utilizamos la función 'match' para evaluar el atributo 'tsunami'
-            ['get', 'severity'], // Accedemos al valor del atributo 'tsunami'
-            0, '#62a0bd', // Si tsunami es igual a 0, color azul '#11b4da'
-            1, '#ffee00', // Si tsunami es igual a 1, color rojo '#ff0000'
-            2, '#ee9d08', // Si tsunami es igual a 0, color azul '#11b4da'
-            3, '#ee5c08', // Si tsunami es igual a 1, color rojo '#ff0000'
-            4, '#ee0808', // Si tsunami es igual a 1, color rojo '#ff0000'
+            'match',
+            ['get', 'severity'], 
+            0, '#62a0bd', 
+            1, '#ffee00', 
+            2, '#ee9d08', 
+            3, '#ee5c08', 
+            4, '#ee0808', 
             '#4fb7f3', // Color predeterminado si no se cumplen las condiciones anteriores
           ],
           'line-width': 1,
@@ -190,14 +189,14 @@ const MapBox = ({actualizar_rfi,search_rfid,global_longitud,global_latitude,glob
         filter: ['!', ['has', 'point_count']],
         paint: {
           'circle-color': [
-            'match', // Utilizamos la función 'match' para evaluar el atributo 'tsunami'
-            ['get', 'severity'], // Accedemos al valor del atributo 'tsunami'
+            'match',
+            ['get', 'severity'], 
             -1, '#1fee08',
-            0, '#4fb7f3', // Si tsunami es igual a 0, color azul '#11b4da'
-            1, '#ffee00', // Si tsunami es igual a 1, color rojo '#ff0000'
-            2, '#ee9d08', // Si tsunami es igual a 0, color azul '#11b4da'
-            3, '#ee5c08', // Si tsunami es igual a 1, color rojo '#ff0000'
-            4, '#ee0808', // Si tsunami es igual a 1, color rojo '#ff0000'
+            0, '#4fb7f3', 
+            1, '#ffee00', 
+            2, '#ee9d08', 
+            3, '#ee5c08', 
+            4, '#ee0808', 
             '#11b4da', // Color predeterminado si no se cumplen las condiciones anteriores
           ],
           'circle-radius': 4,
@@ -212,8 +211,7 @@ const MapBox = ({actualizar_rfi,search_rfid,global_longitud,global_latitude,glob
       map.on('mouseenter', 'host-marker', (e) => {
         // //console.log(e)
         const coordinates = e.features[0].geometry.coordinates.slice();
-        const mag = e.features[0].properties.mag;
-        const tsunami = e.features[0].properties.tsunami === 1 ? 'yes' : 'no';
+        
 
         while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
           coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
@@ -224,7 +222,7 @@ const MapBox = ({actualizar_rfi,search_rfid,global_longitud,global_latitude,glob
           closeButton: false,
       })
           .setLngLat(coordinates)
-          // .setHTML(`magnitude: ${mag}<br>Was there a tsunami?: ${tsunami}`)
+          
           .setHTML(`<div class='cont-pop' style='border: 1px solid ${e.features[0].properties.color_alineacion};'>
           <div>${e.features[0].properties.name_hostC.slice(0, 25)}...</div><br>
           <div> Alineación: <b style='color: ${e.features[0].properties.color_alineacion};'>${e.features[0].properties.Alineacion}</b> </div>
@@ -236,7 +234,8 @@ const MapBox = ({actualizar_rfi,search_rfid,global_longitud,global_latitude,glob
         handleMarkerClick(e.features[0].properties)
       });
       /************************************************************ CAPA DOWNS ************************************************************************ */
-      //console.log(downs)
+      console.log("downs map")
+      console.log(downs)
       map.addLayer({
         id: 'host-down',
         type: 'circle',

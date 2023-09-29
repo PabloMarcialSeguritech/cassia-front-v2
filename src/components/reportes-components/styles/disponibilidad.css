@@ -1,0 +1,315 @@
+.main-reporte-disp{
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.cont-reporte-disp{
+    width: 90%;
+    height: 100%;
+    position: relative;
+    background-color: transparent;
+    display: block;
+    justify-content: center;
+    align-items: center;
+}
+.cont-menu-disp{
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 10%;
+justify-content: center;
+align-items: center;
+}
+.cont-graf-disp{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 60%;
+}
+.cont-table-disp{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 30%;
+}
+.compact-option{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 16%;
+    height: 100%;
+    padding: 10px;
+}
+
+.user-box-disp {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+.user-box-disp .label-disp {
+    position: absolute;
+    top: 0px !important;
+    left: 0;
+    padding: 10px 0;
+    /* font-size: 10px !important; */
+    /* font-weight: bolder; */
+    color: #003757;
+    pointer-events: none;
+    transition: .5s;
+  }
+   .user-box-disp input:focus ~ .label-disp,  .user-box-disp input:valid ~ .label-disp {
+    top: -25px !important;
+    left: 0px;
+    color: #003757;
+    font-size: 12px;
+  }
+   
+   .user-box-disp input:focus ~ .label-disp,
+ .user-box-disp input:valid ~ .label-disp,
+ .user-box-disp .active {
+    top: -10px !important;
+    left: 0px;
+    /* font-size: 12px; */
+}
+
+
+ .user-box-disp input {
+  width: 100%;
+  padding: 10px 0;
+  font-size: 16px;
+  color: #505050;
+  margin-bottom: 30px;
+  border: none;
+  border-bottom: 2px solid #003757;
+  border-right: 2px solid #003757;
+  outline: none;
+  background: transparent;
+  top: 30%;
+  position: relative;
+}
+
+ .user-box-disp input:focus ~ .label-disp,
+ .user-box-disp input:valid ~ .label-disp {
+  top: -10px;
+  left: 0;
+  color: #003757;
+  font-size: 12px;
+}
+
+/**********************************************/
+.cont-info-graf{
+  position: relative;
+  display: block;
+  width: 90%;
+  height: 95%;
+  top: 5%;
+}
+.cont-info-top{
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 10%;
+}
+.cont-info-center{
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 90%;
+}
+.cont-info-bottom{
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 10%;
+}
+.cont-text-info{
+    position: relative;
+    display: flex;
+    width: 33.33%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/*********************************************************/
+.bodyInfoTable{
+    position: relative;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height:100%;
+    
+  }
+  .contTableDisp{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+  .contCheckDisp{
+    position: relative;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    width: 5%;
+    height: 70%;
+  }
+
+  .contInfoDisp{
+    position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 95%;
+  height: 90%;
+  border: 2px solid #003757;
+  }
+  .infoDisp{
+    position: relative;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    border: #ffffff33 1px solid;
+    border-radius: 10px;
+  }
+  .rowInfoDisp {
+    justify-content: center;
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    height:26.666%;
+    /* background: #5d5c69; */
+    background-color: #43434d79;
+    background-size: 400%;
+    color: #003757;
+    font-size: medium !important;
+    /* border-radius: 0px 0px 10px 10px; */
+    width: 100%;
+  }
+  .rowInfoDisp:nth-child(odd){
+    background-color: #f8f9fa;
+  }
+  .rowInfoDisp:nth-child(even){
+    background-color: #eeeeee;
+  }
+  .titlesInfoDisp{
+    height: 20%;
+    position: relative;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    background-color: #003757;
+    /* max-height: 25px; */
+  }
+  .DispInfoCell{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  .txtDispInfoCell{
+    text-align: center;
+    position: relative;
+    width: 100%;
+    height: auto;
+    word-break: break-all;
+    margin: 0 0 1em 1em;
+    display: flex;
+    font-size: medium;
+    letter-spacing: 0.5px;
+    justify-content: center;
+    margin: 2%;
+  }
+  .lblInfoDisp{
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    top: 0;
+    color: aliceblue;
+    margin-left: 1%;
+  }
+  .headerCellDisp {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 15%;
+    border-left: 1px solid white;
+    color: white;
+    font-weight: bold;
+  }
+  .txtHeaderCellDisp {
+    font-weight: unset;
+    font-size: small;
+    letter-spacing: 1px;
+  }
+  /******************************estilos de radiocheck************************************/
+.checkTableDisp {
+    -webkit-appearance: none;
+   /* remove default */
+    display: block;
+    margin: 10px;
+    width: 24px;
+    height: 24px;
+    border-radius: 12px;
+    cursor: pointer;
+    vertical-align: middle;
+    box-shadow: hsla(0,0%,100%,.15) 0 1px 1px, inset hsla(0,0%,0%,.5) 0 0 0 1px;
+    background-color: #003757;
+    /* border-color: ; */
+    background-image: -webkit-radial-gradient( hsla(200,100%,90%,1) 0%, hsla(200,100%,70%,1) 15%, hsla(200,100%,60%,.3) 28%, hsla(200,100%,30%,0) 70% );
+    background-repeat: no-repeat;
+    -webkit-transition: background-position .15s cubic-bezier(.8, 0, 1, 1),
+      -webkit-transform .25s cubic-bezier(.8, 0, 1, 1);
+    outline: none;
+  }
+  
+  .checkTableDisp:checked {
+    -webkit-transition: background-position .2s .15s cubic-bezier(0, 0, .2, 1),
+      -webkit-transform .25s cubic-bezier(0, 0, .2, 1);
+  }
+  
+  .checkTableDisp:active {
+    -webkit-transform: scale(1.5);
+    -webkit-transition: -webkit-transform .1s cubic-bezier(0, 0, .2, 1);
+  }
+  
+  
+  
+  /* The up/down direction logic */
+  
+  .checkTableDisp,
+  .checkTableDisp:active {
+    background-position: 0 24px;
+  }
+  
+  .checkTableDisp:checked {
+    background-position: 0 0;
+  }
+  
+  .checkTableDisp:checked ~ .checkTableDisp,
+  .checkTableDisp:checked ~ .checkTableDisp:active {
+    background-position: 0 -24px;
+  }
+  

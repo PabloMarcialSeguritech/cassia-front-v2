@@ -1,4 +1,4 @@
-.main-admin{
+.main-cis{
     width: 100%;
     height: 100%;
     position: relative;
@@ -9,28 +9,28 @@
     align-items: center;
 }
 
-.head-admin{
+.head-cis{
     position: relative;
     display: block;
     width: 100%;
-    height: 15%;
+    height: 9%;
 /* background-color: rgba(195,195,195,1); */
 /* border-bottom: 1px solid rgba(195,195,195,1); */
 }
-.title-admin{
+.title-cis{
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 50%;
+    height: 100%;
 }
-.txt-title-admin{
+.txt-title-cis{
     /* color: rgba(195,195,195,1); */
     color: #003757;
     font-size: xx-large;
 }
-.menu-admin{
+.menu-cis{
     position: relative;
     display: flex;
     justify-content: left;
@@ -82,11 +82,11 @@ color: 003757;
     /* color: rgb(1, 17, 31) !important; */
     color:aliceblue !important;
 }
-.cont-admin{
+.cont-cis{
     position: relative;
     display: block;
     width: 100%;
-    height: 85%;
+    height: 90%;
 /* background-color: rgb(95, 95, 95); */
  
 }
