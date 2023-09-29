@@ -22,6 +22,7 @@
     "react-scripts": "^5.0.1",
     "react-select": "^5.7.3",
     "reactplosive-modal": "^1.0.5",
+    "recharts": "^2.8.0",
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
     "turf": "^3.0.14",

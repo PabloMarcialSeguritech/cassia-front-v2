@@ -1,4 +1,4 @@
-.main-admin{
+.main-reportes{
     width: 100%;
     height: 100%;
     position: relative;
@@ -9,7 +9,7 @@
     align-items: center;
 }
 
-.head-admin{
+.head-reportes{
     position: relative;
     display: block;
     width: 100%;
@@ -17,7 +17,7 @@
 /* background-color: rgba(195,195,195,1); */
 /* border-bottom: 1px solid rgba(195,195,195,1); */
 }
-.title-admin{
+.title-reportes{
     position: relative;
     display: flex;
     justify-content: center;
@@ -25,12 +25,12 @@
     width: 100%;
     height: 50%;
 }
-.txt-title-admin{
+.txt-title-reportes{
     /* color: rgba(195,195,195,1); */
     color: #003757;
     font-size: xx-large;
 }
-.menu-admin{
+.menu-reportes{
     position: relative;
     display: flex;
     justify-content: left;
@@ -82,7 +82,7 @@ color: 003757;
     /* color: rgb(1, 17, 31) !important; */
     color:aliceblue !important;
 }
-.cont-admin{
+.cont-reportes{
     position: relative;
     display: block;
     width: 100%;

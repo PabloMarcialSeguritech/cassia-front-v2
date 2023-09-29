@@ -4,6 +4,8 @@ import Container from '../components/Container'
 import '../components/styles/MapBox.css'
 import Perfil from '../sections/Perfil'
 import Admin from '../sections/Admin'
+import Cis from '../sections/Cis'
+import Reportes from '../sections/Reportes'
 import Monitoreo from '../sections/Monitoreo'
 import Modal from 'react-modal';
 import ModalVerificateUser from "../components/main-components/ModalVerificateUser";
@@ -27,7 +29,7 @@ const Main=({ onLogin,token,setToken,server })=>{
    
     const [pageSelected,setPageSelected]=useState("perfil")
     const [rol_id,setRolID]=useState("")
-    const [verificateUserModalOpen, setVerificateUserModalOpen] =useState(true);
+    const [verificateUserModalOpen, setVerificateUserModalOpen] =useState(false);
     // const [globals,setGlobals]=useState([])
     const dataGlobals=useFetch('cassia/configuration','','','GET',server)
     console.log(dataGlobals)
@@ -75,7 +77,11 @@ const Main=({ onLogin,token,setToken,server })=>{
             return <Monitoreo server={server} token={token} dataGlobals={dataGlobals.data.data}/>;
         }else if (pageSelected === "panel-admin"){
           return <Admin server={server} dataGlobals={dataGlobals.data.data} />;
-      }
+      }else if (pageSelected === "cis"){
+        return <Cis server={server} dataGlobals={dataGlobals.data.data} />;
+    }else if (pageSelected === "reportes"){
+      return <Reportes server={server} dataGlobals={dataGlobals.data.data} />;
+  }
     })()}
         
       </Container>

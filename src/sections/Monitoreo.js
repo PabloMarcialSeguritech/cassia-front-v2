@@ -51,7 +51,53 @@ const Monitoreo=({token_item,dataGlobals,server})=>{
     const[rfid_list,setRfidList]=useState({data:[],loading:true,error:null});
     const [rfidData,setRfidData]=useState({map:{},getSource:{},popup:null});
     const [rfidInterval,setRfidInterval]=useState(0)
-   
+
+    const [renderCapas,setRenderCapas]=useState({downs:false,markersWOR:false,markers:true,rfid:true})
+    console.log(renderCapas)
+   const [renderMap,setRenderMap]=useState(false)
+   const allTrue = Object.values(renderCapas).every(value => value === true);
+console.log(markersWOR)
+useEffect(()=>{
+  if (allTrue) {
+    console.log('Todos los atributos están en true');
+    // setRenderMap(true)
+  } else {
+    console.log('Al menos uno de los atributos está en false');
+  }
+},[renderCapas])
+   useEffect(() => {
+    console.log(renderCapas.markersWOR)
+    if(markersWOR.length!==0){
+      console.log('El proceso de markersWOR ha terminado',markersWOR.length);
+      setRenderCapas(prevState => ({
+        ...prevState,
+        markersWOR: true 
+      }));
+    }
+    
+    
+  }, [markersWOR]); 
+  useEffect(() => {
+    console.log('El proceso de downs ha terminado');
+    setRenderCapas(prevState => ({
+      ...prevState,
+      downs: true 
+    }));
+  }, [downs]);
+  useEffect(() => {
+    console.log('El proceso de rfid ha terminado');
+    setRenderCapas(prevState => ({
+      ...prevState,
+      rfid: true 
+    }));
+  }, [rfid]);
+  useEffect(() => {
+    console.log('El proceso de markers ha terminado');
+    setRenderCapas(prevState => ({
+      ...prevState,
+      markers: true 
+    }));
+  }, [markers]);
     useEffect(()=>{
       
       search_problems()
@@ -112,6 +158,7 @@ const Monitoreo=({token_item,dataGlobals,server})=>{
         }
         )
     }
+    
      /****************************************************************** */
      function objeto_downs(downs_list){
       downs_list.map((host, index, array)=>
@@ -245,12 +292,14 @@ const Monitoreo=({token_item,dataGlobals,server})=>{
     }
     function search_downs(){
       setDowns([])
-      //console.log("use efect",ubicacion)
+      console.log("use downs",ubicacion)
         setDownsList({data:downs_list.data,loading:true,error:downs_list.error})
         const fetchData = async () => {
           try {
-            let body = (ubicacion.dispId===0)?'':'/?dispId='+ubicacion.dispId
-         const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/layers/downs/'+ubicacion.groupid+''+body, {                 
+            
+            let body = (ubicacion.dispId===0)?'':'?dispId='+ubicacion.dispId
+            console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/layers/downs/'+ubicacion.groupid+''+body)
+            const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/layers/downs/'+ubicacion.groupid+''+body, {                 
                                 headers: {
                                   'Content-Type': 'application/json',
                                   Authorization: `Bearer ${token_item}`,
@@ -273,11 +322,19 @@ const Monitoreo=({token_item,dataGlobals,server})=>{
         fetchData();
     }
     function search_devices(){
+      setRenderMap(false)
       console.log("search device ",rfidInterval)
       if(rfidInterval!==0){
         clearInterval(rfidInterval);
         setRfid([])
       }
+      setRenderCapas(prevState => ({
+        ...prevState,
+        downs:false,
+        markersWOR:false,
+        markers: (ubicacion.templateId!==0)?false:true ,
+        rfid:(ubicacion.dispId===9)?false:true
+      }));
         setMarkers([])
         setMarkersWOR([])
         setLines([])
@@ -668,14 +725,16 @@ const Monitoreo=({token_item,dataGlobals,server})=>{
         
 
       }
+    
     return (
         <>
         <RightQuadrant server={server} setRfid={setRfid} search_rfid={search_rfid} search_devices={search_devices} markersWOR={markersWOR}  search_downs={search_downs} downs={downs} search_problems={search_problems} token={token_item} ubicacion={ubicacion} markers={markers}  dataHosts={devices} setUbicacion={setUbicacion} />
-        {devices.loading ?<LoadData/>:
-        // false?<LoadData/>:
+        {
+        devices.loading ?<LoadData/>:
         <>
         {
-          markersWOR.length!==0?<MapBox search_rfid={search_rfid}actualizar_rfi={actualizar_rfi} global_latitude={global_latitude} global_longitud={global_longitud} global_zoom={global_zoom} devices={devices} markers={markers} markersWOR={markersWOR} lines={lines} downs={downs}towers={towers} rfid={rfid} ubicacion={ubicacion} handleMarkerClick={handleMarkerClick}/>:''
+          
+          allTrue?<MapBox search_rfid={search_rfid}actualizar_rfi={actualizar_rfi} global_latitude={global_latitude} global_longitud={global_longitud} global_zoom={global_zoom} devices={devices} markers={markers} markersWOR={markersWOR} lines={lines} downs={downs}towers={towers} rfid={rfid} ubicacion={ubicacion} handleMarkerClick={handleMarkerClick}/>:''
         }
         
         
