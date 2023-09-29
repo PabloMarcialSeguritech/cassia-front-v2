@@ -65,6 +65,12 @@ letter-spacing: 1px;
     
     color:  #c4c4c4;
 }
+.labelSelectorAdmin{
+    position: absolute;
+    top: -30%;
+    color:  #003757;
+    z-index: 2;
+}
 .react-select__menu:hover{
     cursor: pointer;
 }
@@ -115,6 +121,7 @@ letter-spacing: 1px;
 
 .react-select-admin__input-container,.react-select-admin__single-value {
     color: #003757 !important;
+    text-align: center;
 }
 .react-select-admin__indicator svg{
     color: #003757 ;

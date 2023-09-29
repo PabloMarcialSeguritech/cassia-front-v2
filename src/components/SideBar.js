@@ -54,6 +54,30 @@ const SideBar =({rolId,onLogin,pageSelected,setPageSelected,dataGlobals})=>{
             :
             ''
             }
+            <div className={'sidebarRow '+(pageSelected==="cis"?'sideRowSelected':'')}>
+                <div className={'sidebarCont '+(pageSelected==="cis"?'sideSelected':'')} name="cis" onClick={handleSection}>
+                
+                <div className='imgSideCont' name="cis" >
+                <img src={'/iconos/cis'+(pageSelected==="cis"?'-blanco.png':'.png')} name="cis" />
+                {/* <img src="/iconos/monitoreo-blanco.png"/> */}
+                    </div>
+                    <div className='textSideCont ' name="cis" >
+                    CI's
+                    </div>
+                </div>
+            </div>
+            <div className={'sidebarRow '+(pageSelected==="reportes"?'sideRowSelected':'')}>
+                <div className={'sidebarCont '+(pageSelected==="reportes"?'sideSelected':'')} name="cireportess" onClick={handleSection}>
+                
+                <div className='imgSideCont' name="reportes" >
+                <img src={'/iconos/reportes'+(pageSelected==="reportes"?'-blanco.png':'.png')} name="reportes" />
+                {/* <img src="/iconos/monitoreo-blanco.png"/> */}
+                    </div>
+                    <div className='textSideCont ' name="reportes" >
+                    REPORTES
+                    </div>
+                </div>
+            </div>
             <div className="sidebarRow">
                 <div className='sidebarCont ' onClick={onLogin} >
                     <div className='imgSideCont'>
