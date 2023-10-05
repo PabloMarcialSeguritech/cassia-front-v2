@@ -4,9 +4,9 @@ import Select from 'react-select'
 import data_ubi from './ubicaciones'
 import { useFetch } from '../hooks/useFetch'
 const Selector=({opGeneral,txtOpGen,opt_de,titulo,data,loading,props,origen})=>{
-    console.log(titulo)
-    console.log(opt_de)
-    console.log(data)
+    // console.log(titulo)
+    // // console.log(opt_de)
+    // console.log(data)
     const customStyles = {
         // Estilos para el contenedor del react-select
         control: (provided, state) => ({
@@ -94,7 +94,7 @@ const Selector=({opGeneral,txtOpGen,opt_de,titulo,data,loading,props,origen})=>{
     return(
         <div className='menuSearchOption'>
             <div className={origen==='mapa'?'compactSelector':'compactSelectorAdmin'}>
-                <label htmlFor='selector' className='labelSelector'>{titulo}:</label>
+                <label htmlFor='selector' className={origen==='mapa'?'labelSelector':'labelSelectorAdmin'}>{titulo}:</label>
                 {
                     
                         origen==='mapa'?

@@ -1,11 +1,16 @@
 import { useState } from 'react'
 import './styles/SideBar.css'
-const SideBar =({rolId,onLogin,pageSelected,setPageSelected})=>{
+const SideBar =({rolId,onLogin,pageSelected,setPageSelected,dataGlobals})=>{
     const handleSection=(e)=>{
        
         console.log(e.target.attributes.name.value)
         setPageSelected(e.target.attributes.name.value)
     }
+    var estado=''
+    if(dataGlobals!==undefined){
+        estado=dataGlobals.find(obj => obj.name === 'estado')
+    }
+    
     return(
         <div className="sidebar">
             
@@ -49,6 +54,30 @@ const SideBar =({rolId,onLogin,pageSelected,setPageSelected})=>{
             :
             ''
             }
+            <div className={'sidebarRow '+(pageSelected==="cis"?'sideRowSelected':'')}>
+                <div className={'sidebarCont '+(pageSelected==="cis"?'sideSelected':'')} name="cis" onClick={handleSection}>
+                
+                <div className='imgSideCont' name="cis" >
+                <img src={'/iconos/cis'+(pageSelected==="cis"?'-blanco.png':'.png')} name="cis" />
+                {/* <img src="/iconos/monitoreo-blanco.png"/> */}
+                    </div>
+                    <div className='textSideCont ' name="cis" >
+                    CI's
+                    </div>
+                </div>
+            </div>
+            <div className={'sidebarRow '+(pageSelected==="reportes"?'sideRowSelected':'')}>
+                <div className={'sidebarCont '+(pageSelected==="reportes"?'sideSelected':'')} name="cireportess" onClick={handleSection}>
+                
+                <div className='imgSideCont' name="reportes" >
+                <img src={'/iconos/reportes'+(pageSelected==="reportes"?'-blanco.png':'.png')} name="reportes" />
+                {/* <img src="/iconos/monitoreo-blanco.png"/> */}
+                    </div>
+                    <div className='textSideCont ' name="reportes" >
+                    REPORTES
+                    </div>
+                </div>
+            </div>
             <div className="sidebarRow">
                 <div className='sidebarCont ' onClick={onLogin} >
                     <div className='imgSideCont'>
@@ -60,7 +89,12 @@ const SideBar =({rolId,onLogin,pageSelected,setPageSelected})=>{
                 </div>
             </div>
        <div className='sideLogo'> 
-       <img src="logo-spin.png"  className='icon-seguritech' alt="Logo"/>
+       {/* <img src="logo-spin.png"  className='icon-seguritech' alt="Logo"/> */}
+       <img src={"/escudos/"+estado.value+".svg"}  className='icon-state' alt="Logo"/>
+       {/* <label>Guanajuato</label> */}
+       <div className='textSideCont ' style={{textTransform: 'capitalize'}} name="estado" >
+                       {(estado==='')?'':estado.value}
+                    </div>
        </div>
       </div>
     )

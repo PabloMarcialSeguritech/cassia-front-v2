@@ -9,7 +9,9 @@ const NavBar =()=>{
 
             </div>
             <div className='Title'>
-                <h1 className='textTitle'>CASSIA</h1>
+                <img src="logo_cassia.png"  style={{height: '50%'}} alt="Logo"/>
+                {/* <h1 className='textTitle'>CASSIA</h1> */}
+
             </div>
         {/* <ul className="menu">
             <li><a href="#">Inicio</a></li>

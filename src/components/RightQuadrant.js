@@ -15,7 +15,7 @@ const RightQuadrant =(props)=>{
     const [dataTec,setDataTec]=useState({data:[],loading:true,error:null})
     const [dataDisp,setDataDisp]=useState({data:[],loading:true,error:null})
     const [ubiActual,setUbiActual]=useState({municipio:'todos',groupid:0,dispId:11,templateId:0})
-   console.log(dataDisp)
+//    console.log(dataDisp)
     let s4= undefined
     let s3= undefined
     let s2= undefined
@@ -38,6 +38,12 @@ const RightQuadrant =(props)=>{
         props.search_problems()
         props.search_devices()
         props.search_downs()
+        if(props.ubicacion.dispId===9){
+            props.search_rfid()
+        }else{
+            props.setRfid([])
+        }
+        
     }
     
     useEffect(()=>{
@@ -95,8 +101,6 @@ const RightQuadrant =(props)=>{
        
             let aux_deft=dataDisp.data.find(obj => obj.id === 0)
             if(aux_deft===undefined){
-                console.log("undefined",dataDisp.data[0])
-    
                 props.setUbicacion({latitud:props.ubicacion.latitud,longitud:props.ubicacion.longitud,groupid:props.ubicacion.groupid,dispId:props.ubicacion.dispId,templateId:dataDisp.data[0].id})
             }else{
                 props.setUbicacion({latitud:props.ubicacion.latitud,longitud:props.ubicacion.longitud,groupid:props.ubicacion.groupid,dispId:props.ubicacion.dispId,templateId:0})

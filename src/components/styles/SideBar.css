@@ -9,7 +9,7 @@
     height: 92%;
     display: inline;
     transition: width 0.3s ease;
-    z-index: 2;
+    z-index: 1;
   }
   .sideLogo{
     position: absolute;
@@ -45,7 +45,7 @@
 }
 .sidebar:hover{
     width: 10%;
-    z-index: 2;
+    z-index: 3;
     background-color: #444;
     transition: width 0.3s ease;
 }

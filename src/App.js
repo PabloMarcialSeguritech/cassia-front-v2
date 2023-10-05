@@ -11,6 +11,8 @@ function App() {
   const [token,setToken] = useState(localStorage.getItem('access_token'));
 
   const [server,setServer]=useState({ip:'172.18.200.14',port:8002})
+  // const [server,setServer]=useState({ip:'10.21.14.219',port:8002})
+  // const [server,setServer]=useState({ip:'172.16.10.50',port:8000})
   useEffect(()=>{
     if(token===null){
          console.log("es null")
@@ -29,7 +31,7 @@ function App() {
       console.log(e.data)
       console.log(JSON.stringify(e.data))
       localStorage.setItem('user_session', JSON.stringify(e.data))
-      localStorage.setItem('access_token', e.data.refresh_token);
+      localStorage.setItem('access_token', e.data.access_token);
       setLoggedIn(true)
     }
     

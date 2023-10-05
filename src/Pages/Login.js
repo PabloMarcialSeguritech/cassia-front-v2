@@ -30,9 +30,10 @@ const [userVal,setUserVal]=useState(true)
             setDisabled(false)
         }
   },[loginData])
-
+  
+   
   const handleSubmit = async (e) => {
-    console.log("submit")
+    
     setLoading(true)
         const formData = new URLSearchParams();
         formData.append("username", loginData.email);
@@ -70,18 +71,11 @@ const [userVal,setUserVal]=useState(true)
            console.log(error)
           
         }
-      // if(loginData.email==="juan.marcial" && loginData.password==="12345678"){
-      //   if(response.ok){
-      //   // onLogin({inicio:"ok"});
-      //   setUserVal(true)
-      // }else{
-      //   setUserVal(false)
-      // }
-    if (true) {
-    //   const data = await response.json();
-      //onLogin({inicio:"ok"}); // Llamada a la función en el componente principal para actualizar el estado de inicio de sesión
-    }
+      
   };
+  function prueba(){
+    console.log(loginData.email)
+  }
   const {email,password}=loginData
     return (
         <div className='main-login'> 
