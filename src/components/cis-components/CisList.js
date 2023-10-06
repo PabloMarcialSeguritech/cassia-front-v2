@@ -72,10 +72,10 @@ const CisList =({handleChangEdit,setData,setRegisterIsValid ,setLoading,setError
               </div>
               <div className='field-body-table-cis field-medium'>
                 <div className='cont-img-field-acciones'>
-                  <img className='img-field-acciones' src='/iconos/btn_editar_usuario_azul.png' title='Editar' name='Editar' ci_id={elemento.ci_id} onClick={() => handleChangEdit(elemento)} />
+                  <img className='img-field-acciones' src='/iconos/edit.png' title='Editar' name='Editar' ci_id={elemento.ci_id} onClick={() => handleChangEdit(elemento)} />
                 </div>
                 <div className='cont-img-field-acciones'>
-                  <img className='img-field-acciones' src='/iconos/btn_eliminar_usuario.png' title='Eliminar'name='Eliminar' ci_id={elemento.ci_id} onClick={()=>handledeleteUserClick(elemento)}/>
+                  <img className='img-field-acciones' src='/iconos/delete.png' title='Eliminar'name='Eliminar' ci_id={elemento.ci_id} onClick={()=>handledeleteUserClick(elemento)}/>
                 </div>
               </div>
             </div>
