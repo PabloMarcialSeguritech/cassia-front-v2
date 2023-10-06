@@ -8,12 +8,89 @@ import SelectorAdmin from '../SelectorAdmin'
 import LoadAdding from '../LoadAdding'
 import LoadSimple from '../LoadSimple'
 import React, { PureComponent } from 'react';
-
+import Modal from 'react-modal';
 import { LineChart, Line,Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-
+import MenuSearch from './MenuSearch'
+import ModalAddMultiGraph from './ModalAddMultiGraph'
 // import UserList from './UserList'
-
+const AddMultiGraphModalStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    background: '#ffffff !important',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    width:'70%',
+    height:'70%',
+    padding:'20px'
+  },
+};
 const Disponibilidad=({server})=>{
+  const color_graf={
+    1:"#c680ff",
+    2:"#80cfff",
+    3:"#56e1ad"
+  }
+  const data = [
+    {
+      name: 'Page A',
+      uv: 4000,
+      pv: 2400,
+      rv:3400,
+      amt: 2400,
+    },
+    {
+      name: 'Page B',
+      uv: 3000,
+      pv: 1398,
+      rv: 2398,
+      amt: 2210,
+    },
+    {
+      name: 'Page C',
+      uv: 2000,
+      pv: 9800,
+      rv: 5400,
+      amt: 2290,
+    },
+    {
+      name: 'Page D',
+      uv: 2780,
+      pv: 3908,
+      rv: 3100,
+      amt: 2000,
+    },
+    {
+      name: 'Page E',
+      uv: 1890,
+      pv: 4800,
+      rv: 2300,
+      amt: 2181,
+    },
+    {
+      name: 'Page F',
+      uv: 2390,
+      pv: 3800,
+      rv: 3400,
+      amt: 2500,
+    },
+    {
+      name: 'Page G',
+      uv: 3490,
+      pv: 4300,
+      rv: 2400,
+      amt: 2100,
+    },
+  ];
+  const countArray=[
+    [],
+    ['uv' ],
+    ['uv', 'pv'],
+    ['uv', 'pv', 'rv'],
+  ]
+  console.log(countArray)
   const obtenerPrimerDiaDelMes = () => {
     const hoy = new Date();
     const primerDiaDelMes = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
@@ -36,32 +113,36 @@ const Disponibilidad=({server})=>{
   
     return `${anio}-${mes}-${dia}T${horas}:${minutos}`;
   };
-  console.log(obtenerFechaActualLocal(),obtenerPrimerDiaDelMes ())
-    const dataLocations=useFetch('zabbix/groups/municipios','','token','GET',server)
-    const [dataTec,setDataTec]=useState({data:[],loading:true,error:null})
-    const [dataMarca,setDataMarca]=useState({data:[],loading:true,error:null})
-    const [dataModelo,setDataModelo]=useState({data:[],loading:true,error:null})
     const [dataInfo,setDataInfo]=useState({data:[],loading:true,error:null})
     const [opciones,setOpciones]=useState({municipio:0,tecnologia:11,marca:0,modelo:0,fecha_ini:''+obtenerPrimerDiaDelMes(),fecha_fin:''+obtenerFechaActualLocal()})
     const token_item=localStorage.getItem('access_token')
-    console.log(opciones)
-    const changeOption=(option)=>{
-        
-            switch(option.filter){
-                case 'Municipio': setOpciones({municipio:option.value,tecnologia:opciones.tecnologia,marca:opciones.marca,modelo:opciones.modelo,fecha_ini:opciones.fecha_ini,fecha_fin:opciones.fecha_fin})
-                                    break;
-                case 'Tecnología': setOpciones({municipio:opciones.municipio,tecnologia:option.value,marca:opciones.marca,modelo:opciones.modelo,fecha_ini:opciones.fecha_ini,fecha_fin:opciones.fecha_fin})
-                                    break; 
-                case 'Marca': setOpciones({municipio:opciones.municipio,tecnologia:opciones.tecnologia,marca:option.value,modelo:opciones.modelo,fecha_ini:opciones.fecha_ini,fecha_fin:opciones.fecha_fin})
-                                    break;  
-                case 'Marca': setOpciones({municipio:opciones.municipio,tecnologia:opciones.tecnologia,marca:opciones.marca,modelo:option.value,fecha_ini:opciones.fecha_ini,fecha_fin:opciones.fecha_fin})
-                                    break;                    
-                default:
-                        break;                        
-            }
+    const [AddMultiGraphModalOpen, setAddMultiGraphModalOpen] =useState(false);
+    const [totalLienas,setTotalLineas] =useState(1)
+    const [seriesKeys,setSeriesKeys]=useState([])
+    const [seriesToRender,setSeriesToRender]=useState([])
+    console.log("total de lineas ",totalLienas)
+    const add = () => {
+      // Aquí puedes realizar la búsqueda usando el valor de 'query'
+      // Por ejemplo, puedes actualizar el estado 'searchResult' con los resultados
+      setAddMultiGraphModalOpen(true)
     }
+    function closAddMultiGraphModal() {
+      
+      setAddMultiGraphModalOpen(false);
+      console.log("mostrara:",totalLienas)
+      console.log(countArray[totalLienas])
+      setSeriesKeys(countArray[totalLienas]) // Define las claves de las series
 
+      search_reporte_disponibilidad()
+    }
+    useEffect(()=>{
+      setSeriesToRender(seriesKeys.filter(key => data.some(item => item[key])));
+      console.log(seriesKeys.filter(key => data.some(item => item[key]))) // Filtra solo las series que tienen valores
+      
+    },[seriesKeys])
+console.log(dataInfo.data)
 useEffect(()=>{
+  setSeriesKeys(countArray[totalLienas]) 
   search_reporte_disponibilidad()
 },[])
 const Buscar=()=>{
@@ -69,7 +150,7 @@ const Buscar=()=>{
 }
 function search_reporte_disponibilidad(){
         console.log('http://'+server.ip+':'+server.port+'/api/v1/cassia/reports/availability?municipality_id='+opciones.municipio+'&tech_id='+opciones.tecnologia+'&brand_id='+opciones.marca+'&model_id='+opciones.modelo+'&init_date='+opciones.fecha_ini+'&end_date='+opciones.fecha_fin)
-  setDataInfo({data:dataTec.data,loading:true,error:dataTec.error})
+  setDataInfo({data:dataInfo.data,loading:true,error:dataInfo.error})
     const fetchData = async () => {
       try {
      const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/cassia/reports/availability?municipality_id='+opciones.municipio+'&tech_id='+opciones.tecnologia+'&brand_id='+opciones.marca+'&model_id='+opciones.modelo+'&init_date='+opciones.fecha_ini+'&end_date='+opciones.fecha_fin, {                 
@@ -81,282 +162,135 @@ function search_reporte_disponibilidad(){
                           console.log(response)
         if (response.ok) {
           const response_data = await response.json();
-          setDataInfo({data:response_data.data,loading:false,error:dataTec.error})
+          console.log(totalLienas)
+          
+      
+          setTotalLineas(1)
+          setSeriesKeys(countArray[totalLienas]) 
+          setDataInfo({data:response_data.data,loading:false,error:dataInfo.error})
         console.log(dataInfo)
         } else {
           throw new Error('Error en la solicitud');
         }
       } catch (error) {
         // Manejo de errores
-        setDataInfo({data:dataTec.data,loading:dataTec.loading,error:error})
+        setDataInfo({data:dataInfo.data,loading:dataInfo.loading,error:error})
         //console.error(error);
       }
     };
     fetchData();
 }
-    useEffect(()=>{
-        console.log("cambio la ubicacion")
-        setOpciones({municipio:opciones.municipio,tecnologia:11,marca:opciones.marca,modelo:opciones.modelo,fecha_ini:opciones.fecha_ini,fecha_fin:opciones.fecha_fin})
-        search_tecnologias()
-    },[opciones.municipio])
-    function search_tecnologias(){
-        
-        setDataTec({data:dataTec.data,loading:true,error:dataTec.error})
-          const fetchData = async () => {
-            try {
-           const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/groups/devices/'+opciones.municipio, {                 
-                                  headers: {
-                                    'Content-Type': 'application/json',
-                                    Authorization: `Bearer ${token_item}`,
-                                  },
-                                });
-                                // console.log(response)
-              if (response.ok) {
-                const response_data = await response.json();
-                setDataTec({data:response_data.data,loading:false,error:dataTec.error})
-               
-                // //console.log(response_data)
-                
-              } else {
-                throw new Error('Error en la solicitud');
-              }
-            } catch (error) {
-              // Manejo de errores
-              setDataTec({data:dataTec.data,loading:dataTec.loading,error:error})
-              //console.error(error);
-            }
-          };
-          fetchData();
-      }
-
-      useEffect(()=>{
-        console.log("cambio la ubicacion")
-        setOpciones({municipio:opciones.municipio,tecnologia:opciones.tecnologia,marca:0,modelo:opciones.modelo,fecha_ini:opciones.fecha_ini,fecha_fin:opciones.fecha_fin})
-        search_marca()
-        
-    },[opciones.tecnologia])
-    function search_marca(){
-        
-      setDataMarca({data:dataTec.data,loading:true,error:dataTec.error})
-          const fetchData = async () => {
-            try {
-           const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/groups/brands/'+opciones.tecnologia, {                 
-                                  headers: {
-                                    'Content-Type': 'application/json',
-                                    Authorization: `Bearer ${token_item}`,
-                                  },
-                                });
-                                // console.log(response)
-              if (response.ok) {
-                const response_data = await response.json();
-                setDataMarca({data:response_data.data,loading:false,error:dataTec.error})
-               
-                // //console.log(response_data)
-                
-              } else {
-                throw new Error('Error en la solicitud');
-              }
-            } catch (error) {
-              // Manejo de errores
-              setDataMarca({data:dataTec.data,loading:dataTec.loading,error:error})
-              //console.error(error);
-            }
-          };
-          fetchData();
-      }
-      useEffect(()=>{
-        console.log("cambio la ubicacion")
-        setOpciones({municipio:opciones.municipio,tecnologia:opciones.tecnologia,marca:opciones.marca,modelo:0,fecha_ini:opciones.fecha_ini,fecha_fin:opciones.fecha_fin})
-        search_modelo()
-    },[opciones.marca])
-    function search_modelo(){
-        
-      setDataModelo({data:dataTec.data,loading:true,error:dataTec.error})
-          const fetchData = async () => {
-            try {
-              console.log()
-           const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/groups/models/'+opciones.marca, {                 
-                                  headers: {
-                                    'Content-Type': 'application/json',
-                                    Authorization: `Bearer ${token_item}`,
-                                  },
-                                });
-                                // console.log(response)
-              if (response.ok) {
-                const response_data = await response.json();
-                setDataModelo({data:response_data.data,loading:false,error:dataTec.error})
-               
-                // //console.log(response_data)
-                
-              } else {
-                throw new Error('Error en la solicitud');
-              }
-            } catch (error) {
-              // Manejo de errores
-              setDataModelo({data:dataTec.data,loading:dataTec.loading,error:error})
-              //console.error(error);
-            }
-          };
-          fetchData();
-      }
-
-
-
-
-
-
-
-
-
-      const handleChange=(e)=>{
-        console.log(e.target)
-        const {name,value}=e.target
-        
-            setOpciones((prevState)=>{
-                return {
-                    ...prevState,
-                    [name]:value
-                }
-            })
-      }
-
+   
       const handleChangeOption=()=>{}
-      const data = [
-        {
-          name: 'Page A',
-          uv: 4000,
-          pv: 2400,
-          amt: 2400,
-        },
-        {
-          name: 'Page B',
-          uv: 3000,
-          pv: 1398,
-          amt: 2210,
-        },
-        {
-          name: 'Page C',
-          uv: 2000,
-          pv: 9800,
-          amt: 2290,
-        },
-        {
-          name: 'Page D',
-          uv: 2780,
-          pv: 3908,
-          amt: 2000,
-        },
-        {
-          name: 'Page E',
-          uv: 1890,
-          pv: 4800,
-          amt: 2181,
-        },
-        {
-          name: 'Page F',
-          uv: 2390,
-          pv: 3800,
-          amt: 2500,
-        },
-        {
-          name: 'Page G',
-          uv: 3490,
-          pv: 4300,
-          amt: 2100,
-        },
-      ];
-
+      
+      const generateColor = (progress) => {
+        const purple = [128, 0, 128]; // Morado
+        const blue = [0, 0, 255]; // Azul
+        const green = [0, 128, 0]; // Verde
+      
+        let color;
+      
+        if (progress <= 0.5) {
+          // En la primera mitad de la escala, interpolamos de morado a azul
+          const factor = progress / 0.5;
+          color = [
+            Math.round(purple[0] + (blue[0] - purple[0]) * factor),
+            Math.round(purple[1] + (blue[1] - purple[1]) * factor),
+            Math.round(purple[2] + (blue[2] - purple[2]) * factor),
+          ];
+        } else {
+          // En la segunda mitad de la escala, interpolamos de azul a verde
+          const factor = (progress - 0.5) / 0.5;
+          color = [
+            Math.round(blue[0] + (green[0] - blue[0]) * factor),
+            Math.round(blue[1] + (green[1] - blue[1]) * factor),
+            Math.round(blue[2] + (green[2] - blue[2]) * factor),
+          ];
+        }
+      
+        return `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
+      };
+      
+      // Uso
+      const progress = 0.5;
     return (
+      <>
         <div className="main-reporte-disp">
+        <div className='cont-list-graf'>
+          <div className='compact-list-graf'>
+
+          
+        {seriesToRender.map((key, index) => (
+                                 <>
+                                 <div className='cont-row-graf'>
+             <div className='cont-color-graf'>
+                <div className='square-color-graf' style={{background:color_graf[index+1]}}></div>
+             </div>
+             <div className='cont-name-graf'> todos/suscrip/todas/todos</div>
+             
+          </div>
+          <hr className='separate-rof-graf'></hr>
+                                 </>
+                                ))}
+         </div>
+        </div>
             <div className='cont-reporte-disp'>
             <div className='cont-menu-disp'>
-                <div className='compact-option'>
-                    <div className="user-box-disp">
-                                    <SelectorAdmin opGeneral={true} txtOpGen={'TODOS'}  opt_de={'0'}origen={'Admin'} data={dataLocations.data.data} loading={dataLocations.loading}  titulo='Municipio' selectFunction={changeOption}></SelectorAdmin>
-                    </div>
-                </div>
-                <div className='compact-option'>
-                <div className="user-box-disp">
-                    {(!dataTec.loading)?
-                          <SelectorAdmin  opGeneral={false} txtOpGen={''} opt_de={'11'} origen={'Admin'}  data={dataTec.data} loading={dataTec.loading}  selectFunction={changeOption} titulo='Tecnología' ></SelectorAdmin>
-                        :<p className='loadSelect'  style={{color:'#003757'}}>cargando...</p>
-                    }
-                    </div>
-                </div>
-                <div className='compact-option'>
-                    <div className="user-box-disp">
-                    {(!dataMarca.loading)?
-                   <SelectorAdmin opGeneral={false} txtOpGen={''} origen={'Admin'} data={dataMarca.data} loading={dataMarca.loading}  titulo='Marca' selectFunction={changeOption}></SelectorAdmin>
-                   :<p className='loadSelect'  style={{color:'#003757'}}>cargando...</p>
-                    }
-                                    
-                    </div>
-                </div>
-                <div className='compact-option'>
-                    <div className="user-box-disp">
-                    {(!dataModelo.loading)?
-                        <SelectorAdmin opGeneral={false} txtOpGen={''} origen={'Admin'} data={dataModelo.data} loading={dataModelo.loading}  titulo='Modelo' selectFunction={changeOption}></SelectorAdmin>
-                        :<p className='loadSelect' style={{color:'#003757'}}>cargando...</p>
-                    }
-                    </div>
-                </div>
-                <div className='compact-option'>
-                    <div className="user-box-disp">
-                        <input required name="fecha_ini"  type="datetime-local" value={opciones.fecha_ini}
-                        onChange={handleChange} />
-                                        <label className='label-disp active' >Desde:</label>
-                    </div>
-                </div>
-                <div className='compact-option'>
-                  <div className="user-box-disp">
-                        <input required name="fecha_fin"  type="datetime-local" value={opciones.fecha_fin}
-                        onChange={handleChange} />
-                                        <label className='label-disp active' >Hasta:</label>
-                    </div>
-                </div>
-                <div className='compact-option'>
-                <Action disabled={false} origen='Login' titulo='Buscar'  action={Buscar}/>
-                </div>
+                <MenuSearch completo={true} server={server} opciones={opciones} setOpciones={setOpciones} action1={Buscar} action2={add}></MenuSearch>
             </div>
+            
             <div className='cont-graf-disp'>
                 <div className='cont-info-graf'>
                     {/* <div className='cont-info-top'>
 
                     </div> */}
                     <div className='cont-info-center'>
-{
-  (dataInfo.loading)?<div style={{width:'100%',height:'95%',display:'flex',justifyContent:'center'}}><LoadSimple></LoadSimple></div>:
-  <ResponsiveContainer width="100%" height="95%">
-        <LineChart
-          width={500}
-          height={300}
-          data={dataInfo.data.metrics[0].dataset}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="Tiempo" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Line type="monotone" dataKey="Disponibilidad" stroke="#8884d8" strokeWidth={2}  />
-          {/* <Area type="monotone" dataKey="Disponibilidad" fill="#8884d8" fillOpacity={0.3} /> */}
-          {/* <Line type="monotone" dataKey="uv" stroke="#82ca9d" /> */}
-        </LineChart>
-      </ResponsiveContainer>}
+                      {
+                            (dataInfo.loading)?<div style={{width:'100%',height:'95%',display:'flex',justifyContent:'center'}}><LoadSimple></LoadSimple></div>:
+                              <ResponsiveContainer width="100%" height="95%">
+                              <LineChart
+                                width={500}
+                                height={300}
+                                // data={dataInfo.data.metrics[0].dataset}
+                                data={data}
+                                margin={{
+                                  top: 5,
+                                  right: 30,
+                                  left: 20,
+                                  bottom: 5,
+                                }}
+                              >
+                                <CartesianGrid strokeDasharray="3 3" />
+                                {/* <XAxis dataKey="Tiempo" /> */}
+                                <XAxis dataKey="name" />
+                                <YAxis />
+                                <Tooltip />
+                                <Legend />
+                                {/* <Line type="monotone" dataKey="Disponibilidad" stroke="#8884d8" strokeWidth={2}  /> */}
+                                {/* <Area type="monotone" dataKey="Disponibilidad" fill="#8884d8" fillOpacity={0.3} /> */}
+                                {/* <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+                                <Line type="monotone" dataKey="pv" stroke="#82ca9d" /> */}
+                                {seriesToRender.map((key, index) => (
+                                  <Line
+                                    key={index}
+                                    type="monotone"
+                                    dataKey={key}
+                                    // stroke={`#${Math.floor(Math.random()*16777215).toString(16)}`} // Color aleatorio
+                                  stroke={color_graf[index+1]}
+                                  />
+                                ))}
+                              </LineChart>
+                              </ResponsiveContainer>
+                        }
                     </div>
                     <div className='cont-info-bottom'>
                         <div className='cont-text-info'>
                             <div className='txt-info-fijo'>Funcionalidad Promedio:    </div>
-                            <div className='txt-info-dinamic' style={{color:'red'}}> &nbsp; {typeof dataInfo.data.general_funcionality_average === 'undefined'?'---':(dataInfo.data.general_funcionality_average.toFixed(2))}%</div>
+                            <div className='txt-info-dinamic' style={{color:'red'}}> &nbsp; {typeof dataInfo.data.general_funcionality_average === 'undefined'?'---':((dataInfo.data.general_funcionality_average===""?0:dataInfo.data.general_funcionality_average.toFixed(2)))}%</div>
                         </div>
                         <div className='cont-text-info'>
                             <div className='txt-info-fijo'>Lapso de tiempo:    </div>
-                            <div className='txt-info-dinamic' style={{color:'red'}}>&nbsp; {typeof dataInfo.data.days === 'undefined'?'---': (''+dataInfo.data.days.toFixed(2)+' dias')}</div>
+                            <div className='txt-info-dinamic' style={{color:'red'}}>&nbsp; {typeof dataInfo.data.days === 'undefined'?'---': (''+(dataInfo.data.days===""?0:dataInfo.data.days.toFixed(2))+' dias')}</div>
                         </div>
                         <div className='cont-text-info'>
                             <div className='txt-info-fijo'>Dispositivos:    </div>
@@ -430,7 +364,7 @@ function search_reporte_disponibilidad(){
                             </div>
                             <div className='DispInfoCell' style={{width:'20%'}}>
                                 <div className='txtDispInfoCell'>
-                                {typeof dataInfo.data.days === 'undefined'?'---': (''+dataInfo.data.days.toFixed(2)+' dias')}
+                                {typeof dataInfo.data.days === 'undefined'?'---': (''+(dataInfo.data.days===""?0:dataInfo.data.days.toFixed(2))+' dias')}
                                 </div>
                             </div>
                             <div className='DispInfoCell' style={{width:'25%'}}>
@@ -506,6 +440,18 @@ function search_reporte_disponibilidad(){
             </div>
             </div>
         </div>
+        <Modal
+        isOpen={AddMultiGraphModalOpen}
+        // isOpen={false}
+        // onAfterOpen={afterOpenExeption}
+        onRequestClose={closAddMultiGraphModal}
+        style={AddMultiGraphModalStyles}
+        contentLabel="Example Modal2"
+        // shouldCloseOnOverlayClick={false}
+        >
+          <ModalAddMultiGraph server={server} opciones={opciones} setOpciones={setOpciones} closAddMultiGraphModal={closAddMultiGraphModal} totalLienas={totalLienas} setTotalLineas={setTotalLineas}></ModalAddMultiGraph>
+    </Modal>
+        </>
     )
 }
 
