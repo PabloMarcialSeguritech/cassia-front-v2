@@ -15,13 +15,13 @@ import Modal from 'react-modal';
 import InfoMarker from '../components/InfoMarker'
 import '../components/styles/MapBox.css'
 import { act } from 'react-dom/test-utils'
-
+import arcos_list from '../components/arcos'
 const Monitoreo=({token_item,dataGlobals,server})=>{
   // console.log(dataGlobals)
   const global_longitud=dataGlobals.find(obj => obj.name === 'state_longitude')
   const global_latitude=dataGlobals.find(obj => obj.name === 'state_latitude')
   const global_zoom=dataGlobals.find(obj => obj.name === 'zoom')
-  
+  // console.log(arcos_list)
   token_item=localStorage.getItem('access_token')
 
     // const [ubicacion,setUbicacion]=useState({latitud:'20.01808757489169',longitud:'-101.21789252823293',groupid:0,dispId:11,templateId:0})
@@ -53,10 +53,10 @@ const Monitoreo=({token_item,dataGlobals,server})=>{
     const [rfidInterval,setRfidInterval]=useState(0)
 
     const [renderCapas,setRenderCapas]=useState({downs:false,markersWOR:false,markers:true,rfid:true})
-    console.log(renderCapas)
+    // console.log(renderCapas)
    const [renderMap,setRenderMap]=useState(false)
    const allTrue = Object.values(renderCapas).every(value => value === true);
-console.log(markersWOR)
+// console.log(markersWOR)
 useEffect(()=>{
   if (allTrue) {
     console.log('Todos los atributos están en true');
@@ -66,7 +66,7 @@ useEffect(()=>{
   }
 },[renderCapas])
    useEffect(() => {
-    console.log(renderCapas.markersWOR)
+    // console.log(renderCapas.markersWOR)
     if(markersWOR.length!==0){
       console.log('El proceso de markersWOR ha terminado',markersWOR.length);
       setRenderCapas(prevState => ({
@@ -85,11 +85,15 @@ useEffect(()=>{
     }));
   }, [downs]);
   useEffect(() => {
-    console.log('El proceso de rfid ha terminado');
-    setRenderCapas(prevState => ({
-      ...prevState,
-      rfid: true 
-    }));
+    if(rfid.length>0){
+      console.log('El proceso de rfid ha terminado');
+      console.log(rfid)
+      setRenderCapas(prevState => ({
+        ...prevState,
+        rfid: true 
+      }));
+    }
+    
   }, [rfid]);
   useEffect(() => {
     console.log('El proceso de markers ha terminado');
@@ -190,6 +194,7 @@ useEffect(()=>{
     /****************************************************************** */
     function objeto_rfid(rfid_list){
       console.log("objeto rfid")
+      console.log(rfid_list)
       setRfid([])
       rfid_list.map((host, index, array)=>
           {
@@ -212,6 +217,25 @@ useEffect(()=>{
             }else{
               //console.log(host)
             }
+            // if(host.length!==0 && host.latitude>=-90 && host.latitude<=90 ){
+            
+            //   setRfid(rfid=>[...rfid,{
+            //     type: 'Feature',
+            //     properties:{
+            //       latitude: host.latitude,
+            //       longitude: host.longitude,
+            //       lecturas:host.Lecturas,
+            //       severidad:host.max_severity
+            //     },
+            //     geometry: {
+            //       type: 'Point',
+            //       coordinates: [host.longitude, host.latitude],
+            //     },
+            //   }])
+              
+            // }else{
+            //   console.log(host)
+            // }
         }
         )
         // setTimeout(search_rfid, 10000); 
@@ -276,8 +300,11 @@ useEffect(()=>{
                               });
             if (response.ok) {
               const response_data = await response.json();
+              console.log(response_data.data)
+              console.log("arcos")
+              console.log(arcos_list)
               setRfidList({data:response_data.data,loading:false,error:rfid_list.error})
-              
+              // setRfidList({data:arcos_list,loading:false,error:rfid_list.error})
               
             } else {
               throw new Error('Error en la solicitud');

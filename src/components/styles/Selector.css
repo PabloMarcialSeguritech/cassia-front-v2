@@ -13,6 +13,7 @@
     align-items: center;
     width: 80%;
     height: 70%;
+    
 }
 .compactSelectorAdmin{
     position: relative;
@@ -21,6 +22,7 @@
     align-items: center;
     width: 100%;
     height: 70%;
+    top :10%;
 }
 .react-select__control{
     border-color: #b3b3b3 !important;
@@ -69,7 +71,7 @@ letter-spacing: 1px;
     position: absolute;
     top: -30%;
     color:  #003757;
-    z-index: 2;
+    z-index: 1;
 }
 .react-select__menu:hover{
     cursor: pointer;
@@ -83,6 +85,7 @@ letter-spacing: 1px;
     display: flex !important;
     text-align: center !important;
     cursor: pointer;
+    
 }
 .react-select__menu-list{
     width: 100% !important;
@@ -140,6 +143,8 @@ letter-spacing: 1px;
     display: flex !important;
     text-align: center !important;
     cursor: pointer;
+    z-index: 2 !important;
+    /* max-height:  100px !important; */
 }
 .react-select-admin__menu-list{
     width: 100% !important;

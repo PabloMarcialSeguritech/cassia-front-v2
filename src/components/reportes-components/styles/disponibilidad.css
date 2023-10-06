@@ -24,6 +24,15 @@
 justify-content: center;
 align-items: center;
 }
+.compact-menu-disp{
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+justify-content: center;
+align-items: center;
+
+}
 .cont-graf-disp{
     position: relative;
     display: flex;
@@ -31,6 +40,61 @@ align-items: center;
     align-items: center;
     width: 100%;
     height: 60%;
+    left: 4%;
+}
+.cont-list-graf{
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 15%;
+  height: 55%;
+  top: 15%;
+  left: 0;
+}
+.compact-list-graf{
+  display: block;
+  position: relative;
+  width: 90%;
+  height: 95%;
+}
+.cont-row-graf{
+  position: relative;
+  width: 100%;
+  height: 15%;
+ display: flex;
+ 
+}
+.separate-rof-graf{
+  width: 80%;
+  height: 15;
+  border-color: #9494943f;
+}
+.cont-color-graf{
+  position: relative;
+  width: 10%;
+  height: 100%;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+}
+.square-color-graf{
+  position: relative;
+  width: 60%;
+  height: 30%;
+  
+  border-radius: 30%;
+}
+.cont-name-graf{
+  position: relative;
+  width: 80%;
+  height: 100%;
+ display: flex;
+ justify-content: left;
+ align-items: center;
+ text-align: left;
+ color: #505050;
+ font-size: small;
 }
 .cont-table-disp{
     position: relative;
@@ -49,7 +113,15 @@ align-items: center;
     height: 100%;
     padding: 10px;
 }
-
+.compact-option-large{
+  position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 22%;
+    height: 100%;
+    padding: 10px;
+}
 .user-box-disp {
     position: relative;
     display: flex;
