@@ -79,6 +79,7 @@ margin: 2%;
   justify-content: center;
   align-items: center;
   height: 70%;
+  border-radius: 0px 0px 20px 20px;
 }
 .txtRfid{
   color: rgb(17, 26, 51) !important;
@@ -90,4 +91,20 @@ margin: 2%;
  display: flex;
  justify-content: center;
  align-items: center;
+}
+
+.pulsing-dot-element {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: pulsate 1s infinite alternate;
+}
+
+@keyframes pulsate {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.1);
+  }
 }

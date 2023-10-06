@@ -9,7 +9,7 @@ const MapBox = ({actualizar_rfi,search_rfid,global_longitud,global_latitude,glob
   console.log("markers*****************************************************")
   //console.log(ubicacion)
   //console.log(markers)
-  console.log(markersWOR)
+  // console.log(markersWOR)
   // console.log(global_latitude,global_longitud)
   let latitud_provicional=(ubicacion.groupid===0?global_latitude.value:ubicacion.latitud)
   let longitud_provicional=(ubicacion.groupid===0?global_longitud.value:ubicacion.longitud)
@@ -126,6 +126,7 @@ const MapBox = ({actualizar_rfi,search_rfid,global_longitud,global_latitude,glob
       //console.log(downs)
       var rfidIval;
       if(rfid.length!==0){
+        console.log("add layer rfid")
         map.addLayer({
           id: 'host-rfid',
           type: 'circle',
@@ -148,7 +149,12 @@ const MapBox = ({actualizar_rfi,search_rfid,global_longitud,global_latitude,glob
         rfid.forEach((feature) => {
           const coordinates = feature.geometry.coordinates.slice();
           const val = feature.properties.lecturas; // Asegúrate de tener esta propiedad en tus datos
-        
+          const severity = 0//feature.properties.severidad; 
+          const severity_colors={
+            1:'#ee9d08',
+            2:'#ee5c08',
+            3:'#ff0808'
+          }
           popup = new mapboxgl.Popup({
             className: 'custom-popup-rfid',
             closeButton: false,
@@ -157,7 +163,7 @@ const MapBox = ({actualizar_rfi,search_rfid,global_longitud,global_latitude,glob
             .setLngLat(coordinates)
             .setHTML(`<div class='cont-rfid' style='border: 1px solid #ffffff;'>
             <div class='titleRFID'><div class='txtTitleRfid'>Trafico</div><br></div>
-            <div class='valRFID'><div class='txtRfid'>${val}</div><br><br></div>
+            <div class='valRFID' style='background: ${severity_colors[severity]}'><div class='txtRfid'>${val}</div><br><br></div>
                 
                 </div>`)
                 .addTo(map);
@@ -166,7 +172,7 @@ const MapBox = ({actualizar_rfi,search_rfid,global_longitud,global_latitude,glob
           console.log("rfidInterval ",rfidIval)
           setRfidInterval(rfidIval)
         actualizar_rfi(map,popup,rfidIval)
-       }, 5000);
+       }, 10000);
         
         // console.log(rfidInterval)
       }else{
@@ -236,46 +242,177 @@ const MapBox = ({actualizar_rfi,search_rfid,global_longitud,global_latitude,glob
       /************************************************************ CAPA DOWNS ************************************************************************ */
       console.log("downs map")
       console.log(downs)
-      map.addLayer({
-        id: 'host-down',
-        type: 'circle',
-        source:  {
-          type: 'geojson',
-          data: {
-            type: 'FeatureCollection',
-            features: downs
-          },
-        },
-        filter: ['!', ['has', 'point_count']],
-        paint: {
-          'circle-color': "#FF0000",
-          'circle-radius': 7,
-          'circle-stroke-width':1,
-          'circle-stroke-color': '#fff',
-        },
-      });
-      map.on('mouseleave', 'host-down', (e) => {
-        Popup.remove();
-        });
-      map.on('mouseenter', 'host-down', (e) => {
-        const coordinates = e.features[0].geometry.coordinates.slice();
-        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-          coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-        }
-        Popup= new mapboxgl.Popup({
-          className: 'custom-popup',
-          closeButton: true,
-      })
-          .setLngLat(coordinates)
-          .setHTML(`<div class='cont-pop' style='border: 1px solid #ff0000;'>
-          <div>${e.features[0].properties.Name.slice(0, 25)}...</div><br>
-          <div> Descripcion: <b style='color: #ff0000;'>${e.features[0].properties.descripcion}</b> </div>
-          </div>`)
-          .addTo(map);
-      });
-      map.on('click', 'host-down', (e) => {
+      const size = 200;
+
+    const pulsingDot = {
+      width: size,
+      height: size,
+      data: new Uint8Array(size * size * 4),
+      onAdd: function () {
+        const canvas = document.createElement('canvas');
+        canvas.width = this.width;
+        canvas.height = this.height;
+        this.context = canvas.getContext('2d');
+      },
+      render: function () {
+        const duration = 1000;
+        const t = (performance.now() % duration) / duration;
+
+        const radius = (size / 2) * 0.3;
+        const outerRadius = (size / 2) * 0.7 * t + radius;
+        const context = this.context;
+
+        context.clearRect(0, 0, this.width, this.height);
+        context.beginPath();
+        context.arc(
+          this.width / 2,
+          this.height / 2,
+          outerRadius,
+          0,
+          Math.PI * 2
+        );
+        context.fillStyle = `rgba(255, 200, 200, ${1 - t})`;
+        context.fill();
+
+        context.beginPath();
+        context.arc(
+          this.width / 2,
+          this.height / 2,
+          radius,
+          0,
+          Math.PI * 2
+        );
+        context.fillStyle = 'rgba(255, 100, 100, 1)';
+        context.strokeStyle = 'white';
+        context.lineWidth = 2 + 4 * (1 - t);
+        context.fill();
+        context.stroke();
+
+        this.data = context.getImageData(
+          0,
+          0,
+          this.width,
+          this.height
+        ).data;
+
+        map.triggerRepaint();
+
+        return true;
+      }
+    };
+
+
+      // map.addLayer({
+      //   id: 'host-down',
+      //   type: 'circle',
+      //   source:  {
+      //     type: 'geojson',
+      //     data: {
+      //       type: 'FeatureCollection',
+      //       features: downs
+      //     },
+      //   },
+      //   filter: ['!', ['has', 'point_count']],
+      //   paint: {
+      //     'circle-color': "#FF0000",
+      //     'circle-radius': 7,
+      //     'circle-stroke-width':1,
+      //     'circle-stroke-color': '#fff',
+      //   },
+      // });
+      // map.on('mouseleave', 'host-down', (e) => {
+      //   Popup.remove();
+      //   });
+      // map.on('mouseenter', 'host-down', (e) => {
+      //   const coordinates = e.features[0].geometry.coordinates.slice();
+      //   while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+      //     coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+      //   }
+      //   Popup= new mapboxgl.Popup({
+      //     className: 'custom-popup',
+      //     closeButton: true,
+      // })
+      //     .setLngLat(coordinates)
+      //     .setHTML(`<div class='cont-pop' style='border: 1px solid #ff0000;'>
+      //     <div>${e.features[0].properties.Name.slice(0, 25)}...</div><br>
+      //     <div> Descripcion: <b style='color: #ff0000;'>${e.features[0].properties.descripcion}</b> </div>
+      //     </div>`)
+      //     .addTo(map);
+      // });
+      // map.on('click', 'host-down', (e) => {
        
-      })
+      // })
+
+
+
+
+      
+      map.addImage('pulsing-dot', pulsingDot, { pixelRatio: 2 });
+
+  map.addSource('dot-point', {
+    'type': 'geojson',
+    'data': {
+      'type': 'FeatureCollection',
+      'features': [
+        {
+          'type': 'Feature',
+          'geometry': {
+            'type': 'Point',
+            'coordinates': [0, 0]
+          }
+        }
+      ]
+    }
+  });
+
+  map.addLayer({
+    'id': 'layer-with-pulsing-dot',
+    'type': 'symbol',
+    'source': 'dot-point',
+    'layout': {
+      'icon-image': 'pulsing-dot'
+    }
+  });
+
+  map.addLayer({
+    id: 'host-down',
+    type: 'symbol',
+    source: {
+      type: 'geojson',
+      data: {
+        type: 'FeatureCollection',
+        features: downs
+      },
+    },
+    filter: ['!', ['has', 'point_count']],
+    layout: {
+      'icon-image': 'pulsing-dot',
+      'icon-size': 0.5,
+      'icon-allow-overlap': true, // Permite la superposición del icono
+    },
+  });
+  map.on('mouseleave', 'host-down', (e) => {
+      Popup.remove();
+      });
+    map.on('mouseenter', 'host-down', (e) => {
+      const coordinates = e.features[0].geometry.coordinates.slice();
+      while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+      }
+      Popup= new mapboxgl.Popup({
+        className: 'custom-popup',
+        closeButton: true,
+    })
+        .setLngLat(coordinates)
+        .setHTML(`<div class='cont-pop' style='border: 1px solid #ff0000;'>
+        <div>${e.features[0].properties.Name.slice(0, 25)}...</div><br>
+        <div> Descripcion: <b style='color: #ff0000;'>${e.features[0].properties.descripcion}</b> </div>
+        </div>`)
+        .addTo(map);
+    });
+    map.on('click', 'host-down', (e) => {
+     
+    })
  /************************************************************ CAPA TORRES ************************************************************************ */
       map.loadImage(
         towerImg,
