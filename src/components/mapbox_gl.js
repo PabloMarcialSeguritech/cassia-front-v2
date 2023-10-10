@@ -149,7 +149,7 @@ const MapBox = ({actualizar_rfi,search_rfid,global_longitud,global_latitude,glob
         rfid.forEach((feature) => {
           const coordinates = feature.geometry.coordinates.slice();
           const val = feature.properties.lecturas; // Asegúrate de tener esta propiedad en tus datos
-          const severity = 0//feature.properties.severidad; 
+          const severity = feature.properties.severidad; 
           const severity_colors={
             1:'#ee9d08',
             2:'#ee5c08',
@@ -170,6 +170,7 @@ const MapBox = ({actualizar_rfi,search_rfid,global_longitud,global_latitude,glob
         });
         rfidIval=setInterval(() => {
           console.log("rfidInterval ",rfidIval)
+          // console.log(map.getSource('host-rfid'))
           setRfidInterval(rfidIval)
         actualizar_rfi(map,popup,rfidIval)
        }, 10000);

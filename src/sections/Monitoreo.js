@@ -63,6 +63,7 @@ useEffect(()=>{
     // setRenderMap(true)
   } else {
     console.log('Al menos uno de los atributos está en false');
+    console.log(renderCapas)
   }
 },[renderCapas])
    useEffect(() => {
@@ -199,43 +200,43 @@ useEffect(()=>{
       rfid_list.map((host, index, array)=>
           {
             
-            if(host.length!==0 && host.Latitud>=-90 && host.Latitud<=90 ){
+            // if(host.length!==0 && host.Latitud>=-90 && host.Latitud<=90 ){
               
-              setRfid(rfid=>[...rfid,{
-                type: 'Feature',
-                properties:{
-                  latitude: host.Latitud,
-                  longitude: host.Longitud,
-                  lecturas:host.Lecturas
-                },
-                geometry: {
-                  type: 'Point',
-                  coordinates: [host.Longitud, host.Latitud],
-                },
-              }])
-              
-            }else{
-              //console.log(host)
-            }
-            // if(host.length!==0 && host.latitude>=-90 && host.latitude<=90 ){
-            
             //   setRfid(rfid=>[...rfid,{
             //     type: 'Feature',
             //     properties:{
-            //       latitude: host.latitude,
-            //       longitude: host.longitude,
-            //       lecturas:host.Lecturas,
-            //       severidad:host.max_severity
+            //       latitude: host.Latitud,
+            //       longitude: host.Longitud,
+            //       lecturas:host.Lecturas
             //     },
             //     geometry: {
             //       type: 'Point',
-            //       coordinates: [host.longitude, host.latitude],
+            //       coordinates: [host.Longitud, host.Latitud],
             //     },
             //   }])
               
             // }else{
-            //   console.log(host)
+            //   //console.log(host)
             // }
+            if(host.length!==0 && host.latitude>=-90 && host.latitude<=90 ){
+            
+              setRfid(rfid=>[...rfid,{
+                type: 'Feature',
+                properties:{
+                  latitude: host.latitude,
+                  longitude: host.longitude,
+                  lecturas:host.Lecturas,
+                  severidad:host.max_severity
+                },
+                geometry: {
+                  type: 'Point',
+                  coordinates: [host.longitude, host.latitude],
+                },
+              }])
+              
+            }else{
+              console.log(host)
+            }
         }
         )
         // setTimeout(search_rfid, 10000); 
@@ -701,7 +702,7 @@ useEffect(()=>{
         // Realiza las acciones deseadas al hacer clic en el marcador
       };
       function actualizar_rfi(map,popup2,rfidI){
-        
+        // console.log(map.getSource('host-rfid'))
         try {
           console.log("actualizar_rfi rfidInterval")
         console.log(rfidI)
@@ -731,7 +732,12 @@ useEffect(()=>{
         rfid.forEach((feature) => {
         const coordinates = feature.geometry.coordinates.slice();
         const val = feature.properties.lecturas; // Asegúrate de tener esta propiedad en tus datos
-        
+        const severity = feature.properties.severidad; 
+          const severity_colors={
+            1:'#ee9d08',
+            2:'#ee5c08',
+            3:'#ff0808'
+          }
         let popup = new mapboxgl.Popup({
           className: 'custom-popup-rfid',
           closeButton: false,
@@ -740,7 +746,7 @@ useEffect(()=>{
           .setLngLat(coordinates)
           .setHTML(`<div class='cont-rfid' style='border: 1px solid #ffffff;'>
           <div class='titleRFID'><div class='txtTitleRfid'>Trafico</div><br></div>
-          <div class='valRFID'><div class='txtRfid'>${val}</div><br><br></div></div>`)
+          <div class='valRFID' style='background: ${severity_colors[severity]}'><div class='txtRfid'>${val}</div><br><br></div></div>`)
               .addTo(rfidData.map);
         });
     }
