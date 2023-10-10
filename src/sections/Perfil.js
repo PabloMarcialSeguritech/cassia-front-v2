@@ -16,7 +16,7 @@ const Perfil=({server,dataGlobals})=>{
                     </div>
                 </div>
                 <div className='mid-welcome'>
-                    <div className='Title'>
+                    <div className='Title' style={{width:'100%'}}>
                         <h1 className='textTitle' >{estado.value}</h1>
                     </div>
                 </div>

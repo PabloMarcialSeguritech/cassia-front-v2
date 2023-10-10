@@ -82,7 +82,8 @@ margin: 2%;
   border-radius: 0px 0px 20px 20px;
 }
 .txtRfid{
-  color: rgb(17, 26, 51) !important;
+  /* color: rgb(17, 26, 51) !important; */
+  color:rgb(46, 46, 46) !important ;
   font-size: medium;
   font-weight: bold;
  text-align: center !important;
