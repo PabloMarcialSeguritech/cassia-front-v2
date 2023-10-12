@@ -26,6 +26,7 @@ const Monitoreo=({token_item,dataGlobals,server})=>{
 
     // const [ubicacion,setUbicacion]=useState({latitud:'20.01808757489169',longitud:'-101.21789252823293',groupid:0,dispId:11,templateId:0})
     const [ubicacion,setUbicacion]=useState({latitud:global_latitude.value,longitud:global_longitud.value,groupid:0,dispId:11,templateId:0})
+    const [ubiActual,setUbiActual]=useState({municipio:'todos',groupid:0,dispId:11,templateId:0})
     const [zoom,setZoom]=useState(11)
     const [latitudes,setLatitudes]=useState([])
     const [longitudes,setLongitudes]=useState([])
@@ -734,9 +735,10 @@ useEffect(()=>{
         const val = feature.properties.lecturas; // Asegúrate de tener esta propiedad en tus datos
         const severity = feature.properties.severidad; 
           const severity_colors={
-            1:'#ee9d08',
-            2:'#ee5c08',
-            3:'#ff0808'
+            1:'#ffee00',
+            2:'#ee9d08',
+            3:'#ee5c08',
+            4:'#ff0808',
           }
         let popup = new mapboxgl.Popup({
           className: 'custom-popup-rfid',
@@ -761,7 +763,7 @@ useEffect(()=>{
     
     return (
         <>
-        <RightQuadrant server={server} setRfid={setRfid} search_rfid={search_rfid} search_devices={search_devices} markersWOR={markersWOR}  search_downs={search_downs} downs={downs} search_problems={search_problems} token={token_item} ubicacion={ubicacion} markers={markers}  dataHosts={devices} setUbicacion={setUbicacion} />
+        <RightQuadrant ubiActual={ubiActual} setUbiActual={setUbiActual}  server={server} setRfid={setRfid} search_rfid={search_rfid} search_devices={search_devices} markersWOR={markersWOR}  search_downs={search_downs} downs={downs} search_problems={search_problems} token={token_item} ubicacion={ubicacion} markers={markers}  dataHosts={devices} setUbicacion={setUbicacion} />
         {
         devices.loading ?<LoadData/>:
         <>
@@ -782,7 +784,7 @@ useEffect(()=>{
           contentLabel="Example Modal2"
           // shouldCloseOnOverlayClick={false}
           >
-            <InfoMarker  devices={devices} server={server} isOpen={infoMarkerOpen} data={infoMarker} closeInfoMarker={closeInfoMarker}></InfoMarker>
+            <InfoMarker  devices={devices} server={server} isOpen={infoMarkerOpen} data={infoMarker} closeInfoMarker={closeInfoMarker} ubiActual={ubiActual}></InfoMarker>
         </Modal>
         </>
         }
