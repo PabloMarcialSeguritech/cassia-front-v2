@@ -151,9 +151,11 @@ const MapBox = ({actualizar_rfi,search_rfid,global_longitud,global_latitude,glob
           const val = feature.properties.lecturas; // Asegúrate de tener esta propiedad en tus datos
           const severity = feature.properties.severidad; 
           const severity_colors={
-            1:'#ee9d08',
-            2:'#ee5c08',
-            3:'#ff0808'
+            1:'#ffee00',
+            2:'#ee9d08',
+            3:'#ee5c08',
+            4:'#ff0808',
+            
           }
           popup = new mapboxgl.Popup({
             className: 'custom-popup-rfid',
