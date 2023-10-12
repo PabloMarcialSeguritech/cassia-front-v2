@@ -14,7 +14,7 @@ const RightQuadrant =(props)=>{
     const dataLocations=useFetch('zabbix/groups/municipios','',props.token,'GET',props.server)
     const [dataTec,setDataTec]=useState({data:[],loading:true,error:null})
     const [dataDisp,setDataDisp]=useState({data:[],loading:true,error:null})
-    const [ubiActual,setUbiActual]=useState({municipio:'todos',groupid:0,dispId:11,templateId:0})
+    
 //    console.log(dataDisp)
     let s4= undefined
     let s3= undefined
@@ -34,7 +34,7 @@ const RightQuadrant =(props)=>{
         if(aux_municipio===undefined){
             aux_municipio='Todos'
         }
-        setUbiActual({municipio:aux_municipio.name,groupid:props.ubicacion.groupid,dispId:props.ubicacion.dispId,templateId:props.ubicacion.templateId})
+        props.setUbiActual({municipio:aux_municipio.name,groupid:props.ubicacion.groupid,dispId:props.ubicacion.dispId,templateId:props.ubicacion.templateId})
         props.search_problems()
         props.search_devices()
         props.search_downs()
@@ -201,14 +201,14 @@ const RightQuadrant =(props)=>{
                     </div>
                 </div>
                 {
-                    (ubiActual.groupid!==0)?
+                    (props.ubiActual.groupid!==0)?
                 
                 <div className='card menuInfo'>
                     <div className='menuInfotitle'>
                         <div className='cardTitle' style={{}}>
                             <div className='textCardTitle'>
                             {/* {Conexiones por municipio:} */}
-                            {ubiActual.municipio}
+                            {props.ubiActual.municipio}
                             </div>
                         </div>
                     </div>
