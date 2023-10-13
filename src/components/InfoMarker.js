@@ -8,6 +8,7 @@ import PingModal from './PingModal';
 import HostSelector from './HostSelector'
 import AlertsByHost from './AlertsByHost'
 import HealthByHost from './HealthByHost';
+import CarrilesArco from './CarrilesArco';
 const pingModalStyles = {
   content: {
     top: '50%',
@@ -22,7 +23,7 @@ const pingModalStyles = {
     padding:'20px'
   },
 };
-const InfoMarker = ({isOpen,devices, data,closeInfoMarker,server }) => {
+const InfoMarker = ({isOpen,devices, data,closeInfoMarker,server,ubiActual }) => {
   console.log("info marker")
   console.log(data)
   console.log(devices.data)
@@ -272,7 +273,9 @@ setListSelected(1)
                      <ol className='compactactions-list' >
                         <li className={listSelected===1?'action-selected':''} onClick={() =>hadleChangeList(1)}>Acciones</li>
                         <li className={listSelected===2?'action-selected':''}  onClick={() =>hadleChangeList(2)} >Alarmas</li>
-                        <li className={listSelected===3?'action-selected':''} onClick={() =>hadleChangeList(3)}>salud</li>
+                        <li className={listSelected===3?'action-selected':''} onClick={() =>hadleChangeList(3)}>Salud</li>
+                        {(ubiActual.dispId===9)?
+                          <li className={listSelected===9?'action-selected':''} onClick={() =>hadleChangeList(9)}>Carriles</li>:''}
                     </ol>
                     
                   </div>
@@ -300,6 +303,8 @@ setListSelected(1)
                     <AlertsByHost hostId={hostSelected===1?hostIdP:hostId} server={server}></AlertsByHost>
                 ) : listSelected === 3 ? (
                   <HealthByHost hostId={hostSelected===1?hostIdP:hostId} server={server}></HealthByHost>
+                ) : listSelected === 9 ? (
+                  <CarrilesArco hostId={hostSelected===1?hostIdP:hostId} server={server}></CarrilesArco>
                 ) :''
                     }
                     

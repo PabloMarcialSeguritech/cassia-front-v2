@@ -149,11 +149,13 @@ const MapBox = ({actualizar_rfi,search_rfid,global_longitud,global_latitude,glob
         rfid.forEach((feature) => {
           const coordinates = feature.geometry.coordinates.slice();
           const val = feature.properties.lecturas; // Asegúrate de tener esta propiedad en tus datos
-          const severity = 0//feature.properties.severidad; 
+          const severity = feature.properties.severidad; 
           const severity_colors={
-            1:'#ee9d08',
-            2:'#ee5c08',
-            3:'#ff0808'
+            1:'#ffee00',
+            2:'#ee9d08',
+            3:'#ee5c08',
+            4:'#ff0808',
+            
           }
           popup = new mapboxgl.Popup({
             className: 'custom-popup-rfid',
@@ -170,6 +172,7 @@ const MapBox = ({actualizar_rfi,search_rfid,global_longitud,global_latitude,glob
         });
         rfidIval=setInterval(() => {
           console.log("rfidInterval ",rfidIval)
+          // console.log(map.getSource('host-rfid'))
           setRfidInterval(rfidIval)
         actualizar_rfi(map,popup,rfidIval)
        }, 10000);

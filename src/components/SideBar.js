@@ -9,8 +9,9 @@ const SideBar =({rolId,onLogin,pageSelected,setPageSelected,dataGlobals})=>{
     var estado=''
     if(dataGlobals!==undefined){
         estado=dataGlobals.find(obj => obj.name === 'estado')
+       
     }
-    
+    console.log(typeof(estado.value))
     return(
         <div className="sidebar">
             
@@ -90,7 +91,7 @@ const SideBar =({rolId,onLogin,pageSelected,setPageSelected,dataGlobals})=>{
             </div>
        <div className='sideLogo'> 
        {/* <img src="logo-spin.png"  className='icon-seguritech' alt="Logo"/> */}
-       <img src={"/escudos/"+estado.value+".svg"}  className='icon-state' alt="Logo"/>
+       <img src={"/escudos/"+(typeof(estado.value)==='undefined'?estado.value:estado.value.toLowerCase().replaceAll(" ", ""))+".svg"}  className='icon-state' alt="Logo"/>
        {/* <label>Guanajuato</label> */}
        <div className='textSideCont ' style={{textTransform: 'capitalize'}} name="estado" >
                        {(estado==='')?'':estado.value}

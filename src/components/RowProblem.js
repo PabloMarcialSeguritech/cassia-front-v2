@@ -7,10 +7,10 @@ const RowProblem=(props)=>{
   // const [infoShow,setInfoShow]=useState({severity:0,host:"",problem:"",ip:"",ack:"",ack_message:"",time:""})
   const [menuAlertOpen, setMenuAlertOpen] = useState(false);
   const [color, setColor] = useState('#43434d');
-
+  // console.log(props.data)
   const openMenuAlert = () => {
 
-    // console.log(props.data.latitude)
+    console.log(props.data)
     // console.log(props.data.longitude)
     // console.log(props.ubicacion.groupid)
     // props.setUbicacion({latitud:props.data.latitude.replace(",", "."),longitud:props.data.longitude.replace(",", "."),zoom:16,groupid:props.ubicacion.groupid,dispId:props.ubicacion.dispId,templateId: props.ubicacion.templateId})
