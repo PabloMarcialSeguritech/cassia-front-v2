@@ -13,7 +13,7 @@
     position: relative;
     display: block;
     width: 100%;
-    height: 15%;
+    height: 10%;
 /* background-color: rgba(195,195,195,1); */
 /* border-bottom: 1px solid rgba(195,195,195,1); */
 }
@@ -42,7 +42,7 @@
 width: 90%;
 position: absolute;
 left: 5%;
-top:85%;
+top:75%;
 /* color:rgba(195,195,195,1); */
 color: 003757;
 }
@@ -86,7 +86,7 @@ color: 003757;
     position: relative;
     display: block;
     width: 100%;
-    height: 85%;
+    height: 90%;
 /* background-color: rgb(95, 95, 95); */
  
 }

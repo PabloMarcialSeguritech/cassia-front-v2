@@ -59,7 +59,35 @@ height: 100%;
     -moz-transition: all 0.2s ease-in;
     transition: all 0.2s ease-in;
   }
+  .actGreen{
+    font-size: 14px;
+    font-size: 14px;
+    background: #00aa33;
+    color: #ffffff;
+    border-radius: 5px;
+    height: 5vh;
+    width: 20vh;
+    overflow: hidden;
+    box-shadow: 0 0 0 0 transparent;
+    -webkit-transition: all 0.2s ease-in;
+    -moz-transition: all 0.2s ease-in;
+    transition: all 0.2s ease-in;
+  }
   .actLogin.actDisabled{
+    font-size: 14px;
+    font-size: 14px;
+    background: #979797;
+    color: #ffffff;
+    border-radius: 5px;
+    height: 5vh;
+    width: 20vh;
+    overflow: hidden;
+    box-shadow: 0 0 0 0 transparent;
+    -webkit-transition: all 0.2s ease-in;
+    -moz-transition: all 0.2s ease-in;
+    transition: all 0.2s ease-in;
+  }
+  .actGreen.actDisabled{
     font-size: 14px;
     font-size: 14px;
     background: #979797;
@@ -189,6 +217,16 @@ height: 100%;
     /* border: 1px solid rgb(61, 106, 255);
     color: #003757; */
   }
+  .actGreen:hover{
+    -webkit-transition: all 0.2s ease-out;
+    -moz-transition: all 0.2s ease-out;
+    transition: all 0.2s ease-out;
+    transform: scale(1.1) translateY(-1px);
+    cursor: pointer;
+    /* box-shadow: 0 0 6px 2px rgba(0, 142, 236, 0.815); */
+    /* border: 1px solid rgb(61, 106, 255);
+    color: #003757; */
+  }
   .actRed:hover{
     -webkit-transition: all 0.2s ease-out;
     -moz-transition: all 0.2s ease-out;
@@ -229,6 +267,11 @@ height: 100%;
     -moz-animation: sh02 0.5s 0s linear;
     animation: sh02 0.5s 0s linear;
   }
+  .actGreen:hover::before {
+    -webkit-animation: sh02 0.5s 0s linear;
+    -moz-animation: sh02 0.5s 0s linear;
+    animation: sh02 0.5s 0s linear;
+  }
   .actRed:hover::before {
     -webkit-animation: sh02 0.5s 0s linear;
     -moz-animation: sh02 0.5s 0s linear;
@@ -257,6 +300,24 @@ height: 100%;
     opacity: 0;
     color: #fff;
     background: #003757;
+    box-shadow: 0 0 50px 30px #fff;
+    -webkit-transform: skewX(-20deg);
+    -moz-transform: skewX(-20deg);
+    -ms-transform: skewX(-20deg);
+    -o-transform: skewX(-20deg);
+    transform: skewX(-20deg);
+  }
+  .actGreen::before {
+    content: '';
+    display: block;
+    width: 0px;
+    height: 86%;
+    position: absolute;
+    top: 7%;
+    left: 0%;
+    opacity: 0;
+    color: #fff;
+    background: #00aa33;
     box-shadow: 0 0 50px 30px #fff;
     -webkit-transform: skewX(-20deg);
     -moz-transform: skewX(-20deg);
