@@ -165,6 +165,46 @@ align-items: center;
   top: 0%;
   left: 0;
 }
+.cont-download-graf{
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 5%;
+  height: 10%;
+  top: 55%;
+  left: 90%;
+  z-index: 1;
+}
+.img-field-download-graf {
+  position: relative;
+  height: 50%;
+}
+.img-field-download-graf:hover{
+  height: 55%;
+  cursor: pointer;
+  transform: scale(1.1)
+}
+.cont-expand-graf{
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 5%;
+  height: 10%;
+  top: 25%;
+  left: 90%;
+  z-index: 1;
+}
+.img-field-expand-graf {
+  position: relative;
+  height: 50%;
+}
+.img-field-expand-graf:hover{
+  height: 55%;
+  cursor: pointer;
+  transform: scale(1.1)
+}
 .cont-print-graf{
   position: absolute;
   display: flex;
@@ -227,7 +267,7 @@ align-items: center;
  align-items: center;
  text-align: left;
  color: #505050;
- font-size: small;
+ font-size: 10px;
 }
 .cont-table-disp{
     position: relative;
@@ -531,4 +571,7 @@ align-items: center;
   .checkTableDisp:checked ~ .checkTableDisp:active {
     background-position: 0 -24px;
   }
+  
+
+
   
