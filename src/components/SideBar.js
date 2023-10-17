@@ -11,7 +11,6 @@ const SideBar =({rolId,onLogin,pageSelected,setPageSelected,dataGlobals})=>{
         estado=dataGlobals.find(obj => obj.name === 'estado')
        
     }
-    console.log(typeof(estado.value))
     return(
         <div className="sidebar">
             
@@ -67,7 +66,7 @@ const SideBar =({rolId,onLogin,pageSelected,setPageSelected,dataGlobals})=>{
                     </div>
                 </div>
             </div> */}
-            {/* <div className={'sidebarRow '+(pageSelected==="reportes"?'sideRowSelected':'')}>
+            <div className={'sidebarRow '+(pageSelected==="reportes"?'sideRowSelected':'')}>
                 <div className={'sidebarCont '+(pageSelected==="reportes"?'sideSelected':'')} name="cireportess" onClick={handleSection}>
                 
                 <div className='imgSideCont' name="reportes" >
@@ -78,7 +77,7 @@ const SideBar =({rolId,onLogin,pageSelected,setPageSelected,dataGlobals})=>{
                     REPORTES
                     </div>
                 </div>
-            </div> */}
+            </div>
             <div className="sidebarRow">
                 <div className='sidebarCont ' onClick={onLogin} >
                     <div className='imgSideCont'>

@@ -33,7 +33,7 @@
 }
 .content-menu-search{
   position: relative;
-  height: 100px;
+  height: 40px;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -47,7 +47,7 @@
 }
 .cont-numeric-menu{
   position: relative;
-  height: 100px;
+  height: 100% !important;
   width: 10%;
   display: flex;
   justify-content: center;
@@ -59,7 +59,7 @@
 .cont-options-menu
 {
   position: relative;
-  height: 100px;
+  height: 100% !important;
   width: 85%;
   display: flex;
   justify-content: center;
@@ -88,4 +88,16 @@
 .img-field-delete-graf:hover{
   height: 35%;
   cursor: pointer;
+}
+
+
+.img-field-add-graf {
+  position: relative;
+  height: 50%;
+}
+.img-field-add-graf:hover{
+  height: 55%;
+  cursor: pointer;
+  transform: rotate(90deg);
+  transition: transform 0.3s ease;
 }
