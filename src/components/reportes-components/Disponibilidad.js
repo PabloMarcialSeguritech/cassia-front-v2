@@ -1,5 +1,5 @@
 
-import { useState,useEffect } from 'react'
+import { useState,useEffect,useRef } from 'react'
 import './styles/disponibilidad.css'
 import Action from '../Action'
 import { useFetch } from '../../hooks/useFetch'
@@ -90,7 +90,7 @@ const Disponibilidad=({server})=>{
     ['uv', 'pv'],
     ['uv', 'pv', 'rv'],
   ]
-  console.log(countArray)
+  // console.log(countArray)
   const obtenerPrimerDiaDelMes = () => {
     const hoy = new Date();
     const primerDiaDelMes = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
@@ -105,56 +105,212 @@ const Disponibilidad=({server})=>{
   };
   const obtenerFechaActualLocal = () => {
     const ahora = new Date();
-    const anio = ahora.getFullYear();
-    const mes = String(ahora.getMonth() + 1).padStart(2, '0'); // El mes se cuenta desde 0
-    const dia = String(ahora.getDate()).padStart(2, '0');
-    const horas = String(ahora.getHours()).padStart(2, '0');
-    const minutos = String(ahora.getMinutes()).padStart(2, '0');
+      const haceNHoras = new Date(ahora.getTime() - (0 * 60 * 60 * 1000));
+      const anio = haceNHoras.getFullYear();
+    const mes = String(haceNHoras.getMonth() + 1).padStart(2, '0');
+    const dia = String(haceNHoras.getDate()).padStart(2, '0');
+    const horas = String(haceNHoras.getHours()).padStart(2, '0');
+    const minutos = String(haceNHoras.getMinutes()).padStart(2, '0');
   
     return `${anio}-${mes}-${dia}T${horas}:${minutos}`;
   };
+
+
+ 
+  
     const [dataInfo,setDataInfo]=useState({data:[],loading:true,error:null})
     const [opciones,setOpciones]=useState({municipio:0,tecnologia:11,marca:0,modelo:0,fecha_ini:''+obtenerPrimerDiaDelMes(),fecha_fin:''+obtenerFechaActualLocal()})
+    const [opcionesArray,setOpcionesArray]=useState({municipio:[0],tecnologia:[11],marca:[0],modelo:[0]})
+    const [prevOpcionesArray,setPrevOpcionesArray]=useState({municipio:[-1],tecnologia:[-1],marca:[-1],modelo:[-1]})
     const token_item=localStorage.getItem('access_token')
     const [AddMultiGraphModalOpen, setAddMultiGraphModalOpen] =useState(false);
     const [totalLienas,setTotalLineas] =useState(1)
     const [seriesKeys,setSeriesKeys]=useState([])
     const [seriesToRender,setSeriesToRender]=useState([])
-    console.log("total de lineas ",totalLienas)
+    const [dataTec,setDataTec]=useState({data:[[]],loading:[true],error:[null]})
+    const [dataMarca,setDataMarca]=useState({data:[[]],loading:[true],error:[null]})
+    const [dataModelo,setDataModelo]=useState({data:[[]],loading:[true],error:[null]})
+    // console.log(opciones)
+    // console.log(opcionesArray)
+    // console.log(dataTec)
+    // console.log("total de lineas ",totalLienas)
     const add = () => {
       // Aquí puedes realizar la búsqueda usando el valor de 'query'
       // Por ejemplo, puedes actualizar el estado 'searchResult' con los resultados
       setAddMultiGraphModalOpen(true)
     }
-    function closAddMultiGraphModal() {
+    // function closAddMultiGraphModal() {
       
-      setAddMultiGraphModalOpen(false);
-      console.log("mostrara:",totalLienas)
-      console.log(countArray[totalLienas])
-      setSeriesKeys(countArray[totalLienas]) // Define las claves de las series
+      // setAddMultiGraphModalOpen(false);
+      // console.log("mostrara:",totalLienas)
+      // console.log(countArray[totalLienas])
+      // setSeriesKeys(countArray[totalLienas]) // Define las claves de las series
 
-      search_reporte_disponibilidad()
-    }
+    //   search_reporte_disponibilidad()
+    // }
     useEffect(()=>{
       setSeriesToRender(seriesKeys.filter(key => data.some(item => item[key])));
-      console.log(seriesKeys.filter(key => data.some(item => item[key]))) // Filtra solo las series que tienen valores
+      // console.log(seriesKeys.filter(key => data.some(item => item[key]))) // Filtra solo las series que tienen valores
       
     },[seriesKeys])
-console.log(dataInfo.data)
+
+    const ultimasNHoras = (n) => {
+      console.log("ultimas ",n)
+      const ahora = new Date();
+      const haceNHoras = new Date(ahora.getTime() - (n * 60 * 60 * 1000));
+      const anio = haceNHoras.getFullYear();
+    const mes = String(haceNHoras.getMonth() + 1).padStart(2, '0');
+    const dia = String(haceNHoras.getDate()).padStart(2, '0');
+    const horas = String(haceNHoras.getHours()).padStart(2, '0');
+    const minutos = String(haceNHoras.getMinutes()).padStart(2, '0');
+  
+    // return `${anio}-${mes}-${dia}T${horas}:${minutos}`;
+      console.log(haceNHoras)
+      // setFechaInicio(haceTresHoras.toISOString().slice(0, 16));
+      setOpciones((prevState)=>{
+        return {
+            ...prevState,
+            ['fecha_ini']:`${anio}-${mes}-${dia}T${horas}:${minutos}`
+        }
+       
+    })
+    console.log(opciones)
+      // setFechaFin(ahora.toISOString().slice(0, 16));
+    };
+const formatDate=(date)=>{
+  const anio = date.getFullYear();
+  const mes = String(date.getMonth() + 1).padStart(2, '0');
+    const dia = String(date.getDate()).padStart(2, '0');
+    const horas = String(date.getHours()).padStart(2, '0');
+    const minutos = String(date.getMinutes()).padStart(2, '0');
+  // console.log(`${anio}-${mes}-${dia}T${horas}:${minutos}`)
+  return `${anio}-${mes}-${dia}T${horas}:${minutos}`;
+}
+    const ultimoPeriodo = (n) => {
+      console.log("ultimas ",n)
+      const fechaActual = new Date();
+      const anioActual = new Date().getFullYear();
+  // Calcula la fecha de inicio de la semana actual
+  const inicioSemanaActual = new Date(fechaActual);
+  inicioSemanaActual.setDate(fechaActual.getDate() - fechaActual.getDay());
+  // Calcula la fecha de fin de la semana actual
+  const finSemanaActual = new Date(fechaActual);
+  finSemanaActual.setDate(fechaActual.getDate() + (6 - fechaActual.getDay()));
+  // Resta 7 días para obtener la fecha de inicio de la semana pasada
+  const inicioSemanaPasada = new Date(inicioSemanaActual);
+  inicioSemanaPasada.setDate(inicioSemanaActual.getDate() - 7);
+  // Resta 7 días para obtener la fecha de fin de la semana pasada
+  const finSemanaPasada = new Date(finSemanaActual);
+  finSemanaPasada.setDate(finSemanaActual.getDate() - 7);
+
+
+  const primerDiaMesActual = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), 1);
+  // const primerDiaDelMes = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), 1);
+  const ultimoDiaMesPasado = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), 0);
+
+  // Calcula el primer día del mes pasado
+  const primerDiaMesPasado = new Date(ultimoDiaMesPasado.getFullYear(), ultimoDiaMesPasado.getMonth(), 1);
+
+  const primerDiaAnioPasado = new Date(fechaActual.getFullYear() - 1, 0, 1);
+
+  // Calcula el último día del año pasado
+  const ultimoDiaAnioPasado = new Date(fechaActual.getFullYear() - 1, 11, 31);
+  const primerDiaAnoActual = new Date(anioActual, 0, 1);
+    // return `${anio}-${mes}-${dia}T${horas}:${minutos}`;
+      console.log(formatDate(inicioSemanaPasada))
+      switch(n){
+        case 1:
+          setOpciones((prevState)=>{
+                return {
+                    ...prevState,
+                    ['fecha_ini']:formatDate(inicioSemanaActual),
+                    ['fecha_fin']:formatDate(fechaActual)
+                }
+            })
+          break;
+          case 2:
+          setOpciones((prevState)=>{
+                return {
+                    ...prevState,
+                    ['fecha_ini']:formatDate(inicioSemanaPasada),
+                    ['fecha_fin']:formatDate(finSemanaPasada)
+                }
+            })
+          break;
+          case 3:
+          setOpciones((prevState)=>{
+                return {
+                    ...prevState,
+                    ['fecha_ini']:formatDate(primerDiaMesActual),
+                    ['fecha_fin']:formatDate(fechaActual)
+                }
+            })
+          break;
+          case 4:
+          setOpciones((prevState)=>{
+                return {
+                    ...prevState,
+                    ['fecha_ini']:formatDate(primerDiaMesPasado),
+                    ['fecha_fin']:formatDate(ultimoDiaMesPasado)
+                }
+            })
+          break;
+          case 5:
+          setOpciones((prevState)=>{
+                return {
+                    ...prevState,
+                    ['fecha_ini']:formatDate(primerDiaAnoActual),
+                    ['fecha_fin']:formatDate(fechaActual)
+                }
+            })
+          break;
+          case 6:
+          setOpciones((prevState)=>{
+                return {
+                    ...prevState,
+                    ['fecha_ini']:formatDate(primerDiaAnioPasado),
+                    ['fecha_fin']:formatDate(ultimoDiaAnioPasado)
+                }
+            })
+          break;
+      }
+      // setFechaInicio(haceTresHoras.toISOString().slice(0, 16));
+    //   
+    
+    };
+// console.log(dataInfo.data)
 useEffect(()=>{
-  setSeriesKeys(countArray[totalLienas]) 
+  setSeriesKeys(countArray[elementos.length]) 
   search_reporte_disponibilidad()
 },[])
 const Buscar=()=>{
   search_reporte_disponibilidad()
 }
 function search_reporte_disponibilidad(){
-        console.log('http://'+server.ip+':'+server.port+'/api/v1/cassia/reports/availability?municipality_id='+opciones.municipio+'&tech_id='+opciones.tecnologia+'&brand_id='+opciones.marca+'&model_id='+opciones.modelo+'&init_date='+opciones.fecha_ini+'&end_date='+opciones.fecha_fin)
+  let baseURL
+  setSeriesKeys(countArray[elementos.length])
+  // if(elementos.length==1){
+  //   baseURL = 'http://'+server.ip+':'+server.port+'/api/v1/cassia/reports/availability';
+  // }else{
+    baseURL = 'http://'+server.ip+':'+server.port+'/api/v1/cassia/reports/availability/multiple';
+  // }
+  
+  const municipioParam = opcionesArray.municipio.map(id => `municipality_id=${id}`).join('&');
+  const tecParam = opcionesArray.tecnologia.map(id => `tech_id=${id}`).join('&');
+  const marcaParam = opcionesArray.marca.map(id => `brand_id=${id}`).join('&');
+  const modeloParam = opcionesArray.modelo.map(id => `model_id=${id}`).join('&');
+  
+  const url=`${baseURL}?${municipioParam}&${tecParam}&${marcaParam}&${modeloParam}&init_date=${opciones.fecha_ini}&end_date=${opciones.fecha_fin}`
+  console.log(url)  
+  // console.log('http://'+server.ip+':'+server.port+'/api/v1/cassia/reports/availability?municipality_id='+opciones.municipio+'&tech_id='+opciones.tecnologia+'&brand_id='+opciones.marca+'&model_id='+opciones.modelo+'&init_date='+opciones.fecha_ini+'&end_date='+opciones.fecha_fin)
   setDataInfo({data:dataInfo.data,loading:true,error:dataInfo.error})
     const fetchData = async () => {
       try {
-     const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/cassia/reports/availability?municipality_id='+opciones.municipio+'&tech_id='+opciones.tecnologia+'&brand_id='+opciones.marca+'&model_id='+opciones.modelo+'&init_date='+opciones.fecha_ini+'&end_date='+opciones.fecha_fin, {                 
-                            headers: {
+    //  const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/cassia/reports/availability?municipality_id='+opciones.municipio+'&tech_id='+opciones.tecnologia+'&brand_id='+opciones.marca+'&model_id='+opciones.modelo+'&init_date='+opciones.fecha_ini+'&end_date='+opciones.fecha_fin, {     
+      const response = await fetch(url,{
+        // const response = await fetch('http://172.18.200.14:8002/api/v1/cassia/reports/availability/multiple?municipality_id=0&tech_id=11&brand_id=0&model_id=0&init_date=2023-10-01T00:00&end_date=2023-10-16T03:41', {
+      // const response = await fetch('http://172.18.200.14:8002/api/v1/cassia/reports/availability/multiple?municipality_id=81&municipality_id=68&tech_id=11&tech_id=9&brand_id=0&brand_id=0&model_id=0&model_id=0&init_date=2023-09-15%2012%3A15%3A00&end_date=2023-09-15%2022%3A16%3A00', {          
+    headers: {
                               'Content-Type': 'application/json',
                               Authorization: `Bearer ${token_item}`,
                             },
@@ -162,13 +318,14 @@ function search_reporte_disponibilidad(){
                           console.log(response)
         if (response.ok) {
           const response_data = await response.json();
-          console.log(totalLienas)
+          console.log(response_data.data)
           
       
           setTotalLineas(1)
           setSeriesKeys(countArray[totalLienas]) 
+          // setDataInfo({data:response_data.data,loading:false,error:dataInfo.error})
           setDataInfo({data:response_data.data,loading:false,error:dataInfo.error})
-        console.log(dataInfo)
+          // console.log(dataInfo)
         } else {
           throw new Error('Error en la solicitud');
         }
@@ -180,7 +337,71 @@ function search_reporte_disponibilidad(){
     };
     fetchData();
 }
-   
+function download_reporte_disponibilidad(){
+  let baseURL
+  // setSeriesKeys(countArray[elementos.length])
+  // if(elementos.length==1){
+  //   baseURL = 'http://'+server.ip+':'+server.port+'/api/v1/cassia/reports/availability';
+  // }else{
+    baseURL = 'http://'+server.ip+':'+server.port+'/api/v1/cassia/reports/availability/multiple/download';
+  // }
+  
+  const municipioParam = opcionesArray.municipio.map(id => `municipality_id=${id}`).join('&');
+  const tecParam = opcionesArray.tecnologia.map(id => `tech_id=${id}`).join('&');
+  const marcaParam = opcionesArray.marca.map(id => `brand_id=${id}`).join('&');
+  const modeloParam = opcionesArray.modelo.map(id => `model_id=${id}`).join('&');
+  
+  const url=`${baseURL}?${municipioParam}&${tecParam}&${marcaParam}&${modeloParam}&init_date=${opciones.fecha_ini}&end_date=${opciones.fecha_fin}`
+  console.log(url)  
+  // console.log('http://'+server.ip+':'+server.port+'/api/v1/cassia/reports/availability?municipality_id='+opciones.municipio+'&tech_id='+opciones.tecnologia+'&brand_id='+opciones.marca+'&model_id='+opciones.modelo+'&init_date='+opciones.fecha_ini+'&end_date='+opciones.fecha_fin)
+  // setDataInfo({data:dataInfo.data,loading:true,error:dataInfo.error})
+    const fetchData = async () => {
+      try {
+    //  const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/cassia/reports/availability?municipality_id='+opciones.municipio+'&tech_id='+opciones.tecnologia+'&brand_id='+opciones.marca+'&model_id='+opciones.modelo+'&init_date='+opciones.fecha_ini+'&end_date='+opciones.fecha_fin, {     
+      const response = await fetch(url,{
+        // const response = await fetch('http://172.18.200.14:8002/api/v1/cassia/reports/availability/multiple?municipality_id=0&tech_id=11&brand_id=0&model_id=0&init_date=2023-10-01T00:00&end_date=2023-10-16T03:41', {
+      // const response = await fetch('http://172.18.200.14:8002/api/v1/cassia/reports/availability/multiple?municipality_id=81&municipality_id=68&tech_id=11&tech_id=9&brand_id=0&brand_id=0&model_id=0&model_id=0&init_date=2023-09-15%2012%3A15%3A00&end_date=2023-09-15%2022%3A16%3A00', {          
+    headers: {
+                              'Content-Type': 'application/json',
+                              Authorization: `Bearer ${token_item}`,
+                            },
+                          });
+                          console.log(response)
+        if (response.ok) {
+          console.log("entro")
+          
+          try {
+            const response_data = await response.blob();
+          console.log(response_data)
+      
+            // Crear un enlace para descargar el archivo
+            const url = window.URL.createObjectURL(new Blob([data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'archivo_descargable.xlsx'); // Cambia el nombre y la extensión del archivo
+            document.body.appendChild(link);
+            link.click();
+            link.parentNode.removeChild(link);
+          } catch (error) {
+            console.error('Error al descargar el archivo', error);
+          }
+      
+          // setTotalLineas(1)
+          // setSeriesKeys(countArray[totalLienas]) 
+          // // setDataInfo({data:response_data.data,loading:false,error:dataInfo.error})
+          // setDataInfo({data:response_data.data,loading:false,error:dataInfo.error})
+          // // console.log(dataInfo)
+        } else {
+          throw new Error('Error en la solicitud');
+        }
+      } catch (error) {
+        // Manejo de errores
+        // setDataInfo({data:dataInfo.data,loading:dataInfo.loading,error:error})
+        //console.error(error);
+      }
+    };
+    fetchData();
+}
       const handleChangeOption=()=>{}
       
       const generateColor = (progress) => {
@@ -213,10 +434,131 @@ function search_reporte_disponibilidad(){
       
       // Uso
       const progress = 0.5;
+      const [elementos, setElementos] = useState(['Serie 1']);
+      const [elementosToRender,setElementosToRender]=useState(['Disponibilidad_1']);
+      const [disabled,setDisabled]=useState(true)
+      console.log(elementos)
+      console.log(elementosToRender)
+  const handleClickAdd = () => {
+    console.log('entro')
+    
+    setElementos([...elementos, 'Serie '+(parseInt(elementos.length,10) +1)]);
+    setElementosToRender([...elementosToRender, 'Disponibilidad_'+(parseInt(elementosToRender.length,10) +1)]);
+    setOpcionesArray(prevState => {
+      return {
+        ...prevState,
+        municipio: [...prevState.municipio, 0],
+        tecnologia:[...prevState.tecnologia, 11],
+        marca:[...prevState.marca, 0],
+        modelo:[...prevState.modelo, 0]
+      };
+    });
+    setDataTec(prevState => {
+      return {
+        ...prevState,
+        data: [...prevState.data, []],
+        loading:[...prevState.loading, true],
+        error:[...prevState.error, null],
+      };
+    });
+    setDataMarca(prevState => {
+      return {
+        ...prevState,
+        data: [...prevState.data, []],
+        loading:[...prevState.loading, true],
+        error:[...prevState.error, null],
+      };
+    });
+    setDataModelo(prevState => {
+      return {
+        ...prevState,
+        data: [...prevState.data, []],
+        loading:[...prevState.loading, true],
+        error:[...prevState.error, null],
+      };
+    });
+    setTotalLineas(elementos.length+1)
+    
+    if(elementos.length+1>=1){
+        setDisabled(false)
+    }else{
+        setDisabled(true)
+    }
+  };
+
+  const eliminarElemento = (indice) => {
+    const nuevosElementos = elementos.filter((elemento, index) => index !== indice);
+    const nuevosElementosTR = elementosToRender.filter((elemento, index) => index !== indice);
+    // const newOpcionesArray=opcionesArray.filter((elemento, index) => index !== indice);
+    // const newPrevOpcionesArray=prevOpcionesArray.filter((elemento, index) => index !== indice);
+    setElementos(nuevosElementos);
+    setElementosToRender(nuevosElementosTR);
+    const newOpcionesArray = { ...opcionesArray };
+
+    for (let propiedad in newOpcionesArray) {
+      if (Array.isArray(newOpcionesArray[propiedad])) {
+        newOpcionesArray[propiedad].splice(indice, 1);
+      }
+    }
+
+    setOpcionesArray(newOpcionesArray);
+
+    const newPrevOpcionesArray = { ...prevOpcionesArray };
+
+    for (let propiedad in newPrevOpcionesArray) {
+      if (Array.isArray(newPrevOpcionesArray[propiedad])) {
+        newPrevOpcionesArray[propiedad].splice(indice, 1);
+      }
+    }
+
+    setPrevOpcionesArray(newPrevOpcionesArray);
+    console.log(elementos.length)
+    if(elementos.length-1>=1){
+        setDisabled(false)
+    }else{
+        setDisabled(true)
+    }
+  };
+  const containerRef = useRef();
+  useEffect(() => {
+    const container = containerRef.current;
+    container.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      container.scrollTop += e.deltaY;
+    });
+  }, []);
+  const handleChangeGraf=(e)=>{
+    console.log(e.target)
+    const {name,value}=e.target
+    
+        setOpciones((prevState)=>{
+            return {
+                ...prevState,
+                [name]:value
+            }
+        })
+  }
+  console.log((typeof(dataInfo.data.metrics)!=='undefined')?dataInfo.data.metrics[0]:'') 
+
     return (
       <>
         <div className="main-reporte-disp">
-        <div className='cont-list-graf'>
+        <div className='cont-add-graf'>
+        {(elementos.length<3)?<img
+                        className='img-field-add-graf'
+                        src='/iconos/add.png'
+                        title='Agregar'
+                        name='Agregar'
+                        onClick={handleClickAdd}
+                      />:''}
+        </div>
+        <div className='cont-print-graf'>
+        <Action disabled={false} origen='Green' titulo='Buscar'  action={search_reporte_disponibilidad}/>  
+        </div>
+        {/* <div className='cont-print-graf'>
+        <Action disabled={false} origen='Login' titulo='Descargar'  action={download_reporte_disponibilidad}/>  
+        </div> */}
+        {/* <div className='cont-list-graf'>
           <div className='compact-list-graf'>
 
           
@@ -233,10 +575,134 @@ function search_reporte_disponibilidad(){
                                  </>
                                 ))}
          </div>
-        </div>
+        </div> */}
             <div className='cont-reporte-disp'>
             <div className='cont-menu-disp'>
-                <MenuSearch completo={true} server={server} opciones={opciones} setOpciones={setOpciones} action1={Buscar} action2={add}></MenuSearch>
+              
+              <div className='cont-selectores'>
+              <div className='cont-title-selectores'>
+              <div className='cont-title-numeric-menu'>
+                    #
+                  </div>
+                  <div className='cont-title-options-menu'>
+                    Municipio
+                  </div>
+                  <div className='cont-title-options-menu'>
+                    Técnologia
+                  </div>
+                  <div className='cont-title-options-menu'>
+                    Marca
+                  </div>
+                  <div className='cont-title-options-menu'>
+                    Modelo
+                  </div>
+                  <div style={{width:'5%'}}>
+                   
+                  </div>
+              </div> 
+              <div className='cont-list-selectores' ref={containerRef} >
+
+              
+              {
+
+                elementos.map((elemento, index) => (
+                  <div key={index} className='content-menu-search'id='content-menu-search'>
+                    <div className='cont-numeric-menu' style={{color:color_graf[index+1]}}>
+                      {elemento}
+                    </div>
+                    <div className='cont-options-menu'>
+                      <MenuSearch dataTec={dataTec} setDataTec={setDataTec} dataModelo={dataModelo} setDataModelo={setDataModelo} dataMarca={dataMarca} setDataMarca={setDataMarca} index={index} prevOpcionesArray={prevOpcionesArray}  setPrevOpcionesArray={setPrevOpcionesArray} opcionesArray={opcionesArray} setOpcionesArray={setOpcionesArray} server={server} opciones={opciones} setOpciones={setOpciones} completo={false}></MenuSearch>
+                    </div>
+                    <div className='cont-action-menu'>
+                      <div className='cont-img-field-delete-graf'>
+                        {
+                            (index!==0)? <img
+                            className='img-field-delete-graf'
+                            src='/iconos/delete.png'
+                            title='Eliminar'
+                            name='Eliminar'
+                            onClick={() => eliminarElemento(index)}
+                          />:''
+                        }
+                       
+                    </div>
+                    </div>
+                  </div>
+                ))}
+                </div>
+                  {/* <MenuSearch completo={true} server={server} opciones={opciones} setOpciones={setOpciones} action1={Buscar} action2={add}></MenuSearch> */}
+              </div>
+              <div className='cont-periodos'> 
+                  <div className='cont-periodo-manual'> 
+                  <>
+                  <div className='compact-periodo-manual'>
+
+                  
+                  <div className='compact-option-date'>
+                      <div className="user-box-disp">
+                          <input required name="fecha_ini"  type="datetime-local" value={opciones.fecha_ini}
+                          onChange={handleChangeGraf} />
+                                          <label className=' active lbl-option-date' >Desde:</label>
+                      </div>
+                  </div>
+                  <div className='compact-option-date'>
+                    <div className="user-box-disp">
+                          <input required name="fecha_fin"  type="datetime-local" value={opciones.fecha_fin}
+                          onChange={handleChangeGraf} />
+                                          <label className=' active lbl-option-date ' >Hasta:</label>
+                      </div>
+                  </div>
+                  </div>
+                  {/* <div className='compact-option' style={{justifyContent:'unset'}}>
+                  <Action disabled={false} origen='Blanco' titulo='Multi Grafica'  action={action2}/>
+                  <Action disabled={false} origen='Login' titulo='Buscar'  action={action1}/>
+                  </div> */}
+                  </>
+                  </div>
+                  <div className='cont-periodo-opciones'> 
+                    <div className='cont-list-periodo'>
+                      <div className='row-option-periodo' onClick={()=>ultimasNHoras(1)}>
+                          Ultima hora
+                      </div>
+                      <div className='row-option-periodo' onClick={()=>ultimasNHoras(3)}>
+                          Ultimas 3 horas
+                      </div>
+                      <div className='row-option-periodo' onClick={()=>ultimasNHoras(6)}>
+                          Ultimas 6 horas
+                      </div>
+                      <div className='row-option-periodo' onClick={()=>ultimasNHoras(12)}>
+                          Ultimas 12 horas
+                      </div>
+                      <div className='row-option-periodo' onClick={()=>ultimasNHoras(24)}>
+                          Ultimas 24 horas
+                      </div>
+                      <div className='row-option-periodo' onClick={()=>ultimasNHoras(48)}>
+                          Ultimas 48 horas
+                      </div>
+                    </div>
+                    <div className='cont-list-periodo'>
+                      <div className='row-option-periodo' onClick={()=>ultimoPeriodo(1)}>
+                          Esta semana
+                      </div>
+                      <div className='row-option-periodo' onClick={()=>ultimoPeriodo(2)}>
+                          Semana pasada
+                      </div>
+                      <div className='row-option-periodo' onClick={()=>ultimoPeriodo(3)}>
+                          Este mes
+                      </div>
+                      <div className='row-option-periodo' onClick={()=>ultimoPeriodo(4)}>
+                          Mes pasado
+                      </div>
+                      <div className='row-option-periodo' onClick={()=>ultimoPeriodo(5)}>
+                          Este año
+                      </div>
+                      <div className='row-option-periodo' onClick={()=>ultimoPeriodo(6)}>
+                          Año pasado
+                      </div>
+                    </div>
+                  </div>
+              </div>
+                
             </div>
             
             <div className='cont-graf-disp'>
@@ -246,13 +712,14 @@ function search_reporte_disponibilidad(){
                     </div> */}
                     <div className='cont-info-center'>
                       {
-                            (dataInfo.loading)?<div style={{width:'100%',height:'95%',display:'flex',justifyContent:'center'}}><LoadSimple></LoadSimple></div>:
+                            (dataInfo.loading || typeof(dataInfo.data.metrics)=='undefined' )?<div style={{width:'100%',height:'95%',display:'flex',justifyContent:'center'}}><LoadSimple></LoadSimple></div>:
                               <ResponsiveContainer width="100%" height="95%">
                               <LineChart
-                                width={500}
-                                height={300}
+                                width={400}
+                                height={200}
                                 // data={dataInfo.data.metrics[0].dataset}
-                                data={data}
+                                data={dataInfo.data.metrics[0].dataset}
+                                // data={data}
                                 margin={{
                                   top: 5,
                                   right: 30,
@@ -262,15 +729,18 @@ function search_reporte_disponibilidad(){
                               >
                                 <CartesianGrid strokeDasharray="3 3" />
                                 {/* <XAxis dataKey="Tiempo" /> */}
-                                <XAxis dataKey="name" />
+                                <XAxis dataKey="Tiempo" />
                                 <YAxis />
                                 <Tooltip />
                                 <Legend />
-                                {/* <Line type="monotone" dataKey="Disponibilidad" stroke="#8884d8" strokeWidth={2}  /> */}
+                                {/* <Line type="monotone" dataKey="Disponibilidad_1" stroke="#8884d8" strokeWidth={2}  /> */}
                                 {/* <Area type="monotone" dataKey="Disponibilidad" fill="#8884d8" fillOpacity={0.3} /> */}
                                 {/* <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
                                 <Line type="monotone" dataKey="pv" stroke="#82ca9d" /> */}
-                                {seriesToRender.map((key, index) => (
+                                
+                                {
+                                // (elementosToRender.length==1)?<Line type="monotone" dataKey="Disponibilidad" stroke="#8884d8" strokeWidth={2}  />:
+                                elementosToRender.map((key, index) => (
                                   <Line
                                     key={index}
                                     type="monotone"
@@ -286,15 +756,44 @@ function search_reporte_disponibilidad(){
                     <div className='cont-info-bottom'>
                         <div className='cont-text-info'>
                             <div className='txt-info-fijo'>Funcionalidad Promedio:    </div>
-                            <div className='txt-info-dinamic' style={{color:'red'}}> &nbsp; {typeof dataInfo.data.general_funcionality_average === 'undefined'?'---':((dataInfo.data.general_funcionality_average===""?0:dataInfo.data.general_funcionality_average.toFixed(2)))}%</div>
+                            {
+                              (typeof dataInfo.data.metrics !== 'undefined')?
+                                dataInfo.data.metrics[0].availability_average.map((key, index) => (
+                                  // console.log(dataInfo.data.metrics[0].availability_average.length,index)
+                                  <div className='txt-info-dinamic' style={{color:color_graf[index+1]}}> &nbsp; {typeof dataInfo.data.metrics === 'undefined' ?'---':((dataInfo.data.metrics[0].availability_average[index]==="" ?0:dataInfo.data.metrics[0].availability_average[index].toFixed(2)))}%</div>
+                                )):''}
+                              
+                               
+                            
+                            
+                            {/* <div className='txt-info-dinamic' style={{color:'red'}}> &nbsp; {typeof dataInfo.data.general_funcionality_average === 'undefined'?'---':((dataInfo.data.general_funcionality_average===""?0:dataInfo.data.general_funcionality_average.toFixed(2)))}%</div> */}
                         </div>
                         <div className='cont-text-info'>
                             <div className='txt-info-fijo'>Lapso de tiempo:    </div>
-                            <div className='txt-info-dinamic' style={{color:'red'}}>&nbsp; {typeof dataInfo.data.days === 'undefined'?'---': (''+(dataInfo.data.days===""?0:dataInfo.data.days.toFixed(2))+' dias')}</div>
+                            {
+                              (typeof dataInfo.data.metrics !== 'undefined')?
+                              dataInfo.data.metrics[0].days.map((key, index) => (
+                                // console.log(dataInfo.data.metrics[0].availability_average.length,index)
+                                <div className='txt-info-dinamic' style={{color:color_graf[index+1]}}> &nbsp; {typeof dataInfo.data.metrics === 'undefined' ?'---':((dataInfo.data.metrics[0].days[index]==="" ?0:dataInfo.data.metrics[0].days[index].toFixed(2)))}dias</div>
+                              )):''}
+                               {/* elementosToRender.map((key, index) => (
+                               <div className='txt-info-dinamic' style={{color:color_graf[index+1]}}> &nbsp; {typeof dataInfo.data.metrics === 'undefined'?'---':((dataInfo.data.metrics[0].days[index]==="" || index<=dataInfo.data.metrics[0].availability_average.length ?0:dataInfo.data.metrics[0].days[index].toFixed(2)))} dias</div>
+                              ))} */}
+                            {/* <div className='txt-info-dinamic' style={{color:'red'}}>&nbsp; {typeof dataInfo.data.days === 'undefined'?'---': (''+(dataInfo.data.days===""?0:dataInfo.data.days.toFixed(2))+' dias')}</div> */}
                         </div>
                         <div className='cont-text-info'>
                             <div className='txt-info-fijo'>Dispositivos:    </div>
-                            <div className='txt-info-dinamic' style={{color:'red'}}>&nbsp; {dataInfo.data.device_count}</div>
+                            {
+                              (typeof dataInfo.data.metrics !== 'undefined')?
+                              dataInfo.data.metrics[0].device_count.map((key, index) => (
+                                // console.log(dataInfo.data.metrics[0].availability_average.length,index)
+                                <div className='txt-info-dinamic' style={{color:color_graf[index+1]}}> &nbsp; {typeof dataInfo.data.metrics === 'undefined' ?'---':((dataInfo.data.metrics[0].device_count[index]==="" ?0:dataInfo.data.metrics[0].device_count[index]))}</div>
+                              )):''}
+                            {/* {
+                               elementosToRender.map((key, index) => (
+                               <div className='txt-info-dinamic' style={{color:color_graf[index+1]}}> &nbsp; {typeof dataInfo.data.metrics === 'undefined'?'---':((dataInfo.data.metrics[0].device_count[index]==="" || index<=dataInfo.data.metrics[0].availability_average.length ?0:dataInfo.data.metrics[0].device_count[index].toFixed(2)))} dispositivos</div>
+                              ))} */}
+                            {/* <div className='txt-info-dinamic' style={{color:'red'}}>&nbsp; {dataInfo.data.device_count}</div> */}
                         </div>
                     </div>
                 </div>
@@ -359,17 +858,35 @@ function search_reporte_disponibilidad(){
                             </div>
                             <div className='DispInfoCell' style={{width:'25%'}}>
                                 <div className='txtDispInfoCell'>
-                                {typeof dataInfo.data.general_funcionality_average === 'undefined'?'---':(dataInfo.data.general_funcionality_average.toFixed(2))}%
+                                {
+                              (typeof dataInfo.data.metrics !== 'undefined')?
+                              dataInfo.data.metrics[0].availability_average.map((key, index) => (
+                                // console.log(dataInfo.data.metrics[0].availability_average.length,index)
+                                <div className='txt-info-dinamic' style={{color:color_graf[index+1]}}> &nbsp; {typeof dataInfo.data.metrics === 'undefined' ?'---':((dataInfo.data.metrics[0].availability_average[index]==="" ?0:dataInfo.data.metrics[0].availability_average[index].toFixed(2)))}%</div>
+                              )):''}
+                                {/* {typeof dataInfo.data.general_funcionality_average === 'undefined'?'---':(dataInfo.data.general_funcionality_average.toFixed(2))}% */}
                                 </div>
                             </div>
                             <div className='DispInfoCell' style={{width:'20%'}}>
                                 <div className='txtDispInfoCell'>
-                                {typeof dataInfo.data.days === 'undefined'?'---': (''+(dataInfo.data.days===""?0:dataInfo.data.days.toFixed(2))+' dias')}
+                                {
+                              (typeof dataInfo.data.metrics !== 'undefined')?
+                              dataInfo.data.metrics[0].days.map((key, index) => (
+                                // console.log(dataInfo.data.metrics[0].availability_average.length,index)
+                                <div className='txt-info-dinamic' style={{color:color_graf[index+1]}}> &nbsp; {typeof dataInfo.data.metrics === 'undefined' ?'---':((dataInfo.data.metrics[0].days[index]==="" ?0:dataInfo.data.metrics[0].days[index].toFixed(2)))}dias</div>
+                              )):''}
+                                {/* {typeof dataInfo.data.days === 'undefined'?'---': (''+(dataInfo.data.days===""?0:dataInfo.data.days.toFixed(2))+' dias')} */}
                                 </div>
                             </div>
                             <div className='DispInfoCell' style={{width:'25%'}}>
                                 <div className='txtDispInfoCell'>
-                                {dataInfo.data.device_count}
+                                {
+                              (typeof dataInfo.data.metrics !== 'undefined')?
+                              dataInfo.data.metrics[0].device_count.map((key, index) => (
+                                // console.log(dataInfo.data.metrics[0].availability_average.length,index)
+                                <div className='txt-info-dinamic' style={{color:color_graf[index+1]}}> &nbsp; {typeof dataInfo.data.metrics === 'undefined' ?'---':((dataInfo.data.metrics[0].device_count[index]==="" ?0:dataInfo.data.metrics[0].device_count[index]))} </div>
+                              )):''}
+                                {/* {dataInfo.data.device_count} */}
                                 </div>
                             </div>
                   
@@ -393,7 +910,7 @@ function search_reporte_disponibilidad(){
                           </div>
                           <div className='DispInfoCell' style={{width:'25%'}}>
                               <div className='txtDispInfoCell'>
-                              {typeof dataInfo.data.days === 'undefined'?'---': (''+dataInfo.data.days.toFixed(2)+' dias')}
+                              {/* {typeof dataInfo.data.days === 'undefined'?'---': (''+dataInfo.data.days.toFixed(2)+' dias')} */}
                               </div>
                           </div>
                           <div className='DispInfoCell' style={{width:'25%'}}>
@@ -440,8 +957,8 @@ function search_reporte_disponibilidad(){
             </div>
             </div>
         </div>
-        <Modal
-        isOpen={AddMultiGraphModalOpen}
+        {/* <Modal
+        isOpen={false}
         // isOpen={false}
         // onAfterOpen={afterOpenExeption}
         onRequestClose={closAddMultiGraphModal}
@@ -450,7 +967,7 @@ function search_reporte_disponibilidad(){
         // shouldCloseOnOverlayClick={false}
         >
           <ModalAddMultiGraph server={server} opciones={opciones} setOpciones={setOpciones} closAddMultiGraphModal={closAddMultiGraphModal} totalLienas={totalLienas} setTotalLineas={setTotalLineas}></ModalAddMultiGraph>
-    </Modal>
+    </Modal> */}
         </>
     )
 }

@@ -3,11 +3,16 @@ import React, { useEffect, useState } from 'react'
 import Select from 'react-select'
 import data_ubi from './ubicaciones'
 import { useFetch } from '../hooks/useFetch'
-const SelectorAdmin=({opGeneral,txtOpGen,opt_de,titulo,data,loading,selectFunction,origen})=>{
+const SelectorAdmin=({index,opGeneral,txtOpGen,opt_de,titulo,data,loading,selectFunction,origen})=>{
     // console.log(titulo)
-    // // console.log(opt_de)
+    // // // console.log(opt_de)
     // console.log(data)
     const customStyles = {
+        menuPortal: base => ({
+            ...base,
+            maxHeight: '50px',
+            zIndex: 9999 // Ajusta el z-index según sea necesario
+          }),
         // Estilos para el contenedor del react-select
         control: (provided, state) => ({
           ...provided,
@@ -34,7 +39,7 @@ const SelectorAdmin=({opGeneral,txtOpGen,opt_de,titulo,data,loading,selectFuncti
             // console.log("es 0")
             opcion_default=0
         }else{
-            // console.log("no es 0")
+            // console.log(datas)
             if(datas.id==opt_de){
                 // console.log(" el valor es" ,cont_i)
                 opcion_default=cont_i
@@ -73,7 +78,7 @@ const SelectorAdmin=({opGeneral,txtOpGen,opt_de,titulo,data,loading,selectFuncti
         //     ...state,[name]:selected.label
         // }))
         setValue(selected)
-        selectFunction(selected)
+        selectFunction(selected,index)
         // if(origen==='mapa'){
         //     switch(selected.filter){
         //         case 'Municipio': props.setUbicacion({latitud:props.ubicacion.latitud,longitud:props.ubicacion.longitud,groupid:selected.value,dispId:props.ubicacion.dispId,templateId:props.ubicacion.templateId})
@@ -91,11 +96,11 @@ const SelectorAdmin=({opGeneral,txtOpGen,opt_de,titulo,data,loading,selectFuncti
         
         
     }
-   
+    // const targetElement = document.getElementById('content-menu-search');
     return(
-        <div className='menuSearchOption'>
+        <div className='menuSearchOption' style={{padding:'unset'}}>
             <div className={origen==='mapa'?'compactSelector':'compactSelectorAdmin'}>
-                <label htmlFor='selector' className={origen==='mapa'?'labelSelector':'labelSelectorAdmin'}>{titulo}:</label>
+                {/* <label htmlFor='selector' className={origen==='mapa'?'labelSelector':'labelSelectorAdmin'}>{titulo}:</label> */}
                 {
                     
                         origen==='mapa'?
@@ -113,7 +118,8 @@ const SelectorAdmin=({opGeneral,txtOpGen,opt_de,titulo,data,loading,selectFuncti
                         :
                         <Select
                             options={options}
-                            
+                            styles={customStyles}
+                            // menuPortalTarget={targetElement}
                             // options={{filter:titulo, value: 0, label: 'cargando...' }}
                             value={(value.length===0)?options[opcion_default]:value}
                             className="react-select-container-admin"
