@@ -4,6 +4,59 @@
 }
 
 
+.modal-graf-content{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+}
+
+.cont-graf-disp-graf{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 92%;
+  height: 95%;
+  left: 4%;
+}
+.cont-close-graf-modal{
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 5%;
+  height: 10%;
+  top: 0%;
+  left: 95%;
+  z-index: 1;
+}
+.img-field-close-graf-modal {
+  position: relative;
+  height: 50%;
+}
+.img-field-close-graf-modal:hover{
+  height: 55%;
+  cursor: pointer;
+  transform: scale(1.1)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .head-card-addGraph {
   position: relative;
   height: 5%;

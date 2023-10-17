@@ -11,7 +11,7 @@ import React, { PureComponent } from 'react';
 import Modal from 'react-modal';
 import { LineChart, Line,Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-const MenuSearch=({dataTec,setDataTec,dataMarca,setDataMarca,dataModelo,setDataModelo,index,server,prevOpcionesArray,setPrevOpcionesArray,opcionesArray,setOpciones,setOpcionesArray,opciones,action1,action2,completo})=>{
+const MenuSearch=({dataTec,setDataTec,dataMarca,setDataMarca,dataModelo,setDataModelo,index,server,prevOpcionesArray,setPrevOpcionesArray,opcionesArray,opcionesTxtArray,setOpciones,setOpcionesArray,setOpcionesTxtArray,opciones,action1,action2,completo})=>{
   //  console.log("index",index)
     const dataLocations=useFetch('zabbix/groups/municipios','','token','GET',server)
     // const [dataTec,setDataTec]=useState({data:[[]],loading:[true],error:null})
@@ -35,7 +35,9 @@ const MenuSearch=({dataTec,setDataTec,dataMarca,setDataMarca,dataModelo,setDataM
         //     default:
         //             break;                        
         // }
+        console.log(option)
         switch(option.filter){
+          
             case 'Municipio':
                       setOpcionesArray((prevState)=>{
                         const nuevoArreglo = [...prevState.municipio];
@@ -45,6 +47,14 @@ const MenuSearch=({dataTec,setDataTec,dataMarca,setDataMarca,dataModelo,setDataM
                             ['municipio']:nuevoArreglo
                         }
                     })
+                    setOpcionesTxtArray((prevState)=>{
+                      const nuevoArreglo = [...prevState.municipio];
+                    nuevoArreglo[index] = option.label;
+                      return {
+                          ...prevState,
+                          ['municipio']:nuevoArreglo
+                      }
+                  })
                                 break;
             case 'Tecnología': setOpcionesArray((prevState)=>{
                                 const nuevoArreglo = [...prevState.tecnologia];
@@ -54,6 +64,14 @@ const MenuSearch=({dataTec,setDataTec,dataMarca,setDataMarca,dataModelo,setDataM
                                     ['tecnologia']:nuevoArreglo
                                 }
                             })
+                            setOpcionesTxtArray((prevState)=>{
+                              const nuevoArreglo = [...prevState.tecnologia];
+                            nuevoArreglo[index] = option.label;
+                              return {
+                                  ...prevState,
+                                  ['tecnologia']:nuevoArreglo
+                              }
+                          })
                                 break; 
             case 'Marca': setOpcionesArray((prevState)=>{
                             const nuevoArreglo = [...prevState.marca];
@@ -63,6 +81,14 @@ const MenuSearch=({dataTec,setDataTec,dataMarca,setDataMarca,dataModelo,setDataM
                                 ['marca']:nuevoArreglo
                             }
                         })
+                        setOpcionesTxtArray((prevState)=>{
+                          const nuevoArreglo = [...prevState.marca];
+                        nuevoArreglo[index] = option.label;
+                          return {
+                              ...prevState,
+                              ['marca']:nuevoArreglo
+                          }
+                      })
                                 break;  
             case 'Modelo': setOpcionesArray((prevState)=>{
               const nuevoArreglo = [...prevState.modelo];
@@ -72,6 +98,14 @@ const MenuSearch=({dataTec,setDataTec,dataMarca,setDataMarca,dataModelo,setDataM
                   ['modelo']:nuevoArreglo
               }
           })
+          setOpcionesTxtArray((prevState)=>{
+            const nuevoArreglo = [...prevState.modelo];
+          nuevoArreglo[index] = option.label;
+            return {
+                ...prevState,
+                ['modelo']:nuevoArreglo
+            }
+        })
            break;                    
             default:
                     break;                        
@@ -83,7 +117,7 @@ useEffect(()=>{
     
 },[opciones.municipio])
 useEffect(() => {
-  console.log(`Se actualizó el elemento municipio`);
+  // console.log(`Se actualizó el elemento municipio`);
   // Función que será ejecutada cada vez que el municipio se actualice
   const handleMunicipioUpdate = (prevMunicipio, nuevoMunicipio) => {
     // console.log(prevMunicipio, nuevoMunicipio)
@@ -91,7 +125,7 @@ useEffect(() => {
     
     if (indiceActualizado !== -1) {
       setindiceActived(indiceActualizado)
-      console.log(`Se actualizó el elemento en el índice ${indiceActualizado}`);
+      // console.log(`Se actualizó el elemento en el índice ${indiceActualizado}`);
       
       search_tecnologias(indiceActualizado)
       setPrevOpcionesArray(opcionesArray)
@@ -122,7 +156,7 @@ function search_tecnologias(indiceActualizado){
     });
       const fetchData = async () => {
         try {
-          console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/groups/devices/'+opcionesArray.municipio[indiceActived])
+          // console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/groups/devices/'+opcionesArray.municipio[indiceActived])
        const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/groups/devices/'+opcionesArray.municipio[indiceActived], {                 
                               headers: {
                                 'Content-Type': 'application/json',
@@ -169,7 +203,7 @@ function search_tecnologias(indiceActualizado){
     
 },[opciones.tecnologia])
 useEffect(() => {
-  console.log(`Se actualizó el elemento tecnologia`);
+  // console.log(`Se actualizó el elemento tecnologia`);
   // Función que será ejecutada cada vez que el municipio se actualice
   const handleMunicipioUpdate = (prevMunicipio, nuevoMunicipio) => {
     // console.log(prevMunicipio, nuevoMunicipio)
@@ -177,7 +211,7 @@ useEffect(() => {
     
     if (indiceActualizado !== -1) {
       setindiceActived(indiceActualizado)
-      console.log(`Se actualizó el elemento en el índice ${indiceActualizado}`);
+      // console.log(`Se actualizó el elemento en el índice ${indiceActualizado}`);
       search_marca(indiceActualizado)
       setPrevOpcionesArray(opcionesArray)
     }
@@ -203,7 +237,7 @@ function search_marca(indiceActualizado){
   });
       const fetchData = async () => {
         try {
-          console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/groups/brands/'+opcionesArray.tecnologia[indiceActived])
+          // console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/groups/brands/'+opcionesArray.tecnologia[indiceActived])
        const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/groups/brands/'+opcionesArray.tecnologia[indiceActived], {                 
                               headers: {
                                 'Content-Type': 'application/json',
@@ -249,7 +283,7 @@ function search_marca(indiceActualizado){
 },[opciones.marca])
 useEffect(() => {
   
-  console.log(`Se actualizó el elemento marca`);
+  // console.log(`Se actualizó el elemento marca`);
   // Función que será ejecutada cada vez que el municipio se actualice
   const handleMunicipioUpdate = (prevMunicipio, nuevoMunicipio) => {
     // console.log(prevMunicipio, nuevoMunicipio)
@@ -257,7 +291,7 @@ useEffect(() => {
     
     if (indiceActualizado !== -1) {
       setindiceActived(indiceActualizado)
-      console.log(`Se actualizó el elemento en el índice ${indiceActualizado}`);
+      // console.log(`Se actualizó el elemento en el índice ${indiceActualizado}`);
       search_modelo(indiceActualizado)
       setPrevOpcionesArray(opcionesArray)
     }

@@ -5,7 +5,9 @@ import LoadSimple from '../LoadSimple';
 import InputAdmin from '../InputAdmin';
 import { useFetch } from '../../hooks/useFetch';
 import MenuSearch from './MenuSearch';
-const ModalCreateCis =({server,opciones,setOpciones,totalLineas,setTotalLineas,closAddMultiGraphModal})=>{
+import { LineChart, Line,Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+
+const ModalCreateCis =({server,opcionesTxtArray,color_graf,setTotalLineas,elementosToRender,dataInfo,closAddMultiGraphModal})=>{
 const [disabled,setDisabled]=useState(true)
 //     const [elementos, setElementos] = useState([]);
 //     const [countElements, setCountElementos] = useState(1);
@@ -61,56 +63,127 @@ const [elementos, setElementos] = useState([]);
   };
   
     return(
-        <div className="modal-user-content">
-            <div className='card-users modal-verificate'>
-                <div className='head-card-addGraph'>
-                    <div className='title-head-card-users'>
-                        Agregar Graficas
-                    </div>
-                    
-                </div>
-                <div className='content-card-addGraph' style={{overflowY: 'scroll',scrollbarWidth: 'thin'}}>
-                {elementos.map((elemento, index) => (
-        <div key={index} className='content-menu-search'>
-          <div className='cont-numeric-menu'>
-            Línea {index+1}
-          </div>
-          <div className='cont-options-menu'>
-            <MenuSearch server={server} opciones={opciones} setOpciones={setOpciones} completo={false}></MenuSearch>
-          </div>
-          <div className='cont-action-menu'>
-            <div className='cont-img-field-delete-graf'>
-              <img
-                className='img-field-delete-graf'
-                src='/iconos/delete.png'
-                title='Eliminar'
-                name='Eliminar'
-                onClick={() => eliminarElemento(index)}
-              />
-            </div>
-          </div>
-        </div>
-      ))}
-                    {/* <div className='content-menu-search'>
-                        <div className='cont-numeric-menu'>
-                        Liena 1
-                        </div>
-                        <div className='cont-options-menu'>
-                        <MenuSearch server={server} opciones={opciones} setOpciones={setOpciones} completo={false}></MenuSearch>
-                        </div>
-                        <div className='cont-action-menu'>
-                            borrar
-                        </div>
-                    </div> */}
-                    
-                    
 
+        <div className="modal-graf-content">
+          <div className='cont-close-graf-modal'>
+        <img
+                        className='img-field-close-graf-modal'
+                        src='/iconos/close.png'
+                        title='Agregar'
+                        name='Agregar'
+                        onClick={closAddMultiGraphModal}
+                      />
+        </div>
+           <div className='cont-list-graf'>
+            <div className='compact-list-graf'>
+
+            
+          {elementosToRender.map((key, index) => (
+                                  <>
+                                  <div className='cont-row-graf'>
+              <div className='cont-color-graf'>
+                  <div className='square-color-graf' style={{background:color_graf[index+1]}}></div>
+              </div>
+              <div className='cont-name-graf'> {opcionesTxtArray.municipio[index]+' / '+opcionesTxtArray.tecnologia[index]+' / '+opcionesTxtArray.marca[index]+' / '+opcionesTxtArray.modelo[index]}</div>
+              
+            </div>
+            <hr className='separate-rof-graf'></hr>
+                                  </>
+                                  ))}
+          </div>
+          
+        </div> 
+           <div className='cont-graf-disp-graf'>
+                <div className='cont-info-graf'>
+                    {/* <div className='cont-info-top'>
+
+                    </div> */}
+                    <div className='cont-info-center'>
+                      <ResponsiveContainer width="100%" height="95%">
+                              <LineChart
+                                width={400}
+                                height={200}
+                                // data={dataInfo.data.metrics[0].dataset}
+                                data={dataInfo.data.metrics[0].dataset}
+                                // data={data}
+                                margin={{
+                                  top: 5,
+                                  right: 30,
+                                  left: 20,
+                                  bottom: 5,
+                                }}
+                              >
+                                <CartesianGrid strokeDasharray="3 3" />
+                                {/* <XAxis dataKey="Tiempo" /> */}
+                                <XAxis dataKey="Tiempo" />
+                                <YAxis />
+                                <Tooltip />
+                                <Legend />
+                                {/* <Line type="monotone" dataKey="Disponibilidad_1" stroke="#8884d8" strokeWidth={2}  /> */}
+                                {/* <Area type="monotone" dataKey="Disponibilidad" fill="#8884d8" fillOpacity={0.3} /> */}
+                                {/* <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+                                <Line type="monotone" dataKey="pv" stroke="#82ca9d" /> */}
+                                
+                                {
+                                // (elementosToRender.length==1)?<Line type="monotone" dataKey="Disponibilidad" stroke="#8884d8" strokeWidth={2}  />:
+                                elementosToRender.map((key, index) => (
+                                  <Line
+                                    key={index}
+                                    type="monotone"
+                                    dataKey={key}
+                                    // stroke={`#${Math.floor(Math.random()*16777215).toString(16)}`} // Color aleatorio
+                                  stroke={color_graf[index+1]}
+                                  />
+                                ))}
+                              </LineChart>
+                              </ResponsiveContainer>
+                        
+                    </div>
+                    <div className='cont-info-bottom'>
+                        <div className='cont-text-info'>
+                            <div className='txt-info-fijo'>Funcionalidad Promedio:    </div>
+                            {
+                              (typeof dataInfo.data.metrics !== 'undefined')?
+                                dataInfo.data.metrics[0].availability_average.map((key, index) => (
+                                  // console.log(dataInfo.data.metrics[0].availability_average.length,index)
+                                  <div className='txt-info-dinamic' style={{color:color_graf[index+1]}}> &nbsp; {typeof dataInfo.data.metrics === 'undefined' ?'---':((dataInfo.data.metrics[0].availability_average[index]==="" ?0:dataInfo.data.metrics[0].availability_average[index].toFixed(2)))}%</div>
+                                )):''}
+                              
+                               
+                            
+                            
+                            {/* <div className='txt-info-dinamic' style={{color:'red'}}> &nbsp; {typeof dataInfo.data.general_funcionality_average === 'undefined'?'---':((dataInfo.data.general_funcionality_average===""?0:dataInfo.data.general_funcionality_average.toFixed(2)))}%</div> */}
+                        </div>
+                        <div className='cont-text-info'>
+                            <div className='txt-info-fijo'>Lapso de tiempo:    </div>
+                            {
+                              (typeof dataInfo.data.metrics !== 'undefined')?
+                              dataInfo.data.metrics[0].days.map((key, index) => (
+                                // console.log(dataInfo.data.metrics[0].availability_average.length,index)
+                                <div className='txt-info-dinamic' style={{color:color_graf[index+1]}}> &nbsp; {typeof dataInfo.data.metrics === 'undefined' ?'---':((dataInfo.data.metrics[0].days[index]==="" ?0:dataInfo.data.metrics[0].days[index].toFixed(2)))}dias</div>
+                              )):''}
+                               {/* elementosToRender.map((key, index) => (
+                               <div className='txt-info-dinamic' style={{color:color_graf[index+1]}}> &nbsp; {typeof dataInfo.data.metrics === 'undefined'?'---':((dataInfo.data.metrics[0].days[index]==="" || index<=dataInfo.data.metrics[0].availability_average.length ?0:dataInfo.data.metrics[0].days[index].toFixed(2)))} dias</div>
+                              ))} */}
+                            {/* <div className='txt-info-dinamic' style={{color:'red'}}>&nbsp; {typeof dataInfo.data.days === 'undefined'?'---': (''+(dataInfo.data.days===""?0:dataInfo.data.days.toFixed(2))+' dias')}</div> */}
+                        </div>
+                        <div className='cont-text-info'>
+                            <div className='txt-info-fijo'>Dispositivos:    </div>
+                            {
+                              (typeof dataInfo.data.metrics !== 'undefined')?
+                              dataInfo.data.metrics[0].device_count.map((key, index) => (
+                                // console.log(dataInfo.data.metrics[0].availability_average.length,index)
+                                <div className='txt-info-dinamic' style={{color:color_graf[index+1]}}> &nbsp; {typeof dataInfo.data.metrics === 'undefined' ?'---':((dataInfo.data.metrics[0].device_count[index]==="" ?0:dataInfo.data.metrics[0].device_count[index]))}</div>
+                              )):''}
+                            {/* {
+                               elementosToRender.map((key, index) => (
+                               <div className='txt-info-dinamic' style={{color:color_graf[index+1]}}> &nbsp; {typeof dataInfo.data.metrics === 'undefined'?'---':((dataInfo.data.metrics[0].device_count[index]==="" || index<=dataInfo.data.metrics[0].availability_average.length ?0:dataInfo.data.metrics[0].device_count[index].toFixed(2)))} dispositivos</div>
+                              ))} */}
+                            {/* <div className='txt-info-dinamic' style={{color:'red'}}>&nbsp; {dataInfo.data.device_count}</div> */}
+                        </div>
+                    </div>
                 </div>
-                <div className='content-bottom-addGraph'>
-                <Action disabled={false} origen='Blanco' titulo='+'  action={handleClick}/>
-                <Action disabled={disabled} origen='Login' titulo='Buscar'  action={closAddMultiGraphModal}/>  
-                </div>
-                </div>
+            </div>
         </div>
     )
 }

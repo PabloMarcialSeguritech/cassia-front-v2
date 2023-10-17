@@ -22,9 +22,10 @@ const AddMultiGraphModalStyles = {
     bottom: 'auto',
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
-    width:'70%',
+    width:'90%',
     height:'70%',
-    padding:'20px'
+    padding:'20px',
+   
   },
 };
 const Disponibilidad=({server})=>{
@@ -33,63 +34,7 @@ const Disponibilidad=({server})=>{
     2:"#80cfff",
     3:"#56e1ad"
   }
-  const data = [
-    {
-      name: 'Page A',
-      uv: 4000,
-      pv: 2400,
-      rv:3400,
-      amt: 2400,
-    },
-    {
-      name: 'Page B',
-      uv: 3000,
-      pv: 1398,
-      rv: 2398,
-      amt: 2210,
-    },
-    {
-      name: 'Page C',
-      uv: 2000,
-      pv: 9800,
-      rv: 5400,
-      amt: 2290,
-    },
-    {
-      name: 'Page D',
-      uv: 2780,
-      pv: 3908,
-      rv: 3100,
-      amt: 2000,
-    },
-    {
-      name: 'Page E',
-      uv: 1890,
-      pv: 4800,
-      rv: 2300,
-      amt: 2181,
-    },
-    {
-      name: 'Page F',
-      uv: 2390,
-      pv: 3800,
-      rv: 3400,
-      amt: 2500,
-    },
-    {
-      name: 'Page G',
-      uv: 3490,
-      pv: 4300,
-      rv: 2400,
-      amt: 2100,
-    },
-  ];
-  const countArray=[
-    [],
-    ['uv' ],
-    ['uv', 'pv'],
-    ['uv', 'pv', 'rv'],
-  ]
+  
   // console.log(countArray)
   const obtenerPrimerDiaDelMes = () => {
     const hoy = new Date();
@@ -121,35 +66,32 @@ const Disponibilidad=({server})=>{
     const [dataInfo,setDataInfo]=useState({data:[],loading:true,error:null})
     const [opciones,setOpciones]=useState({municipio:0,tecnologia:11,marca:0,modelo:0,fecha_ini:''+obtenerPrimerDiaDelMes(),fecha_fin:''+obtenerFechaActualLocal()})
     const [opcionesArray,setOpcionesArray]=useState({municipio:[0],tecnologia:[11],marca:[0],modelo:[0]})
+    const [opcionesTxtArray,setOpcionesTxtArray]=useState({municipio:['TODOS'],tecnologia:['SUSCRIPTORES'],marca:['TODAS'],modelo:['TODOS']})
     const [prevOpcionesArray,setPrevOpcionesArray]=useState({municipio:[-1],tecnologia:[-1],marca:[-1],modelo:[-1]})
     const token_item=localStorage.getItem('access_token')
-    const [AddMultiGraphModalOpen, setAddMultiGraphModalOpen] =useState(false);
+    const [addMultiGraphModalOpen, setAddMultiGraphModalOpen]=useState(false);
     const [totalLienas,setTotalLineas] =useState(1)
     const [seriesKeys,setSeriesKeys]=useState([])
     const [seriesToRender,setSeriesToRender]=useState([])
     const [dataTec,setDataTec]=useState({data:[[]],loading:[true],error:[null]})
     const [dataMarca,setDataMarca]=useState({data:[[]],loading:[true],error:[null]})
     const [dataModelo,setDataModelo]=useState({data:[[]],loading:[true],error:[null]})
-    // console.log(opciones)
-    // console.log(opcionesArray)
+    console.log(opcionesTxtArray)
+    console.log(opcionesArray)
     // console.log(dataTec)
     // console.log("total de lineas ",totalLienas)
-    const add = () => {
+    const Ampliar = () => {
       // Aquí puedes realizar la búsqueda usando el valor de 'query'
       // Por ejemplo, puedes actualizar el estado 'searchResult' con los resultados
       setAddMultiGraphModalOpen(true)
     }
-    // function closAddMultiGraphModal() {
+    function closAddMultiGraphModal() {
       
-      // setAddMultiGraphModalOpen(false);
-      // console.log("mostrara:",totalLienas)
-      // console.log(countArray[totalLienas])
-      // setSeriesKeys(countArray[totalLienas]) // Define las claves de las series
-
-    //   search_reporte_disponibilidad()
-    // }
+      setAddMultiGraphModalOpen(false);
+      
+    }
     useEffect(()=>{
-      setSeriesToRender(seriesKeys.filter(key => data.some(item => item[key])));
+      // setSeriesToRender(seriesKeys.filter(key => data.some(item => item[key])));
       // console.log(seriesKeys.filter(key => data.some(item => item[key]))) // Filtra solo las series que tienen valores
       
     },[seriesKeys])
@@ -170,7 +112,8 @@ const Disponibilidad=({server})=>{
       setOpciones((prevState)=>{
         return {
             ...prevState,
-            ['fecha_ini']:`${anio}-${mes}-${dia}T${horas}:${minutos}`
+            ['fecha_ini']:`${anio}-${mes}-${dia}T${horas}:${minutos}`,
+            ['fecha_fin']:formatDate(ahora)
         }
        
     })
@@ -280,7 +223,7 @@ const formatDate=(date)=>{
     };
 // console.log(dataInfo.data)
 useEffect(()=>{
-  setSeriesKeys(countArray[elementos.length]) 
+  // setSeriesKeys(countArray[elementos.length]) 
   search_reporte_disponibilidad()
 },[])
 const Buscar=()=>{
@@ -288,7 +231,7 @@ const Buscar=()=>{
 }
 function search_reporte_disponibilidad(){
   let baseURL
-  setSeriesKeys(countArray[elementos.length])
+  // setSeriesKeys(countArray[elementos.length])
   // if(elementos.length==1){
   //   baseURL = 'http://'+server.ip+':'+server.port+'/api/v1/cassia/reports/availability';
   // }else{
@@ -301,7 +244,7 @@ function search_reporte_disponibilidad(){
   const modeloParam = opcionesArray.modelo.map(id => `model_id=${id}`).join('&');
   
   const url=`${baseURL}?${municipioParam}&${tecParam}&${marcaParam}&${modeloParam}&init_date=${opciones.fecha_ini}&end_date=${opciones.fecha_fin}`
-  console.log(url)  
+  // console.log(url)  
   // console.log('http://'+server.ip+':'+server.port+'/api/v1/cassia/reports/availability?municipality_id='+opciones.municipio+'&tech_id='+opciones.tecnologia+'&brand_id='+opciones.marca+'&model_id='+opciones.modelo+'&init_date='+opciones.fecha_ini+'&end_date='+opciones.fecha_fin)
   setDataInfo({data:dataInfo.data,loading:true,error:dataInfo.error})
     const fetchData = async () => {
@@ -322,7 +265,7 @@ function search_reporte_disponibilidad(){
           
       
           setTotalLineas(1)
-          setSeriesKeys(countArray[totalLienas]) 
+          // setSeriesKeys(countArray[totalLienas]) 
           // setDataInfo({data:response_data.data,loading:false,error:dataInfo.error})
           setDataInfo({data:response_data.data,loading:false,error:dataInfo.error})
           // console.log(dataInfo)
@@ -372,10 +315,10 @@ function download_reporte_disponibilidad(){
           
           try {
             const response_data = await response.blob();
-          console.log(response_data)
+            console.log(response_data)
       
             // Crear un enlace para descargar el archivo
-            const url = window.URL.createObjectURL(new Blob([data]));
+            const url = window.URL.createObjectURL(response_data);
             const link = document.createElement('a');
             link.href = url;
             link.setAttribute('download', 'archivo_descargable.xlsx'); // Cambia el nombre y la extensión del archivo
@@ -386,18 +329,10 @@ function download_reporte_disponibilidad(){
             console.error('Error al descargar el archivo', error);
           }
       
-          // setTotalLineas(1)
-          // setSeriesKeys(countArray[totalLienas]) 
-          // // setDataInfo({data:response_data.data,loading:false,error:dataInfo.error})
-          // setDataInfo({data:response_data.data,loading:false,error:dataInfo.error})
-          // // console.log(dataInfo)
         } else {
           throw new Error('Error en la solicitud');
         }
       } catch (error) {
-        // Manejo de errores
-        // setDataInfo({data:dataInfo.data,loading:dataInfo.loading,error:error})
-        //console.error(error);
       }
     };
     fetchData();
@@ -437,10 +372,10 @@ function download_reporte_disponibilidad(){
       const [elementos, setElementos] = useState(['Serie 1']);
       const [elementosToRender,setElementosToRender]=useState(['Disponibilidad_1']);
       const [disabled,setDisabled]=useState(true)
-      console.log(elementos)
-      console.log(elementosToRender)
+      // console.log(elementos)
+      // console.log(elementosToRender)
   const handleClickAdd = () => {
-    console.log('entro')
+    // console.log('entro')
     
     setElementos([...elementos, 'Serie '+(parseInt(elementos.length,10) +1)]);
     setElementosToRender([...elementosToRender, 'Disponibilidad_'+(parseInt(elementosToRender.length,10) +1)]);
@@ -451,6 +386,15 @@ function download_reporte_disponibilidad(){
         tecnologia:[...prevState.tecnologia, 11],
         marca:[...prevState.marca, 0],
         modelo:[...prevState.modelo, 0]
+      };
+    });
+    setOpcionesTxtArray(prevState => {
+      return {
+        ...prevState,
+        municipio: [...prevState.municipio, 'TODOS'],
+        tecnologia:[...prevState.tecnologia, 'SUSCRIPTORES'],
+        marca:[...prevState.marca, 'TODAS'],
+        modelo:[...prevState.modelo, 'TODOS']
       };
     });
     setDataTec(prevState => {
@@ -494,15 +438,19 @@ function download_reporte_disponibilidad(){
     setElementos(nuevosElementos);
     setElementosToRender(nuevosElementosTR);
     const newOpcionesArray = { ...opcionesArray };
-
+    const newOpcionesTxtArray = { ...opcionesTxtArray };
     for (let propiedad in newOpcionesArray) {
       if (Array.isArray(newOpcionesArray[propiedad])) {
         newOpcionesArray[propiedad].splice(indice, 1);
       }
     }
-
+    for (let propiedad in newOpcionesTxtArray) {
+      if (Array.isArray(newOpcionesTxtArray[propiedad])) {
+        newOpcionesTxtArray[propiedad].splice(indice, 1);
+      }
+    }
     setOpcionesArray(newOpcionesArray);
-
+    setOpcionesTxtArray(newOpcionesTxtArray);
     const newPrevOpcionesArray = { ...prevOpcionesArray };
 
     for (let propiedad in newPrevOpcionesArray) {
@@ -538,7 +486,7 @@ function download_reporte_disponibilidad(){
             }
         })
   }
-  console.log((typeof(dataInfo.data.metrics)!=='undefined')?dataInfo.data.metrics[0]:'') 
+  // console.log((typeof(dataInfo.data.metrics)!=='undefined')?dataInfo.data.metrics[0]:'') 
 
     return (
       <>
@@ -555,27 +503,42 @@ function download_reporte_disponibilidad(){
         <div className='cont-print-graf'>
         <Action disabled={false} origen='Green' titulo='Buscar'  action={search_reporte_disponibilidad}/>  
         </div>
-        {/* <div className='cont-print-graf'>
-        <Action disabled={false} origen='Login' titulo='Descargar'  action={download_reporte_disponibilidad}/>  
-        </div> */}
-        {/* <div className='cont-list-graf'>
+        <div className='cont-download-graf'>
+        {<img
+                        className='img-field-download-graf'
+                        src='/iconos/download.png'
+                        title='Agregar'
+                        name='Agregar'
+                        onClick={download_reporte_disponibilidad}
+                      />}
+        </div>
+        <div className='cont-expand-graf'>
+        {<img
+                        className='img-field-expand-graf'
+                        src='/iconos/full-screen.png'
+                        title='Agregar'
+                        name='Agregar'
+                        onClick={Ampliar}
+                      />}
+        </div>
+        <div className='cont-list-graf'>
           <div className='compact-list-graf'>
 
           
-        {seriesToRender.map((key, index) => (
+        {/* {elementosToRender.map((key, index) => (
                                  <>
                                  <div className='cont-row-graf'>
              <div className='cont-color-graf'>
                 <div className='square-color-graf' style={{background:color_graf[index+1]}}></div>
              </div>
-             <div className='cont-name-graf'> todos/suscrip/todas/todos</div>
+             <div className='cont-name-graf'> {opcionesTxtArray.municipio[index]+' / '+opcionesTxtArray.tecnologia[index]+' / '+opcionesTxtArray.marca[index]+' / '+opcionesTxtArray.modelo[index]}</div>
              
           </div>
           <hr className='separate-rof-graf'></hr>
                                  </>
-                                ))}
+                                ))} */}
          </div>
-        </div> */}
+        </div>
             <div className='cont-reporte-disp'>
             <div className='cont-menu-disp'>
               
@@ -611,7 +574,7 @@ function download_reporte_disponibilidad(){
                       {elemento}
                     </div>
                     <div className='cont-options-menu'>
-                      <MenuSearch dataTec={dataTec} setDataTec={setDataTec} dataModelo={dataModelo} setDataModelo={setDataModelo} dataMarca={dataMarca} setDataMarca={setDataMarca} index={index} prevOpcionesArray={prevOpcionesArray}  setPrevOpcionesArray={setPrevOpcionesArray} opcionesArray={opcionesArray} setOpcionesArray={setOpcionesArray} server={server} opciones={opciones} setOpciones={setOpciones} completo={false}></MenuSearch>
+                      <MenuSearch dataTec={dataTec} setDataTec={setDataTec} dataModelo={dataModelo} setDataModelo={setDataModelo} dataMarca={dataMarca} setDataMarca={setDataMarca} index={index} prevOpcionesArray={prevOpcionesArray}  setPrevOpcionesArray={setPrevOpcionesArray} opcionesArray={opcionesArray}    opcionesTxtArray={opcionesTxtArray} setOpcionesTxtArray={setOpcionesTxtArray} setOpcionesArray={setOpcionesArray} server={server} opciones={opciones} setOpciones={setOpciones} completo={false}></MenuSearch>
                     </div>
                     <div className='cont-action-menu'>
                       <div className='cont-img-field-delete-graf'>
@@ -653,10 +616,7 @@ function download_reporte_disponibilidad(){
                       </div>
                   </div>
                   </div>
-                  {/* <div className='compact-option' style={{justifyContent:'unset'}}>
-                  <Action disabled={false} origen='Blanco' titulo='Multi Grafica'  action={action2}/>
-                  <Action disabled={false} origen='Login' titulo='Buscar'  action={action1}/>
-                  </div> */}
+                  
                   </>
                   </div>
                   <div className='cont-periodo-opciones'> 
@@ -957,8 +917,8 @@ function download_reporte_disponibilidad(){
             </div>
             </div>
         </div>
-        {/* <Modal
-        isOpen={false}
+        <Modal
+        isOpen={addMultiGraphModalOpen}
         // isOpen={false}
         // onAfterOpen={afterOpenExeption}
         onRequestClose={closAddMultiGraphModal}
@@ -966,8 +926,8 @@ function download_reporte_disponibilidad(){
         contentLabel="Example Modal2"
         // shouldCloseOnOverlayClick={false}
         >
-          <ModalAddMultiGraph server={server} opciones={opciones} setOpciones={setOpciones} closAddMultiGraphModal={closAddMultiGraphModal} totalLienas={totalLienas} setTotalLineas={setTotalLineas}></ModalAddMultiGraph>
-    </Modal> */}
+          <ModalAddMultiGraph dataInfo={dataInfo} elementosToRender={elementosToRender}closAddMultiGraphModal={closAddMultiGraphModal} setTotalLineas={setTotalLineas} color_graf={color_graf} opcionesTxtArray={opcionesTxtArray}></ModalAddMultiGraph>
+    </Modal>
         </>
     )
 }
