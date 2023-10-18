@@ -73,7 +73,7 @@ const SelectorAdmin=({index,opGeneral,txtOpGen,opt_de,titulo,data,loading,select
     
     // //console.log(value,'value') 
     const HandleChange=(selected,name)=>{
-        //console.log(selected)
+        // console.log(selected)
         // setValue((state)=>({
         //     ...state,[name]:selected.label
         // }))
