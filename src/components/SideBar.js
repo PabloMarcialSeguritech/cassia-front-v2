@@ -7,10 +7,14 @@ const SideBar =({rolId,onLogin,pageSelected,setPageSelected,dataGlobals})=>{
         setPageSelected(e.target.attributes.name.value)
     }
     var estado=''
+    var reportes=0
+    var cis=0
     if(dataGlobals!==undefined){
         estado=dataGlobals.find(obj => obj.name === 'estado')
-       
+        reportes=dataGlobals.find(obj => obj.name === 'report_module')
+        cis=dataGlobals.find(obj => obj.name === 'ci_module')
     }
+    
     return(
         <div className="sidebar">
             
@@ -54,30 +58,37 @@ const SideBar =({rolId,onLogin,pageSelected,setPageSelected,dataGlobals})=>{
             :
             ''
             }
-            {/* <div className={'sidebarRow '+(pageSelected==="cis"?'sideRowSelected':'')}>
-                <div className={'sidebarCont '+(pageSelected==="cis"?'sideSelected':'')} name="cis" onClick={handleSection}>
-                
-                <div className='imgSideCont' name="cis" >
-                <img src={'/iconos/cis'+(pageSelected==="cis"?'-blanco.png':'.png')} name="cis" />
-                
+            {
+                (cis.value==1)?
+                <div className={'sidebarRow '+(pageSelected==="cis"?'sideRowSelected':'')}>
+                    <div className={'sidebarCont '+(pageSelected==="cis"?'sideSelected':'')} name="cis" onClick={handleSection}>
+                    
+                    <div className='imgSideCont' name="cis" >
+                    <img src={'/iconos/cis'+(pageSelected==="cis"?'-blanco.png':'.png')} name="cis" />
+                    
+                        </div>
+                        <div className='textSideCont ' name="cis" >
+                        CI's
+                        </div>
                     </div>
-                    <div className='textSideCont ' name="cis" >
-                    CI's
+                </div>:''
+            }
+            {
+                (reportes.value==1)?
+                <div className={'sidebarRow '+(pageSelected==="reportes"?'sideRowSelected':'')}>
+                    <div className={'sidebarCont '+(pageSelected==="reportes"?'sideSelected':'')} name="cireportess" onClick={handleSection}>
+                    
+                    <div className='imgSideCont' name="reportes" >
+                    <img src={'/iconos/reportes'+(pageSelected==="reportes"?'-blanco.png':'.png')} name="reportes" />
+                    
+                        </div>
+                        <div className='textSideCont ' name="reportes" >
+                        REPORTES
+                        </div>
                     </div>
-                </div>
-            </div> */}
-            <div className={'sidebarRow '+(pageSelected==="reportes"?'sideRowSelected':'')}>
-                <div className={'sidebarCont '+(pageSelected==="reportes"?'sideSelected':'')} name="cireportess" onClick={handleSection}>
-                
-                <div className='imgSideCont' name="reportes" >
-                <img src={'/iconos/reportes'+(pageSelected==="reportes"?'-blanco.png':'.png')} name="reportes" />
-                
-                    </div>
-                    <div className='textSideCont ' name="reportes" >
-                    REPORTES
-                    </div>
-                </div>
-            </div>
+                </div>:''
+            }
+            
             <div className="sidebarRow">
                 <div className='sidebarCont ' onClick={onLogin} >
                     <div className='imgSideCont'>

@@ -28,10 +28,10 @@ const ModalCreateCis =({user,server,setRegisterIsValid,dataCis,setData,loading,s
     // const [loading,setLoading]=useState(false);
     // const [error,setError]=useState(null); 
     
-    console.log(cisData)
-        console.log(host)
+    // console.log(cisData)
+    //     console.log(host)
         useEffect(()=>{
-           console.log("cambio host")
+        //    console.log("cambio host")
            if(host.length===1){
             setHostName(host[0].name)
             setCisData((prevState)=>{
@@ -111,8 +111,8 @@ const ModalCreateCis =({user,server,setRegisterIsValid,dataCis,setData,loading,s
             console.log(method,'http://'+server.ip+':'+server.port+'/api/v1/cassia/ci/'+url_add)
             console.log(JSON.stringify(cisData))
             console.log(localStorage.getItem('access_token'))
-              const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/cassia/ci/', {
-                method: 'POST',  
+              const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/cassia/ci/'+url_add, {
+                method: method,  
                 headers: {
                     "Accept": "application/json",
                   Authorization: `Bearer ${localStorage.getItem('access_token')}`,
@@ -182,7 +182,7 @@ const ModalCreateCis =({user,server,setRegisterIsValid,dataCis,setData,loading,s
                   'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
                 },
               });
-              console.log(response)
+            //   console.log(response)
               if (response.ok) {
                 
                 const data1 = await response.json();

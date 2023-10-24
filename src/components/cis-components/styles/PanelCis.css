@@ -239,3 +239,28 @@ position: relative;
     border: 2px solid #149209;
     border-radius: 5px;
   }
+  .no-results{
+    position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: gray;
+  }
+  .pdf-download{
+    position: absolute;
+    width: 10%;
+    left: 90%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .img-down-pdf{
+    height: 70%;
+  }
+  .img-down-pdf:hover{
+    height: 80%;
+    cursor: pointer;
+  }

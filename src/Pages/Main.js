@@ -32,7 +32,7 @@ const Main=({ onLogin,token,setToken,server })=>{
     const [verificateUserModalOpen, setVerificateUserModalOpen] =useState(false);
     // const [globals,setGlobals]=useState([])
     const dataGlobals=useFetch('cassia/configuration','','','GET',server)
-    // console.log(dataGlobals)
+    console.log(dataGlobals)
     useEffect(()=>{
       
       try {
