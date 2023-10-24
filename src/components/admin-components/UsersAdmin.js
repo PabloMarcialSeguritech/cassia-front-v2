@@ -227,7 +227,7 @@ const Registrar=()=>{
                                     onChange={handleChange} />
                                         <label className='label-admin'>Nombre</label>
                                         {
-                                            (name==="" || nombreIsValid)?'':<span className='form-msg-error'> Nombre no valido</span>
+                                            (name==="" || nombreIsValid)?'':<span className='form-msg-error-admin'> Nombre no valido</span>
                                         }
                                         
                                     </div>
@@ -236,7 +236,7 @@ const Registrar=()=>{
                                     onChange={handleChange} />
                                         <label className='label-admin'>Correo</label>
                                         {
-                                            (mail==="" || correoIsValid)?'':<span className='form-msg-error'> Correo no valido.</span>
+                                            (mail==="" || correoIsValid)?'':<span className='form-msg-error-admin'> Correo no valido.</span>
                                         }
                                         
                                     </div>
