@@ -10,7 +10,7 @@ function App() {
   const [userData,setUserData]=useState({})
   const [token,setToken] = useState(localStorage.getItem('access_token'));
 
-  const [server,setServer]=useState({ip:'172.18.200.14',port:8000})
+  const [server,setServer]=useState({ip:'172.18.200.14',port:8002})
   // const [server,setServer]=useState({ip:'10.21.14.219',port:8002})
   // const [server,setServer]=useState({ip:'172.16.10.50',port:8000})
   useEffect(()=>{
