@@ -423,7 +423,7 @@ height: 10%;
     display: flex;
     align-items: center;
   }
-  .form-msg-error{
+  .form-msg-error-admin{
     color: #ff4646;
     position: absolute;
     left:0;
