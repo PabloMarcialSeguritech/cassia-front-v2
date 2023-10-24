@@ -17,11 +17,12 @@ const deleteCisModalStyles = {
       padding:'20px'
     },
   };
-const CisList =({handleChangEdit,setData,setRegisterIsValid ,setLoading,setError,server})=>{
-    const dataUsers=useFetch('cassia/ci','',localStorage.getItem('access_token'),'GET',server)
-    // console.log(dataUsers)
+const CisList =({handleChangEdit,setData,setRegisterIsValid ,setLoading,setError,server,dataUsers,setDataUsers,searchResults, setSearchResults,searchTerm,setCisSelected})=>{
+    // const dataUsers=useFetch('cassia/ci','',localStorage.getItem('access_token'),'GET',server)
+    
     const [deleteCisModalOpen, setdeleteCisModalOpen] =useState(false);
     const [userSelected,setUserSelected]=useState({})
+    var dataList=(searchTerm==='')?dataUsers.data:searchResults;
     // console.log(userSelected)
     function openDeleteUserModal() {
         setdeleteCisModalOpen(true);
@@ -36,13 +37,58 @@ const CisList =({handleChangEdit,setData,setRegisterIsValid ,setLoading,setError
         setUserSelected(data)
         // Realiza las acciones deseadas al hacer clic en el marcador
       };
+      useEffect(()=>{
+         buscar_cis() 
+      },[])
+      const buscar_cis=()=>{
+        
+        
+        // setLoadingCis(true)
+          const fetchDataPost = async () => {
+            
+         try {
+            console.log('http://'+server.ip+':'+server.port+'/api/v1/cassia/ci/')
+            const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/cassia/ci/', {
+                method: 'GET',  
+                headers: {
+                  'Content-Type': 'application/json',
+                  'accept': 'application/json',
+                  'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+                },
+              });
+              console.log(response)
+              if (response.ok) {
+                
+                const data1 = await response.json();
+                // setLoadingCis(false)
+                console.log(data1)
+                setDataUsers(data1)
+                // setCreateCisModalOpen(true)
+              } else {
+                const data1 = await response.json();
+                console.log(data1)
+                throw new Error('Error en la solicitud');
+              }
+            } catch (error) {
+              console.error(error);
+            }
+          };
       
+          fetchDataPost();
+        
+    }
+    const cisSelect=(elemento)=>{
+console.log(elemento)
+setCisSelected(elemento)
+    }
     return(
         <>
         <div className='cont-row-user-list'>
         {(dataUsers.loading ) ?<div className='cont-load-user-list'><LoadSimple></LoadSimple></div>:
-          dataUsers.data.data.map((elemento, indice) => (
-            <div className='row-table-cis' key={indice}>
+          
+           
+          dataList.map((elemento, indice) => (
+            <div className='row-table-cis' key={indice} onClick={()=>cisSelect(elemento)}>
               <div className='field-body-table-cis field-small'>
                 {elemento.ci_id}
               </div>
@@ -80,6 +126,9 @@ const CisList =({handleChangEdit,setData,setRegisterIsValid ,setLoading,setError
               </div>
             </div>
           ))
+        }
+        {
+          (dataList.length==0)?<div className="no-results">SIN RESULTADOS.</div>:''
         }
       </div>
         <Modal

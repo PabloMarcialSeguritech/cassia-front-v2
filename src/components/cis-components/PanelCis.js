@@ -7,6 +7,9 @@ import Modal from 'react-modal';
 import ModalCreateCis from './ModalCreateCis';
 import CisList from './CisList';
 import LoadSimple from '../LoadSimple';
+import TableCis from './TableCis';
+import InfoCis from './InfoCis';
+// import { jsPDF } from "jspdf";
 const CreateCisModalStyles = {
     content: {
       top: '50%',
@@ -23,6 +26,10 @@ const CreateCisModalStyles = {
   };
 const PanelCis=({server})=>{
     const [CreateCisModalOpen, setCreateCisModalOpen] =useState(false);
+    const [dataUsers,setDataUsers]=useState({data:[],loading:true,error:null})
+    const [searchResults, setSearchResults] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    console.log(dataUsers)
     const [searchResult, setSearchResult] = useState(null);
     const [registerIsValid, setRegisterIsValid] = useState(false);
     const [editActive, setEditActive] = useState(false);
@@ -32,6 +39,7 @@ const PanelCis=({server})=>{
     const [dataCis,setDataCis]=useState([]);
     const [loadingCis,setLoadingCis]=useState(false);
     const [errorCis,setErrorCis]=useState(null); 
+    const [cisSelected,setCisSelected]=useState([])
     console.log(loading)
     const handleSearch = (query) => {
         // Aquí puedes realizar la búsqueda usando el valor de 'query'
@@ -93,66 +101,71 @@ const PanelCis=({server})=>{
           fetchDataPost();
         
     }
+    const regresar_cis=()=>{
+        setCisSelected([])
+    }
+    // const generarPDF = () => {
+    //   const { contenedor } = this.refs;
+    //   const pdf = new jsPDF();
+      
+    //   // Obtén el contenido del contenedor
+    //   const contenido = contenedor.innerHTML;
+  
+    //   // Agrega el contenido al documento PDF
+    //   pdf.fromHTML(contenido, 15, 15);
+  
+    //   // Guarda el PDF
+    //   pdf.save('archivo.pdf');
+    // }
+  
     return (
         <>
         <div className='main-panel-cis'>
             <div className='content-cis'>
                 <div className='cont-cis-search'>
-                    <div className='cont-search'>
-                        {/* <Search onSearch={handleSearch} /> */}
-                    </div>
-                    <div className='cont-search-space'>
-
-                    </div>
-                    <div className='cont-search-buttons'>
-                    <Action disabled={false} origen='Blanco' titulo='+ Crear Registro'  action={crear}/>
-                    </div>
+              {(cisSelected.length===0)?
+              <>
+              <div className='cont-search'>
+                    
+                    <Search  searchResults={searchResults} setSearchResults={setSearchResults} searchTerm={searchTerm} setSearchTerm={setSearchTerm} onSearch={handleSearch}  dataUsers={dataUsers} setDataUsers={setDataUsers} />
                 </div>
+                <div className='cont-search-space'>
+
+                </div>
+                <div className='cont-search-buttons'>
+                <Action disabled={false} origen='Blanco' titulo='+ Crear Registro'  action={crear}/>
+                </div>
+              </>
+              :
+              <>
+<div className='cont-btn-back-users'  style={{width:'10%'}} onClick={regresar_cis}>
+                            <div className='cont-img-back-users'>
+                                <img  className='img-back-users' src={'/iconos/back-blanco.png'} name="regresar" />
+                            </div>
+                            <div className='cont-txt-back-users'>
+                            <div className='txt-back-users'>
+                                                    Regresar
+                            </div>
+                        </div>
+                    </div>
+                    <div className='pdf-download'>
+                       <img  className='img-down-pdf' src={'/iconos/pdf.png'} name="PDF" />
+                    </div>
+                    </>
+              }
+              
+                
+                    
+                    
+                </div>
+               
                 <div className='cont-cis-table'>
-                <div className='content-card-cis'>
-                                <div className='cont-table-cis'>
-                                    <div className='head-table-cis'>
-                                        <div className='field-head-table-cis field-small'>
-                                            No.
-                                        </div>
-                                        <div className='field-head-table-cis field-medium'>
-                                            Host IP
-                                        </div>
-                                        <div className='field-head-table-cis field-larger'>
-                                            Host name
-                                        </div>
-                                        <div className='field-head-table-cis field-larger'>
-                                            Descripcion
-                                        </div>
-                                        <div className='field-head-table-cis field-larger'>
-                                            Configutacion realizada
-                                        </div>
-                                        <div className='field-head-table-cis field-medium'>
-                                            Resultado
-                                        </div>
-                                        <div className='field-head-table-cis field-medium'>
-                                            Responsable
-                                        </div>
-                                        <div className='field-head-table-cis field-medium'>
-                                            Autorizado por:
-                                        </div>
-                                        <div className='field-head-table-cis field-medium'>
-                                            Fecha
-                                        </div>
-                                        <div className='field-head-table-cis field-medium'>
-                                            Acciones
-                                        </div>
-                                    </div>
-                                    <div className='body-table-cis'>
-                                    {
-                                            ( registerIsValid)?<div className='cont-load-user-list'><LoadSimple></LoadSimple></div>:
-                                            <CisList server={server} setRegisterIsValid={setRegisterIsValid} setData={setData} setLoading={setLoading} setError={setError}  handleChangEdit={handleChangEdit}></CisList>
-                                        
-                                          }
-                                        
-                                        
-                                    </div>
-                                </div>
+                <div className='content-card-cis' ref="contenedor">
+                              {(cisSelected.length===0)?
+                              <TableCis  cisSelected={cisSelected} setCisSelected={setCisSelected} registerIsValid={registerIsValid} searchResults={searchResults} setSearchResults={setSearchResults} searchTerm={searchTerm} setSearchTerm={setSearchTerm} dataUsers={dataUsers} setDataUsers={setDataUsers} server={server} setRegisterIsValid={setRegisterIsValid} setData={setData} setLoading={setLoading} setError={setError}  handleChangEdit={handleChangEdit}></TableCis>:
+                              <InfoCis server={server} cisSelected={cisSelected} searchResults={searchResults} setSearchResults={setSearchResults} searchTerm={searchTerm} setSearchTerm={setSearchTerm} onSearch={handleSearch}  dataUsers={dataUsers} setDataUsers={setDataUsers} setCisSelected={setCisSelected} registerIsValid={registerIsValid}  ></InfoCis>
+                            }
+                                
                             </div>
                 </div>
             </div>
