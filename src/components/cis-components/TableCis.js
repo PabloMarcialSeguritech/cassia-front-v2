@@ -6,8 +6,8 @@ const TableCis = ({ cisSelected,setCisSelected,registerIsValid,searchResults, se
   return (
     <div className='cont-table-cis'>
                                     <div className='head-table-cis'>
-                                        <div className='field-head-table-cis field-small'>
-                                            No.
+                                        <div className='field-head-table-cis field-medium'>
+                                            CI-ID
                                         </div>
                                         <div className='field-head-table-cis field-medium'>
                                             Host IP
@@ -15,27 +15,47 @@ const TableCis = ({ cisSelected,setCisSelected,registerIsValid,searchResults, se
                                         <div className='field-head-table-cis field-larger'>
                                             Host name
                                         </div>
+                                        <div className='field-head-table-cis field-medium'>
+                                            Tecnologia
+                                        </div>
+                                        <div className='field-head-table-cis field-medium'>
+                                            Nombre
+                                        </div>
                                         <div className='field-head-table-cis field-larger'>
                                             Descripcion
                                         </div>
-                                        <div className='field-head-table-cis field-larger'>
-                                            Configutacion realizada
+                                        <div className='field-head-table-cis field-medium'>
+                                            Marca
                                         </div>
                                         <div className='field-head-table-cis field-medium'>
-                                            Resultado
+                                            Modelo
                                         </div>
                                         <div className='field-head-table-cis field-medium'>
-                                            Responsable
+                                            Versión
                                         </div>
                                         <div className='field-head-table-cis field-medium'>
-                                            Autorizado por:
+                                            Ubicación
+                                        </div>
+                                        <div className='field-head-table-cis field-small'>
+                                            Criticidad
                                         </div>
                                         <div className='field-head-table-cis field-medium'>
-                                            Fecha
+                                            Status
+                                        </div>
+                                        <div className='field-head-table-cis field-medium'>
+                                            Status
+                                           Conf.
                                         </div>
                                         <div className='field-head-table-cis field-medium'>
                                             Acciones
                                         </div>
+                                        {/* <div className='field-head-table-cis field-medium'>
+                                            CI´s afecta
+                                        </div>
+                                        <div className='field-head-table-cis field-medium'>
+                                            Documentos
+                                        </div> */}
+                                        
                                     </div>
                                     <div className='body-table-cis'>
                                       {
