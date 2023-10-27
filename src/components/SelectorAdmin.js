@@ -56,7 +56,9 @@ const SelectorAdmin=({index,opGeneral,txtOpGen,opt_de,titulo,data,loading,select
             case 'Marca': op={ filter:titulo,value: datas.brand_id=== undefined?0:datas.brand_id, label:datas.value,id:datas.id};
                                 break;  
             case 'Modelo': op={ filter:titulo,value: datas.id=== undefined?0:datas.id, label: datas.value ,id:datas.id};
-                                break;                   
+                                break;  
+            case 'CIS': op={ filter:titulo,value: datas.element_id=== undefined?0:datas.element_id, label: datas.folio ,id:datas.element_id};
+                                break;                  
             default:
                 op={ value: '', label: '' };
                     break;                        

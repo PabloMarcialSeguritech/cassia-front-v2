@@ -1,0 +1,99 @@
+.cont-search-relation .inputSearch{
+    background-color: #0166a0 !important;
+}
+.cont-search-relation .inputSearch:focus, .cont-search-relation .inputSearch:hover {
+    
+    color: aliceblue !important;
+  }
+.body_info_cis_relation {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+  .cont-cis-table-relation {
+    position: relative;
+    height: 80%;
+    width: 100%;
+    /* background: rgba(195,195,195);
+    background: #003757; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .content-cis_relation {
+    position: relative;
+    justify-content: center;
+    display: block;
+    height: 98%;
+    width: 94%;
+    border-radius: 10px;
+    /* box-shadow: 0 0 5px 5px rgba(24, 94, 224, 0.15), 0 6px 12px 0 rgba(24, 94, 224, 0.15); */
+    /* border: 2px solid #003757; */
+    border-radius: 10px;
+  }
+
+  .cont-search-relation {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 35%;
+  }
+  
+  .content-card-cis-relation {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #003757;
+    border-radius: 10px;
+  }
+
+  .cont-elemen-relation{
+    position: relative;
+    width: 100%;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+  }
+  .elemen-relation{
+    position: relative;
+    width: 85%;
+    height: 70%;
+    border-radius: 10px;
+    border:2px solid #003757;
+    display: flex;
+
+  }
+
+  .con-elemen-relation-info{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    height: 100%;
+    color: #003757;
+  }
+  .con-elemen-relation-img{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 10%;
+    height: 100%;
+  }
+  .img-relation:hover{
+    cursor: pointer;
+  }
+  .msgErrorRelation{
+    color: red;
+  }

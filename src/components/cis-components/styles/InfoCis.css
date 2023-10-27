@@ -75,3 +75,7 @@
   .inputSearch{
     height: 25px !important;
   }
+
+  .info-cis-action:hover{
+cursor: pointer;
+  }

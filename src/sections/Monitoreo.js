@@ -380,7 +380,7 @@ useEffect(()=>{
         const subtypefilter=ubicacion.templateId!==0?'subtype_id='+ubicacion.templateId:''
         let andAux=(devicefilter!=='' )?'&':'?'
               andAux=(subtypefilter!=='')?andAux:''
-        // console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter)
+        console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter)
               const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter, {                 
                                 headers: {
                                   'Content-Type': 'application/json',
@@ -746,9 +746,9 @@ useEffect(()=>{
           closeOnClick: false
           })
           .setLngLat(coordinates)
-          .setHTML(`<div class='cont-rfid' style='border: 1px solid #ffffff;'>
-          <div class='titleRFID'><div class='txtTitleRfid'>Trafico</div><br></div>
-          <div class='valRFID' style='background: ${severity_colors[severity]}'><div class='txtRfid'>${val}</div><br><br></div></div>`)
+          .setHTML(`<div className='cont-rfid' style='border: 1px solid #ffffff;'>
+          <div className='titleRFID'><div className='txtTitleRfid'>Trafico</div><br></div>
+          <div className='valRFID' style='background: ${severity_colors[severity]}'><div className='txtRfid'>${val}</div><br><br></div></div>`)
               .addTo(rfidData.map);
         });
     }
