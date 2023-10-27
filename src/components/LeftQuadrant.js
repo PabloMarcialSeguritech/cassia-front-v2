@@ -73,19 +73,31 @@ const LeftQuadrant =(props)=>{
   //   openInfoMarker()
   //   // Realiza las acciones deseadas al hacer clic en el marcador
   // };
-  let s5= undefined
-  let s4= undefined
-  let s3= undefined
-  let s2= undefined
-  let s1=undefined
+  const [s5,setS5]=useState(0)
+  const [s4,setS4]=useState(0)
+  const [s3,setS3]=useState(0)
+  const [s2,setS2]=useState(0)
+  const [s1,setS1]=useState(0)
+  // let s5= undefined
+  // let s4= undefined
+  // let s3= undefined
+  // let s2= undefined
+  // let s1=undefined
   // console.log(props.dataHosts.data)
-  if(props.dataHosts.data.length!=0){
-   s5= props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 5)
-   s4= props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 4)
-   s3= props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 3)
-   s2= props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 2)
-   s1= props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 1)
- }
+  useEffect(()=>{
+    if(props.dataHosts.data.length!=0){
+      // s5= props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 5)
+      // s4= props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 4)
+      // s3= props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 3)
+      // s2= props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 2)
+     //  s1= props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 1)
+     setS5(props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 5))
+     setS4(props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 4))
+     setS3(props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 3))
+     setS2(props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 2))
+     setS1(props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 1))
+    }
+  },[props.dataHosts.data])
     return(
       <>
       
@@ -132,7 +144,7 @@ const LeftQuadrant =(props)=>{
             </div>
           <div className={`columnLeft ${alertsIsOpen ? 'columnAlert' : 'columnAlertMin'}`}>
             <div className='card' style={{width:'95%'}}>
-              <TableAlerts server={props.server} action={openModal} modalIsOpen={false}  alertsIsOpen={alertsIsOpen} setAlertsIsOpen={setAlertsIsOpen} dataProblems={props.dataProblems} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion}></TableAlerts>
+              <TableAlerts server={props.server} action={openModal} modalIsOpen={false}  alertsIsOpen={alertsIsOpen} setAlertsIsOpen={setAlertsIsOpen} dataProblems={props.dataProblems} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion} search_problems={props.search_problems}></TableAlerts>
             
             </div>
           </div>
@@ -144,7 +156,7 @@ const LeftQuadrant =(props)=>{
         style={customStyles}
         contentLabel="Example Modal"
       >
-        <TableAlerts server={props.server} action={closeModal}  modalIsOpen={true} alertsIsOpen={alertsIsOpen} setAlertsIsOpen={setAlertsIsOpen} dataProblems={props.dataProblems} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion} ></TableAlerts>
+        <TableAlerts server={props.server} action={closeModal}  modalIsOpen={true} alertsIsOpen={alertsIsOpen} setAlertsIsOpen={setAlertsIsOpen} dataProblems={props.dataProblems} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion}  search_problems={props.search_problems}></TableAlerts>
       </Modal>
 
       </>

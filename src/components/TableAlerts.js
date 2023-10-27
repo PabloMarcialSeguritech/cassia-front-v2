@@ -21,12 +21,15 @@ const TableAlerts=(props)=>{
   // console.log(dataAgencies)
   
   function expandAlerts(){
+    console.log(typeof props.search_problems)
+    props.search_problems()
     if(props.alertsIsOpen){
       props.setAlertsIsOpen(false)
     }else{
       props.setAlertsIsOpen(true)
     }
   }
+ 
     return(
 <>
 <div className={props.alertsIsOpen?'menuAlertTitle' :'menuAlertTitleMin' }onClick={expandAlerts}>
@@ -73,7 +76,7 @@ const TableAlerts=(props)=>{
                   </div>
                   <div className='headerCell' style={{width:'15%'}}>
                     <div className='txtHeaderCell'>
-                        Ack_message
+                        Last Ack Message
                     </div>
                   </div>
                   <div className='headerCell'style={{width:'9%'}}>
@@ -88,7 +91,7 @@ const TableAlerts=(props)=>{
                   props.dataProblems.loading?<LoadAlerts/>:(props.dataProblems.data.length===0?<div className='txtLoader'>Sin Resultados</div>:
                   props.dataProblems.data.map((elemento, indice)=>(
                     
-                    <RowProblem  key={indice} severity={elemento.severity} dataAgencies={dataAgencies} data={elemento} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion} server={props.server} />
+                    <RowProblem   search_problems={props.search_problems} key={indice} severity={elemento.severity} dataAgencies={dataAgencies} data={elemento} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion} server={props.server} />
                   )))
                   }
 

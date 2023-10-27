@@ -24,6 +24,9 @@ const Perfil=({server,dataGlobals})=>{
                 <img src="logo-spin.png"  className='icon-seguritech icon-perfil' alt="Logo"/>
                 </div>
             </div>
+            <div className='footer-version'>
+                   Version 1.2
+            </div>
         </div>
     )
 }

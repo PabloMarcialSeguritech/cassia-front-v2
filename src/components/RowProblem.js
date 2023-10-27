@@ -114,7 +114,7 @@ const RowProblem=(props)=>{
                   </div>
                   
       </div>
-      <MenuAlert server={props.server} ackMessage={ackMessage} setAckMessage={setAckMessage}isOpen={menuAlertOpen} props={props} onClose={closeMenuAlert} />
+      <MenuAlert search_problems={props.search_problems} server={props.server} ackMessage={ackMessage} setAckMessage={setAckMessage}isOpen={menuAlertOpen} props={props} onClose={closeMenuAlert} />
       
       </>
     )

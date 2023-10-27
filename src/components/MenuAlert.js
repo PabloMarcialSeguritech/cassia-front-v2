@@ -70,7 +70,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
             console.log(data)
             setAckOpen(false);
             setAddingException(false)
-            
+            props.search_problems()
           } else {
             // const data = await response.json();
             // console.log(data.detail)
@@ -140,7 +140,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                       </div>
                       <div className='rowHeadExpand'>
                         <div className='textRowHeadExpand'> 
-                        Ack message
+                        Last Ack Message
                         </div>
                       </div>
                       <div className='rowHeadExpand'>

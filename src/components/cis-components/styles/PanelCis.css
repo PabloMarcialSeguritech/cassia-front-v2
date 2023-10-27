@@ -355,4 +355,15 @@ position: relative;
     cursor: pointer;
   }
 
- 
+ .txtCisCancelada{
+  font-weight: bold;
+  color:red
+ }
+ .txtCisCerrada{
+  font-weight: bold;
+  color:green
+ }
+ .txtCisIniciada{
+  font-weight: bold;
+  color:#d9bb18
+ }

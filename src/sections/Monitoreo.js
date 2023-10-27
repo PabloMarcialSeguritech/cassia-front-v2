@@ -252,7 +252,7 @@ useEffect(()=>{
       const subtypefilter=ubicacion.templateId!==0?'subtype='+ubicacion.templateId:''
       let andAux=(devicefilter!=='' )?'&':'?'
             andAux=(subtypefilter!=='')?andAux:''
-      //console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/problems/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter)
+      console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/problems/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter)
           const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/problems/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter, {                 
                               headers: {
                                 'Content-Type': 'application/json',
@@ -774,7 +774,7 @@ useEffect(()=>{
         
         
         <LeftQuadrant server={server} zoom={zoom} setZoom={setZoom}   markersWOR={markersWOR} markers={markers} token ={token_item} setLatitudes={setLatitudes} setLongitudes={setLongitudes} setLocations={setLocations}
-           longitudes={longitudes} locations={locations}
+           longitudes={longitudes} locations={locations} search_problems={search_problems}
           ubicacion={ubicacion} dataHosts={devices} setUbicacion={setUbicacion} dataProblems={dataProblems} setDataProblems={setDataProblems}/>
         <Modal
           isOpen={infoMarkerOpen}
