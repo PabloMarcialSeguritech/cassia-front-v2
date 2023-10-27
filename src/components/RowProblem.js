@@ -7,16 +7,54 @@ const RowProblem=(props)=>{
   // const [infoShow,setInfoShow]=useState({severity:0,host:"",problem:"",ip:"",ack:"",ack_message:"",time:""})
   const [menuAlertOpen, setMenuAlertOpen] = useState(false);
   const [color, setColor] = useState('#43434d');
+  const [ackMessage, setAckMessage] = useState('');
   // console.log(props.data)
   const openMenuAlert = () => {
-
+// buscar_info(props.data.eventid)
     console.log(props.data)
     // console.log(props.data.longitude)
     // console.log(props.ubicacion.groupid)
     // props.setUbicacion({latitud:props.data.latitude.replace(",", "."),longitud:props.data.longitude.replace(",", "."),zoom:16,groupid:props.ubicacion.groupid,dispId:props.ubicacion.dispId,templateId: props.ubicacion.templateId})
     setMenuAlertOpen(true);
   };
-
+//   const buscar_info=(eventid)=>{
+        
+        
+//     // setDataCis({data:dataCis.data,loading:true,error:null})
+//       const fetchDataPost = async () => {
+        
+//      try {
+//         console.log('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/acknowledge/'+eventid)
+//         const response = await fetch('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/acknowledge/'+eventid, {
+//             method: 'GET',  
+//             headers: {
+//               'Content-Type': 'application/json',
+//               'accept': 'application/json',
+//               'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+//             },
+//           });
+//           console.log(response)
+//           if (response.ok) {
+            
+//             const data1 = await response.json();
+//             // setLoadingCis(false)
+//             console.log(data1.data[0].message)
+//             setAckMessage(data1.data[0].message)
+//             // setDataCis({data:data1.data,loading:false,error:null})
+//             // setCreateCisModalOpen(true)
+//           } else {
+//             const data1 = await response.json();
+//             console.log(data1)
+//             throw new Error('Error en la solicitud');
+//           }
+//         } catch (error) {
+//           console.error(error);
+//         }
+//       };
+  
+//       fetchDataPost();
+    
+// }
   const closeMenuAlert = () => {
     // if(props.ubicacion.groupid===0){
     //   // props.setUbicacion({latitud:props.ubicacion.latitud,longitud:props.ubicacion.longitud,zoom:6,groupid:props.ubicacion.groupid,dispId:props.ubicacion.dispId,templateId: props.ubicacion.templateId})
@@ -76,7 +114,7 @@ const RowProblem=(props)=>{
                   </div>
                   
       </div>
-      <MenuAlert isOpen={menuAlertOpen} props={props} onClose={closeMenuAlert} />
+      <MenuAlert search_problems={props.search_problems} server={props.server} ackMessage={ackMessage} setAckMessage={setAckMessage}isOpen={menuAlertOpen} props={props} onClose={closeMenuAlert} />
       
       </>
     )

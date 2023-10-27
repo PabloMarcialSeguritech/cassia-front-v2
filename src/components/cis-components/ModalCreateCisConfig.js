@@ -4,6 +4,7 @@ import { useState ,useEffect} from 'react';
 import LoadSimple from '../LoadSimple';
 import InputAdmin from '../InputAdmin';
 import { useFetch } from '../../hooks/useFetch';
+import SelectorAdmin from '../SelectorAdmin'
 const ModalCreateCisConfig =({server,buscar_cis_history,ci_id,setRegisterIsValid,dataCisConfig,setData,loading,setLoading,setError,setEditActiveConfig,editActiveConfig,closCreateCisModal})=>{
     console.log(dataCisConfig)
     const obtenerFechaActualLocal = () => {
@@ -25,7 +26,50 @@ const ModalCreateCisConfig =({server,buscar_cis_history,ci_id,setRegisterIsValid
     const [cisDataConf,setCisDataConf]=useState({element_id:ci_id,change_type:(editActiveConfig)?dataCisConfig.change_type:"",description:(editActiveConfig)?dataCisConfig.description:"",justification:(editActiveConfig)?dataCisConfig.justification:"",hardware_no_serie:(editActiveConfig)?dataCisConfig.hardware_no_serie:"",hardware_brand:(editActiveConfig)?dataCisConfig.hardware_brand:"",hardware_model:(editActiveConfig)?dataCisConfig.hardware_model:"",software_version:(editActiveConfig)?dataCisConfig.software_version:"",responsible_name:(editActiveConfig)?dataCisConfig.responsible_name:"",auth_name:(editActiveConfig)?dataCisConfig.auth_name:"",created_at:(editActiveConfig)?dataCisConfig.created_at:obtenerFechaActualLocal(),closed_at:(editActiveConfig)?dataCisConfig.closed_at:null,status:(editActiveConfig)?dataCisConfig.status:'Iniciada'})
     const [hostName,setHostName]=useState("") 
     console.log(cisDataConf)
+    const dataStatus=[
+        {
+          "id": 1,
+          "name": "Iniciada",
+        },
+        {
+            "id": 2,
+            "name": "Cerrada",
+          },
+          {
+            "id": 3,
+            "name": "Cancelada",
+          },
         
+      ]
+      var defOp=1;
+      function buscarIdPorNombre(nombre) {
+        const status = dataStatus.find(item => item.name === nombre);
+        return status ? status.id : null;
+      }
+if(editActiveConfig){
+    defOp=buscarIdPorNombre(dataCisConfig.status)
+}
+    console.log(defOp)
+    const changeOption=(option,index)=>{
+        
+        console.log(option)
+        let status=""
+        if(option.value==1){
+            status="Iniciado"
+        }else if(option.value==2){
+            status="Cerrada"
+        }else{
+            status="Cancelada"
+        }
+        setCisDataConf((prevState)=>{
+            return {
+                ...prevState,
+                ['status']:status
+            }
+            
+        })
+            
+    }
     const handleChange=(e)=>{
         console.log(e.target.name)
         const {name,value}=e.target
@@ -356,8 +400,9 @@ return nuevaFechaISO
                                         
                                     </div>
                                     <div className="user-box-cis">
-                                    <input required name="status"  type="text" value={status}
-                                    onChange={handleChange} />
+                                    {/* <input required name="status"  type="text" value={status}
+                                    onChange={handleChange} /> */}
+                                    <SelectorAdmin opGeneral={false} txtOpGen={'TODOS'}  opt_de={''+defOp}origen={'Admin'} data={dataStatus} loading={false}  titulo='statusConf' selectFunction={changeOption} index={0}></SelectorAdmin>
                                         <label className='label-cis'>Status</label>
                                         {
                                             // (name==="" || nombreIsValid)?'':<span className='form-msg-error'> Nombre no valido</span>

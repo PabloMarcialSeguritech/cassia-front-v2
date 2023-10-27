@@ -137,7 +137,7 @@ const TableCisConfig = ({ buscar_cis_history,handleChangEdit,cisSelected,setCisS
               <div className='field-body-table-cis field-medium'>
                 {(elemento.closed_at===null)?'':elemento.closed_at.slice(0,10)}
               </div>
-              <div className='field-body-table-cis field-medium'>
+              <div className={'field-body-table-cis field-medium txtCis'+elemento.status}>
                 {elemento.status}
               </div>
               
