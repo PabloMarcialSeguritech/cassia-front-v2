@@ -88,7 +88,7 @@ const TableAlerts=(props)=>{
                   props.dataProblems.loading?<LoadAlerts/>:(props.dataProblems.data.length===0?<div className='txtLoader'>Sin Resultados</div>:
                   props.dataProblems.data.map((elemento, indice)=>(
                     
-                    <RowProblem  key={indice} severity={elemento.severity} dataAgencies={dataAgencies} data={elemento} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion} />
+                    <RowProblem  key={indice} severity={elemento.severity} dataAgencies={dataAgencies} data={elemento} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion} server={props.server} />
                   )))
                   }
 

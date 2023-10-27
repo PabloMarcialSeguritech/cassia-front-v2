@@ -123,7 +123,7 @@ setCisSelected(elemento)
               <div className='field-body-table-cis field-small'>
                 {elemento.criticality}
               </div>
-              <div className='field-body-table-cis field-medium'>
+              <div className='field-body-table-cis field-medium' style={{fontWeight:'bold',color:(elemento.status=="Activo")?'green':'red'}}>
                 {elemento.status}
               </div>
               <div className='field-body-table-cis field-medium'>

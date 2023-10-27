@@ -24,13 +24,65 @@ const customStyles = {
 const MenuAlert = ({ isOpen, onClose,props }) => {
   
     const [exeptionOpen, setExeptionOpen] = useState(false);
+    const [ackOpen, setAckOpen] = useState(false);
     const [addingException, setAddingException] = useState(false);
     const [validaBtn, setValidaBtn] = useState(true);
+    const [textAreaValue, setTextAreaValue] = useState('');
+    
+    const handleTextAreaChange = (event) => {
+      if(event.target.value.length === 0){
+          setValidaBtn(true)
+      }else{
+          setValidaBtn(false)
+      }
+      
+      setTextAreaValue(event.target.value);
+    };
     const addException=()=>{
       console.log("exepcio" )
       console.log(props)
       setAddingException(true)
       
+    }
+    const addAck=async(e)=>{
+      setAddingException(true)
+      console.log(textAreaValue,props.data.eventid)
+      // console.log("element_id:"+cisSelected.element_id+" | ci-relation:"+cisRelation)
+        
+        const formData = new URLSearchParams();
+        formData.append("message", textAreaValue);
+        console.log('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/acknowledge/'+props.data.eventid)
+      
+        try {
+          const response = await fetch('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/acknowledge/'+props.data.eventid, {
+            method: "POST",
+            headers: {
+              "Accept": "application/json",
+              "Content-Type": "application/x-www-form-urlencoded",
+              'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+            },
+            body: formData
+          });
+          console.log(response)
+          if (response.ok) {
+            
+            const data = await response.json();
+            console.log(data)
+            setAckOpen(false);
+            setAddingException(false)
+            
+          } else {
+            // const data = await response.json();
+            // console.log(data.detail)
+            // setResponseDetail({text:data.detail,value:false})
+            throw new Error('Error en la solicitud');
+          }
+        
+        } catch (error) {
+            
+           console.log(error)
+          
+        }
     }
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -55,6 +107,18 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
       setExeptionOpen(false);
       setAddingException(false)
     }
+    function closeAck() {
+      setAckOpen(false);
+    }
+    function openAck() {
+      setAckOpen(true);
+      console.log(props)
+    }
+  
+    useEffect(()=>{
+      // buscar_info()
+    },[])
+    
     return (
       <>
         {isOpen && (
@@ -104,7 +168,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                       </div>
                       <div className='rowDetailExpand'>
                         <div className='textRowDetailExpand'> 
-                          {props.data.Ack_message}
+                          {/* {props.data.Ack_message} */}
                           {/* {props.data.latitude},{props.data.longitude} */}
                         </div>
                       </div>
@@ -124,10 +188,10 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                   </div>
                   <div className='menuActionData'>
                           <div className='menuActionCell' style={{border: 'unset'}}>
-                              <Action origen='Alert' disabled={false} titulo='excepcion' action={openExeption}/>
+                              <Action origen='Alert' disabled={true} titulo='excepcion' action={openExeption}/>
                           </div>
                           <div className='menuActionCell' style={{border: 'unset'}}>
-                              <Action origen='Alert' disabled={true} titulo='Accion 2'/>
+                              <Action origen='Alert' disabled={false} titulo='Ack...' action={openAck}/>
                           </div>
                           <div className='menuActionCell' style={{border: 'unset'}}>
                               <Action origen='Alert' disabled={true} titulo='Accion 3'/>
@@ -177,6 +241,59 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                             <div className='formColumn'>
                             <Action origen='Alert' titulo='EJECUTAR' action={addException} disabled={validaBtn}/>
                             <Action origen='Alert' titulo='CANCELAR' action={closeExeption} disabled={false} />
+                            </div>
+                        
+                        </>
+                        }  
+                        </div> 
+                    </div>
+                </div>
+            </Modal>
+            <Modal
+          isOpen={ackOpen}
+          onAfterOpen={afterOpenExeption}
+          onRequestClose={closeAck}
+          style={customStyles}
+          contentLabel="Example Modal"
+          shouldCloseOnOverlayClick={false}
+            >
+                <div className='exceptCont card'>
+                <div className='menuActiontitle' style={{width: "100%"}}>
+                <div className='cardTitle cardTitleAlert' >
+                            <div className='textCardTitle'>
+                            CREAR EXCEPCION:
+                            </div>
+                        </div>
+                    </div>
+                    <div className='formCont'>
+                        <div className='formCompact'> 
+                        {addingException?<LoadAdding/>:
+                        <>
+                        <div className='formColumn' >
+                            <InputForm   titulo='Event ID' text={props.data.eventid} disabled={true} ></InputForm>
+                            </div>
+                            
+                            <div className='formColumn' style={{height:'90px'}}>
+                            <div className='menuSearchOption'>
+            <div className='compactInputForm'>
+                <label htmlFor='InputForm' className='labelInputForm'>Notas:</label>
+                
+                {/* <input type="text" className="InputForm" value={text==''?inputValue:text}  disabled={disabled} onChange={handleInputChange} /> */}
+                <textarea id="nota" name="nota" className="InputForm" rows="4" cols="25" style={{resize: 'none'}} onChange={handleTextAreaChange}></textarea>
+                
+            </div>
+        </div>
+                            
+            
+
+                            {/* <InputForm data={[]} loading={false} text={''} setValidaBtn={setValidaBtn} titulo='Notas' disabled={false}></InputForm> */}
+                            </div>
+                            <div className='formColumn'>
+                            {/* <InputForm data={[]} loading={false} text='' titulo='Notas' disabled={false}></InputForm> */}
+                            </div>
+                            <div className='formColumn'>
+                            <Action origen='Alert' titulo='EJECUTAR' action={addAck} disabled={validaBtn}/>
+                            <Action origen='Alert' titulo='CANCELAR' action={closeAck} disabled={false} />
                             </div>
                         
                         </>

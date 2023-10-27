@@ -59,7 +59,7 @@ const SideBar =({rolId,onLogin,pageSelected,setPageSelected,dataGlobals})=>{
             ''
             }
             {
-                (cis.value==1)?
+                (cis.value==0)?
                 <div className={'sidebarRow '+(pageSelected==="cis"?'sideRowSelected':'')}>
                     <div className={'sidebarCont '+(pageSelected==="cis"?'sideSelected':'')} name="cis" onClick={handleSection}>
                     

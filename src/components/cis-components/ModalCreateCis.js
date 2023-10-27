@@ -21,7 +21,7 @@ const ModalCreateCis =({user,server,setRegisterIsValid,dataCis,setData,loading,s
     const [disabled,setDisabled]=useState(true)
     const [host,sethost]=useState([])
     // const [cisData,setCisData]=useState({ip:(editActive)?dataCis.ip:"",host_id:(editActive)?dataCis.host_id:0,date:(editActive)?dataCis.date:"",responsible_name:(editActive)?dataCis.responsible_name:"",auth_name:(editActive)?dataCis.auth_name:"",device_description:(editActive)?dataCis.device_description:"",justification:(editActive)?dataCis.justification:"",previous_state:(editActive)?dataCis.previous_state:"",new_state:(editActive)?dataCis.new_state:"",impact:(editActive)?dataCis.impact:"",result:(editActive)?dataCis.result:"",observations:(editActive)?dataCis.observations:"",files:(editActive)?dataCis.files:[],status:(editActive)?dataCis.status:'Activo'})
-    const [cisData,setCisData]=useState({ip:(editActive)?dataCis.ip:"",host_id:0,folio:(editActive)?dataCis.folio:"",technology:(editActive)?dataCis.technology:"",device_name:(editActive)?dataCis.device_name:"",description:(editActive)?dataCis.description:"",location:(editActive)?dataCis.location:"",criticality:(editActive)?dataCis.criticality:0,status:(editActive)?dataCis.status:"Activo"})
+    const [cisData,setCisData]=useState({ip:(editActive)?dataCis.ip:"",host_id:0,folio:(editActive)?dataCis.folio:"",technology:(editActive)?dataCis.technology:"",device_name:(editActive)?dataCis.device_name:"",description:(editActive)?dataCis.description:"",location:(editActive)?dataCis.location:"",criticality:(editActive)?dataCis.criticality:0,status:(editActive)?dataCis.status:"Inactivo"})
     // const [cisData,setCisData]=useState({ip:(editActive)?dataCis.ip:"",host_id:0,date:(editActive)?dataCis.date:obtenerFechaActualLocal(),responsible_name:(editActive)?dataCis.responsible_name:"",auth_name:(editActive)?dataCis.auth_name:"",device_description:(editActive)?dataCis.device_description:"",justification:(editActive)?dataCis.justification:"",previous_state:(editActive)?dataCis.previous_state:"",new_state:(editActive)?dataCis.new_state:"",impact:(editActive)?dataCis.impact:"",result:(editActive)?dataCis.result:"",observations:(editActive)?dataCis.observations:"",files:[],status:(editActive)?dataCis.status:'Activo'})
     // const [cisData,setCisData]=useState({ip:"",host_id:0,date:"",responsible_name:"",auth_name:"",device_description:"",justification:"",previous_state:"",new_state:"",impact:"",result:"",observations:"",files:[],status:'Activo'})
     const [hostName,setHostName]=useState("") 
@@ -29,7 +29,7 @@ const ModalCreateCis =({user,server,setRegisterIsValid,dataCis,setData,loading,s
     // const [loading,setLoading]=useState(false);
     // const [error,setError]=useState(null); 
     
-    // console.log(cisData)
+    console.log(cisData)
     //     console.log(host)
         useEffect(()=>{
         //    console.log("cambio host")
@@ -77,6 +77,14 @@ const ModalCreateCis =({user,server,setRegisterIsValid,dataCis,setData,loading,s
                 return {
                     ...prevState,
                     [name]:value===""?0:(parseInt(value))
+                }
+                
+            })
+        } else if(e.target.name==="status"){
+            setCisData((prevState)=>{
+                return {
+                    ...prevState,
+                    [name]:(value=="Inactivo")?"Activo":"Inactivo"
                 }
                 
             })
@@ -326,9 +334,9 @@ const ModalCreateCis =({user,server,setRegisterIsValid,dataCis,setData,loading,s
                                         
                                     </div>
                                     <div className="user-box-cis">
-                                    <input required name="status"  type="text" value={status}
+                                    <input required name="status"  className='checkbox-cis' type="checkbox" value={status}
                                     onChange={handleChange} />
-                                        <label className='label-cis'>Status</label>
+                                        <label className='label-checkbox-cis '>Activo</label>
                                         {
                                             // (name==="" || nombreIsValid)?'':<span className='form-msg-error'> Nombre no valido</span>
                                         }

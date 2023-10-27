@@ -190,7 +190,7 @@ const ModalCisAfecta =({server,closeCisAfectaModal,cisSelected})=>{
                 <div className='content-card-users' >
                 <div className='body_info_cis_relation'>
         <div className='content-cis_relation' style={{border: 'px solid #607582',boxShadow:'unset'}}>
-                <div className='cont-cis-search' style={{background:'transparent '}}>
+                {/* <div className='cont-cis-search' style={{background:'transparent '}}>
               
               <>
                 <div className='cont-search-relation hiddenPDF'>
@@ -200,10 +200,9 @@ const ModalCisAfecta =({server,closeCisAfectaModal,cisSelected})=>{
 
                 </div>
                 <div className='cont-search-buttons hiddenPDF'>
-                {/* <Action disabled={false} origen='Blanco' titulo='+ Agregar '   /> */}
                 </div>
               </>
-                </div>
+                </div> */}
                 <div className='cont-cis-search' style={{background:'transparent '}}>
               
               <>
