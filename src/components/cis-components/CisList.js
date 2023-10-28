@@ -22,6 +22,7 @@ const CisList =({handleChangEdit,setData,setRegisterIsValid ,setLoading,setError
     
     const [deleteCisModalOpen, setdeleteCisModalOpen] =useState(false);
     const [userSelected,setUserSelected]=useState({})
+    
     var dataList=(searchTerm==='')?dataUsers.data:searchResults;
     // console.log(userSelected)
     function openDeleteUserModal() {
@@ -47,8 +48,8 @@ const CisList =({handleChangEdit,setData,setRegisterIsValid ,setLoading,setError
           const fetchDataPost = async () => {
             
          try {
-            console.log('http://'+server.ip+':'+server.port+'/api/v1/cassia/ci/')
-            const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/cassia/ci/', {
+            console.log('http://'+server.ip+':'+server.port+'/api/v1/cassia/ci_elements/')
+            const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/cassia/ci_elements/', {
                 method: 'GET',  
                 headers: {
                   'Content-Type': 'application/json',
@@ -88,9 +89,9 @@ setCisSelected(elemento)
           
            
           dataList.map((elemento, indice) => (
-            <div className='row-table-cis' key={indice} onClick={()=>cisSelect(elemento)}>
-              <div className='field-body-table-cis field-small'>
-                {elemento.ci_id}
+            <div className='row-table-cis' key={indice}   onClick={()=>cisSelect(elemento)}>
+              <div className='field-body-table-cis field-medium'>
+                {elemento.folio}
               </div>
               <div className='field-body-table-cis field-medium'>
                 {elemento.ip}
@@ -98,30 +99,42 @@ setCisSelected(elemento)
               <div className='field-body-table-cis field-larger'>
                 {elemento.name.slice(0,35)}...
               </div>
+              <div className='field-body-table-cis field-medium'>
+                {elemento.technology}
+              </div>
+              <div className='field-body-table-cis field-medium'>
+                {elemento.device_name}
+              </div>
               <div className='field-body-table-cis field-larger'>
-                {elemento.device_description}
-              </div>
-              <div className='field-body-table-cis field-larger'>
-                {elemento.justification}
+                {elemento.description}
               </div>
               <div className='field-body-table-cis field-medium'>
-                {elemento.result}
+                {elemento.hardware_brand}
               </div>
               <div className='field-body-table-cis field-medium'>
-                {elemento.responsible_name}
+                {elemento.hardware_model}
               </div>
               <div className='field-body-table-cis field-medium'>
-                {elemento.auth_name}
+                {elemento.software_version}
               </div>
               <div className='field-body-table-cis field-medium'>
-                {elemento.date.slice(0, 10)}
+                {elemento.location}
+              </div>
+              <div className='field-body-table-cis field-small'>
+                {elemento.criticality}
+              </div>
+              <div className='field-body-table-cis field-medium' style={{fontWeight:'bold',color:(elemento.status=="Activo")?'green':'red'}}>
+                {elemento.status}
+              </div>
+              <div className='field-body-table-cis field-medium'>
+                {elemento.status_conf}
               </div>
               <div className='field-body-table-cis field-medium'>
                 <div className='cont-img-field-acciones'>
-                  <img className='img-field-acciones' src='/iconos/edit.png' title='Editar' name='Editar' ci_id={elemento.ci_id} onClick={() => handleChangEdit(elemento)} />
+                  <img className='img-field-acciones' src='/iconos/edit.png' title='Editar' name='Editar' ci_id={elemento.ci_id} onClick={(e) =>{e.stopPropagation(); handleChangEdit(elemento)}} />
                 </div>
-                <div className='cont-img-field-acciones'>
-                  <img className='img-field-acciones' src='/iconos/delete.png' title='Eliminar'name='Eliminar' ci_id={elemento.ci_id} onClick={()=>handledeleteUserClick(elemento)}/>
+                <div className='cont-img-field-acciones' >
+                  <img className='img-field-acciones' src='/iconos/delete.png' title='Eliminar'name='Eliminar' ci_id={elemento.ci_id} onClick={(e)=> {e.stopPropagation(); handledeleteUserClick(elemento)}} />
                 </div>
               </div>
             </div>
@@ -140,7 +153,7 @@ setCisSelected(elemento)
         contentLabel="Example Modal2"
         // shouldCloseOnOverlayClick={false}
         >
-          <ModalDeleteCis server={server} setRegisterIsValid ={setRegisterIsValid } setData={setData} setLoading={setLoading} setError={setError} user={userSelected} closDeleteCisModal={closDeleteCisModal}></ModalDeleteCis>
+          <ModalDeleteCis server={server} setRegisterIsValid ={setRegisterIsValid } setData={setData} setLoading={setLoading} setError={setError} cis={userSelected} closDeleteCisModal={closDeleteCisModal}></ModalDeleteCis>
     </Modal>
     </>
     )
