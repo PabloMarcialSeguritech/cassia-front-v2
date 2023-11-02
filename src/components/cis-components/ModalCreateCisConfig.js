@@ -55,7 +55,7 @@ if(editActiveConfig){
         console.log(option)
         let status=""
         if(option.value==1){
-            status="Iniciado"
+            status="Iniciada"
         }else if(option.value==2){
             status="Cerrada"
         }else{
