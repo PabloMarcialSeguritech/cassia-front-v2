@@ -155,7 +155,7 @@ const RightQuadrant =(props)=>{
                     <div className='menuSearchData' >
                     <div className='menuSearchColumn'>
                         
-                        <Selector opGeneral={true} txtOpGen={'todos'}  opt_de={'0'} origen={'mapa'} data={dataLocations.data.data} loading={dataLocations.loading}  titulo='Municipio' props={props}></Selector>
+                        <Selector opGeneral={true} txtOpGen={'TODOS'}  opt_de={'0'} origen={'mapa'} data={dataLocations.data.data} loading={dataLocations.loading}  titulo='Municipio' props={props}></Selector>
                     </div>
                     <div className='menuSearchColumn'>
                         {/* <Selector data={dataSubtype.data.data} loading={dataSubtype.loading}  titulo='Tecnologia'></Selector> */}

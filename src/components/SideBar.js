@@ -9,15 +9,18 @@ const SideBar =({rolId,onLogin,pageSelected,setPageSelected,dataGlobals})=>{
     var estado=''
     var reportes=0
     var cis=0
-    if(dataGlobals!==undefined){
-        estado=dataGlobals.find(obj => obj.name === 'estado')
-        reportes=dataGlobals.find(obj => obj.name === 'report_module')
-        cis=dataGlobals.find(obj => obj.name === 'ci_module')
+    if(dataGlobals.data.data!==undefined){
+        estado=dataGlobals.data.data.find(obj => obj.name === 'estado')
+        reportes=dataGlobals.data.data.find(obj => obj.name === 'report_module')
+        cis=dataGlobals.data.data.find(obj => obj.name === 'ci_module')
     }
     
     return(
         <div className="sidebar">
+            {
+                (dataGlobals.loading)?'':
             
+            <>
             <div className={'sidebarRow '+(pageSelected==="perfil"?'sideRowSelected':'')} >
                 <div className={'sidebarCont '+(pageSelected==="perfil"?'sideSelected':'')} name="perfil" onClick={handleSection} >
                     <div className='imgSideCont' name="perfil" >
@@ -107,6 +110,8 @@ const SideBar =({rolId,onLogin,pageSelected,setPageSelected,dataGlobals})=>{
                        {(estado==='')?'':estado.value}
                     </div>
        </div>
+       </>
+}
       </div>
     )
 }

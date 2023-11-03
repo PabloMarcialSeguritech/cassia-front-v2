@@ -240,9 +240,9 @@ const ModalCisDocs =({server,closeCisAfectaModal,cisSelected})=>{
               
               <>
                 <div className='cont-search-docs hiddenPDF'>
-                    <div class="custom-file-input">
-                        <input type="file" id="archivo" class="input-file"  onChange={handleFileChange} />
-                        <label for="archivo" class="btn">Examinar</label>
+                    <div className="custom-file-input">
+                        <input type="file" id="archivo" className="input-file"  onChange={handleFileChange} />
+                        <label for="archivo" className="btn">Examinar</label>
                         <span id="nombre-archivo"></span>
                     </div>
 
