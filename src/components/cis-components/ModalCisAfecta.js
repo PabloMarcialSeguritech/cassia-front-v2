@@ -6,7 +6,7 @@ import InputAdmin from '../InputAdmin';
 import { useFetch } from '../../hooks/useFetch';
 import Search from './Search';
 import SelectorAdmin from '../SelectorAdmin'
-const ModalCisAfecta =({server,closeCisAfectaModal,cisSelected})=>{
+const ModalCisAfecta =({server,cisSelected})=>{
     
     const [dataCisRel,setDataCisRel]=useState({data:[],loading:true,error:null})
     const [dataCis,setDataCis]=useState({data:[],loading:true,error:null})

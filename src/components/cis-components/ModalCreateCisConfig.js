@@ -55,7 +55,7 @@ if(editActiveConfig){
         console.log(option)
         let status=""
         if(option.value==1){
-            status="Iniciado"
+            status="Iniciada"
         }else if(option.value==2){
             status="Cerrada"
         }else{
@@ -159,24 +159,8 @@ return nuevaFechaISO
                 
             })
         }
-        console.log(cisDataConf)
-       let data_aux={
-        "element_id": 1,
-        "change_type": "Software",
-        "description": "prueba",
-        "justification": "Se optimiza",
-        "hardware_no_serie": "SWX2023-XYZ",
-        "hardware_brand": "Cambium Networks",
-        "hardware_model": "PM 4501",
-        "software_version": "22.02",
-        "responsible_name": "Gio Rocha",
-        "auth_name": "Pablo Marcial",
-        "created_at": "2023-10-27T05:47:36.026Z",
-        "closed_at": null,
-        "status": "Iniciada"
-      }
-      console.log(JSON.stringify(data_aux))
-      console.log(data_aux)
+        
+      
         // setLoading(true)
           const fetchDataPost = async () => {
             

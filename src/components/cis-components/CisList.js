@@ -3,6 +3,7 @@ import LoadSimple from "../LoadSimple"
 import Modal from 'react-modal';
 import ModalDeleteCis from "./ModalDeleteCis";
 import { useState,useEffect } from 'react';
+import ModalCisAfecta from './ModalCisAfecta';
 const deleteCisModalStyles = {
     content: {
       top: '50%',
@@ -17,12 +18,28 @@ const deleteCisModalStyles = {
       padding:'20px'
     },
   };
-const CisList =({handleChangEdit,setData,setRegisterIsValid ,setLoading,setError,server,dataUsers,setDataUsers,searchResults, setSearchResults,searchTerm,setCisSelected})=>{
+  /* estilos modal crear relacion */
+const CisAfectaModalStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    background: '#ffffff !important',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    width:'40%',
+    height:'90%',
+    padding:'20px'
+  },
+};
+const CisList =({handleChangEdit,setData,setRegisterIsValid ,setLoading,setError,server,dataUsers,setDataUsers,searchResults, setSearchResults,searchTerm,cisSelected,setCisSelected})=>{
     // const dataUsers=useFetch('cassia/ci','',localStorage.getItem('access_token'),'GET',server)
     
     const [deleteCisModalOpen, setdeleteCisModalOpen] =useState(false);
     const [userSelected,setUserSelected]=useState({})
-    
+    const [CisAfectaModalOpen, setCisAfectaModalOpen] =useState(false); 
+    const [cisSelectedAux,setCisSelectedAux]=useState([])
     var dataList=(searchTerm==='')?dataUsers.data:searchResults;
     // console.log(userSelected)
     function openDeleteUserModal() {
@@ -78,9 +95,22 @@ const CisList =({handleChangEdit,setData,setRegisterIsValid ,setLoading,setError
           fetchDataPost();
         
     }
-    const cisSelect=(elemento)=>{
+    const cisSelectRow=(elemento)=>{
 console.log(elemento)
 setCisSelected(elemento)
+
+    }
+    function closeCisAfectaModal() {
+    
+      setCisAfectaModalOpen(false);
+      
+    }
+    
+    const openCisAfectaModal=(elemento) =>{ 
+      console.log("openAfect")
+      setCisSelectedAux(elemento)
+      setCisAfectaModalOpen(true);
+      
     }
     return(
         <>
@@ -89,7 +119,7 @@ setCisSelected(elemento)
           
            
           dataList.map((elemento, indice) => (
-            <div className='row-table-cis' key={indice}   onClick={()=>cisSelect(elemento)}>
+            <div className='row-table-cis' key={indice}   onClick={()=>cisSelectRow(elemento)}>
               <div className='field-body-table-cis field-medium'>
                 {elemento.folio}
               </div>
@@ -129,7 +159,13 @@ setCisSelected(elemento)
               <div className='field-body-table-cis field-medium'>
                 {elemento.status_conf}
               </div>
-              <div className='field-body-table-cis field-medium'>
+              {/* <div className='field-body-table-cis field-small'>
+                {elemento.status_conf}
+              </div> */}
+              <div className='field-body-table-cis field-larger'>
+              <div className='cont-img-field-acciones'>
+                  <img className='img-field-acciones' src='/iconos/cis-afecta.png' title='Afecta' name='Afecta' alt='Afecta' style={{height:'85%'}}  ci_id={elemento.ci_id} onClick={(e) =>{e.stopPropagation(); openCisAfectaModal(elemento)}}  />
+                </div>
                 <div className='cont-img-field-acciones'>
                   <img className='img-field-acciones' src='/iconos/edit.png' title='Editar' name='Editar' ci_id={elemento.ci_id} onClick={(e) =>{e.stopPropagation(); handleChangEdit(elemento)}} />
                 </div>
@@ -154,6 +190,18 @@ setCisSelected(elemento)
         // shouldCloseOnOverlayClick={false}
         >
           <ModalDeleteCis server={server} setRegisterIsValid ={setRegisterIsValid } setData={setData} setLoading={setLoading} setError={setError} cis={userSelected} closDeleteCisModal={closDeleteCisModal}></ModalDeleteCis>
+    </Modal>
+    {/* modal cis que afecta */}
+    <Modal
+        isOpen={CisAfectaModalOpen}
+        // isOpen={false}
+        // onAfterOpen={afterOpenExeption}
+        onRequestClose={closeCisAfectaModal}
+        style={CisAfectaModalStyles}
+        contentLabel="Example Modal2"
+        // shouldCloseOnOverlayClick={false}
+        >
+          <ModalCisAfecta server={server} cisSelected={cisSelectedAux} closeCisAfectaModal ={closeCisAfectaModal }></ModalCisAfecta>
     </Modal>
     </>
     )

@@ -46,7 +46,10 @@ const TableCis = ({ cisSelected,setCisSelected,registerIsValid,searchResults, se
                                             Status
                                            Conf.
                                         </div>
-                                        <div className='field-head-table-cis field-medium'>
+                                        {/* <div className='field-head-table-cis field-small'>
+                                            Acciones
+                                        </div> */}
+                                        <div className='field-head-table-cis field-larger'>
                                             Acciones
                                         </div>
                                         {/* <div className='field-head-table-cis field-medium'>

@@ -746,10 +746,12 @@ useEffect(()=>{
           closeOnClick: false
           })
           .setLngLat(coordinates)
-          .setHTML(`<div className='cont-rfid' style='border: 1px solid #ffffff;'>
-          <div className='titleRFID'><div className='txtTitleRfid'>Trafico</div><br></div>
-          <div className='valRFID' style='background: ${severity_colors[severity]}'><div className='txtRfid'>${val}</div><br><br></div></div>`)
-              .addTo(rfidData.map);
+          .setHTML(`<div class='cont-rfid' style='border: 1px solid #ffffff;'>
+            <div class='titleRFID'><div class='txtTitleRfid'>Trafico</div><br></div>
+            <div class='valRFID' style='background: ${severity_colors[severity]}'><div class='txtRfid'>${val}</div><br><br></div>
+                
+                </div>`)
+                .addTo(rfidData.map);
         });
     }
         // console.log(map.getSource('host-rfid'))

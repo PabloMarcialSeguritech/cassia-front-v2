@@ -88,12 +88,12 @@ position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 10%;
+    height: 7%;
     background-color: rgb(138, 138, 138);
     /* background:#4392c0; */
     /* border-bottom: 1px solid #003757; */
      border-radius: 5px 5px 0px 0px;
-     font-size: small;
+     font-size: 11px;
   }
   .field-head-table-cis{
     height: 100%;
@@ -155,7 +155,8 @@ position: relative;
     text-align: center;
   }
   .row-table-cis:hover{
-    background-color: #003757d3;
+    /* background-color: #00375771; */
+    background-color: #004e7bb5;
     cursor: pointer;
     color: aliceblue !important;
   }
@@ -182,7 +183,8 @@ position: relative;
   /* background:#4392c0; */
   /* border-bottom: 1px solid #003757; */
    border-radius: 5px 5px 0px 0px;
-   font-size: small;
+   font-size: 11px;
+  
 }
 .field-head-table-cis-config{
   height: 100%;
@@ -198,7 +200,7 @@ position: relative;
 }
 
 .field-small{
-  width: 5%;
+  width: 4%;
   border-right: 1px solid rgba(240, 248, 255, 0.473);
 }
 .field-larger{
@@ -265,7 +267,7 @@ position: relative;
   }
 
   .img-field-acciones:hover{
-    height: 80%;
+    transform: scale(1.1);
     transition: 0.3s;
   }
   .cont-load-user-list{
