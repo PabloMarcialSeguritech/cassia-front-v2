@@ -3,8 +3,8 @@ import './styles/perfil.css'
 const Perfil=({server,dataGlobals})=>{
     
     var estado=''
-    if(dataGlobals!==undefined){
-        estado=dataGlobals.find(obj => obj.name === 'estado')
+    if(dataGlobals.data.data!==undefined){
+        estado=dataGlobals.data.data.find(obj => obj.name === 'estado')
     }
     
     return (
@@ -16,9 +16,27 @@ const Perfil=({server,dataGlobals})=>{
                     </div>
                 </div>
                 <div className='mid-welcome'>
+                    
+                    {
+                        (dataGlobals.loading)?
+                        <div className='cont-load-main'>
+                        <div className='txt-load-main'>
+                            Cargando datos, por favor espere...
+                        </div>
+                    <section className="dots-container-main">
+                        <div className="dots-main"></div>
+                        <div className="dots-main"></div>
+                        <div className="dots-main"></div>
+                        <div className="dots-main"></div>
+                        <div className="dots-main"></div>
+                    </section>
+                    </div>
+                        :
                     <div className='Title' style={{width:'100%'}}>
                         <h1 className='textTitle' >{estado.value}</h1>
                     </div>
+                    }
+                    
                 </div>
                 <div className='bottom-welcome'>
                 <img src="logo-spin.png"  className='icon-seguritech icon-perfil' alt="Logo"/>

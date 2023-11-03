@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './styles/InfoCis.css'
-import CisList from './CisList';
-import LoadSimple from '../LoadSimple';
+// import CisList from './CisList';
+// import LoadSimple from '../LoadSimple';
 import TableCisConfig from './TableCisConfig';
 import Search from './Search';
 import Action from '../Action';
@@ -24,8 +24,9 @@ const CreateCisModalStyles = {
     padding:'20px'
   },
 };
-/* estilos modal crear relacion */
-const CisAfectaModalStyles = {
+
+/* estilos modal docs */
+const CisDocsModalStyles = {
   content: {
     top: '50%',
     left: '50%',
@@ -39,8 +40,8 @@ const CisAfectaModalStyles = {
     padding:'20px'
   },
 };
-/* estilos modal docs */
-const CisDocsModalStyles = {
+/* estilos modal crear relacion */
+const CisAfectaModalStyles = {
   content: {
     top: '50%',
     left: '50%',
@@ -271,7 +272,7 @@ const buscar_cis=(ci_id)=>{
                 </div>
                 <div className='txt-info_cis' style={{width:'50%'}}>
                 <div className='cont-img-field-acciones info-cis-action hiddenPDF'>
-                  <img className='img-field-acciones' src='/iconos/edit.png' title='Editar' name='Editar' ci_id={cisSelected.element_id}  onClick={openCisAfectaModal}/>
+                  <img className='img-field-acciones' src='/iconos/cis-afecta.png' title='Afecta' alt='Afecta' name='Afecta' ci_id={cisSelected.element_id} onClick={openCisAfectaModal} style={{height:'100%'}} />
                 </div>
                 </div>
                 </div>
@@ -281,7 +282,7 @@ const buscar_cis=(ci_id)=>{
                 </div>
                 <div className='txt-info_cis ' style={{width:'50%'}}>
                 <div className='cont-img-field-acciones info-cis-action hiddenPDF' >
-                  <img className='img-field-acciones' src='/iconos/edit.png' title='Editar' name='Editar' ci_id={cisSelected.element_id} onClick={openCisDocsModal} />
+                  <img className='img-field-acciones' src='/iconos/cis-docs.png' title='Editar' name='Editar' alt='Editar' ci_id={cisSelected.element_id} onClick={openCisDocsModal} style={{height:'100%'}}/>
                 </div>
                 </div>
                 </div>
@@ -297,7 +298,7 @@ const buscar_cis=(ci_id)=>{
                 <div className='title-info_cis' style={{width:'50%' }}>
                     Status:
                 </div>
-                <div className='txt-info_cis' style={{width:'50%',color:(cisSelected.status.toLowerCase()=='activo')?'green':'red'}} >
+                <div className='txt-info_cis' style={{width:'50%',color:(cisSelected.status.toLowerCase()==='activo')?'green':'red'}} >
                 {cisSelected.status}
                 </div>
                 </div>
@@ -349,18 +350,7 @@ const buscar_cis=(ci_id)=>{
         >
           <ModalCreateCisConfig server={server} buscar_cis_history={buscar_cis_history} setEditActiveConfig={setEditActiveConfig} editActiveConfig={editActiveConfig} dataCisConfig={dataCisConfig} ci_id={cisSelected.element_id} closCreateCisModal ={closCreateCisModal }></ModalCreateCisConfig>
     </Modal>
-{/* modal cis que afecta */}
-    <Modal
-        isOpen={CisAfectaModalOpen}
-        // isOpen={false}
-        // onAfterOpen={afterOpenExeption}
-        onRequestClose={closeCisAfectaModal}
-        style={CisAfectaModalStyles}
-        contentLabel="Example Modal2"
-        // shouldCloseOnOverlayClick={false}
-        >
-          <ModalCisAfecta server={server} cisSelected={cisSelected} closeCisAfectaModal ={closeCisAfectaModal }></ModalCisAfecta>
-    </Modal>
+
     {/* modal documents */}
     <Modal
         isOpen={CisDocsModalOpen}
@@ -371,7 +361,18 @@ const buscar_cis=(ci_id)=>{
         contentLabel="Example Modal2"
         // shouldCloseOnOverlayClick={false}
         >
-          <ModalCisDocs server={server} cisSelected={cisSelected} closeCisAfectaModal ={closeCisAfectaModal }></ModalCisDocs>
+          <ModalCisDocs server={server} cisSelected={cisSelected} closeCisDocsModal ={closeCisDocsModal }></ModalCisDocs>
+    </Modal>
+    <Modal
+        isOpen={CisAfectaModalOpen}
+        // isOpen={false}
+        // onAfterOpen={afterOpenExeption}
+        onRequestClose={closeCisAfectaModal}
+        style={CisAfectaModalStyles}
+        contentLabel="Example Modal2"
+        // shouldCloseOnOverlayClick={false}
+        >
+          <ModalCisAfecta server={server} cisSelected={cisSelected} closeCisAfectaModal ={closeCisAfectaModal }></ModalCisAfecta>
     </Modal>
     </>
   );

@@ -5,7 +5,7 @@ import Modal from 'react-modal';
 import Selector from './Selector'
 import InputForm from './InputForm';
 import LoadAdding from './LoadAdding';
-
+import FlujoModal from './modals-monitoreo/FlujoModal';
 const customStyles = {
     content: {
       top: '50%',
@@ -21,10 +21,26 @@ const customStyles = {
       border:'unset'
     },
   };
+  const customStylesFlujo = {
+    content: {
+      top: '50%',
+      left: '50%',
+      background: 'transparent',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+      width:'30%',
+      height:'80%',
+      padding:'20px',
+      border:'unset'
+    },
+  };
 const MenuAlert = ({ isOpen, onClose,props }) => {
   
     const [exeptionOpen, setExeptionOpen] = useState(false);
     const [ackOpen, setAckOpen] = useState(false);
+    const [flujoOpen, setFlujoOpen] = useState(false);
     const [addingException, setAddingException] = useState(false);
     const [validaBtn, setValidaBtn] = useState(true);
     const [textAreaValue, setTextAreaValue] = useState('');
@@ -118,7 +134,13 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
     useEffect(()=>{
       // buscar_info()
     },[])
-    
+    const openFlujo=()=>{
+      setFlujoOpen(true)
+    }
+    function closeFlujo() {
+      setFlujoOpen(false)
+    }
+   
     return (
       <>
         {isOpen && (
@@ -194,7 +216,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                               <Action origen='Alert' disabled={false} titulo='Ack...' action={openAck}/>
                           </div>
                           <div className='menuActionCell' style={{border: 'unset'}}>
-                              <Action origen='Alert' disabled={true} titulo='Accion 3'/>
+                              <Action origen='Alert' disabled={true} titulo='Flujo' action={openFlujo}/>
                           </div>
                           <div className='menuActionCell' style={{border: 'unset'}}>
                               <Action origen='Alert' disabled={true} titulo='Accion 4'/>
@@ -301,6 +323,16 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                         </div> 
                     </div>
                 </div>
+            </Modal>
+            <Modal
+          isOpen={flujoOpen}
+          // onAfterOpen={afterOpenExeption}
+          onRequestClose={closeFlujo}
+          style={customStylesFlujo}
+          contentLabel="Example Modal"
+          // shouldCloseOnOverlayClick={true}
+            >
+                <FlujoModal></FlujoModal>
             </Modal>
         </>
         )}

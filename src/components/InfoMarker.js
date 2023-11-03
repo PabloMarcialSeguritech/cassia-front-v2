@@ -27,7 +27,8 @@ const InfoMarker = ({isOpen,devices, data,closeInfoMarker,server,ubiActual }) =>
   console.log("info marker")
   console.log(data)
   console.log(devices.data)
-  const ubicacion_mix=devices.data.hosts.filter(obj => obj.latitude === data.end_lat)
+  const ubicacion_mix=devices.data.hosts.filter(obj => obj.latitude === data.end_lat )
+  // const ubicacion_mix=devices.data.hosts.filter(obj => (obj.latitude === data.end_lat && obj.longitude === data.end_lon ))
   let relation = devices.data.relations.find(obj => obj.hostidC === data.hostidC)
 
   const [pingModalOpen, setPingModalOpen] =useState(false);
@@ -187,7 +188,7 @@ setListSelected(1)
                     
                       <>
                       <div className='contCheck'>
-                        <input name="radio" type="radio" class="checkHost" onClick={()=>handleChangeOption(1)} />
+                        <input name="radio" type="radio" className="checkHost" onClick={()=>handleChangeOption(1)} />
                       </div>
                       <div className='contInfoHost'>
                       <label className='lblInfoHost'>Host padre</label>
