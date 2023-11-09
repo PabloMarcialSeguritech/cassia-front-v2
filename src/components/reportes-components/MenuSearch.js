@@ -22,6 +22,7 @@ const MenuSearch=({dataTec,setDataTec,dataMarca,setDataMarca,dataModelo,setDataM
     // console.log(dataTec)
     // console.log('indice activo ',indiceActived,index)
     const changeOption=(option,index)=>{
+      console.log("changeOption")
         // console.log(option,index)
         // switch(option.filter){
         //     case 'Municipio': setOpciones({municipio:option.value,tecnologia:opciones.tecnologia,marca:opciones.marca,modelo:opciones.modelo,fecha_ini:opciones.fecha_ini,fecha_fin:opciones.fecha_fin})
@@ -39,7 +40,10 @@ const MenuSearch=({dataTec,setDataTec,dataMarca,setDataMarca,dataModelo,setDataM
         switch(option.filter){
           
             case 'Municipio':
-                      setOpcionesArray((prevState)=>{
+              setOpcionesTxtArray({municipio:['TODOS'],tecnologia:['SUSCRIPTORES'],marca:['TODAS'],modelo:['TODOS']})
+              console.log(opcionesArray)
+              // setOpcionesArray({municipio:[index][0],tecnologia:[index][11],marca:[0],modelo:[0]})       
+              setOpcionesArray((prevState)=>{
                         const nuevoArreglo = [...prevState.municipio];
                       nuevoArreglo[index] = option.value;
                         return {
@@ -112,7 +116,7 @@ const MenuSearch=({dataTec,setDataTec,dataMarca,setDataMarca,dataModelo,setDataM
         }
 }
 useEffect(()=>{
-    // console.log("cambio la ubicacion")
+    console.log("cambio la ubicacion")
     setOpciones({municipio:opciones.municipio,tecnologia:11,marca:opciones.marca,modelo:opciones.modelo,fecha_ini:opciones.fecha_ini,fecha_fin:opciones.fecha_fin})
     
 },[opciones.municipio])

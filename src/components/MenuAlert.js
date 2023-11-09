@@ -216,7 +216,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                               <Action origen='Alert' disabled={false} titulo='Ack...' action={openAck}/>
                           </div>
                           <div className='menuActionCell' style={{border: 'unset'}}>
-                              <Action origen='Alert' disabled={true} titulo='Flujo' action={openFlujo}/>
+                              <Action origen='Alert' disabled={false} titulo='Flujo' action={openFlujo}/>
                           </div>
                           <div className='menuActionCell' style={{border: 'unset'}}>
                               <Action origen='Alert' disabled={true} titulo='Accion 4'/>
