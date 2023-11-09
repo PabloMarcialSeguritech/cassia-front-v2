@@ -76,7 +76,7 @@ const SideBar =({rolId,onLogin,pageSelected,setPageSelected,dataGlobals})=>{
                     </div>
                 </div>:''
             }
-            {
+            {/* {
                 (reportes.value==1)?
                 <div className={'sidebarRow '+(pageSelected==="reportes"?'sideRowSelected':'')}>
                     <div className={'sidebarCont '+(pageSelected==="reportes"?'sideSelected':'')} name="cireportess" onClick={handleSection}>
@@ -90,7 +90,7 @@ const SideBar =({rolId,onLogin,pageSelected,setPageSelected,dataGlobals})=>{
                         </div>
                     </div>
                 </div>:''
-            }
+            } */}
             
             <div className="sidebarRow">
                 <div className='sidebarCont ' onClick={onLogin} >

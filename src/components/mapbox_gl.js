@@ -4,7 +4,7 @@ import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import './styles/MapBox.css'
 import towerImg from '../img/torre2_blanca.png';
-const MapBox = ({actualizar_rfi,search_rfid,global_longitud,global_latitude,global_zoom,devices,markers,markersWOR,lines,downs,towers,rfid,ubicacion,handleMarkerClick}) => {
+const MapBox = ({actualizar_rfi,mapAux,setmapAux,search_rfid,global_longitud,global_latitude,global_zoom,devices,markers,markersWOR,lines,downs,towers,rfid,ubicacion,handleMarkerClick}) => {
  
   console.log("markers*****************************************************")
   //console.log(ubicacion)
@@ -37,11 +37,11 @@ const MapBox = ({actualizar_rfi,search_rfid,global_longitud,global_latitude,glob
       // style:'mapbox://styles/giorocha/clklfh8h8011001qm5hah2vje',
       // style: 'mapbox://styles/mapbox/dark-v11',
       zoom: zoom_provicional,
-      // center: [ubicacion.longitud, ubicacion.latitud],
       center:[longitud_provicional,latitud_provicional]
     });
     let Popup;
     const map = mapRef.current;
+    setmapAux(map)
     map.on('load', () => {
       console.log("on load map")
        /************************************************************ CAPA MWOR ************************************************************************ */
@@ -66,7 +66,13 @@ const MapBox = ({actualizar_rfi,search_rfid,global_longitud,global_latitude,glob
       });
       map.on('mouseleave', 'host-markerWOR', (e) => {
         //  //console.log(e)
-        Popup.remove();
+        // Popup.remove();
+        const popups = document.querySelectorAll('.custom-popup');
+      
+      popups.forEach(popup => {
+      
+      popup.remove();
+      });
         });
       map.on('mouseenter', 'host-markerWOR', (e) => {
         // //console.log(e)
@@ -215,7 +221,13 @@ const MapBox = ({actualizar_rfi,search_rfid,global_longitud,global_latitude,glob
       });
       map.on('mouseleave', 'host-marker', (e) => {
         //  //console.log(e)
-        Popup.remove();
+        // Popup.remove();
+        const popups = document.querySelectorAll('.custom-popup');
+      
+      popups.forEach(popup => {
+       
+      popup.remove();
+      });
         });
       map.on('mouseenter', 'host-marker', (e) => {
         // //console.log(e)
@@ -234,7 +246,7 @@ const MapBox = ({actualizar_rfi,search_rfid,global_longitud,global_latitude,glob
           
           .setHTML(`<div class='cont-pop' style='border: 1px solid ${e.features[0].properties.color_alineacion};'>
           <div>${e.features[0].properties.name_hostC.slice(0, 25)}...</div><br>
-          <div> Alineación: <b style='color: ${e.features[0].properties.color_alineacion};'>${e.features[0].properties.Alineacion}</b> </div>
+          <div> ${e.features[0].properties.metrica}: <b style='color: ${e.features[0].properties.color_alineacion};'>${e.features[0].properties.Alineacion}</b> </div>
           
           </div>`)
           .addTo(map);
@@ -395,7 +407,13 @@ const MapBox = ({actualizar_rfi,search_rfid,global_longitud,global_latitude,glob
     },
   });
   map.on('mouseleave', 'host-down', (e) => {
-      Popup.remove();
+      // Popup.remove();
+      const popups = document.querySelectorAll('.custom-popup');
+      
+      popups.forEach(popup => {
+    
+      popup.remove();
+      });
       });
     map.on('mouseenter', 'host-down', (e) => {
       const coordinates = e.features[0].geometry.coordinates.slice();
@@ -446,7 +464,13 @@ const MapBox = ({actualizar_rfi,search_rfid,global_longitud,global_latitude,glob
             },
           });
           map.on('mouseleave', 'tower-marker', (e) => {
-            Popup.remove();
+            // Popup.remove();
+            const popups = document.querySelectorAll('.custom-popup');
+      
+      popups.forEach(popup => {
+      
+      popup.remove();
+      });
             });
           map.on('mouseenter', 'tower-marker', (e) => {
             const coordinates = e.features[0].geometry.coordinates.slice();
