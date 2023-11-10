@@ -15,8 +15,15 @@ const RightQuadrant =(props)=>{
     const [dataTec,setDataTec]=useState({data:[],loading:true,error:null})
     const [dataDisp,setDataDisp]=useState({data:[],loading:true,error:null})
     
-//    console.log(dataDisp)
-    let s4= undefined
+   console.log(dataDisp.data)
+   console.log(props.ubiActual.templateId)
+   const metrica=dataDisp.data.find(obj => obj.template_id === props.ubiActual.templateId)
+   console.log(metrica)
+   if( typeof(metrica) !=="undefined"){
+    props.setMetricaSelected(metrica.nickname) 
+   } 
+//    
+   let s4= undefined
     let s3= undefined
     let s2= undefined
     let s1=undefined
@@ -140,7 +147,7 @@ const RightQuadrant =(props)=>{
           fetchData();
       }
     return(
-        
+        <>
         <div className='rowQuadrant rightQuadrant'>
             <div className='column' style={{width:'70%'}}>
                 <div className='card menuSearch'>
@@ -254,6 +261,8 @@ const RightQuadrant =(props)=>{
                 </div>
             </div> */}
         </div>
+        
+        </>
     )
 }
 

@@ -1,105 +1,233 @@
+import { useEffect, useState } from 'react'
 import './styles/FlujoModal.css'
-const FlujoModal = ({ isOpen, onClose,props }) => {
-    const timelineData = [
-        {
-            text: 'Started working on the app-ideas repository',
-            date: 'February 25 2019',
-            category: {
-                tag: 'app-ideas',
-                color: '#FFDB14'
-            },
-            link: {
-                url: 'https://github.com/florinpop17/app-ideas',
-                text: 'Check it out on GitHub'
+const FlujoModal = ({ eventId ,props}) => {
+    const token_item=localStorage.getItem('access_token')
+   const [dataFlujo,setDataFlujo]=useState({data:[],loading:true,error:null})
+   console.log(dataFlujo.data.history)
+//    console.log(props)
+//    eventId=34990088
+
+    useEffect(()=>{
+        search_event()
+    },[])
+    function search_event(){
+        setDataFlujo({data:{},loading:true,error:dataFlujo.error})
+          const fetchData = async () => {
+            try {
+              console.log('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/acknowledge/'+eventId)
+           const response = await fetch('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/acknowledge/'+eventId, {                 
+                                  headers: {
+                                    'Content-Type': 'application/json',
+                                    Authorization: `Bearer ${token_item}`,
+                                  },
+                                });
+              if (response.ok) {
+                const response_data = await response.json();
+                console.log(response_data.data)
+                
+                setDataFlujo({data:response_data.data,loading:false,error:dataFlujo.error})
+                
+                // setDataFlujo(response_data.data)
+              } else {
+                throw new Error('Error en la solicitud');
+              }
+            } catch (error) {
+              
             }
-        },
-        {
-            text: 'Started the Weekly Coding Challenge program',
-            date: 'March 04 2019',
-            category: {
-                tag: 'blog',
-                color: '#e17b77'
-            },
-            link: {
-                url: 'https://florin-pop/blog/2019/03/weekly-coding-challenge/',
-                text: 'Check it out here'
-            }
-        },
-        {
-            text: 'Got 1.000 followers on Twitter',
-            date: 'March 07 2019',
-            category: {
-                tag: 'twitter',
-                color: '#1DA1F2'
-            },
-            link: {
-                url: 'https://twitter.com/florinpop1705',
-                text: 'See profile'
-            }
-        },
-        {
-            text:
-                'I published my first article in the FreeCodeCamp Medium Publication',
-            date: 'March 18 2019',
-            category: {
-                tag: 'medium',
-                color: '#018f69'
-            },
-            link: {
-                url:
-                    'https://medium.freecodecamp.org/how-to-build-a-double-slider-sign-in-and-sign-up-form-6a5d03612a34',
-                text: 'Check it out here'
-            }
-        },
-        {
-            text: 'Over 12.000 views in a single day on my Medium posts',
-            date: 'April 05 2019',
-            category: {
-                tag: 'medium',
-                color: '#018f69'
-            },
-            link: {
-                url: 'https://medium.com/@popflorin1705',
-                text: 'See profile'
-            }
-        }
-    ]
-    const TimelineItem = ({ data }) => (
-        <div className="timeline-item">
-            <div className="timeline-item-content">
-                <span className="tag" style={{ background: data.category.color }}>
-                    {data.category.tag}
-                </span>
-                <time>{data.date}</time>
-                <p>{data.text}</p>
-                {data.link && (
-                    <a
-                        href={data.link.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        {data.link.text}
-                    </a>
-                )}
-                <span className="circle" />
-            </div>
-        </div>
-    );
-    const Timeline = () =>
-    timelineData.length > 0 && (
-        <div className="timeline-container">
-            {timelineData.map((data, idx) => (
-                 <TimelineItem data={data} key={idx} />
-            ))}
-        </div>
-    );
+          };
+          fetchData();
+      }
     return(
         <div className='contFlujoModal'>
             <div className='headContFlujoModal'>
-                Flujo del evento: 2222
+                Flujo del evento: {eventId}
+                
             </div>
+            
             <div className='bodyContFlujoModal'>
-                <Timeline/>
+                {
+                (dataFlujo.loading)?'cargando':
+                <>
+                {/* Inicio */}
+                <div className='rowLevel' style={{height:'10%'}}>
+                    <div className='rowSide leftSideRow'>
+
+                    </div>
+                    <div className='rowSide RightSideRow'>
+                        <div className='consArrowflujo arrowLeft'></div>
+                        <div className='contInfoFlujo'>
+                            <div className='contTopInfoFlujo'>
+                            <div className='contTopRightFlujo impar'>
+                                        <div className='txtTimeFlujo '>
+                                            {props.data.Time}
+                                        </div>
+                                </div>
+                                
+                                
+                            </div>
+                            <div className='contBotInfoFlujo'>
+                            
+                                <div className='contBotRightFlujo'>
+                                        <div className='contMsgFlujo' style={{justifyContent:'left',fontWeight:'bold'}}>
+                                            Inicio de evento
+                                        </div>   
+                                       
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               {
+                 dataFlujo.data.history.map((element, index) => {
+                    if(index%2==0){
+                        return <>
+                        {/* der */}
+     <div className='rowLevel'>
+                    <div className='rowSide leftSideRow'>
+                    <div className='consArrowflujo arrowRight'></div>
+                        <div className='contInfoFlujo'>
+                            <div className='contTopInfoFlujo'>
+                                <div className='contTopLeftFlujo'>
+                                        <div className='txtStatusFlujo FINALIZADO'>
+                                            FINALIZADO 
+                                        </div>
+                                </div>
+                                <div className='contTopRightFlujo par'>
+                                        <div className='txtTimeFlujo '>
+                                            {element.Time}
+                                        </div>
+                                </div>
+                            </div>
+                            <div className='contBotInfoFlujo'>
+                            <div className='contBotLeftFlujo'>
+                            <div className='contTicketInfo'>
+                                             Tickets:
+                                        </div>
+                                        {element.tickets.slice(2).split(',').map(item =>{ 
+                                            return <div className='contTicketInfo'>
+                                             {item}
+                                        </div>
+                                        }
+                                            )}
+                                </div>
+                                <div className='contBotRightFlujo'>
+                                        <div className='contMsgFlujo par'>
+                                            {element.message}
+                                        </div>   
+                                        <div className='contMsgBotFlujo par'>
+                                        {element.user+" / "+element.profile}
+                                        </div>  
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='rowSide RightSideRow'>
+                        
+                    </div>
+                </div>
+                        </>
+                    }else{
+                        return <>
+                    {/* izq */}
+                 <div className='rowLevel'>
+                    <div className='rowSide leftSideRow'>
+
+                    </div>
+                    <div className='rowSide RightSideRow'>
+                        <div className='consArrowflujo arrowLeft'></div>
+                        <div className='contInfoFlujo'>
+                            <div className='contTopInfoFlujo'>
+                            <div className='contTopRightFlujo impar'>
+                                        <div className='txtTimeFlujo '>
+                                        {element.Time}
+                                        </div>
+                                </div>
+                                <div className='contTopLeftFlujo'>
+                                        <div className='txtStatusFlujo FINALIZADO'>
+                                            FINALIZADO
+                                        </div>
+                                </div>
+                                
+                            </div>
+                            <div className='contBotInfoFlujo'>
+                            
+                                <div className='contBotRightFlujo'>
+                                        <div className='contMsgFlujo impar'>
+                                        {element.message}
+                                        </div>   
+                                        <div className='contMsgBotFlujo impar'>
+                                        {element.user+" / "+element.profile}
+                                        </div>  
+                                </div>
+                                <div className='contBotLeftFlujo'>
+                                <div className='contTicketInfo'>
+                                             Tickets:
+                                        </div>
+                                        {element.tickets.slice(2).split(',').map(item =>{ 
+                                            return <div className='contTicketInfo'>
+                                             {item}
+                                        </div>
+                                        }
+                                            )}
+                                            
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    </>
+                    }
+                    
+                  })
+               
+               }
+ 
+                 
+                {/* fijo */}
+                <div className='rowLevel'>
+                    <div className='rowSide leftSideRow'>
+                    <div className='consArrowflujo arrowRight'></div>
+                        <div className='contInfoFlujo' style={{height:'120px'}}>
+                            <div className='contTopInfoFlujo' style={{height: '30px'}}>
+                                <div className='contTopLeftFlujo'>
+                                        <div className='txtStatusFlujo  ENPROCESO'>
+                                            EN PROCESO
+                                        </div>
+                                </div>
+                                <div className='contTopRightFlujo par'>
+                                        <div className='txtTimeFlujo '>
+                                            {dataFlujo.data.date}
+                                        </div>
+                                </div>
+                            </div>
+                            <div className='contBotInfoFlujo'>
+                            
+                                <div className='contBotRightFlujo' style={{width:'100%'}}>
+                                        <div className='contMsgFlujo' style={{height:'35%',color:'#ec5141'}}>
+                                            Acumulado Evento:<p style={{color:'black'}}>{'  '+dataFlujo.data.acumulated_cassia + ' hrs.'}</p> 
+                                        </div>
+                                        {(dataFlujo.data.acumulated_ticket===0)?<div style={{width:'100%',height:'20%',display:'flex',justifyContent:'center',color:'grey'}}>Sin tickets</div>:
+                                                dataFlujo.data.acumulated_ticket.map(element=>{
+                                                    return  <div className='contMsgFlujo ' style={{height:'20px',color:'#ec5141'}}>
+                                                    Acumulado Ticket {element.tracker_id}:<p style={{color:'black'}}>{'  '+element.accumulated+' hrs.'}</p>
+                                                </div>    
+                                                })
+                                        } 
+                                       
+                                         
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='rowSide RightSideRow'>
+                        
+                    </div>
+                </div>
+                <div style={{height:'30px'}}></div>
+
+                </>
+                }
             </div>
         </div>
     )

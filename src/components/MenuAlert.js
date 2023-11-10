@@ -30,8 +30,8 @@ const customStyles = {
       bottom: 'auto',
       marginRight: '-50%',
       transform: 'translate(-50%, -50%)',
-      width:'30%',
-      height:'80%',
+      width:'50%',
+      height:'90%',
       padding:'20px',
       border:'unset'
     },
@@ -216,7 +216,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                               <Action origen='Alert' disabled={false} titulo='Ack...' action={openAck}/>
                           </div>
                           <div className='menuActionCell' style={{border: 'unset'}}>
-                              <Action origen='Alert' disabled={true} titulo='Flujo' action={openFlujo}/>
+                              <Action origen='Alert' disabled={false} titulo='Flujo' action={openFlujo}/>
                           </div>
                           <div className='menuActionCell' style={{border: 'unset'}}>
                               <Action origen='Alert' disabled={true} titulo='Accion 4'/>
@@ -332,7 +332,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
           contentLabel="Example Modal"
           // shouldCloseOnOverlayClick={true}
             >
-                <FlujoModal></FlujoModal>
+                <FlujoModal eventId={props.data.eventid} props={props}></FlujoModal>
             </Modal>
         </>
         )}
