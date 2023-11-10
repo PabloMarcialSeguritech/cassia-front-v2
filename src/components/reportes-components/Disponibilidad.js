@@ -78,9 +78,9 @@ const Disponibilidad=({server})=>{
     const [dataMarca,setDataMarca]=useState({data:[[]],loading:[true],error:[null]})
     const [dataModelo,setDataModelo]=useState({data:[[]],loading:[true],error:[null]})
     const [indexSelected,setIndexSelected] =useState(0)
-    console.log(opcionesTxtArrayFijo)
-    // console.log(opcionesArray)
-    // console.log(dataTec)
+    // console.log(opcionesTxtArrayFijo)
+    console.log(opcionesArray)
+    console.log(opcionesTxtArray)
     // console.log("total.metr ",totalLienas)
     const Ampliar = () => {
       // Aquí puedes realizar la búsqueda usando el valor de 'query'
@@ -253,11 +253,8 @@ function search_reporte_disponibilidad(){
   setDataInfo({data:dataInfo.data,loading:true,error:dataInfo.error})
     const fetchData = async () => {
       try {
-    //  const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/cassia/reports/availability?municipality_id='+opciones.municipio+'&tech_id='+opciones.tecnologia+'&brand_id='+opciones.marca+'&model_id='+opciones.modelo+'&init_date='+opciones.fecha_ini+'&end_date='+opciones.fecha_fin, {     
-      const response = await fetch(url,{
-        // const response = await fetch('http://172.18.200.14:8002/api/v1/cassia/reports/availability/multiple?municipality_id=0&tech_id=11&brand_id=0&model_id=0&init_date=2023-10-01T00:00&end_date=2023-10-16T03:41', {
-      // const response = await fetch('http://172.18.200.14:8002/api/v1/cassia/reports/availability/multiple?municipality_id=81&municipality_id=68&tech_id=11&tech_id=9&brand_id=0&brand_id=0&model_id=0&model_id=0&init_date=2023-09-15%2012%3A15%3A00&end_date=2023-09-15%2022%3A16%3A00', {          
-    headers: {
+        const response = await fetch(url,{
+     headers: {
                               'Content-Type': 'application/json',
                               Authorization: `Bearer ${token_item}`,
                             },
@@ -265,7 +262,7 @@ function search_reporte_disponibilidad(){
                           // console.log(response)
         if (response.ok) {
           const response_data = await response.json();
-          // console.log(response_data.data)
+          console.log(response_data.data)
           
       
           setTotalLineas(1)
