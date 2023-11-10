@@ -30,8 +30,8 @@ const customStyles = {
       bottom: 'auto',
       marginRight: '-50%',
       transform: 'translate(-50%, -50%)',
-      width:'30%',
-      height:'80%',
+      width:'40%',
+      height:'90%',
       padding:'20px',
       border:'unset'
     },
@@ -332,7 +332,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
           contentLabel="Example Modal"
           // shouldCloseOnOverlayClick={true}
             >
-                <FlujoModal></FlujoModal>
+                <FlujoModal eventId={props.data.eventid} props={props}></FlujoModal>
             </Modal>
         </>
         )}

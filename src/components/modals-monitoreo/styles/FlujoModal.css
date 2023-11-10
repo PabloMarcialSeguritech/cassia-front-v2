@@ -6,7 +6,7 @@
 }
 .headContFlujoModal
 {
-    position: fixed;
+    position: relative;
     width: 100%;
     height: 8%;
     display: flex;
@@ -20,185 +20,171 @@
 }
 .bodyContFlujoModal{
     position: relative;
+  width: 100%;
+  height: 90%;
+  display: block;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
+  padding-top: 10px;
+  /* padding-bottom: 10px */
+}
+
+.rowLevel{
+position: relative;
+width: 100%;
+height: 20%;
+display: flex;
+}
+.rowSide{
+    position: relative;
+width: 50%;
+height: 100%;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+.leftSideRow{
+    border-right: 2px solid #ec5141;
+}
+.RightSideRow{
+    border-left: 2px solid #ec5141;
+}
+.contInfoFlujo{
+    position: relative;
+    width: 80%;
+    height: 80%;
+    background-color: #eaedf0ef;
+    border: 1px solid aliceblue;
+    border-radius: 10px;
+    display: block;
+    padding: 5px;
+}
+.consArrowflujo{
+    position: absolute;
+    
+   
+}
+ 
+.arrowLeft{
+    left: 0%;
+    width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 10px 20px 10px 0;
+  border-color: transparent #007bff transparent transparent;
+}
+.arrowRight{
+    right: 0%;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 10px 0 10px 20px; /* Tamaño del triángulo ajustable */
+    border-color: transparent transparent transparent #007bff;
+}
+
+.contTopInfoFlujo{
+    position: relative;
     width: 100%;
-    height: 92%;
+    height: 30%;
+    display: flex;
+    justify-content: center;
+}
+.contTopLeftFlujo{
+    position: relative;
+    width: 30%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-@import url('https://fonts.googleapis.com/css?family=Lato');
-
-/* * {
-	box-sizing: border-box;
-} */
-
-
-
-h1 {
-	text-align: center;
-}
-
-
-
-.timeline-container {
-    display: flex;
-    flex-direction: column;
+.contTopRightFlujo{
     position: relative;
-    margin: 40px 0;
-    width: 100%;
-  height: 100%;
-}
-
-.timeline-container::after {
-    background-color: #e17b77;
-    content: '';
-    position: absolute;
-    left: calc(50% - 2px);
-    width: 4px;
+    width: 70%;
     height: 100%;
-}
-
-.timeline-item {
     display: flex;
-    justify-content: flex-end;
-    padding-right: 30px;
+    
+    align-items: center;
+}
+.contTopRightFlujo.impar{
+     justify-content: left;
+}
+.contTopRightFlujo.par{
+     justify-content: right;
+}
+.txtStatusFlujo{
     position: relative;
-    margin: 10px 0;
-    width: 50%;
-}
-
-.timeline-item:nth-child(odd) {
-    align-self: flex-end;
-    justify-content: flex-start;
-    padding-left: 30px;
-    padding-right: 0;
-}
-
-.timeline-item-content {
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-    border-radius: 5px;
-    background-color: #fff;
+    width: 90%;
+    height: 90%;
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    padding: 15px;
+    justify-content: center;
+    align-items: center;
+    background-color: green;
+    color: white;
+    font-size: small;
+}
+.txtTimeFlujo{
+    color: rgb(43, 43, 43);
+    font-size: small;
+}
+.contBotInfoFlujo{
     position: relative;
-    width: 400px;
-    max-width: 70%;
-    text-align: right;
+    width: 100%;
+    height: 70%;
+    display: flex;
+    justify-content: center;
 }
-
-.timeline-item-content::after {
-    content: ' ';
-    background-color: #fff;
-    box-shadow: 1px -1px 1px rgba(0, 0, 0, 0.2);
-    position: absolute;
-    right: -7.5px;
-    top: calc(50% - 7.5px);
-    transform: rotate(45deg);
-    width: 15px;
-    height: 15px;
+.contBotLeftFlujo{
+    position: relative;
+    width: 30%;
+    height: 100%;
+    display: block;
+    justify-content: center;
+    align-items: center;
 }
-
-.timeline-item:nth-child(odd) .timeline-item-content {
-    text-align: left;
-    align-items: flex-start;
-}
-
-.timeline-item:nth-child(odd) .timeline-item-content::after {
-    right: auto;
-    left: -7.5px;
-    box-shadow: -1px 1px 1px rgba(0, 0, 0, 0.2);
-}
-
-.timeline-item-content .tag {
-    color: #fff;
-    font-size: 12px;
-    font-weight: bold;
-    top: 5px;
-    left: 5px;
-    letter-spacing: 1px;
-    padding: 5px;
-    position: absolute;
-    text-transform: uppercase;
-}
-
-.timeline-item:nth-child(odd) .timeline-item-content .tag {
-    left: auto;
-    right: 5px;
-}
-
-.timeline-item-content time {
-    color: #777;
-    font-size: 12px;
+.contTicketInfo{
+    position: relative;
+    width: 100%;
+    height: 25%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #991607;
+    font-size: x-small;
     font-weight: bold;
 }
+.contBotRightFlujo{
+    position: relative;
+    width: 70%;
+    height: 100%;
+    display: block;
+    justify-content: right;
+    align-items: center;
+}
+.contMsgFlujo{
+    position: relative;
+    width: 100%;
+    height: 70%;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    font-size: small;
+}
+.contMsgBotFlujo{
 
-.timeline-item-content p {
-    font-size: 16px;
-    line-height: 24px;
-    margin: 15px 0;
-    max-width: 250px;
+    position: relative;
+    width: 100%;
+    height: 30%;
+    display: flex;
+    
+    align-items: center;
+    font-size: small;
+    font-weight: bolder;
 }
 
-.timeline-item-content a {
-	color: #333;
-	text-decoration: none;
-    font-size: 14px;
-    font-weight: bold;
+.contMsgBotFlujo.par{
+    justify-content: right;
 }
-
-.timeline-item-content a::after {
-    content: ' ►';
-    font-size: 12px;
+.contMsgBotFlujo.impar{
+    justify-content: left;
 }
-
-.timeline-item-content .circle {
-    background-color: #fff;
-    border: 3px solid #e17b77;
-    border-radius: 50%;
-    position: absolute;
-    top: calc(50% - 10px);
-    right: -40px;
-    width: 20px;
-    height: 20px;
-    z-index: 100;
-}
-
-.timeline-item:nth-child(odd) .timeline-item-content .circle {
-    right: auto;
-    left: -40px;
-}
-
-@media only screen and (max-width: 1023px) {
-    .timeline-item-content {
-        max-width: 100%;
-    }
-}
-
-@media only screen and (max-width: 767px) {
-    .timeline-item-content,
-    .timeline-item:nth-child(odd) .timeline-item-content {
-        padding: 15px 10px;
-        text-align: center;
-        align-items: center;
-    }
-
-    .timeline-item-content .tag {
-        width: calc(100% - 10px);
-        text-align: center;
-    }
-
-    .timeline-item-content time {
-        margin-top: 20px;
-    }
-
-    .timeline-item-content a {
-        text-decoration: underline;
-    }
-
-    .timeline-item-content a::after {
-        display: none;
-    }
-}
-
