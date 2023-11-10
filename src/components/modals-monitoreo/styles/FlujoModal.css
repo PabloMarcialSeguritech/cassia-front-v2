@@ -119,9 +119,17 @@ align-items: center;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: green;
+    /* background-color: green; */
     color: white;
-    font-size: small;
+    font-size: x-small;
+}
+.txtStatusFlujo.FINALIZADO{
+    background-color: green;
+}
+.txtStatusFlujo.ENPROCESO{
+    background-color: rgb(203, 219, 0);
+    font-size: x-small;
+    text-align: center;
 }
 .txtTimeFlujo{
     color: rgb(43, 43, 43);
@@ -166,9 +174,15 @@ align-items: center;
     width: 100%;
     height: 70%;
     display: flex;
-    justify-content: right;
+    /* justify-content: right; */
     align-items: center;
     font-size: small;
+}
+.contMsgFlujo.par{
+    justify-content: right;
+}
+.contMsgFlujo.impar{
+    justify-content: left;
 }
 .contMsgBotFlujo{
 
