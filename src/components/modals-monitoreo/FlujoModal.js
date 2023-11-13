@@ -1,68 +1,55 @@
+import { useEffect, useState } from 'react'
 import './styles/FlujoModal.css'
 const FlujoModal = ({ eventId ,props}) => {
     const token_item=localStorage.getItem('access_token')
-    const timelineData = [
-        {
-            text: 'Started working on the app-ideas repository',
-            date: 'February 25 2019',
-            category: {
-                tag: 'app-ideas',
-                color: '#FFDB14'
-            },
-           
-        },
-        {
-            text: 'Started the Weekly Coding Challenge program',
-            date: 'March 04 2019',
-            category: {
-                tag: 'blog',
-                color: '#e17b77'
-            },
-           
-        },
-        {
-            text: 'Got 1.000 followers on Twitter',
-            date: 'March 07 2019',
-            category: {
-                tag: 'twitter',
-                color: '#1DA1F2'
-            },
-           
-        }
-    ]
-    
-    function search_rfid(){
-       
-        //   const fetchData = async () => {
-        //     try {
-        //       console.log('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/layers/carreteros/'+ubicacion.groupid)
-        //    const response = await fetch('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/layers/carreteros/'+ubicacion.groupid, {                 
-        //                           headers: {
-        //                             'Content-Type': 'application/json',
-        //                             Authorization: `Bearer ${token_item}`,
-        //                           },
-        //                         });
-        //       if (response.ok) {
-        //         const response_data = await response.json();
-        //         console.log(response_data.data)
+   const [dataFlujo,setDataFlujo]=useState({data:[],loading:true,error:null})
+   console.log(dataFlujo.data.history)
+//    console.log(props)
+//    eventId=34990088
+
+    useEffect(()=>{
+        search_event()
+    },[])
+    function search_event(){
+        setDataFlujo({data:{},loading:true,error:dataFlujo.error})
+          const fetchData = async () => {
+            try {
+              console.log('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/acknowledge/'+eventId)
+           const response = await fetch('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/acknowledge/'+eventId, {                 
+                                  headers: {
+                                    'Content-Type': 'application/json',
+                                    Authorization: `Bearer ${token_item}`,
+                                  },
+                                });
+              if (response.ok) {
+                const response_data = await response.json();
+                console.log(response_data.data)
                 
-        //       } else {
-        //         throw new Error('Error en la solicitud');
-        //       }
-        //     } catch (error) {
+                setDataFlujo({data:response_data.data,loading:false,error:dataFlujo.error})
+                
+                // setDataFlujo(response_data.data)
+              } else {
+                throw new Error('Error en la solicitud');
+              }
+            } catch (error) {
               
-        //     }
-        //   };
-        //   fetchData();
+            }
+          };
+          fetchData();
       }
     return(
         <div className='contFlujoModal'>
             <div className='headContFlujoModal'>
                 Flujo del evento: {eventId}
+                
             </div>
+            
             <div className='bodyContFlujoModal'>
-                {/* izquierda */}
-                <div className='rowLevel'>
+                {
+                (dataFlujo.loading)?'cargando':
+                <>
+                {/* Inicio */}
+                <div className='rowLevel' style={{height:'10%'}}>
                     <div className='rowSide leftSideRow'>
 
                     </div>
@@ -72,64 +59,64 @@ const FlujoModal = ({ eventId ,props}) => {
                             <div className='contTopInfoFlujo'>
                             <div className='contTopRightFlujo impar'>
                                         <div className='txtTimeFlujo '>
-                                            00/00/0000 00:00:00
+                                            {props.data.Time}
                                         </div>
                                 </div>
-                                <div className='contTopLeftFlujo'>
-                                        <div className='txtStatusFlujo '>
-                                            Finalizado
-                                        </div>
-                                </div>
+                                
                                 
                             </div>
                             <div className='contBotInfoFlujo'>
                             
                                 <div className='contBotRightFlujo'>
-                                        <div className='contMsgFlujo'>
-                                            este es un posible mensaje muy largo para prueba del flujo
+                                        <div className='contMsgFlujo' style={{justifyContent:'left',fontWeight:'bold'}}>
+                                            Inicio de evento
                                         </div>   
-                                        <div className='contMsgBotFlujo impar'>
-                                            zabbix
-                                        </div>  
+                                       
                                 </div>
-                                <div className='contBotLeftFlujo'>
-                                            <div className='contTicketInfo'>
-                                                Ticket: 999
-                                            </div>
-                                </div>
+                                
                             </div>
                         </div>
                     </div>
                 </div>
-                {/* /*** derecha */ }
-                <div className='rowLevel'>
+               {
+                 dataFlujo.data.history.map((element, index) => {
+                    if(index%2==0){
+                        return <>
+                        {/* der */}
+     <div className='rowLevel'>
                     <div className='rowSide leftSideRow'>
                     <div className='consArrowflujo arrowRight'></div>
                         <div className='contInfoFlujo'>
                             <div className='contTopInfoFlujo'>
                                 <div className='contTopLeftFlujo'>
-                                        <div className='txtStatusFlujo '>
-                                            Finalizado
+                                        <div className='txtStatusFlujo FINALIZADO'>
+                                            FINALIZADO 
                                         </div>
                                 </div>
                                 <div className='contTopRightFlujo par'>
                                         <div className='txtTimeFlujo '>
-                                            00/00/0000 00:00:00
+                                            {element.Time}
                                         </div>
                                 </div>
                             </div>
                             <div className='contBotInfoFlujo'>
                             <div className='contBotLeftFlujo'>
-                                            <div className='contTicketInfo'>
-                                                Ticket: 999
-                                            </div>
+                            <div className='contTicketInfo'>
+                                             Tickets:
+                                        </div>
+                                        {element.tickets.slice(2).split(',').map(item =>{ 
+                                            return <div className='contTicketInfo'>
+                                             {item}
+                                        </div>
+                                        }
+                                            )}
                                 </div>
                                 <div className='contBotRightFlujo'>
-                                        <div className='contMsgFlujo'>
-                                            este es un posible mensaje muy largo para prueba del flujo
+                                        <div className='contMsgFlujo par'>
+                                            {element.message}
                                         </div>   
                                         <div className='contMsgBotFlujo par'>
-                                            zabbix
+                                        {element.user+" / "+element.profile}
                                         </div>  
                                 </div>
                             </div>
@@ -139,6 +126,108 @@ const FlujoModal = ({ eventId ,props}) => {
                         
                     </div>
                 </div>
+                        </>
+                    }else{
+                        return <>
+                    {/* izq */}
+                 <div className='rowLevel'>
+                    <div className='rowSide leftSideRow'>
+
+                    </div>
+                    <div className='rowSide RightSideRow'>
+                        <div className='consArrowflujo arrowLeft'></div>
+                        <div className='contInfoFlujo'>
+                            <div className='contTopInfoFlujo'>
+                            <div className='contTopRightFlujo impar'>
+                                        <div className='txtTimeFlujo '>
+                                        {element.Time}
+                                        </div>
+                                </div>
+                                <div className='contTopLeftFlujo'>
+                                        <div className='txtStatusFlujo FINALIZADO'>
+                                            FINALIZADO
+                                        </div>
+                                </div>
+                                
+                            </div>
+                            <div className='contBotInfoFlujo'>
+                            
+                                <div className='contBotRightFlujo'>
+                                        <div className='contMsgFlujo impar'>
+                                        {element.message}
+                                        </div>   
+                                        <div className='contMsgBotFlujo impar'>
+                                        {element.user+" / "+element.profile}
+                                        </div>  
+                                </div>
+                                <div className='contBotLeftFlujo'>
+                                <div className='contTicketInfo'>
+                                             Tickets:
+                                        </div>
+                                        {element.tickets.slice(2).split(',').map(item =>{ 
+                                            return <div className='contTicketInfo'>
+                                             {item}
+                                        </div>
+                                        }
+                                            )}
+                                            
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    </>
+                    }
+                    
+                  })
+               
+               }
+ 
+                 
+                {/* fijo */}
+                <div className='rowLevel'>
+                    <div className='rowSide leftSideRow'>
+                    <div className='consArrowflujo arrowRight'></div>
+                        <div className='contInfoFlujo' style={{height:'120px'}}>
+                            <div className='contTopInfoFlujo' style={{height: '30px'}}>
+                                <div className='contTopLeftFlujo'>
+                                        <div className='txtStatusFlujo  ENPROCESO'>
+                                            EN PROCESO
+                                        </div>
+                                </div>
+                                <div className='contTopRightFlujo par'>
+                                        <div className='txtTimeFlujo '>
+                                            {dataFlujo.data.date}
+                                        </div>
+                                </div>
+                            </div>
+                            <div className='contBotInfoFlujo'>
+                            
+                                <div className='contBotRightFlujo' style={{width:'100%'}}>
+                                        <div className='contMsgFlujo' style={{height:'35%',color:'#ec5141'}}>
+                                            Acumulado Evento:<p style={{color:'black'}}>{'  '+dataFlujo.data.acumulated_cassia + ' hrs.'}</p> 
+                                        </div>
+                                        {(dataFlujo.data.acumulated_ticket===0)?<div style={{width:'100%',height:'20%',display:'flex',justifyContent:'center',color:'grey'}}>Sin tickets</div>:
+                                                dataFlujo.data.acumulated_ticket.map(element=>{
+                                                    return  <div className='contMsgFlujo ' style={{height:'20px',color:'#ec5141'}}>
+                                                    Acumulado Ticket {element.tracker_id}:<p style={{color:'black'}}>{'  '+element.accumulated+' hrs.'}</p>
+                                                </div>    
+                                                })
+                                        } 
+                                       
+                                         
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='rowSide RightSideRow'>
+                        
+                    </div>
+                </div>
+                <div style={{height:'30px'}}></div>
+
+                </>
+                }
             </div>
         </div>
     )
