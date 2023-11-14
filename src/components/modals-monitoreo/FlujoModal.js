@@ -8,11 +8,13 @@ const FlujoModal = ({ eventId ,props}) => {
 //    eventId=34990088
 
     useEffect(()=>{
+        console.log('data')
         search_event()
     },[])
     function search_event(){
         setDataFlujo({data:{},loading:true,error:dataFlujo.error})
           const fetchData = async () => {
+            console.log('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/acknowledge/'+eventId)
             try {
               console.log('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/acknowledge/'+eventId)
            const response = await fetch('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/acknowledge/'+eventId, {                 
@@ -29,6 +31,7 @@ const FlujoModal = ({ eventId ,props}) => {
                 
                 // setDataFlujo(response_data.data)
               } else {
+                console.log('Error en la solicitud')
                 throw new Error('Error en la solicitud');
               }
             } catch (error) {
