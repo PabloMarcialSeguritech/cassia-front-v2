@@ -78,9 +78,9 @@ const Disponibilidad=({server})=>{
     const [dataMarca,setDataMarca]=useState({data:[[]],loading:[true],error:[null]})
     const [dataModelo,setDataModelo]=useState({data:[[]],loading:[true],error:[null]})
     const [indexSelected,setIndexSelected] =useState(0)
-    // console.log(opcionesTxtArrayFijo)
-    console.log(opcionesArray)
+    console.log(opcionesTxtArrayFijo)
     console.log(opcionesTxtArray)
+    
     // console.log("total.metr ",totalLienas)
     const Ampliar = () => {
       // Aquí puedes realizar la búsqueda usando el valor de 'query'
@@ -233,7 +233,10 @@ const Buscar=()=>{
   search_reporte_disponibilidad()
 }
 function search_reporte_disponibilidad(){
-  setOpcionesTxtArrayFijo(opcionesTxtArray)
+ opcionesTxtArrayFijo.municipio=[...opcionesTxtArray.municipio]
+ opcionesTxtArrayFijo.tecnologia=[...opcionesTxtArray.tecnologia]
+ opcionesTxtArrayFijo.modelo=[...opcionesTxtArray.modelo]
+ opcionesTxtArrayFijo.marca=[...opcionesTxtArray.marca]
   let baseURL
   // setSeriesKeys(countArray[elementos.length])
   // if(elementos.length==1){
@@ -264,12 +267,12 @@ function search_reporte_disponibilidad(){
           const response_data = await response.json();
           console.log(response_data.data)
           
-      
           setTotalLineas(1)
           // setSeriesKeys(countArray[totalLienas]) 
           // setDataInfo({data:response_data.data,loading:false,error:dataInfo.error})
           setDataInfo({data:response_data.data,loading:false,error:dataInfo.error})
           // console.log(dataInfo)
+          // setOpcionesTxtArrayFijo([...opcionesTxtArray])
         } else {
           throw new Error('Error en la solicitud');
         }
@@ -456,6 +459,7 @@ function download_reporte_disponibilidad(){
     }
     setOpcionesArray(newOpcionesArray);
     setOpcionesTxtArray(newOpcionesTxtArray);
+    
     const newPrevOpcionesArray = { ...prevOpcionesArray };
 
     for (let propiedad in newPrevOpcionesArray) {
@@ -586,10 +590,11 @@ function download_reporte_disponibilidad(){
                     <div className='cont-action-menu'>
                       <div className='cont-img-field-delete-graf'>
                         {
-                            (index!==0)? <img
-                            className='img-field-delete-graf'
+                          
+                            (index!==0 && index==elementos.length-1 )? <img
+                            className='img-field-delete-graf ' 
                             src='/iconos/delete.png'
-                            title='Eliminar'
+                            title={'Eliminar'+index+'|'+elementos.length}
                             name='Eliminar'
                             onClick={() => eliminarElemento(index)}
                           />:''
@@ -711,7 +716,8 @@ function download_reporte_disponibilidad(){
                                   <Line
                                   key={index}
                                     type="monotone"
-                                    dataKey={elementosToRender[index]}
+                                    // dataKey={elementosToRender[index]}
+                                    dataKey={"Disponibilidad_"+key}
                                     // stroke={`#${Math.floor(Math.random()*16777215).toString(16)}`} // Color aleatorio
                                   // stroke={color_graf[index+1]}
                                   stroke={color_graf[key]}
