@@ -57,7 +57,7 @@ const AlertsByHost=({hostId,server})=>{
                   alerts_list.loading?<LoadAlerts/>:(alerts_list.data.data.length===0?<div className='txtLoader'>Sin Resultados</div>:
                   alerts_list.data.data.map((elemento, indice)=>(
                     
-                    <RowProblem  key={indice} severity={elemento.severity} dataAgencies={dataAgencies} data={elemento} />
+                    <RowProblem  key={indice} severity={elemento.severity} dataAgencies={dataAgencies} data={elemento} server={server}/>
                   )))
                   }
                 </div>
