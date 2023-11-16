@@ -283,7 +283,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                 <div className='menuActiontitle' style={{width: "100%"}}>
                 <div className='cardTitle cardTitleAlert' >
                             <div className='textCardTitle'>
-                            CREAR EXCEPCION:
+                            CREAR ACKNOWLEDGE:
                             </div>
                         </div>
                     </div>
@@ -314,7 +314,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                             {/* <InputForm data={[]} loading={false} text='' titulo='Notas' disabled={false}></InputForm> */}
                             </div>
                             <div className='formColumn'>
-                            <Action origen='Alert' titulo='EJECUTAR' action={addAck} disabled={validaBtn}/>
+                            <Action origen='Alert' titulo='GUARDAR' action={addAck} disabled={validaBtn}/>
                             <Action origen='Alert' titulo='CANCELAR' action={closeAck} disabled={false} />
                             </div>
                         
