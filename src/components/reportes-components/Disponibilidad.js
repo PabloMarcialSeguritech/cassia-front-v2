@@ -612,13 +612,14 @@ function download_reporte_disponibilidad(){
                   <>
                   <div className='compact-periodo-manual'>
 
-                  
+                  <div className='menuSearchOption'>
                   <div className='compact-option-date'>
                       <div className="user-box-disp">
                           <input required name="fecha_ini"  type="datetime-local" value={opciones.fecha_ini}
                           onChange={handleChangeGraf} />
                                           <label className=' active lbl-option-date' >Desde:</label>
                       </div>
+                  </div>
                   </div>
                   <div className='compact-option-date'>
                     <div className="user-box-disp">

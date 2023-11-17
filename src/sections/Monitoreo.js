@@ -10,19 +10,18 @@ import { useFetch } from '../hooks/useFetch'
 import mapboxgl from 'mapbox-gl'
 import MapBox from '../components/mapbox_gl'
 import LoadData from '../components/LoadData'
-import aps from '../components/aps'
-// import downs_list from './downs'
 import Modal from 'react-modal';
 import InfoMarker from '../components/InfoMarker'
 import '../components/styles/MapBox.css'
-import { act } from 'react-dom/test-utils'
 import arcos_list from '../components/arcos'
+import ShowLayers from '../components/ShowLayers'
 const Monitoreo=({token_item,dataGlobals,server})=>{
   // console.log(dataGlobals)
+  const [capas,setCapas]=useState({})
   const global_longitud=dataGlobals.find(obj => obj.name === 'state_longitude')
   const global_latitude=dataGlobals.find(obj => obj.name === 'state_latitude')
   const global_zoom=dataGlobals.find(obj => obj.name === 'zoom')
-  // console.log(arcos_list)
+  console.log(capas)
   token_item=localStorage.getItem('access_token')
 
     // const [ubicacion,setUbicacion]=useState({latitud:'20.01808757489169',longitud:'-101.21789252823293',groupid:0,dispId:11,templateId:0})
@@ -795,15 +794,16 @@ useEffect(()=>{
     
     return (
         <>
-        <RightQuadrant metricaSelected={metricaSelected} setMetricaSelected={setMetricaSelected} ubiActual={ubiActual} setUbiActual={setUbiActual}  server={server} setRfid={setRfid} search_rfid={search_rfid} search_devices={search_devices} markersWOR={markersWOR}  search_downs={search_downs} downs={downs} search_problems={search_problems} token={token_item} ubicacion={ubicacion} markers={markers}  dataHosts={devices} setUbicacion={setUbicacion} />
+        <RightQuadrant capas={capas} setCapas={setCapas} metricaSelected={metricaSelected} setMetricaSelected={setMetricaSelected} ubiActual={ubiActual} setUbiActual={setUbiActual}  server={server} setRfid={setRfid} search_rfid={search_rfid} search_devices={search_devices} markersWOR={markersWOR}  search_downs={search_downs} downs={downs} search_problems={search_problems} token={token_item} ubicacion={ubicacion} markers={markers}  dataHosts={devices} setUbicacion={setUbicacion} />
         {/* <SearchHost  devices={devices} markersWOR={markersWOR}></SearchHost> */}
         {
         devices.loading ?<LoadData/>:
         <>
         <SearchHost mapAux={mapAux} setmapAux={setmapAux}  devices={devices} markersWOR={markersWOR}></SearchHost>
+        {/* <ShowLayers capas={capas} setCapas={setCapas} mapAux={mapAux} setmapAux={setmapAux}  ></ShowLayers> */}
         {
           
-          allTrue?<MapBox mapAux={mapAux} setmapAux={setmapAux} search_rfid={search_rfid}actualizar_rfi={actualizar_rfi} global_latitude={global_latitude} global_longitud={global_longitud} global_zoom={global_zoom} devices={devices} markers={markers} markersWOR={markersWOR} lines={lines} downs={downs}towers={towers} rfid={rfid} ubicacion={ubicacion} handleMarkerClick={handleMarkerClick}/>:''
+          allTrue?<MapBox capas={capas} setCapas={setCapas} mapAux={mapAux} setmapAux={setmapAux} search_rfid={search_rfid}actualizar_rfi={actualizar_rfi} global_latitude={global_latitude} global_longitud={global_longitud} global_zoom={global_zoom} devices={devices} markers={markers} markersWOR={markersWOR} lines={lines} downs={downs}towers={towers} rfid={rfid} ubicacion={ubicacion} handleMarkerClick={handleMarkerClick}/>:''
         }
         
         

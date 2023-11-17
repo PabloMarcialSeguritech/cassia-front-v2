@@ -36,7 +36,7 @@ const RightQuadrant =(props)=>{
      s1= props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 1)
     }
     function buscar(){
-       
+       props.setCapas({})
         let aux_municipio=dataLocations.data.data.find(obj => obj.groupid === props.ubicacion.groupid)
         if(aux_municipio===undefined){
             aux_municipio='Todos'

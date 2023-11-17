@@ -92,9 +92,9 @@ const FlujoModal = ({ eventId ,props}) => {
                         <div className='contInfoFlujo'>
                             <div className='contTopInfoFlujo'>
                                 <div className='contTopLeftFlujo'>
-                                        <div className='txtStatusFlujo FINALIZADO'>
+                                        {/* <div className='txtStatusFlujo FINALIZADO'>
                                             FINALIZADO 
-                                        </div>
+                                        </div> */}
                                 </div>
                                 <div className='contTopRightFlujo par'>
                                         <div className='txtTimeFlujo '>
@@ -105,7 +105,9 @@ const FlujoModal = ({ eventId ,props}) => {
                             <div className='contBotInfoFlujo'>
                             <div className='contBotLeftFlujo'>
                             <div className='contTicketInfo'>
-                                             Tickets:
+                                            {
+                                                (element.tickets!="")?'Tickets:':''
+                                            } 
                                         </div>
                                         {element.tickets.slice(2).split(',').map(item =>{ 
                                             return <div className='contTicketInfo'>
@@ -147,9 +149,9 @@ const FlujoModal = ({ eventId ,props}) => {
                                         </div>
                                 </div>
                                 <div className='contTopLeftFlujo'>
-                                        <div className='txtStatusFlujo FINALIZADO'>
+                                        {/* <div className='txtStatusFlujo FINALIZADO'>
                                             FINALIZADO
-                                        </div>
+                                        </div> */}
                                 </div>
                                 
                             </div>
@@ -165,7 +167,9 @@ const FlujoModal = ({ eventId ,props}) => {
                                 </div>
                                 <div className='contBotLeftFlujo'>
                                 <div className='contTicketInfo'>
-                                             Tickets:
+                                {
+                                                (element.tickets!="")?'Tickets:':''
+                                            } 
                                         </div>
                                         {element.tickets.slice(2).split(',').map(item =>{ 
                                             return <div className='contTicketInfo'>
@@ -191,7 +195,7 @@ const FlujoModal = ({ eventId ,props}) => {
                 <div className='rowLevel'>
                     <div className='rowSide leftSideRow'>
                     <div className='consArrowflujo arrowRight'></div>
-                        <div className='contInfoFlujo' style={{height:'120px'}}>
+                        <div className='contInfoFlujo' style={{height:'100px'}}>
                             <div className='contTopInfoFlujo' style={{height: '30px'}}>
                                 <div className='contTopLeftFlujo'>
                                         <div className='txtStatusFlujo  ENPROCESO'>
