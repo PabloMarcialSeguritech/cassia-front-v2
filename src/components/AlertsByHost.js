@@ -5,7 +5,7 @@ import data_ubi from './ubicaciones'
 import { useFetch } from '../hooks/useFetch'
 import RowProblem from './RowProblem'
 import LoadAlerts from './LoadAlerts'
-const AlertsByHost=({hostId,server})=>{
+const AlertsByHost=({hostId,server,search_problems})=>{
     const alerts_list=useFetch('zabbix/hosts/detail/alerts',hostId,'','GET',server)
     const dataAgencies=useFetch('zabbix/exception_agencies','','props.token','GET',server)
     console.log(alerts_list)
@@ -57,7 +57,7 @@ const AlertsByHost=({hostId,server})=>{
                   alerts_list.loading?<LoadAlerts/>:(alerts_list.data.data.length===0?<div className='txtLoader'>Sin Resultados</div>:
                   alerts_list.data.data.map((elemento, indice)=>(
                     
-                    <RowProblem  key={indice} severity={elemento.severity} dataAgencies={dataAgencies} data={elemento} server={server}/>
+                    <RowProblem search_problems={search_problems} key={indice} severity={elemento.severity} dataAgencies={dataAgencies} data={elemento} server={server}/>
                   )))
                   }
                 </div>

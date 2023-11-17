@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import './styles/FlujoModal.css'
+import LoadSimple from '../LoadSimple'
 const FlujoModal = ({ eventId ,props}) => {
     const token_item=localStorage.getItem('access_token')
    const [dataFlujo,setDataFlujo]=useState({data:[],loading:true,error:null})
@@ -49,7 +50,7 @@ const FlujoModal = ({ eventId ,props}) => {
             
             <div className='bodyContFlujoModal'>
                 {
-                (dataFlujo.loading)?'cargando':
+                (dataFlujo.loading)?<div className='contflujoload'><LoadSimple/></div>:
                 <>
                 {/* Inicio */}
                 <div className='rowLevel' style={{height:'10%'}}>
@@ -192,10 +193,10 @@ const FlujoModal = ({ eventId ,props}) => {
  
                  
                 {/* fijo */}
-                <div className='rowLevel'>
-                    <div className='rowSide leftSideRow'>
-                    <div className='consArrowflujo arrowRight'></div>
-                        <div className='contInfoFlujo' style={{height:'100px'}}>
+                <div className='rowLevel' style={{height:'auto'}}>
+                    <div className='rowSide leftSideRow' style={{height:'auto',width:'100%',border:'unset'}}>
+                    {/* <div className='consArrowflujo arrowRight'></div> */}
+                        <div className='contInfoFlujo' style={{height:'auto',top:'10px',width:'50%'}}>
                             <div className='contTopInfoFlujo' style={{height: '30px'}}>
                                 <div className='contTopLeftFlujo'>
                                         <div className='txtStatusFlujo  ENPROCESO'>
@@ -227,9 +228,9 @@ const FlujoModal = ({ eventId ,props}) => {
                             </div>
                         </div>
                     </div>
-                    <div className='rowSide RightSideRow'>
+                    {/* <div className='rowSide RightSideRow'  style={{height:'auto'}}>
                         
-                    </div>
+                    </div> */}
                 </div>
                 <div style={{height:'30px'}}></div>
 

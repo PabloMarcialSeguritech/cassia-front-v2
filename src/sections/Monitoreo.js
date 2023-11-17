@@ -818,7 +818,7 @@ useEffect(()=>{
           contentLabel="Example Modal2"
           // shouldCloseOnOverlayClick={false}
           >
-            <InfoMarker  devices={devices} server={server} isOpen={infoMarkerOpen} data={infoMarker} closeInfoMarker={closeInfoMarker} ubiActual={ubiActual}></InfoMarker>
+            <InfoMarker search_problems={search_problems} devices={devices} server={server} isOpen={infoMarkerOpen} data={infoMarker} closeInfoMarker={closeInfoMarker} ubiActual={ubiActual}></InfoMarker>
         </Modal>
         </>
         }

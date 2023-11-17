@@ -47,10 +47,12 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
     const [validaBtn, setValidaBtn] = useState(true);
     const [validaBtnTicket, setValidaBtnTicket] = useState(true);
     const [textAreaValue, setTextAreaValue] = useState('');
+    const [closeEvent, setCloseEvent] = useState(false);
     const [traker, setTracker] = useState('');
     const [clock, setClock] = useState('');
+    const [ResponseDetail,setResponseDetail]=useState('')
     const [dataTicket,setDataticket]=useState({event_id:props.data.eventid,tracker_id:'',clock:''})
-
+//console.log(closeEvent)
     const handleTextAreaChange = (event) => {
       if(event.target.value.length === 0){
           setValidaBtn(true)
@@ -61,18 +63,19 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
       setTextAreaValue(event.target.value);
     };
     const addException=()=>{
-      console.log("exepcio" )
-      console.log(props)
+      //console.log("exepcio" )
+      //console.log(props)
       setAddingException(true)
       
     }
     const addAck=async(e)=>{
       setAddingException(true)
-      console.log(textAreaValue,props.data.eventid)
-      // console.log("element_id:"+cisSelected.element_id+" | ci-relation:"+cisRelation)
+      //console.log(textAreaValue,props.data.eventid)
+      // //console.log("element_id:"+cisSelected.element_id+" | ci-relation:"+cisRelation)
         
         const formData = new URLSearchParams();
         formData.append("message", textAreaValue);
+        formData.append("close", closeEvent);
         console.log('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/acknowledge/'+props.data.eventid)
       
         try {
@@ -85,18 +88,20 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
             },
             body: formData
           });
-          console.log(response)
+          //console.log(response)
           if (response.ok) {
             
             const data = await response.json();
-            console.log(data)
+            //console.log(data)
+            setCloseEvent(false)
             setAckOpen(false);
             setAddingException(false)
             props.search_problems()
           } else {
-            // const data = await response.json();
-            // console.log(data.detail)
-            // setResponseDetail({text:data.detail,value:false})
+            const data = await response.json();
+            console.log(data.detail)
+            setCloseEvent(false)
+            setResponseDetail(data.detail)
             throw new Error('Error en la solicitud');
           }
         
@@ -109,7 +114,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
     const addTicket=async(e)=>{
       setAddingException(true)
         // setDataticket({event_id:props.data.eventid,tracker_id:traker,clock:clock})
-        console.log(dataTicket)
+        //console.log(dataTicket)
         try {
           const response = await fetch('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/tickets/link', {
             method: "POST",
@@ -119,25 +124,25 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
             },
             body: JSON.stringify({event_id:props.data.eventid,tracker_id:traker,clock:clock})
           });
-          console.log(response)
+          //console.log(response)
           if (response.ok) {
             
             const data = await response.json();
-            console.log(data)
+            //console.log(data)
             setTicketOpen(false);
             setAddingException(false)
             setClock('')
             setTracker('')
           } else {
             // const data = await response.json();
-            // console.log(data.detail)
+            // //console.log(data.detail)
             // setResponseDetail({text:data.detail,value:false})
             throw new Error('Error en la solicitud');
           }
         
         } catch (error) {
             
-           console.log(error)
+           //console.log(error)
           
         }
     }
@@ -152,7 +157,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
       }, [addingException]); 
     function openExeption() {
       setExeptionOpen(true);
-      console.log(props)
+      //console.log(props)
     }
   
     function afterOpenExeption() {
@@ -166,18 +171,20 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
     }
     function closeAck() {
       setAckOpen(false);
+      setResponseDetail('')
     }
     function openAck() {
       setAckOpen(true);
-      console.log(props)
+      //console.log(props)
     }
 
     function closeTicket() {
       setTicketOpen(false);
+      setResponseDetail('')
     }
     function openTicket() {
       setTicketOpen(true);
-      console.log(props)
+      //console.log(props)
     }
   
     useEffect(()=>{
@@ -190,9 +197,9 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
       setFlujoOpen(false)
     }
     const handleChangeDate=(e)=>{
-      // console.log(e.target)
+      // //console.log(e.target)
       const {name,value}=e.target
-      // console.log(value)
+      // //console.log(value)
          setClock(value)
          
     }
@@ -222,6 +229,11 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                       </div>
                       <div className='rowHeadExpand'>
                         <div className='textRowHeadExpand'> 
+                          ip
+                        </div>
+                      </div>
+                      <div className='rowHeadExpand'>
+                        <div className='textRowHeadExpand'> 
                           problema
                         </div>
                       </div>
@@ -240,6 +252,11 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                       <div className='rowDetailExpand'>
                         <div className='textRowDetailExpand'> 
                           {props.data.Host}
+                        </div>
+                      </div>
+                      <div className='rowDetailExpand'>
+                        <div className='textRowDetailExpand'> 
+                          {props.data.ip}
                         </div>
                       </div>
                       <div className='rowDetailExpand'>
@@ -284,7 +301,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                               <Action origen='General' disabled={false} titulo='Flujo' action={openFlujo}/>
                           </div>
                           <div className='menuActionCell' style={{border: 'unset'}}>
-                              <Action origen='General' disabled={true} titulo='Link ticket' action ={openTicket}/>
+                              <Action origen='General' disabled={false} titulo='Link ticket' action ={openTicket}/>
                           </div>
                       </div>
                 </div>
@@ -353,6 +370,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                         </div>
                     </div>
                     <div className='formCont'>
+                      <div style={{position:'absolute',width:'100%',height:'auto',display:'flex',justifyContent:'center', color:'red'}}>{ResponseDetail}</div>
                         <div className='formCompact'> 
                         {addingException?<LoadAdding/>:
                         <>
@@ -375,8 +393,10 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
 
                             {/* <InputForm data={[]} loading={false} text={''} setValidaBtn={setValidaBtn} titulo='Notas' disabled={false}></InputForm> */}
                             </div>
-                            <div className='formColumn'>
-                            {/* <InputForm data={[]} loading={false} text='' titulo='Notas' disabled={false}></InputForm> */}
+                            <div className='formColumn input-column'>
+                            <input   value={1} name="ce" type="checkbox" id={`close-event`} onClick={()=>setCloseEvent(!closeEvent)} />
+                                        <label htmlFor={`close-event`}>CERRAR EVENTO</label>
+                                        
                             </div>
                             <div className='formColumn' style={{height:'50px'}}>
                             <Action origen='General' titulo='GUARDAR' action={addAck} disabled={validaBtn}/>
