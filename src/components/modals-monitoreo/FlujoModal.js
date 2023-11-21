@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import './styles/FlujoModal.css'
+import LoadSimple from '../LoadSimple'
 const FlujoModal = ({ eventId ,props}) => {
     const token_item=localStorage.getItem('access_token')
    const [dataFlujo,setDataFlujo]=useState({data:[],loading:true,error:null})
@@ -8,11 +9,13 @@ const FlujoModal = ({ eventId ,props}) => {
 //    eventId=34990088
 
     useEffect(()=>{
+        console.log('data')
         search_event()
     },[])
     function search_event(){
         setDataFlujo({data:{},loading:true,error:dataFlujo.error})
           const fetchData = async () => {
+            console.log('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/acknowledge/'+eventId)
             try {
               console.log('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/acknowledge/'+eventId)
            const response = await fetch('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/acknowledge/'+eventId, {                 
@@ -29,6 +32,7 @@ const FlujoModal = ({ eventId ,props}) => {
                 
                 // setDataFlujo(response_data.data)
               } else {
+                console.log('Error en la solicitud')
                 throw new Error('Error en la solicitud');
               }
             } catch (error) {
@@ -46,7 +50,7 @@ const FlujoModal = ({ eventId ,props}) => {
             
             <div className='bodyContFlujoModal'>
                 {
-                (dataFlujo.loading)?'cargando':
+                (dataFlujo.loading)?<div className='contflujoload'><LoadSimple/></div>:
                 <>
                 {/* Inicio */}
                 <div className='rowLevel' style={{height:'10%'}}>
@@ -89,9 +93,9 @@ const FlujoModal = ({ eventId ,props}) => {
                         <div className='contInfoFlujo'>
                             <div className='contTopInfoFlujo'>
                                 <div className='contTopLeftFlujo'>
-                                        <div className='txtStatusFlujo FINALIZADO'>
+                                        {/* <div className='txtStatusFlujo FINALIZADO'>
                                             FINALIZADO 
-                                        </div>
+                                        </div> */}
                                 </div>
                                 <div className='contTopRightFlujo par'>
                                         <div className='txtTimeFlujo '>
@@ -102,7 +106,9 @@ const FlujoModal = ({ eventId ,props}) => {
                             <div className='contBotInfoFlujo'>
                             <div className='contBotLeftFlujo'>
                             <div className='contTicketInfo'>
-                                             Tickets:
+                                            {
+                                                (element.tickets!="")?'Tickets:':''
+                                            } 
                                         </div>
                                         {element.tickets.slice(2).split(',').map(item =>{ 
                                             return <div className='contTicketInfo'>
@@ -144,9 +150,9 @@ const FlujoModal = ({ eventId ,props}) => {
                                         </div>
                                 </div>
                                 <div className='contTopLeftFlujo'>
-                                        <div className='txtStatusFlujo FINALIZADO'>
+                                        {/* <div className='txtStatusFlujo FINALIZADO'>
                                             FINALIZADO
-                                        </div>
+                                        </div> */}
                                 </div>
                                 
                             </div>
@@ -162,7 +168,9 @@ const FlujoModal = ({ eventId ,props}) => {
                                 </div>
                                 <div className='contBotLeftFlujo'>
                                 <div className='contTicketInfo'>
-                                             Tickets:
+                                {
+                                                (element.tickets!="")?'Tickets:':''
+                                            } 
                                         </div>
                                         {element.tickets.slice(2).split(',').map(item =>{ 
                                             return <div className='contTicketInfo'>
@@ -185,10 +193,10 @@ const FlujoModal = ({ eventId ,props}) => {
  
                  
                 {/* fijo */}
-                <div className='rowLevel'>
-                    <div className='rowSide leftSideRow'>
-                    <div className='consArrowflujo arrowRight'></div>
-                        <div className='contInfoFlujo' style={{height:'120px'}}>
+                <div className='rowLevel' style={{height:'auto'}}>
+                    <div className='rowSide leftSideRow' style={{height:'auto',width:'100%',border:'unset'}}>
+                    {/* <div className='consArrowflujo arrowRight'></div> */}
+                        <div className='contInfoFlujo' style={{height:'auto',top:'10px',width:'50%'}}>
                             <div className='contTopInfoFlujo' style={{height: '30px'}}>
                                 <div className='contTopLeftFlujo'>
                                         <div className='txtStatusFlujo  ENPROCESO'>
@@ -220,9 +228,9 @@ const FlujoModal = ({ eventId ,props}) => {
                             </div>
                         </div>
                     </div>
-                    <div className='rowSide RightSideRow'>
+                    {/* <div className='rowSide RightSideRow'  style={{height:'auto'}}>
                         
-                    </div>
+                    </div> */}
                 </div>
                 <div style={{height:'30px'}}></div>
 

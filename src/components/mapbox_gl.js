@@ -4,8 +4,9 @@ import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import './styles/MapBox.css'
 import towerImg from '../img/torre2_blanca.png';
-const MapBox = ({actualizar_rfi,mapAux,setmapAux,search_rfid,global_longitud,global_latitude,global_zoom,devices,markers,markersWOR,lines,downs,towers,rfid,ubicacion,handleMarkerClick}) => {
- 
+const MapBox = ({capas,setCapas,actualizar_rfi,mapAux,setmapAux,search_rfid,global_longitud,global_latitude,global_zoom,devices,markers,markersWOR,lines,downs,towers,rfid,ubicacion,handleMarkerClick}) => {
+
+  
   console.log("markers*****************************************************")
   //console.log(ubicacion)
   //console.log(markers)
@@ -17,7 +18,9 @@ const MapBox = ({actualizar_rfi,mapAux,setmapAux,search_rfid,global_longitud,glo
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
   const [rfidInterval,setRfidInterval]=useState(0)
- 
+  const idCapaExistente = (id) => {
+    return Object.values(capas).some(capa => capa.id === id);
+  };
   mapboxgl.accessToken =
     'pk.eyJ1IjoiZ2lvcm9jaGEiLCJhIjoiY2xpZWJyZTR3MHpqcjNlcWRvaHR1em5sayJ9._SOrMWsc39Coa2dTHR072Q';
     
@@ -42,28 +45,41 @@ const MapBox = ({actualizar_rfi,mapAux,setmapAux,search_rfid,global_longitud,glo
     let Popup;
     const map = mapRef.current;
     setmapAux(map)
-    map.on('load', () => {
+    
+
+
+     map.on('load', () => {
       console.log("on load map")
        /************************************************************ CAPA MWOR ************************************************************************ */
-       map.addLayer({
-        id: 'host-markerWOR',
-        type: 'circle',
-        source:  {
-          type: 'geojson',
-          data: {
-            type: 'FeatureCollection',
-            features: markersWOR
+       
+
+       
+        const markerWOR ={
+          id: 'host-markerWOR',
+          type: 'circle',
+          source:  {
+            type: 'geojson',
+            data: {
+              type: 'FeatureCollection',
+              features: markersWOR
+            },
           },
-        },
-        filter: ['!', ['has', 'point_count']],
-        paint: {
-          'circle-color': "#00ff70",
-          'circle-radius': 3,
-          'circle-stroke-width':1,
-          'circle-stroke-color': '#d1d1d1',
+          filter: ['!', ['has', 'point_count']],
+          paint: {
+            'circle-color': "#00ff70",
+            'circle-radius': 3,
+            'circle-stroke-width':1,
+            'circle-stroke-color': '#d1d1d1',
+          }
+          ,
         }
-        ,
-      });
+         map.addLayer(markerWOR);
+      if(!idCapaExistente('host-markerWOR')){
+        setCapas((prevCapas) => ({
+          ...prevCapas,
+          [Object.keys(prevCapas).length ]: { show: true, name: 'Conectados',id:`host-markerWOR`,layer:markerWOR ,nivel:1},
+        }));
+      }
       map.on('mouseleave', 'host-markerWOR', (e) => {
         //  //console.log(e)
         // Popup.remove();
@@ -103,7 +119,7 @@ const MapBox = ({actualizar_rfi,mapAux,setmapAux,search_rfid,global_longitud,glo
         handleMarkerClick(e.features[0].properties)
       });
      /************************************************************ CAPA LINEAS ************************************************************************ */
-      map.addLayer({
+      const LineConect={
         id: 'line-conection',
         // id: 'linea',
         type: 'line',
@@ -127,13 +143,20 @@ const MapBox = ({actualizar_rfi,mapAux,setmapAux,search_rfid,global_longitud,glo
           ],
           'line-width': 1,
         },
-      });
+      }
+      map.addLayer(LineConect);
+      if(!idCapaExistente('line-conection')){
+        setCapas((prevCapas) => ({
+          ...prevCapas,
+          [Object.keys(prevCapas).length ]: { show: true, name: 'Relaciones',id:`line-conection`,layer:LineConect ,nivel:2},
+        }));
+      }
       /************************************************************ CAPA RFID ************************************************************************ */
       //console.log(downs)
       var rfidIval;
       if(rfid.length!==0){
         console.log("add layer rfid")
-        map.addLayer({
+        const rifdLayer={
           id: 'host-rfid',
           type: 'circle',
           source:  {
@@ -150,7 +173,14 @@ const MapBox = ({actualizar_rfi,mapAux,setmapAux,search_rfid,global_longitud,glo
             'circle-stroke-width':1,
             'circle-stroke-color': '#fff',
           },
-        });
+        };
+        map.addLayer(rifdLayer);
+      if(!idCapaExistente('host-rfid')){
+        setCapas((prevCapas) => ({
+          ...prevCapas,
+          [Object.keys(prevCapas).length ]: { show: true, name: 'RFID',id:`host-rfid`,layer:rifdLayer ,nivel:2},
+        }));
+      }
         var popup;
         rfid.forEach((feature) => {
           const coordinates = feature.geometry.coordinates.slice();
@@ -191,34 +221,41 @@ const MapBox = ({actualizar_rfi,mapAux,setmapAux,search_rfid,global_longitud,glo
       
      
        /************************************************************ CAPA UP ************************************************************************ */
-      map.addLayer({
-        id: 'host-marker',
-        type: 'circle',
-        source:  {
-          type: 'geojson',
-          data: {
-            type: 'FeatureCollection',
-            features: markers
-          },
+     const alineacionLayer={
+      id: 'host-marker',
+      type: 'circle',
+      source:  {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: markers
         },
-        filter: ['!', ['has', 'point_count']],
-        paint: {
-          'circle-color': [
-            'match',
-            ['get', 'severity'], 
-            -1, '#1fee08',
-            0, '#4fb7f3', 
-            1, '#ffee00', 
-            2, '#ee9d08', 
-            3, '#ee5c08', 
-            4, '#ee0808', 
-            '#11b4da', // Color predeterminado si no se cumplen las condiciones anteriores
-          ],
-          'circle-radius': 4,
-          'circle-stroke-width':1,
-          'circle-stroke-color': '#fff',
-        },
-      });
+      },
+      filter: ['!', ['has', 'point_count']],
+      paint: {
+        'circle-color': [
+          'match',
+          ['get', 'severity'], 
+          -1, '#1fee08',
+          0, '#4fb7f3', 
+          1, '#ffee00', 
+          2, '#ee9d08', 
+          3, '#ee5c08', 
+          4, '#ee0808', 
+          '#11b4da', // Color predeterminado si no se cumplen las condiciones anteriores
+        ],
+        'circle-radius': 4,
+        'circle-stroke-width':1,
+        'circle-stroke-color': '#fff',
+      },
+    }
+     map.addLayer(alineacionLayer);
+      if(!idCapaExistente('host-marker')){
+        setCapas((prevCapas) => ({
+          ...prevCapas,
+          [Object.keys(prevCapas).length ]: { show: true, name: 'Metrica',id:`host-marker`,layer:alineacionLayer ,nivel:2},
+        }));
+      }
       map.on('mouseleave', 'host-marker', (e) => {
         //  //console.log(e)
         // Popup.remove();
@@ -389,7 +426,7 @@ const MapBox = ({actualizar_rfi,mapAux,setmapAux,search_rfid,global_longitud,glo
     }
   });
 
-  map.addLayer({
+  const downLayer={
     id: 'host-down',
     type: 'symbol',
     source: {
@@ -405,7 +442,14 @@ const MapBox = ({actualizar_rfi,mapAux,setmapAux,search_rfid,global_longitud,glo
       'icon-size': 0.5,
       'icon-allow-overlap': true, // Permite la superposición del icono
     },
-  });
+  }
+   map.addLayer(downLayer);
+  if(!idCapaExistente('host-down')){
+    setCapas((prevCapas) => ({
+      ...prevCapas,
+      [Object.keys(prevCapas).length ]: { show: true, name: 'Downs',id:`host-down`,layer:downLayer ,nivel:2},
+    }));
+  }
   map.on('mouseleave', 'host-down', (e) => {
       // Popup.remove();
       const popups = document.querySelectorAll('.custom-popup');
@@ -444,7 +488,7 @@ const MapBox = ({actualizar_rfi,mapAux,setmapAux,search_rfid,global_longitud,glo
           map.addImage('tower', image);
 
           // Add a data source containing one point feature.
-          map.addSource('point', {
+          map.addSource('tower-marker', {
             type: 'geojson',
             data: {
               type: 'FeatureCollection',
@@ -456,7 +500,7 @@ const MapBox = ({actualizar_rfi,mapAux,setmapAux,search_rfid,global_longitud,glo
           map.addLayer({
             id: 'tower-marker',
             type: 'symbol',
-            source: 'point', // reference the data source
+            source: 'tower-marker', // reference the data source
             layout: {
               'icon-image': 'tower', // reference the image
               'icon-size': 0.12,
