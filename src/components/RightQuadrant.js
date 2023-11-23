@@ -15,8 +15,15 @@ const RightQuadrant =(props)=>{
     const [dataTec,setDataTec]=useState({data:[],loading:true,error:null})
     const [dataDisp,setDataDisp]=useState({data:[],loading:true,error:null})
     
-//    console.log(dataDisp)
-    let s4= undefined
+   console.log(dataDisp.data)
+   console.log(props.ubiActual.templateId)
+   const metrica=dataDisp.data.find(obj => obj.template_id === props.ubiActual.templateId)
+   console.log(metrica)
+   if( typeof(metrica) !=="undefined"){
+    props.setMetricaSelected(metrica.nickname) 
+   } 
+//    
+   let s4= undefined
     let s3= undefined
     let s2= undefined
     let s1=undefined
@@ -29,7 +36,7 @@ const RightQuadrant =(props)=>{
      s1= props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 1)
     }
     function buscar(){
-       
+       props.setCapas({})
         let aux_municipio=dataLocations.data.data.find(obj => obj.groupid === props.ubicacion.groupid)
         if(aux_municipio===undefined){
             aux_municipio='Todos'
@@ -140,7 +147,7 @@ const RightQuadrant =(props)=>{
           fetchData();
       }
     return(
-        
+        <>
         <div className='rowQuadrant rightQuadrant'>
             <div className='column' style={{width:'70%'}}>
                 <div className='card menuSearch'>
@@ -155,7 +162,7 @@ const RightQuadrant =(props)=>{
                     <div className='menuSearchData' >
                     <div className='menuSearchColumn'>
                         
-                        <Selector opGeneral={true} txtOpGen={'todos'}  opt_de={'0'} origen={'mapa'} data={dataLocations.data.data} loading={dataLocations.loading}  titulo='Municipio' props={props}></Selector>
+                        <Selector opGeneral={true} txtOpGen={'TODOS'}  opt_de={'0'} origen={'mapa'} data={dataLocations.data.data} loading={dataLocations.loading}  titulo='Municipio' props={props}></Selector>
                     </div>
                     <div className='menuSearchColumn'>
                         {/* <Selector data={dataSubtype.data.data} loading={dataSubtype.loading}  titulo='Tecnologia'></Selector> */}
@@ -254,6 +261,8 @@ const RightQuadrant =(props)=>{
                 </div>
             </div> */}
         </div>
+        
+        </>
     )
 }
 

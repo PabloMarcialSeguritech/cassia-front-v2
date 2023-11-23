@@ -3,6 +3,7 @@ import LoadSimple from "../LoadSimple"
 import Modal from 'react-modal';
 import ModalDeleteCis from "./ModalDeleteCis";
 import { useState,useEffect } from 'react';
+import ModalCisAfecta from './ModalCisAfecta';
 const deleteCisModalStyles = {
     content: {
       top: '50%',
@@ -17,11 +18,28 @@ const deleteCisModalStyles = {
       padding:'20px'
     },
   };
-const CisList =({handleChangEdit,setData,setRegisterIsValid ,setLoading,setError,server,dataUsers,setDataUsers,searchResults, setSearchResults,searchTerm,setCisSelected})=>{
+  /* estilos modal crear relacion */
+const CisAfectaModalStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    background: '#ffffff !important',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    width:'40%',
+    height:'90%',
+    padding:'20px'
+  },
+};
+const CisList =({handleChangEdit,setData,setRegisterIsValid ,setLoading,setError,server,dataUsers,setDataUsers,searchResults, setSearchResults,searchTerm,cisSelected,setCisSelected})=>{
     // const dataUsers=useFetch('cassia/ci','',localStorage.getItem('access_token'),'GET',server)
     
     const [deleteCisModalOpen, setdeleteCisModalOpen] =useState(false);
     const [userSelected,setUserSelected]=useState({})
+    const [CisAfectaModalOpen, setCisAfectaModalOpen] =useState(false); 
+    const [cisSelectedAux,setCisSelectedAux]=useState([])
     var dataList=(searchTerm==='')?dataUsers.data:searchResults;
     // console.log(userSelected)
     function openDeleteUserModal() {
@@ -47,8 +65,8 @@ const CisList =({handleChangEdit,setData,setRegisterIsValid ,setLoading,setError
           const fetchDataPost = async () => {
             
          try {
-            console.log('http://'+server.ip+':'+server.port+'/api/v1/cassia/ci/')
-            const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/cassia/ci/', {
+            console.log('http://'+server.ip+':'+server.port+'/api/v1/cassia/ci_elements/')
+            const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/cassia/ci_elements/', {
                 method: 'GET',  
                 headers: {
                   'Content-Type': 'application/json',
@@ -77,9 +95,22 @@ const CisList =({handleChangEdit,setData,setRegisterIsValid ,setLoading,setError
           fetchDataPost();
         
     }
-    const cisSelect=(elemento)=>{
+    const cisSelectRow=(elemento)=>{
 console.log(elemento)
 setCisSelected(elemento)
+
+    }
+    function closeCisAfectaModal() {
+    
+      setCisAfectaModalOpen(false);
+      
+    }
+    
+    const openCisAfectaModal=(elemento) =>{ 
+      console.log("openAfect")
+      setCisSelectedAux(elemento)
+      setCisAfectaModalOpen(true);
+      
     }
     return(
         <>
@@ -88,9 +119,9 @@ setCisSelected(elemento)
           
            
           dataList.map((elemento, indice) => (
-            <div className='row-table-cis' key={indice} onClick={()=>cisSelect(elemento)}>
-              <div className='field-body-table-cis field-small'>
-                {elemento.ci_id}
+            <div className='row-table-cis' key={indice}   onClick={()=>cisSelectRow(elemento)}>
+              <div className='field-body-table-cis field-medium'>
+                {elemento.folio}
               </div>
               <div className='field-body-table-cis field-medium'>
                 {elemento.ip}
@@ -98,30 +129,48 @@ setCisSelected(elemento)
               <div className='field-body-table-cis field-larger'>
                 {elemento.name.slice(0,35)}...
               </div>
+              <div className='field-body-table-cis field-medium'>
+                {elemento.technology}
+              </div>
+              <div className='field-body-table-cis field-medium'>
+                {elemento.device_name}
+              </div>
               <div className='field-body-table-cis field-larger'>
-                {elemento.device_description}
+                {elemento.description}
               </div>
+              <div className='field-body-table-cis field-medium'>
+                {elemento.hardware_brand}
+              </div>
+              <div className='field-body-table-cis field-medium'>
+                {elemento.hardware_model}
+              </div>
+              <div className='field-body-table-cis field-medium'>
+                {elemento.software_version}
+              </div>
+              <div className='field-body-table-cis field-medium'>
+                {elemento.location}
+              </div>
+              <div className='field-body-table-cis field-small'>
+                {elemento.criticality}
+              </div>
+              <div className='field-body-table-cis field-medium' style={{fontWeight:'bold',color:(elemento.status=="Activo")?'green':'red'}}>
+                {elemento.status}
+              </div>
+              <div className='field-body-table-cis field-medium'>
+                {elemento.status_conf}
+              </div>
+              {/* <div className='field-body-table-cis field-small'>
+                {elemento.status_conf}
+              </div> */}
               <div className='field-body-table-cis field-larger'>
-                {elemento.justification}
-              </div>
-              <div className='field-body-table-cis field-medium'>
-                {elemento.result}
-              </div>
-              <div className='field-body-table-cis field-medium'>
-                {elemento.responsible_name}
-              </div>
-              <div className='field-body-table-cis field-medium'>
-                {elemento.auth_name}
-              </div>
-              <div className='field-body-table-cis field-medium'>
-                {elemento.date.slice(0, 10)}
-              </div>
-              <div className='field-body-table-cis field-medium'>
-                <div className='cont-img-field-acciones'>
-                  <img className='img-field-acciones' src='/iconos/edit.png' title='Editar' name='Editar' ci_id={elemento.ci_id} onClick={() => handleChangEdit(elemento)} />
+              <div className='cont-img-field-acciones'>
+                  <img className='img-field-acciones' src='/iconos/cis-afecta.png' title='Afecta' name='Afecta' alt='Afecta' style={{height:'85%'}}  ci_id={elemento.ci_id} onClick={(e) =>{e.stopPropagation(); openCisAfectaModal(elemento)}}  />
                 </div>
                 <div className='cont-img-field-acciones'>
-                  <img className='img-field-acciones' src='/iconos/delete.png' title='Eliminar'name='Eliminar' ci_id={elemento.ci_id} onClick={()=>handledeleteUserClick(elemento)}/>
+                  <img className='img-field-acciones' src='/iconos/edit.png' title='Editar' name='Editar' ci_id={elemento.ci_id} onClick={(e) =>{e.stopPropagation(); handleChangEdit(elemento)}} />
+                </div>
+                <div className='cont-img-field-acciones' >
+                  <img className='img-field-acciones' src='/iconos/delete.png' title='Eliminar'name='Eliminar' ci_id={elemento.ci_id} onClick={(e)=> {e.stopPropagation(); handledeleteUserClick(elemento)}} />
                 </div>
               </div>
             </div>
@@ -140,7 +189,19 @@ setCisSelected(elemento)
         contentLabel="Example Modal2"
         // shouldCloseOnOverlayClick={false}
         >
-          <ModalDeleteCis server={server} setRegisterIsValid ={setRegisterIsValid } setData={setData} setLoading={setLoading} setError={setError} user={userSelected} closDeleteCisModal={closDeleteCisModal}></ModalDeleteCis>
+          <ModalDeleteCis server={server} setRegisterIsValid ={setRegisterIsValid } setData={setData} setLoading={setLoading} setError={setError} cis={userSelected} closDeleteCisModal={closDeleteCisModal}></ModalDeleteCis>
+    </Modal>
+    {/* modal cis que afecta */}
+    <Modal
+        isOpen={CisAfectaModalOpen}
+        // isOpen={false}
+        // onAfterOpen={afterOpenExeption}
+        onRequestClose={closeCisAfectaModal}
+        style={CisAfectaModalStyles}
+        contentLabel="Example Modal2"
+        // shouldCloseOnOverlayClick={false}
+        >
+          <ModalCisAfecta server={server} cisSelected={cisSelectedAux} closeCisAfectaModal ={closeCisAfectaModal }></ModalCisAfecta>
     </Modal>
     </>
     )
