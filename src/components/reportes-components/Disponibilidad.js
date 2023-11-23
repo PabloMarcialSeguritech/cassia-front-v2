@@ -32,10 +32,71 @@ const Disponibilidad=({server})=>{
   const color_graf={
     1:"#c680ff",
     2:"#80cfff",
-    3:"#56e1ad"
+    3:"#56e1ad",
+    4:"#3b83bd",
+    5:"#6285aa",
+    6:"#7a8697",
+    7:"#8c8884",
+    8:"#9a8a71",
+    9:"#a68d5d",
+    10:"#b18f47",
+    11:"#3b83bd",
+    12:"#346c9b",
+    13:"#2d567a",
+    14:"#25415a",
+    15:"#1d2c3d",
+    16:"#131a21",
+    17:"#7f4a83",
+    18:"#86518a",
+    19:"#8e5892",
+    20:"#955f99",
+    21:"#9d66a0",
+    22:"#a46da8",
+    23:"#ac74b0",
+    24:"#614064",
+    25:"#49314a",    
+    26:"#b4031c",
+    27:"#bc1521",
+    28:"#c52127",
+    29:"#cd2b2d",
+    30:"#d53433",
+    31:"#de3d39",
+    32:"#e6453f",
+    33:"#cd2b2d",
+    34:"#dc574c",
+    35:"#e87b6d",
+    36:"#f29c90",
+    37:"#fabdb4",
+    38:"#00a87f",
+    39:"#00b48a",
+    40:"#00c096",
+    41:"#00cca1",
+    42:"#27d8ac",
+    43:"#3ce5b8",
+    44:"#4df1c4",
+    45:"#80debf",
+    46:"#a3e7cf",
+    47:"#393939",
+    48:"#5c5c5c",
+    49:"#828282",
+    50:"#aaaaaa" ,
   }
+  const generateColorOptions = () => {
+    const colorOptions = {};
   
-  // console.log(countArray)
+    for (let i = 1; i <= 100; i++) {
+      const red = Math.floor((255 * i) / 100);
+      const green = Math.floor((255 * (100 - i)) / 100);
+      const blue = Math.floor((255 * (i % 50)) / 50);
+  
+      const color = `#${red.toString(16).padStart(2, '0')}${green.toString(16).padStart(2, '0')}${blue.toString(16).padStart(2, '0')}`;
+      
+      colorOptions[i] = color;
+    }
+  
+    return colorOptions[Math.floor(Math.random() * 100) + 1];
+  };
+ 
   const obtenerPrimerDiaDelMes = () => {
     const hoy = new Date();
     const primerDiaDelMes = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
@@ -62,7 +123,7 @@ const Disponibilidad=({server})=>{
 
 
  
-  
+    const dataLocations=useFetch('zabbix/groups/municipios','','token','GET',server)
     const [dataInfo,setDataInfo]=useState({data:[],loading:true,error:null})
     const [opciones,setOpciones]=useState({municipio:0,tecnologia:11,marca:0,modelo:0,fecha_ini:''+obtenerPrimerDiaDelMes(),fecha_fin:''+obtenerFechaActualLocal()})
     const [opcionesArray,setOpcionesArray]=useState({municipio:[0],tecnologia:[11],marca:[0],modelo:[0]})
@@ -78,10 +139,14 @@ const Disponibilidad=({server})=>{
     const [dataMarca,setDataMarca]=useState({data:[[]],loading:[true],error:[null]})
     const [dataModelo,setDataModelo]=useState({data:[[]],loading:[true],error:[null]})
     const [indexSelected,setIndexSelected] =useState(0)
-    console.log(opcionesTxtArrayFijo)
-    console.log(opcionesTxtArray)
-    
+    const [flagTodos,setFlagTodos]=useState(true)
+    const [flagGeneral,setFlagGeneral]=useState(false)
+    // console.log(opcionesTxtArrayFijo)
+    // console.log(opcionesTxtArray)
+    // console.log(opcionesArray.municipio[0])
     // console.log("total.metr ",totalLienas)
+    // console.log('flag general',flagGeneral)
+    // console.log('flag todos',flagTodos)
     const Ampliar = () => {
       // Aquí puedes realizar la búsqueda usando el valor de 'query'
       // Por ejemplo, puedes actualizar el estado 'searchResult' con los resultados
@@ -244,7 +309,13 @@ function search_reporte_disponibilidad(){
   // }else{
     baseURL = 'http://'+server.ip+':'+server.port+'/api/v1/cassia/reports/availability/multiple';
   // }
-  
+  if(opcionesArray.municipio[0]==0){
+    setFlagTodos(true)
+    setFlagGeneral(false)
+  }else{
+    setFlagTodos(false)
+    setFlagGeneral(true)
+  }
   const municipioParam = opcionesArray.municipio.map(id => `municipality_id=${id}`).join('&');
   const tecParam = opcionesArray.tecnologia.map(id => `tech_id=${id}`).join('&');
   const marcaParam = opcionesArray.marca.map(id => `brand_id=${id}`).join('&');
@@ -377,19 +448,20 @@ function download_reporte_disponibilidad(){
       // Uso
       const progress = 0.5;
       const [elementos, setElementos] = useState(['Serie 1']);
+      
       const [elementosToRender,setElementosToRender]=useState(['Disponibilidad_1']);
       const [disabled,setDisabled]=useState(true)
       // console.log(elementos)
       // console.log(elementosToRender)
   const handleClickAdd = () => {
-    // console.log('entro')
+    // console.log(dataLocations.data.data[0].id,dataLocations.data.data[0].name)
     
     setElementos([...elementos, 'Serie '+(parseInt(elementos.length,10) +1)]);
     setElementosToRender([...elementosToRender, 'Disponibilidad_'+(parseInt(elementosToRender.length,10) +1)]);
     setOpcionesArray(prevState => {
       return {
         ...prevState,
-        municipio: [...prevState.municipio, 0],
+        municipio: [...prevState.municipio, dataLocations.data.data[0].id],
         tecnologia:[...prevState.tecnologia, 11],
         marca:[...prevState.marca, 0],
         modelo:[...prevState.modelo, 0]
@@ -398,7 +470,7 @@ function download_reporte_disponibilidad(){
     setOpcionesTxtArray(prevState => {
       return {
         ...prevState,
-        municipio: [...prevState.municipio, 'TODOS'],
+        municipio: [...prevState.municipio, dataLocations.data.data[0].name],
         tecnologia:[...prevState.tecnologia, 'SUSCRIPTORES'],
         marca:[...prevState.marca, 'TODAS'],
         modelo:[...prevState.modelo, 'TODOS']
@@ -439,6 +511,7 @@ function download_reporte_disponibilidad(){
 
 
   const eliminarElemento = (indice) => {
+    console.log("+++++++++++++++++++++++++++ elimina ",indice)
     const nuevosElementos = elementos.filter((elemento, index) => index !== indice);
     const nuevosElementosTR = elementosToRender.filter((elemento, index) => index !== indice);
     // const newOpcionesArray=opcionesArray.filter((elemento, index) => index !== indice);
@@ -502,7 +575,7 @@ function download_reporte_disponibilidad(){
       <>
         <div className="main-reporte-disp">
         <div className='cont-add-graf'>
-        {(elementos.length<3)?<img
+        {(elementos.length<3 && (opcionesArray.municipio[0]!=0))?<img
                         className='img-field-add-graf'
                         src='/iconos/add.png'
                         title='Agregar'
@@ -517,8 +590,8 @@ function download_reporte_disponibilidad(){
         {<img
                         className='img-field-download-graf'
                         src='/iconos/download.png'
-                        title='Agregar'
-                        name='Agregar'
+                        title='Descargar'
+                        name='Descargar'
                         onClick={download_reporte_disponibilidad}
                       />}
         </div>
@@ -526,12 +599,13 @@ function download_reporte_disponibilidad(){
         {<img
                         className='img-field-expand-graf'
                         src='/iconos/full-screen.png'
-                        title='Agregar'
-                        name='Agregar'
+                        title='Expandir'
+                        name='Expandir'
                         onClick={Ampliar}
                       />}
         </div>
-        <div className='cont-list-graf' style={{width:'14%'}}>
+        {(!flagTodos)?
+          <div className='cont-list-graf' style={{width:'14%'}}>
             <div className='compact-list-graf'>
 
             
@@ -549,7 +623,18 @@ function download_reporte_disponibilidad(){
                                   ))}
           </div>
           
-        </div>
+          </div>:
+              <div className='cont-list-graf' style={{width:'14%'}}>
+              <div className='compact-list-graf'>
+                    <div className='cont-option-todos'>
+                    <input    value={1} name="ce" type="checkbox" id={`show-general`} onClick={()=>setFlagGeneral(!flagGeneral)}  style={{width:'20px',height:'20px'}}/>
+                      <label htmlFor={`close-event`}>General</label>
+                    </div>
+                    
+            </div>
+            
+          </div>
+        }
             <div className='cont-reporte-disp'>
             <div className='cont-menu-disp'>
               
@@ -585,7 +670,7 @@ function download_reporte_disponibilidad(){
                       {elemento}
                     </div>
                     <div className='cont-options-menu'>
-                      <MenuSearch dataTec={dataTec} setDataTec={setDataTec} dataModelo={dataModelo} setDataModelo={setDataModelo} dataMarca={dataMarca} setDataMarca={setDataMarca} index={index} prevOpcionesArray={prevOpcionesArray}  setPrevOpcionesArray={setPrevOpcionesArray} opcionesArray={opcionesArray}    opcionesTxtArray={opcionesTxtArray} setOpcionesTxtArray={setOpcionesTxtArray} setOpcionesArray={setOpcionesArray} server={server} opciones={opciones} setOpciones={setOpciones} completo={false}></MenuSearch>
+                      <MenuSearch  dataLocations={dataLocations} eliminarElemento={eliminarElemento}  setElementos={setElementos} dataTec={dataTec} setDataTec={setDataTec} dataModelo={dataModelo} setDataModelo={setDataModelo} dataMarca={dataMarca} setDataMarca={setDataMarca} index={index} prevOpcionesArray={prevOpcionesArray}  setPrevOpcionesArray={setPrevOpcionesArray} opcionesArray={opcionesArray}    opcionesTxtArray={opcionesTxtArray} setOpcionesTxtArray={setOpcionesTxtArray} setOpcionesArray={setOpcionesArray} server={server} opciones={opciones} setOpciones={setOpciones} completo={false}></MenuSearch>
                     </div>
                     <div className='cont-action-menu'>
                       <div className='cont-img-field-delete-graf'>
@@ -612,7 +697,7 @@ function download_reporte_disponibilidad(){
                   <>
                   <div className='compact-periodo-manual'>
 
-                  <div className='menuSearchOption'>
+                  <div className='menuSearchOption' style={{height:'unset'}}>
                   <div className='compact-option-date'>
                       <div className="user-box-disp">
                           <input required name="fecha_ini"  type="datetime-local" value={opciones.fecha_ini}
@@ -691,7 +776,7 @@ function download_reporte_disponibilidad(){
                                 width={400}
                                 height={200}
                                 // data={dataInfo.data.metrics[0].dataset}
-                                data={dataInfo.data.metrics[indexSelected].dataset}
+                                data={(flagGeneral)?dataInfo.data.metrics[indexSelected].dataset:dataInfo.data.metrics[indexSelected].dataset2}
                                 // data={data}
                                 margin={{
                                   top: 5,
@@ -712,18 +797,32 @@ function download_reporte_disponibilidad(){
                                 <Line type="monotone" dataKey="pv" stroke="#82ca9d" /> */}
                                 
                                 {
-                                // (elementosToRender.length==1)?<Line type="monotone" dataKey="Disponibilidad" stroke="#8884d8" strokeWidth={2}  />:
-                                dataInfo.data.metrics[indexSelected].indices.map((key, index) => (
-                                  <Line
-                                  key={index}
-                                    type="monotone"
-                                    // dataKey={elementosToRender[index]}
-                                    dataKey={"Disponibilidad_"+key}
-                                    // stroke={`#${Math.floor(Math.random()*16777215).toString(16)}`} // Color aleatorio
-                                  // stroke={color_graf[index+1]}
-                                  stroke={color_graf[key]}
-                                  />
-                                ))}
+                                  (flagGeneral)?
+                                  dataInfo.data.metrics[indexSelected].indices.map((key, index) => (
+                                    <Line
+                                    key={index}
+                                      type="monotone"
+                                      // dataKey={elementosToRender[index]}
+                                      dataKey={"Disponibilidad_"+key}
+                                      // stroke={`#${Math.floor(Math.random()*16777215).toString(16)}`} // Color aleatorio
+                                    // stroke={color_graf[index+1]}
+                                    stroke={color_graf[key]}
+                                    />
+                                  ))
+                                  :
+                                  dataInfo.data.metrics[indexSelected].municipality.map((key, index) => (
+                                    <Line
+                                    key={index}
+                                      type="monotone"
+                                      // dataKey={elementosToRender[index]}
+                                      dataKey={key}
+                                      // stroke={`#${Math.floor(Math.random()*16777215).toString(16)}`} // Color aleatorio
+                                    stroke={color_graf[((index+1)>50)?(index+1)-50:(index+1)]}
+                                    // stroke={generateColorOptions()}
+                                    />
+                                  ))
+                                  
+                                }
                               </LineChart>
                               </ResponsiveContainer>
                         }
@@ -872,7 +971,7 @@ function download_reporte_disponibilidad(){
         contentLabel="Example Modal2"
         // shouldCloseOnOverlayClick={false}
         >
-          <ModalAddMultiGraph indexSelected={indexSelected} dataInfo={dataInfo} elementosToRender={elementosToRender}closAddMultiGraphModal={closAddMultiGraphModal} setTotalLineas={setTotalLineas} color_graf={color_graf} opcionesTxtArrayFijo={opcionesTxtArrayFijo} ></ModalAddMultiGraph>
+          <ModalAddMultiGraph flagTodos={flagTodos} flagGeneral={flagGeneral} setFlagGeneral={setFlagGeneral} generateColorOptions={generateColorOptions} indexSelected={indexSelected} dataInfo={dataInfo} elementosToRender={elementosToRender}closAddMultiGraphModal={closAddMultiGraphModal} setTotalLineas={setTotalLineas} color_graf={color_graf} opcionesTxtArrayFijo={opcionesTxtArrayFijo} ></ModalAddMultiGraph>
     </Modal>
         </>
     )
