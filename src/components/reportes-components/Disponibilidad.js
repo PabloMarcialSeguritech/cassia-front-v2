@@ -139,6 +139,7 @@ const Disponibilidad=({server})=>{
     const [dataMarca,setDataMarca]=useState({data:[[]],loading:[true],error:[null]})
     const [dataModelo,setDataModelo]=useState({data:[[]],loading:[true],error:[null]})
     const [indexSelected,setIndexSelected] =useState(0)
+
     const [flagTodos,setFlagTodos]=useState(true)
     const [flagGeneral,setFlagGeneral]=useState(false)
     // console.log(opcionesTxtArrayFijo)
@@ -147,6 +148,7 @@ const Disponibilidad=({server})=>{
     // console.log("total.metr ",totalLienas)
     // console.log('flag general',flagGeneral)
     // console.log('flag todos',flagTodos)
+
     const Ampliar = () => {
       // Aquí puedes realizar la búsqueda usando el valor de 'query'
       // Por ejemplo, puedes actualizar el estado 'searchResult' con los resultados
@@ -604,8 +606,10 @@ function download_reporte_disponibilidad(){
                         onClick={Ampliar}
                       />}
         </div>
+
         {(!flagTodos)?
           <div className='cont-list-graf' style={{width:'14%'}}>
+
             <div className='compact-list-graf'>
 
             
@@ -621,6 +625,7 @@ function download_reporte_disponibilidad(){
             <hr className='separate-rof-graf'></hr>
                                   </>
                                   ))}
+
           </div>
           
           </div>:
@@ -635,6 +640,7 @@ function download_reporte_disponibilidad(){
             
           </div>
         }
+
             <div className='cont-reporte-disp'>
             <div className='cont-menu-disp'>
               
@@ -697,7 +703,9 @@ function download_reporte_disponibilidad(){
                   <>
                   <div className='compact-periodo-manual'>
 
+
                   <div className='menuSearchOption' style={{height:'unset'}}>
+
                   <div className='compact-option-date'>
                       <div className="user-box-disp">
                           <input required name="fecha_ini"  type="datetime-local" value={opciones.fecha_ini}
@@ -776,7 +784,9 @@ function download_reporte_disponibilidad(){
                                 width={400}
                                 height={200}
                                 // data={dataInfo.data.metrics[0].dataset}
+
                                 data={(flagGeneral)?dataInfo.data.metrics[indexSelected].dataset:dataInfo.data.metrics[indexSelected].dataset2}
+
                                 // data={data}
                                 margin={{
                                   top: 5,
@@ -797,6 +807,7 @@ function download_reporte_disponibilidad(){
                                 <Line type="monotone" dataKey="pv" stroke="#82ca9d" /> */}
                                 
                                 {
+
                                   (flagGeneral)?
                                   dataInfo.data.metrics[indexSelected].indices.map((key, index) => (
                                     <Line
@@ -823,6 +834,7 @@ function download_reporte_disponibilidad(){
                                   ))
                                   
                                 }
+
                               </LineChart>
                               </ResponsiveContainer>
                         }
@@ -971,7 +983,9 @@ function download_reporte_disponibilidad(){
         contentLabel="Example Modal2"
         // shouldCloseOnOverlayClick={false}
         >
+
           <ModalAddMultiGraph flagTodos={flagTodos} flagGeneral={flagGeneral} setFlagGeneral={setFlagGeneral} generateColorOptions={generateColorOptions} indexSelected={indexSelected} dataInfo={dataInfo} elementosToRender={elementosToRender}closAddMultiGraphModal={closAddMultiGraphModal} setTotalLineas={setTotalLineas} color_graf={color_graf} opcionesTxtArrayFijo={opcionesTxtArrayFijo} ></ModalAddMultiGraph>
+
     </Modal>
         </>
     )

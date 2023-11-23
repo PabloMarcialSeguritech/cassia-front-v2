@@ -42,6 +42,7 @@ const ShowLayers =(props)=>{
     }
     
     const handleClick=(element,index)=>{
+
         console.log('ocultar la capa ',props.capas[index].id)
        
         if(props.capas[index].show){
@@ -131,7 +132,9 @@ const ShowLayers =(props)=>{
                                     <>
                                     {Object.values(props.capas).map((element, index) => (
                                         <>
+
                                         <input defaultChecked={element.show}  value={index} name="r" type="checkbox" id={`checkbox-${index + 1}`} onClick={()=>handleClick(element,index)} />
+
                                         <label htmlFor={`checkbox-${index + 1}`}>{element.name}</label>
                                         </>
                                     ))}
