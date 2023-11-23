@@ -42,13 +42,68 @@ const ShowLayers =(props)=>{
     }
     
     const handleClick=(element,index)=>{
-        console.log('ocultar la capa ',index)
-        console.log(element)
+
+        console.log('ocultar la capa ',props.capas[index].id)
+       
         if(props.capas[index].show){
-        props.mapAux.removeLayer(props.capas[index].id);
-        props.mapAux.removeSource(props.capas[index].id);
-    }else{
-        props.mapAux.addLayer(props.capas[index].layer)
+            props.mapAux.removeLayer(props.capas[index].id);
+            props.mapAux.removeSource(props.capas[index].id);
+        }else{
+            if(index<Object.keys(props.capas).length-1){
+                let i=index+1;
+                let flag=true
+                do{
+                    console.log(i,flag)
+                    if(props.capas[i].show){
+                        if(props.capas[index].source!=null){
+                            props.mapAux.addSource(props.capas[index].id,props.capas[index].source)
+                        }
+                        props.mapAux.addLayer(props.capas[index].layer,props.capas[i].id)
+                        flag=false
+                    }else{
+                        i++;
+                    }
+                }while(flag && i<Object.keys(props.capas).length)
+                if(flag && i==Object.keys(props.capas).length){
+                    if(props.capas[index].source!=null){
+                        props.mapAux.addSource(props.capas[index].id,props.capas[index].source)
+                    }
+                    props.mapAux.addLayer(props.capas[index].layer)
+                }
+            }else{
+                console.log('muestra la capa ',props.capas[index].id)
+                if(props.capas[index].source!=null){
+                    props.mapAux.addSource(props.capas[index].id,props.capas[index].source)
+                }
+                props.mapAux.addLayer(props.capas[index].layer)
+            }
+            
+
+
+        // if(props.capas[index].id!=='host-down'){
+        //     if(props.capas[index].id=='line-conection'){
+        //         const capaAExists = props.mapAux.getLayer('host-markerWOR') !== undefined;
+        //         if(capaAExists){
+        //             props.mapAux.addLayer(props.capas[index].layer,'host-markerWOR')
+        //         }else {
+        //             capaAExists = props.mapAux.getLayer('host-marker') !== undefined;
+        //             if(capaAExists){
+        //                 props.mapAux.addLayer(props.capas[index].layer,'host-marker') 
+        //             }else{
+        //                 const capaAExists = props.mapAux.getLayer('host-down') !== undefined;
+        //                 props.mapAux.addLayer(props.capas[index].layer,capaAExists ? 'host-down' : undefined)
+        //             }
+        //         }
+                
+        //     }else{
+        //         const capaAExists = props.mapAux.getLayer('host-down') !== undefined;
+        //         props.mapAux.addLayer(props.capas[index].layer,capaAExists ? 'host-down' : undefined)
+        //     }
+            
+        // }else{
+        //     props.mapAux.addLayer(props.capas[index].layer)
+        // }
+        
         }
         props.setCapas((prevCapas) => ({
             ...prevCapas,
@@ -77,7 +132,9 @@ const ShowLayers =(props)=>{
                                     <>
                                     {Object.values(props.capas).map((element, index) => (
                                         <>
-                                        <input defaultChecked  value={index} name="r" type="checkbox" id={`checkbox-${index + 1}`} onClick={()=>handleClick(element,index)} />
+
+                                        <input defaultChecked={element.show}  value={index} name="r" type="checkbox" id={`checkbox-${index + 1}`} onClick={()=>handleClick(element,index)} />
+
                                         <label htmlFor={`checkbox-${index + 1}`}>{element.name}</label>
                                         </>
                                     ))}

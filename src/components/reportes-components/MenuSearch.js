@@ -11,9 +11,11 @@ import React, { PureComponent } from 'react';
 import Modal from 'react-modal';
 import { LineChart, Line,Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-const MenuSearch=({dataTec,setDataTec,dataMarca,setDataMarca,dataModelo,setDataModelo,index,server,prevOpcionesArray,setPrevOpcionesArray,opcionesArray,opcionesTxtArray,setOpciones,setOpcionesArray,setOpcionesTxtArray,opciones,action1,action2,completo})=>{
+
+const MenuSearch=({dataTec,dataLocations,setElementos,eliminarElemento,setDataTec,dataMarca,setDataMarca,dataModelo,setDataModelo,index,server,prevOpcionesArray,setPrevOpcionesArray,opcionesArray,opcionesTxtArray,setOpciones,setOpcionesArray,setOpcionesTxtArray,opciones,action1,action2,completo})=>{
   
-    const dataLocations=useFetch('zabbix/groups/municipios','','token','GET',server)
+    // const dataLocations=useFetch('zabbix/groups/municipios','','token','GET',server)
+
     // const [dataTec,setDataTec]=useState({data:[[]],loading:[true],error:null})
     // const [dataMarca,setDataMarca]=useState({data:[[]],loading:[true],error:null})
     // const [dataModelo,setDataModelo]=useState({data:[[]],loading:[true],error:null})
@@ -21,10 +23,12 @@ const MenuSearch=({dataTec,setDataTec,dataMarca,setDataMarca,dataModelo,setDataM
     const [indiceActived,setindiceActived]=useState(0);
     
     const [indexSelected,setIndexSelected]=useState(0)
-useEffect(()=>{
-  // console.log(indexSelected)
 
-},[dataTec])
+// useEffect(()=>{
+  // console.log(opcionesArray)
+
+// },[dataTec])
+
     // console.log('indice activo ',indiceActived,index)
     const changeOption=(option,index)=>{
       console.log("changeOption")
@@ -109,7 +113,18 @@ useEffect(()=>{
     
 },[opciones.municipio])
 useEffect(() => {
-  // console.log(`Se actualizó el elemento municipio`);
+  console.log(`Se actualizó el elemento municipio`,index, opcionesArray.municipio[index]);
+  console.log(index,opcionesArray.municipio[0],opcionesArray.municipio.length)
+  if(index==0 && opcionesArray.municipio[0]==0 && opcionesArray.municipio.length>1){
+    
+    setElementos(['Serie 1'])
+    setOpcionesArray({municipio:[0],tecnologia:[11],marca:[0],modelo:[0]})
+    setOpcionesTxtArray({municipio:['TODOS'],tecnologia:['SUSCRIPTORES'],marca:['TODAS'],modelo:['TODOS']})
+    // setOpcionesTxtArrayFijo({municipio:['TODOS'],tecnologia:['SUSCRIPTORES'],marca:['TODAS'],modelo:['TODOS']})
+    setPrevOpcionesArray({municipio:[-1],tecnologia:[-1],marca:[-1],modelo:[-1]})
+    
+    
+  }
   // Función que será ejecutada cada vez que el municipio se actualice
   const handleMunicipioUpdate = (prevMunicipio, nuevoMunicipio) => {
     // console.log(prevMunicipio, nuevoMunicipio)
@@ -222,7 +237,10 @@ function search_tecnologias(indiceActualizado){
     
 },[opciones.tecnologia])
 useEffect(() => {
-  console.log(`Se actualizó el elemento tecnologia`);
+
+  // console.log(`Se actualizó el elemento tecnologia`,index, opcionesArray.tecnologia);
+
+
   // Función que será ejecutada cada vez que el municipio se actualice
   const handleMunicipioUpdate = (prevMunicipio, nuevoMunicipio) => {
     // console.log(prevMunicipio, nuevoMunicipio)
@@ -409,7 +427,7 @@ function search_modelo(indiceActualizado){
         <div className='compact-menu-disp'>
                   <div className={(completo)?'compact-option':'compact-option-large'}>
                       <div className="user-box-disp">
-                                      <SelectorAdmin opGeneral={true} txtOpGen={'TODOS'}  opt_de={'0'}origen={'Admin'} data={dataLocations.data.data} loading={dataLocations.loading}  titulo='Municipio' selectFunction={changeOption} index={index}></SelectorAdmin>
+                                      <SelectorAdmin opGeneral={(index==0)?true:false} txtOpGen={'TODOS'}  opt_de={'0'}origen={'Admin'} data={dataLocations.data.data} loading={dataLocations.loading}  titulo='Municipio' selectFunction={changeOption} index={index}></SelectorAdmin>
                       </div>
                   </div>
                   <div className={(completo)?'compact-option':'compact-option-large'}>

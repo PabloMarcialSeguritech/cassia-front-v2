@@ -573,5 +573,18 @@ align-items: center;
   }
   
 
+.cont-option-todos{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  color: #003757;
+  font-size: large;
+  top: 30%;
+  height: 10%;
+  position: absolute;
 
-  
+}
+.cont-option-todos input:hover{
+  cursor: pointer;
+}

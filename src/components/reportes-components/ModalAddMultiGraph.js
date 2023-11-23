@@ -7,7 +7,9 @@ import { useFetch } from '../../hooks/useFetch';
 import MenuSearch from './MenuSearch';
 import { LineChart, Line,Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-const ModalCreateCis =({server,indexSelected,opcionesTxtArrayFijo,color_graf,setTotalLineas,elementosToRender,dataInfo,closAddMultiGraphModal})=>{
+
+const ModalCreateCis =({server,flagTodos,flagGeneral,setFlagGeneral,generateColorOptions,indexSelected,opcionesTxtArrayFijo,color_graf,setTotalLineas,elementosToRender,dataInfo,closAddMultiGraphModal})=>{
+
 const [disabled,setDisabled]=useState(true)
 //     const [elementos, setElementos] = useState([]);
 //     const [countElements, setCountElementos] = useState(1);
@@ -74,7 +76,10 @@ const [elementos, setElementos] = useState([]);
                         onClick={closAddMultiGraphModal}
                       />
           </div>
-          <div className='cont-list-graf'>
+
+          {(!flagTodos)?
+            <div className='cont-list-graf'>
+
             <div className='compact-list-graf'>
 
             
@@ -92,7 +97,18 @@ const [elementos, setElementos] = useState([]);
                                   ))}
           </div>
           
-        </div> 
+        </div>:
+        <div className='cont-list-graf' style={{width:'14%'}}>
+        <div className='compact-list-graf'>
+              <div className='cont-option-todos'>
+              <input defaultChecked={flagGeneral}   value={1} name="ce" type="checkbox" id={`show-general`} onClick={()=>setFlagGeneral(!flagGeneral)}  style={{width:'20px',height:'20px'}}/>
+                <label htmlFor={`close-event`}>General</label>
+              </div>
+              
+      </div>
+      
+    </div>
+        } 
            <div className='cont-graf-disp-graf'>
                 <div className='cont-info-graf'>
                     {/* <div className='cont-info-top'>
@@ -104,7 +120,10 @@ const [elementos, setElementos] = useState([]);
                                 width={400}
                                 height={200}
                                 // data={dataInfo.data.metrics[0].dataset}
-                                data={dataInfo.data.metrics[indexSelected].dataset}
+
+                                // data={dataInfo.data.metrics[indexSelected].dataset}
+                                data={(flagGeneral)?dataInfo.data.metrics[indexSelected].dataset:dataInfo.data.metrics[indexSelected].dataset2}
+
                                 // data={data}
                                 margin={{
                                   top: 5,
@@ -123,8 +142,35 @@ const [elementos, setElementos] = useState([]);
                                 {/* <Area type="monotone" dataKey="Disponibilidad" fill="#8884d8" fillOpacity={0.3} /> */}
                                 {/* <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
                                 <Line type="monotone" dataKey="pv" stroke="#82ca9d" /> */}
-                                
                                 {
+                                  (flagGeneral)?
+                                  dataInfo.data.metrics[indexSelected].indices.map((key, index) => (
+                                    <Line
+                                    key={index}
+                                      type="monotone"
+                                      // dataKey={elementosToRender[index]}
+                                      dataKey={"Disponibilidad_"+key}
+                                      // stroke={`#${Math.floor(Math.random()*16777215).toString(16)}`} // Color aleatorio
+                                    // stroke={color_graf[index+1]}
+                                    stroke={color_graf[key]}
+                                    />
+                                  ))
+                                  :
+                                  dataInfo.data.metrics[indexSelected].municipality.map((key, index) => (
+                                    <Line
+                                    key={index}
+                                      type="monotone"
+                                      // dataKey={elementosToRender[index]}
+                                      dataKey={key}
+                                      // stroke={`#${Math.floor(Math.random()*16777215).toString(16)}`} // Color aleatorio
+                                    // stroke={color_graf[index+1]}
+                                    stroke={color_graf[((index+1)>50)?(index+1)-50:(index+1)]}
+                                    // stroke={generateColorOptions()}
+                                    />
+                                  ))
+                                  
+                                }
+                                {/* {
                                 // (elementosToRender.length==1)?<Line type="monotone" dataKey="Disponibilidad" stroke="#8884d8" strokeWidth={2}  />:
                                 dataInfo.data.metrics[indexSelected].indices.map((key, index) => (
                                   <Line
@@ -134,7 +180,7 @@ const [elementos, setElementos] = useState([]);
                                     // stroke={`#${Math.floor(Math.random()*16777215).toString(16)}`} // Color aleatorio
                                   stroke={color_graf[dataInfo.data.metrics[indexSelected].indices[index]]}
                                   />
-                                ))}
+                                ))} */}
                               </LineChart>
                               </ResponsiveContainer>
                         
