@@ -28,6 +28,31 @@ const AddMultiGraphModalStyles = {
    
   },
 };
+const CustomTooltip = ({ active, payload, label }) => {
+  // console.log(payload)
+  const objetoOrdenado = payload.sort((a, b) => a.value - b.value)
+  console.log(objetoOrdenado)
+  if (active && payload) {
+    return (
+      <div className="custom-tooltip-disponibilidad">
+        <div className="cont-tooltip-disponibilidad">
+        <div className='row-tooltip'><p className='title-tooltip' style={{color:'#505050',fontSize:'small'}}>Fecha:&nbsp;</p><p style={{color:'#505050',fontSize:'small'}}>{label}</p></div>
+        {objetoOrdenado.slice(0, 15).map((element, index) => (
+          <div className='row-tooltip'><p style={{color:element.stroke,fontSize:'x-small'}} >{`  ${element.name}: `}&nbsp;</p><p style={{color:'#505050',fontSize:'x-small',fontWeight:'bold'}}>{element.value.toFixed(2)}</p></div>
+        
+          
+        ))}
+        {
+          (objetoOrdenado.length>15)?<div className='row-tooltip' style={{fontSize:'x-small',color:'#505050'}}>Mostrando 15 de {objetoOrdenado.length} elementos . . .</div>:''
+        }
+        </div>
+        
+      </div>
+    );
+  }
+
+  return null;
+};
 const Disponibilidad=({server})=>{
   const color_graf={
     1:"#c680ff",
@@ -627,8 +652,8 @@ function download_reporte_disponibilidad(){
               <div className='cont-list-graf' style={{width:'14%'}}>
               <div className='compact-list-graf'>
                     <div className='cont-option-todos'>
-                    <input    value={1} name="ce" type="checkbox" id={`show-general`} onClick={()=>setFlagGeneral(!flagGeneral)}  style={{width:'20px',height:'20px'}}/>
-                      <label htmlFor={`close-event`}>General</label>
+                    <input    value={1} name="ce" type="checkbox" id={`show-general`} onClick={()=>setFlagGeneral(!flagGeneral)}  style={{width:'20px',height:'20px',zIndex:'2'}}/>
+                      <label htmlFor={`close-event`}>Promedio</label>
                     </div>
                     
             </div>
@@ -789,8 +814,10 @@ function download_reporte_disponibilidad(){
                                 {/* <XAxis dataKey="Tiempo" /> */}
                                 <XAxis dataKey="Tiempo" />
                                 <YAxis domain={[0, 100]}/>
-                                <Tooltip />
+                                <Tooltip content={<CustomTooltip />} />
+                                
                                 <Legend />
+
                                 {/* <Line type="monotone" dataKey="Disponibilidad_1" stroke="#8884d8" strokeWidth={2}  /> */}
                                 {/* <Area type="monotone" dataKey="Disponibilidad" fill="#8884d8" fillOpacity={0.3} /> */}
                                 {/* <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
@@ -807,6 +834,7 @@ function download_reporte_disponibilidad(){
                                       // stroke={`#${Math.floor(Math.random()*16777215).toString(16)}`} // Color aleatorio
                                     // stroke={color_graf[index+1]}
                                     stroke={color_graf[key]}
+                                    activeDot={{ onClick: (e)=>{console.log(e)}, r: 8 }}
                                     />
                                   ))
                                   :

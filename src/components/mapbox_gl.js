@@ -10,12 +10,13 @@ import serverImg1 from '../img/server_1.png';
 import serverImg2 from '../img/server_2.png';
 import serverImg3 from '../img/server_3.png';
 import serverImg4 from '../img/server_4.png';
-const MapBox = ({capas,setCapas,actualizar_rfi,mapAux,setmapAux,search_rfid,global_longitud,global_latitude,global_zoom,devices,markers,markersWOR,lines,downs,towers,rfid,ubicacion,handleMarkerClick}) => {
+const MapBox = ({capas,setCapas,actualizar_rfi,mapAux,setmapAux,search_rfid,global_longitud,global_latitude,global_zoom,devices,markers,markersWOR,lines,downs,towers,rfid,ubicacion,switches,handleMarkerClick}) => {
 
   
   console.log("markers*****************************************************")
-  console.log(ubicacion)
-  console.log(markers)
+  console.log(switches)
+  console.log(switches.length)
+  // console.log(markers)
   // console.log(markersWOR)
   // console.log(global_latitude,global_longitud)
   let latitud_provicional=(ubicacion.groupid===0?global_latitude.value:ubicacion.latitud)
@@ -56,7 +57,7 @@ const MapBox = ({capas,setCapas,actualizar_rfi,mapAux,setmapAux,search_rfid,glob
 
      map.on('load', () => {
       console.log("on load map")
-       /************************************************************ CAPA MWOR ************************************************************************ */
+       /************************************************************ CAPA Servers ************************************************************************ */
        
 if(ubicacion.dispId==10){
   map.loadImage(
@@ -79,9 +80,9 @@ if(ubicacion.dispId==10){
 
       // Add a layer to use the image to represent the data.
       const upImgLayer={
-        id: 'host-markerWOR',
+        id: 'host-server',
         type: 'symbol',
-        source: 'host-markerWOR', // reference the data source
+        source: 'host-server', // reference the data source
         layout: {
           'icon-image': 'server', // reference the image
           'icon-size': 0.06,
@@ -89,20 +90,21 @@ if(ubicacion.dispId==10){
         },
       }
       
-        map.addSource('host-markerWOR',upImgSource );
+        map.addSource('host-server',upImgSource );
         map.addLayer(upImgLayer);
       
-      if(!idCapaExistente('host-markerWOR')){
+      if(!idCapaExistente('host-server')){
         setCapas((prevCapas) => ({
           ...prevCapas,
-          [Object.keys(prevCapas).length ]: { show: true, name: 'Conectados',id:`host-markerWOR`,layer:upImgLayer,source:upImgSource ,nivel:5},
+          [Object.keys(prevCapas).length ]: { show: true, name: 'Servers',id:`host-server`,layer:upImgLayer,source:upImgSource ,nivel:5},
         }));
       }
       
       
     }
   );
-}else{
+}
+     /************************************************************ CAPA MWOR ************************************************************************ */
   const markerWOR ={
     id: 'host-markerWOR',
     type: 'circle',
@@ -130,7 +132,7 @@ if(!idCapaExistente('host-markerWOR')){
   }));
 }
 
-}
+// }
 map.on('mouseleave', 'host-markerWOR', (e) => {
   //  //console.log(e)
   // Popup.remove();
@@ -205,6 +207,42 @@ map.on('click', 'host-markerWOR', (e) => {
             }));
           }
         }
+    
+         /************************************************************ CAPA LINEAS Switches ************************************************************************ */
+        if(switches.length!==0){
+           const switchesConect={
+               id: 'switches-conection',
+               // id: 'linea',
+               type: 'line',
+               source: {
+                 type: 'geojson',
+                 data: {
+                   type: 'FeatureCollection',
+                   features: switches,
+                 },
+               },
+               paint: {
+                'line-color':[
+                              'match',
+                              ['get', 'severity'], 
+                              0, '#ee0808', 
+                              1, '#4fb7f3', 
+                              2, '#ee9d08', 
+                              3, '#ee5c08', 
+                              4, '#ee0808', 
+                              '#4fb7f3', // Color predeterminado si no se cumplen las condiciones anteriores
+                            ],
+                 'line-width': 1,
+               },
+             }
+             map.addLayer(switchesConect);
+             if(!idCapaExistente('switches-conection')){
+               setCapas((prevCapas) => ({
+                 ...prevCapas,
+                 [Object.keys(prevCapas).length ]: { show: true, name: 'Conexion Switches',id:`switches-conection`,layer:switchesConect ,source:null,nivel:2},
+               }));
+             }
+           }
       /************************************************************ CAPA RFID ************************************************************************ */
       //console.log(downs)
       var rfidIval;
