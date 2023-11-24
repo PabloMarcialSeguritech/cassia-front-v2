@@ -365,7 +365,6 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                 <div className='menuActiontitle' style={{width: "100%"}}>
                 <div className='cardTitle cardTitleAlert' style={{background:'aliceblue'}} >
                             <div className='textCardTitle' style={{color:'#003757',fontsize:'medium'}}>
-
                             CREAR ACKNOWLEDGE:
 
                             </div>

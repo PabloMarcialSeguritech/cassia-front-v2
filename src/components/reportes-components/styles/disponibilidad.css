@@ -20,7 +20,7 @@
     position: relative;
     display: flex;
     width: 100%;
-    height: 25%;
+    height: 24%;
 justify-content: center;
 align-items: center;
 border-bottom: 1px solid rgba(128, 128, 128, 0.37);
@@ -587,4 +587,49 @@ align-items: center;
 }
 .cont-option-todos input:hover{
   cursor: pointer;
+}
+
+
+/************* tooltip ****************/
+.recharts-responsive-container{
+  z-index: 3 !important;
+}
+.recharts-legend-item{
+  font-size: 10px;
+  font-weight: bold;
+}
+.custom-tooltip-disponibilidad{
+  background-color: white;
+  border-radius: 10px;
+  border: 2px solid #003757;
+  padding: 5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+  z-index: 3;
+  /* overflow: auto; */
+  /* max-height: auto; */
+}
+.cont-tooltip-disponibilidad{
+position:relative;
+display: block;
+width: 95%;
+height: 95%;
+max-height: 400px;
+overflow: auto;
+/* border-color: 1px solid #003757;
+background-color: red;
+border: 1px; */
+}
+.row-tooltip{
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  width: 200px;
+  height: 20px;
+  
+}
+.title-tooltip{
+  color: #505050;
 }

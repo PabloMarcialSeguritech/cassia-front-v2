@@ -47,6 +47,9 @@ const RightQuadrant =(props)=>{
         props.search_downs()
         if(props.ubicacion.dispId===9){
             props.search_rfid()
+        }if(props.ubicacion.dispId===12){
+            console.log('switches')
+            props.search_switches()
         }else{
             props.setRfid([])
         }
