@@ -6,7 +6,31 @@ import InputAdmin from '../InputAdmin';
 import { useFetch } from '../../hooks/useFetch';
 import MenuSearch from './MenuSearch';
 import { LineChart, Line,Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+const CustomTooltip = ({ active, payload, label }) => {
+  // console.log(payload)
+  const objetoOrdenado = payload.sort((a, b) => a.value - b.value)
+  console.log(objetoOrdenado)
+  if (active && payload) {
+    return (
+      <div className="custom-tooltip-disponibilidad">
+        <div className="cont-tooltip-disponibilidad">
+        <div className='row-tooltip'><p className='title-tooltip' style={{color:'#505050',fontSize:'small'}}>Fecha:&nbsp;</p><p style={{color:'#505050',fontSize:'small'}}>{label}</p></div>
+        {objetoOrdenado.slice(0, 15).map((element, index) => (
+          <div className='row-tooltip'><p style={{color:element.stroke,fontSize:'x-small'}} >{`  ${element.name}: `}&nbsp;</p><p style={{color:'#505050',fontSize:'x-small',fontWeight:'bold'}}>{element.value.toFixed(2)}</p></div>
+        
+          
+        ))}
+        {
+          (objetoOrdenado.length>15)?<div className='row-tooltip' style={{fontSize:'x-small',color:'#505050'}}>Mostrando 15 de {objetoOrdenado.length} elementos . . .</div>:''
+        }
+        </div>
+        
+      </div>
+    );
+  }
 
+  return null;
+};
 
 const ModalCreateCis =({server,flagTodos,flagGeneral,setFlagGeneral,generateColorOptions,indexSelected,opcionesTxtArrayFijo,color_graf,setTotalLineas,elementosToRender,dataInfo,closAddMultiGraphModal})=>{
 
@@ -136,7 +160,7 @@ const [elementos, setElementos] = useState([]);
                                 {/* <XAxis dataKey="Tiempo" /> */}
                                 <XAxis dataKey="Tiempo" />
                                 <YAxis />
-                                <Tooltip />
+                                <Tooltip content={<CustomTooltip />} />
                                 <Legend />
                                 {/* <Line type="monotone" dataKey="Disponibilidad_1" stroke="#8884d8" strokeWidth={2}  /> */}
                                 {/* <Area type="monotone" dataKey="Disponibilidad" fill="#8884d8" fillOpacity={0.3} /> */}

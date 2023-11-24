@@ -9,24 +9,9 @@ import mapboxgl from 'mapbox-gl';
 
 
 const ShowLayers =(props)=>{
-    console.log(props.capas)
-    console.log(Object.keys(props.capas))
-    if(Object.keys(props.capas).length!==0){
-        Object.values(props.capas).map((element, index) => (
-            console.log(element)
-         ))
-        // for (const key in props.capas) {
-        //     if (Object.hasOwnProperty.call(props.capas, key)) {
-        //       const objetoInterno = props.capas[key];
-              
-        //       // Hacer algo con el objeto interno
-        //       console.log(`Objeto interno ${key}:`, objetoInterno);
-              
-        //       // Acceder a las propiedades del objeto interno
-        //       console.log(`item1: ${objetoInterno.item1}, item2: ${objetoInterno.item2}`);
-        //     }
-        //   }
-    }
+    // console.log(props.capas)
+    // console.log(Object.keys(props.capas))
+   
     
     const [resultList,setResultList]=useState([])
     const [inputIp,setInputIP]=useState("")
@@ -34,7 +19,7 @@ const ShowLayers =(props)=>{
     const closeFindHost=()=>{
         const popups = document.querySelectorAll('.custom-popup-findHost'); 
         popups.forEach(popup => {
-       console.log(popups)
+    //    console.log(popups)
       popup.remove();
       });
       setResultList([])
@@ -43,7 +28,8 @@ const ShowLayers =(props)=>{
     
     const handleClick=(element,index)=>{
 
-        console.log('ocultar la capa ',props.capas[index].id)
+        // console.log('ocultar la capa ',props.capas[index].id)
+
        
         if(props.capas[index].show){
             props.mapAux.removeLayer(props.capas[index].id);
@@ -53,7 +39,7 @@ const ShowLayers =(props)=>{
                 let i=index+1;
                 let flag=true
                 do{
-                    console.log(i,flag)
+                    // console.log(i,flag)
                     if(props.capas[i].show){
                         if(props.capas[index].source!=null){
                             props.mapAux.addSource(props.capas[index].id,props.capas[index].source)
@@ -71,7 +57,7 @@ const ShowLayers =(props)=>{
                     props.mapAux.addLayer(props.capas[index].layer)
                 }
             }else{
-                console.log('muestra la capa ',props.capas[index].id)
+                // console.log('muestra la capa ',props.capas[index].id)
                 if(props.capas[index].source!=null){
                     props.mapAux.addSource(props.capas[index].id,props.capas[index].source)
                 }
@@ -80,29 +66,7 @@ const ShowLayers =(props)=>{
             
 
 
-        // if(props.capas[index].id!=='host-down'){
-        //     if(props.capas[index].id=='line-conection'){
-        //         const capaAExists = props.mapAux.getLayer('host-markerWOR') !== undefined;
-        //         if(capaAExists){
-        //             props.mapAux.addLayer(props.capas[index].layer,'host-markerWOR')
-        //         }else {
-        //             capaAExists = props.mapAux.getLayer('host-marker') !== undefined;
-        //             if(capaAExists){
-        //                 props.mapAux.addLayer(props.capas[index].layer,'host-marker') 
-        //             }else{
-        //                 const capaAExists = props.mapAux.getLayer('host-down') !== undefined;
-        //                 props.mapAux.addLayer(props.capas[index].layer,capaAExists ? 'host-down' : undefined)
-        //             }
-        //         }
-                
-        //     }else{
-        //         const capaAExists = props.mapAux.getLayer('host-down') !== undefined;
-        //         props.mapAux.addLayer(props.capas[index].layer,capaAExists ? 'host-down' : undefined)
-        //     }
-            
-        // }else{
-        //     props.mapAux.addLayer(props.capas[index].layer)
-        // }
+        
         
         }
         props.setCapas((prevCapas) => ({
