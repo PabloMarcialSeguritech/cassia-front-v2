@@ -4,13 +4,16 @@ import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import './styles/MapBox.css'
 import towerImg from '../img/torre2_blanca.png';
+
 import serverImg from '../img/server_up_2.png';
 import serverImg0 from '../img/server_0.png';
 import serverImg1 from '../img/server_1.png';
 import serverImg2 from '../img/server_2.png';
 import serverImg3 from '../img/server_3.png';
 import serverImg4 from '../img/server_4.png';
+
 const MapBox = ({capas,setCapas,actualizar_rfi,mapAux,setmapAux,search_rfid,global_longitud,global_latitude,global_zoom,devices,markers,markersWOR,lines,downs,towers,rfid,ubicacion,switches,handleMarkerClick}) => {
+
 
   
   console.log("markers*****************************************************")
@@ -59,6 +62,7 @@ const MapBox = ({capas,setCapas,actualizar_rfi,mapAux,setmapAux,search_rfid,glob
       console.log("on load map")
        /************************************************************ CAPA Servers ************************************************************************ */
        
+
 if(ubicacion.dispId==10){
   map.loadImage(
     serverImg,
@@ -132,7 +136,9 @@ if(!idCapaExistente('host-markerWOR')){
   }));
 }
 
+
 // }
+
 map.on('mouseleave', 'host-markerWOR', (e) => {
   //  //console.log(e)
   // Popup.remove();
@@ -173,6 +179,7 @@ map.on('click', 'host-markerWOR', (e) => {
 });
        
      /************************************************************ CAPA LINEAS ************************************************************************ */
+
      if(lines.length!==0){
         const LineConect={
             id: 'line-conection',
@@ -207,6 +214,7 @@ map.on('click', 'host-markerWOR', (e) => {
             }));
           }
         }
+
     
          /************************************************************ CAPA LINEAS Switches ************************************************************************ */
         if(switches.length!==0){
@@ -243,6 +251,7 @@ map.on('click', 'host-markerWOR', (e) => {
                }));
              }
            }
+
       /************************************************************ CAPA RFID ************************************************************************ */
       //console.log(downs)
       var rfidIval;
@@ -270,7 +279,9 @@ map.on('click', 'host-markerWOR', (e) => {
       if(!idCapaExistente('host-rfid')){
         setCapas((prevCapas) => ({
           ...prevCapas,
+
           [Object.keys(prevCapas).length ]: { show: true, name: 'RFID',id:`host-rfid`,layer:rifdLayer,source:null ,nivel:3},
+
         }));
       }
         var popup;
@@ -312,6 +323,7 @@ map.on('click', 'host-markerWOR', (e) => {
       }
       
      
+
        /************************************************************ CAPA Metricas ************************************************************************ */
       if(markers.length!==0){
         
@@ -351,6 +363,7 @@ map.on('click', 'host-markerWOR', (e) => {
                 [Object.keys(prevCapas).length ]: { show: true, name: 'Metrica',id:`host-marker`,layer:alineacionLayer,source:null,nivel:4},
               }));
             }
+
         
         
           map.on('mouseleave', 'host-marker', (e) => {
@@ -358,7 +371,9 @@ map.on('click', 'host-markerWOR', (e) => {
             // Popup.remove();
             const popups = document.querySelectorAll('.custom-popup');
           
+
           popups.forEach(popup => {
+
           
           popup.remove();
           });
@@ -542,11 +557,13 @@ map.on('click', 'host-markerWOR', (e) => {
     },
   }
    map.addLayer(downLayer);
+
   //  map.setLayerZoomRange('host-down', 1, 15);
   if(!idCapaExistente('host-down')){
     setCapas((prevCapas) => ({
       ...prevCapas,
       [Object.keys(prevCapas).length ]: { show: true, name: 'Downs',id:`host-down`,layer:downLayer,source:null ,nivel:5},
+
     }));
   }
   map.on('mouseleave', 'host-down', (e) => {
@@ -587,7 +604,9 @@ map.on('click', 'host-markerWOR', (e) => {
           map.addImage('tower', image);
 
           // Add a data source containing one point feature.
+
           const towerSource={
+
             type: 'geojson',
             data: {
               type: 'FeatureCollection',
