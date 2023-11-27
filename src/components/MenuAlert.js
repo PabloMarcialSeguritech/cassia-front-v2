@@ -395,7 +395,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                             </div>
                             <div className='formColumn input-column'>
                             {
-                              (props.data.r_eventid=="" || props.data.r_eventid==null)?
+                              ((props.data.r_eventid=="" || props.data.r_eventid==null) && props.data.manual_close==1 )?
                               <>
                               
                             <input   value={1} name="ce" type="checkbox" id={`close-event`} onClick={()=>setCloseEvent(!closeEvent)} />
