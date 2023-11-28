@@ -1,9 +1,10 @@
 import React,{useEffect, useState} from 'react';
 import '../components/styles/Login.css'
 import Action from '../components/Action'
+import LoadSimple from '../components/LoadSimple';
 const Login = ({ onLogin,token,setToken,userData,setUserData,server}) => {
   const [data,setData]=useState([]);
-  const [loading,setLoading]=useState(true);
+  const [loading,setLoading]=useState(false);
   const [error,setError]=useState(null);
 const [loginData,setLoginData]=useState({email:"",password:""})
 const [disabled,setDisabled]=useState(true)
@@ -116,7 +117,12 @@ const [userVal,setUserVal]=useState(true)
             <label>Contraseña</label>
           </div>
           <div className="user-box">
-          <Action disabled={disabled} origen='Login' titulo='INGRESAR'  action={handleSubmit}/>
+            {
+              (loading)?<LoadSimple></LoadSimple>:
+              <Action disabled={disabled} origen='Login' titulo='INGRESAR'  action={handleSubmit}/>
+            }
+            
+          
           {/* <a href="#">
             <span></span>
             <span></span>
