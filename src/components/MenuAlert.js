@@ -88,14 +88,14 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
             },
             body: formData
           });
-          //console.log(response)
+          console.log(response)
           if (response.ok) {
             
             const data = await response.json();
             //console.log(data)
             setCloseEvent(false)
             setAckOpen(false);
-            setAddingException(false)
+            // setAddingException(false)
             props.search_problems()
           } else {
             const data = await response.json();
@@ -130,7 +130,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
             const data = await response.json();
             //console.log(data)
             setTicketOpen(false);
-            setAddingException(false)
+            // setAddingException(false)
             setClock('')
             setTracker('')
           } else {
@@ -167,7 +167,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
   
     function closeExeption() {
       setExeptionOpen(false);
-      setAddingException(false)
+      // setAddingException(false)
     }
     function closeAck() {
       setAckOpen(false);
