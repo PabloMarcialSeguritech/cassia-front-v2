@@ -15,10 +15,10 @@ const RightQuadrant =(props)=>{
     const [dataTec,setDataTec]=useState({data:[],loading:true,error:null})
     const [dataDisp,setDataDisp]=useState({data:[],loading:true,error:null})
     
-   console.log(dataDisp.data)
-   console.log(props.ubiActual.templateId)
+//    console.log(dataDisp.data)
+//    console.log(props.ubiActual.templateId)
    const metrica=dataDisp.data.find(obj => obj.template_id === props.ubiActual.templateId)
-   console.log(metrica)
+//    console.log(metrica)
    if( typeof(metrica) !=="undefined"){
     props.setMetricaSelected(metrica.nickname) 
    } 

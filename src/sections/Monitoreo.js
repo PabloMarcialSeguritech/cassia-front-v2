@@ -32,7 +32,7 @@ const Monitoreo=({token_item,dataGlobals,server})=>{
     const [latitudes,setLatitudes]=useState([])
     const [longitudes,setLongitudes]=useState([])
     const [locations,setLocations]=useState([])
-    console.log(ubiActual)
+    // console.log(ubiActual)
     const [markers,setMarkers]=useState([])
     const [markersWOR,setMarkersWOR]=useState([])
     const [lines,setLines]=useState([])
@@ -60,7 +60,7 @@ const Monitoreo=({token_item,dataGlobals,server})=>{
     
    const [renderMap,setRenderMap]=useState(false)
    const allTrue = Object.values(renderCapas).every(value => value === true);
-console.log(switch_list)
+// console.log(devices)
 useEffect(()=>{
   if (allTrue) {
     console.log('Todos los atributos están en true');
@@ -84,6 +84,7 @@ useEffect(()=>{
   }, [markersWOR]); 
   useEffect(() => {
     console.log('El proceso de downs ha terminado');
+    console.log(downs)
     setRenderCapas(prevState => ({
       ...prevState,
       downs: true 
@@ -187,10 +188,14 @@ useEffect(()=>{
     
      /****************************************************************** */
      function objeto_downs(downs_list){
+      console.log(devices)
       downs_list.map((host, index, array)=>
           {
             if(host.length!==0 && host.latitude.replace(",", ".")>=-90 && host.latitude.replace(",", ".")<=90 ){
-              
+              // console.log(host.hostid)
+              // const hostidC = devices.data.hosts.find(obj => obj.hostid === host.hostid)
+              // console.log(hostidC)
+              // console.log(hostidC.hostidC)
               setDowns(downs=>[...downs,{
                 type: 'Feature',
                 properties:{
@@ -199,7 +204,14 @@ useEffect(()=>{
                   longitude: host.longitude.replace(",", "."),
                   hostid: host.hostid,
                   descripcion:host.description,
-                  value:host.value
+                  value:host.value,
+                  hostidC: host.hostid,
+                  hostidP: '',
+                  end_lat: host.latitude.replace(",", "."),
+                  end_lon: host.longitude.replace(",", "."),
+                  name_hostC:host.name,
+                  name_hostipC:host.ip,
+                  
                 },
                 geometry: {
                   type: 'Point',
@@ -374,37 +386,7 @@ useEffect(()=>{
         };
         fetchData();
     }
-    function search_downs(){
-      setDowns([])
-      console.log("use downs",ubicacion)
-        setDownsList({data:downs_list.data,loading:true,error:downs_list.error})
-        const fetchData = async () => {
-          try {
-            
-            let body = (ubicacion.dispId===0)?'':'?dispId='+ubicacion.dispId
-            console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/layers/downs/'+ubicacion.groupid+''+body)
-            const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/layers/downs/'+ubicacion.groupid+''+body, {                 
-                                headers: {
-                                  'Content-Type': 'application/json',
-                                  Authorization: `Bearer ${token_item}`,
-                                },
-                              });
-            if (response.ok) {
-              const response_data = await response.json();
-              setDownsList({data:response_data.data,loading:false,error:downs_list.error})
-              // //console.log(response_data)
-              
-            } else {
-              throw new Error('Error en la solicitud');
-            }
-          } catch (error) {
-            // Manejo de errores
-            setDownsList({data:downs_list.data,loading:downs_list.loading,error:error})
-            //console.error(error);
-          }
-        };
-        fetchData();
-    }
+    
     function search_devices(){
       setRenderMap(false)
       console.log("search device ",rfidInterval)
@@ -448,7 +430,7 @@ useEffect(()=>{
               const response_data = await response.json();
               setDevices({data:response_data.data,loading:false,error:devices.error})
               // //console.log(response_data)
-              
+             
             } else {
               throw new Error('Error en la solicitud');
             }
@@ -463,6 +445,7 @@ useEffect(()=>{
     useEffect(()=>{
       //console.log("entra devices")
       if(devices.data.length!=0){
+        // search_downs()
         // console.log("*************************************  UP  ************************************")
         // console.log(devices.data.hosts.length)
         // console.log("con severidad: ",devices.data.problems_by_severity)
@@ -486,6 +469,37 @@ useEffect(()=>{
       }
       
     },[devices.data])
+    function search_downs(){
+      setDowns([])
+      console.log("use downs",ubicacion)
+        setDownsList({data:downs_list.data,loading:true,error:downs_list.error})
+        const fetchData = async () => {
+          try {
+            
+            let body = (ubicacion.dispId===0)?'':'?dispId='+ubicacion.dispId
+            console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/layers/downs/'+ubicacion.groupid+''+body)
+            const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/layers/downs/'+ubicacion.groupid+''+body, {                 
+                                headers: {
+                                  'Content-Type': 'application/json',
+                                  Authorization: `Bearer ${token_item}`,
+                                },
+                              });
+            if (response.ok) {
+              const response_data = await response.json();
+              setDownsList({data:response_data.data,loading:false,error:downs_list.error})
+              // //console.log(response_data)
+              
+            } else {
+              throw new Error('Error en la solicitud');
+            }
+          } catch (error) {
+            // Manejo de errores
+            setDownsList({data:downs_list.data,loading:downs_list.loading,error:error})
+            //console.error(error);
+          }
+        };
+        fetchData();
+    }
     function objeto_subgroup_info(devices_data){
       devices_data.subgroup_info.map((host, index, array)=>
           {

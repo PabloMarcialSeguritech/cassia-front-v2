@@ -14,7 +14,7 @@ const MapBox = ({capas,setCapas,actualizar_rfi,mapAux,setmapAux,search_rfid,glob
 
   
   console.log("markers*****************************************************")
-  console.log(switches)
+  console.log(downs)
   console.log(switches.length)
   // console.log(markers)
   // console.log(markersWOR)
@@ -575,6 +575,7 @@ map.on('click', 'host-markerWOR', (e) => {
         .addTo(map);
     });
     map.on('click', 'host-down', (e) => {
+        handleMarkerClick(e.features[0].properties)
      
     })
  /************************************************************ CAPA TORRES ************************************************************************ */
