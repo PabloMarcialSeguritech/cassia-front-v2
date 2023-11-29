@@ -917,37 +917,34 @@ useEffect(()=>{
     
     return (
         <>
-        <SearchHost mapAux={mapAux} setmapAux={setmapAux}  devices={devices} markersWOR={markersWOR}></SearchHost>
-        <RightQuadrant capas={capas} setCapas={setCapas} metricaSelected={metricaSelected} setMetricaSelected={setMetricaSelected} ubiActual={ubiActual} setUbiActual={setUbiActual}  server={server} setRfid={setRfid} search_rfid={search_rfid} search_switches={search_switches} search_devices={search_devices} markersWOR={markersWOR}  search_downs={search_downs} downs={downs} search_problems={search_problems} token={token_item} ubicacion={ubicacion} markers={markers}  dataHosts={devices} setUbicacion={setUbicacion} />
-        {/* <SearchHost  devices={devices} markersWOR={markersWOR}></SearchHost> */}
-        {
-        devices.loading ?<LoadData/>:
-        <>
-        
-        <ShowLayers capas={capas} setCapas={setCapas} mapAux={mapAux} setmapAux={setmapAux}  ></ShowLayers>
-        {
+          <SearchHost mapAux={mapAux} setmapAux={setmapAux}  devices={devices} markersWOR={markersWOR}></SearchHost>
+          <RightQuadrant capas={capas} setCapas={setCapas} metricaSelected={metricaSelected} setMetricaSelected={setMetricaSelected} ubiActual={ubiActual} setUbiActual={setUbiActual}  server={server} setRfid={setRfid} search_rfid={search_rfid} search_switches={search_switches} search_devices={search_devices} markersWOR={markersWOR}  search_downs={search_downs} downs={downs} search_problems={search_problems} token={token_item} ubicacion={ubicacion} markers={markers}  dataHosts={devices} setUbicacion={setUbicacion} />
           
-          allTrue?<MapBox capas={capas} setCapas={setCapas} mapAux={mapAux} setmapAux={setmapAux} search_rfid={search_rfid}actualizar_rfi={actualizar_rfi} global_latitude={global_latitude} global_longitud={global_longitud} global_zoom={global_zoom} devices={devices} markers={markers} markersWOR={markersWOR} lines={lines} downs={downs}towers={towers} rfid={rfid} ubicacion={ubicacion} switches={switches}handleMarkerClick={handleMarkerClick}/>:''
-        }
+          {
+            devices.loading ?<LoadData/>:
+              <>
+                <ShowLayers capas={capas} setCapas={setCapas} mapAux={mapAux} setmapAux={setmapAux}  ></ShowLayers>
+                {
+                  allTrue?<MapBox capas={capas} setCapas={setCapas} mapAux={mapAux} setmapAux={setmapAux} search_rfid={search_rfid}actualizar_rfi={actualizar_rfi} global_latitude={global_latitude} global_longitud={global_longitud} global_zoom={global_zoom} devices={devices} markers={markers} markersWOR={markersWOR} lines={lines} downs={downs}towers={towers} rfid={rfid} ubicacion={ubicacion} switches={switches}handleMarkerClick={handleMarkerClick}/>:''
+                }
+                
+                <LeftQuadrant mapAux={mapAux} setmapAux={setmapAux} server={server} zoom={zoom} setZoom={setZoom}   markersWOR={markersWOR} markers={markers} token ={token_item} setLatitudes={setLatitudes} setLongitudes={setLongitudes} setLocations={setLocations}
+                  longitudes={longitudes} locations={locations} search_problems={search_problems}
+                  ubicacion={ubicacion} dataHosts={devices} setUbicacion={setUbicacion} dataProblems={dataProblems} setDataProblems={setDataProblems}/>
+                <Modal
+                  isOpen={infoMarkerOpen}
+                  // onAfterOpen={afterOpenExeption}
+                  onRequestClose={closeInfoMarker}
+                  style={infoMarkerStyles}
+                  contentLabel="Example Modal2"
+                  // shouldCloseOnOverlayClick={false}
+                  >
+                    <InfoMarker mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} devices={devices} server={server} isOpen={infoMarkerOpen} data={infoMarker} closeInfoMarker={closeInfoMarker} ubiActual={ubiActual}></InfoMarker>
+                </Modal>
+              </>
+          }
         
-        
-        <LeftQuadrant mapAux={mapAux} setmapAux={setmapAux} server={server} zoom={zoom} setZoom={setZoom}   markersWOR={markersWOR} markers={markers} token ={token_item} setLatitudes={setLatitudes} setLongitudes={setLongitudes} setLocations={setLocations}
-           longitudes={longitudes} locations={locations} search_problems={search_problems}
-          ubicacion={ubicacion} dataHosts={devices} setUbicacion={setUbicacion} dataProblems={dataProblems} setDataProblems={setDataProblems}/>
-        <Modal
-          isOpen={infoMarkerOpen}
-          // onAfterOpen={afterOpenExeption}
-          onRequestClose={closeInfoMarker}
-          style={infoMarkerStyles}
-          contentLabel="Example Modal2"
-          // shouldCloseOnOverlayClick={false}
-          >
-            <InfoMarker search_problems={search_problems} devices={devices} server={server} isOpen={infoMarkerOpen} data={infoMarker} closeInfoMarker={closeInfoMarker} ubiActual={ubiActual}></InfoMarker>
-        </Modal>
         </>
-        }
-        
-          </>
         
     )
 }
