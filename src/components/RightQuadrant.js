@@ -15,10 +15,12 @@ const RightQuadrant =(props)=>{
     const [dataTec,setDataTec]=useState({data:[],loading:true,error:null})
     const [dataDisp,setDataDisp]=useState({data:[],loading:true,error:null})
     
-   console.log(dataDisp.data)
-   console.log(props.ubiActual.templateId)
+
+//    console.log(dataDisp.data)
+//    console.log(props.ubiActual.templateId)
    const metrica=dataDisp.data.find(obj => obj.template_id === props.ubiActual.templateId)
-   console.log(metrica)
+//    console.log(metrica)
+
    if( typeof(metrica) !=="undefined"){
     props.setMetricaSelected(metrica.nickname) 
    } 
@@ -36,7 +38,7 @@ const RightQuadrant =(props)=>{
      s1= props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 1)
     }
     function buscar(){
-       
+       props.setCapas({})
         let aux_municipio=dataLocations.data.data.find(obj => obj.groupid === props.ubicacion.groupid)
         if(aux_municipio===undefined){
             aux_municipio='Todos'
@@ -47,6 +49,9 @@ const RightQuadrant =(props)=>{
         props.search_downs()
         if(props.ubicacion.dispId===9){
             props.search_rfid()
+        }if(props.ubicacion.dispId===12){
+            console.log('switches')
+            props.search_switches()
         }else{
             props.setRfid([])
         }
@@ -167,7 +172,7 @@ const RightQuadrant =(props)=>{
                     <div className='menuSearchColumn'>
                         {/* <Selector data={dataSubtype.data.data} loading={dataSubtype.loading}  titulo='Tecnologia'></Selector> */}
                         {(!dataTec.loading)?
-                          <Selector  opGeneral={false} txtOpGen={''} opt_de={'11'} origen={'mapa'}  data={dataTec.data} loading={dataTec.loading}  titulo='Tecnología' props={props}></Selector>
+                          <Selector  opGeneral={true} txtOpGen={'TODAS'} opt_de={'11'} origen={'mapa'}  data={dataTec.data} loading={dataTec.loading}  titulo='Tecnología' props={props}></Selector>
                         :<p className='loadSelect'>cargando...</p>
                     }
                         {/* <Selector  opGeneral={false} txtOpGen={''} opt_de={'11'} origen={'mapa'}  data={dataTec.data} loading={dataTec.loading}  titulo='Tecnología' props={props}></Selector> */}

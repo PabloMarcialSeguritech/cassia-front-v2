@@ -4,6 +4,17 @@
     height: 100%;
     display: block;
 }
+.contflujoload{
+    width:100%;
+    height:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center
+}
+.bodyContFlujoModal  .contflujoload  .loadSimple circle{
+    stroke: hsl(215.3, 36.2%, 90.8%);
+}
+
 .headContFlujoModal
 {
     position: relative;
@@ -86,7 +97,9 @@ align-items: center;
 .contTopInfoFlujo{
     position: relative;
     width: 100%;
-    height: 30%;
+
+    height: 20%;
+
     display: flex;
     justify-content: center;
 }
@@ -120,8 +133,11 @@ align-items: center;
     justify-content: center;
     align-items: center;
     /* background-color: green; */
-    color: white;
-    font-size: x-small;
+
+    color: rgb(51, 51, 51);
+    font-size: small;
+    font-weight: bold;
+
 }
 .txtStatusFlujo.FINALIZADO{
     background-color: green;
@@ -138,7 +154,9 @@ align-items: center;
 .contBotInfoFlujo{
     position: relative;
     width: 100%;
-    height: 70%;
+
+    height: 80%;
+
     display: flex;
     justify-content: center;
 }
@@ -172,7 +190,9 @@ align-items: center;
 .contMsgFlujo{
     position: relative;
     width: 100%;
-    height: 70%;
+
+    height: 80%;
+
     display: flex;
     /* justify-content: right; */
     align-items: center;
@@ -181,6 +201,9 @@ align-items: center;
 .contMsgFlujo.par{
     justify-content: right;
 }
+
+
+
 .contMsgFlujo.impar{
     justify-content: left;
 }
@@ -188,7 +211,9 @@ align-items: center;
 
     position: relative;
     width: 100%;
-    height: 30%;
+
+    height: 20%;
+
     display: flex;
     
     align-items: center;

@@ -310,7 +310,7 @@ const buscar_cis=(ci_id)=>{
               
               <>
               <div className='cont-search hiddenPDF'>
-                    {(dataCisConf.loading )?'':<Search  searchResults={searchResults} setSearchResults={setSearchResults} searchTerm={searchTerm} setSearchTerm={setSearchTerm} onSearch={onSearch}  dataUsers={dataCisConf.data.data.history} setDataUsers={setDataCisConf} /> }
+                    {(dataCisConf.loading )?'':<Search  searchResults={searchResults} setSearchResults={setSearchResults} searchTerm={searchTerm} setSearchTerm={setSearchTerm} onSearch={onSearch}  dataObject={dataCisConf.data.data.history} setDataObject={setDataCisConf} /> }
                     
                 </div>
                 <div className='cont-search-space'>

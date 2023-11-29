@@ -10,19 +10,18 @@ import { useFetch } from '../hooks/useFetch'
 import mapboxgl from 'mapbox-gl'
 import MapBox from '../components/mapbox_gl'
 import LoadData from '../components/LoadData'
-import aps from '../components/aps'
-// import downs_list from './downs'
 import Modal from 'react-modal';
 import InfoMarker from '../components/InfoMarker'
 import '../components/styles/MapBox.css'
-import { act } from 'react-dom/test-utils'
 import arcos_list from '../components/arcos'
+import data_switches from '../components/switches'
+import ShowLayers from '../components/ShowLayers'
 const Monitoreo=({token_item,dataGlobals,server})=>{
   // console.log(dataGlobals)
+  const [capas,setCapas]=useState({})
   const global_longitud=dataGlobals.find(obj => obj.name === 'state_longitude')
   const global_latitude=dataGlobals.find(obj => obj.name === 'state_latitude')
   const global_zoom=dataGlobals.find(obj => obj.name === 'zoom')
-  // console.log(arcos_list)
   token_item=localStorage.getItem('access_token')
 
     // const [ubicacion,setUbicacion]=useState({latitud:'20.01808757489169',longitud:'-101.21789252823293',groupid:0,dispId:11,templateId:0})
@@ -33,13 +32,16 @@ const Monitoreo=({token_item,dataGlobals,server})=>{
     const [latitudes,setLatitudes]=useState([])
     const [longitudes,setLongitudes]=useState([])
     const [locations,setLocations]=useState([])
-    console.log(ubiActual)
+
+    // console.log(ubiActual)
+
     const [markers,setMarkers]=useState([])
     const [markersWOR,setMarkersWOR]=useState([])
     const [lines,setLines]=useState([])
     const [downs,setDowns]=useState([])
     const [towers,setTowers]=useState([])
     const [rfid,setRfid]=useState([])
+    const [switches,setSwitches]=useState([])
      
     const [token,setToken]=useState("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWFuLm1hcmNpYWwiLCJleHAiOjE2OTExNjg3ODZ9.LETk5Nu-2WXF571qMqTd__RxHGcyOHzg4GfAbiFejJY")
     const [data,setData]=useState([]);
@@ -52,15 +54,16 @@ const Monitoreo=({token_item,dataGlobals,server})=>{
     const[downs_list,setDownsList]=useState({data:[],loading:true,error:null});
     const tower_list=useFetch('zabbix/layers/aps',0,token_item,'GET',server)
     const[rfid_list,setRfidList]=useState({data:[],loading:true,error:null});
-    const [rfidData,setRfidData]=useState({map:{},getSource:{},popup:null});
+
+    const[switch_list,setSwitchList]=useState({data:[],loading:true,error:null});
     const [mapAux,setmapAux]=useState({});
     const [rfidInterval,setRfidInterval]=useState(0)
-    const [renderCapas,setRenderCapas]=useState({downs:false,markersWOR:false,markers:true,rfid:true})
-    console.log(devices)
-    console.log(metricaSelected)
+    const [renderCapas,setRenderCapas]=useState({downs:false,markersWOR:false,markers:true,rfid:true,switches:true})
+    
+
    const [renderMap,setRenderMap]=useState(false)
    const allTrue = Object.values(renderCapas).every(value => value === true);
-// console.log(markersWOR)
+// console.log(devices)
 useEffect(()=>{
   if (allTrue) {
     console.log('Todos los atributos están en true');
@@ -84,6 +87,7 @@ useEffect(()=>{
   }, [markersWOR]); 
   useEffect(() => {
     console.log('El proceso de downs ha terminado');
+    console.log(downs)
     setRenderCapas(prevState => ({
       ...prevState,
       downs: true 
@@ -100,6 +104,17 @@ useEffect(()=>{
     }
     
   }, [rfid]);
+  useEffect(() => {
+    if(switches.length>0){
+      console.log('El proceso de switches ha terminado');
+      console.log(switches)
+      setRenderCapas(prevState => ({
+        ...prevState,
+        switches: true 
+      }));
+    }
+    
+  }, [switches]);
   useEffect(() => {
     console.log('El proceso de markers ha terminado');
     setRenderCapas(prevState => ({
@@ -141,6 +156,12 @@ useEffect(()=>{
         objeto_towers(tower_list.data.data.aps)
         }
     },[tower_list.data])
+    useEffect(()=>{
+      if(switch_list.data.length!==0){
+        //console.log("pinta")
+        objeto_switches(switch_list.data)
+        }
+    },[switch_list.data])
     function objeto_towers(aps){
       aps.map((host, index, array)=>
           {
@@ -170,10 +191,14 @@ useEffect(()=>{
     
      /****************************************************************** */
      function objeto_downs(downs_list){
+      console.log(devices)
       downs_list.map((host, index, array)=>
           {
             if(host.length!==0 && host.latitude.replace(",", ".")>=-90 && host.latitude.replace(",", ".")<=90 ){
-              
+              // console.log(host.hostid)
+              // const hostidC = devices.data.hosts.find(obj => obj.hostid === host.hostid)
+              // console.log(hostidC)
+              // console.log(hostidC.hostidC)
               setDowns(downs=>[...downs,{
                 type: 'Feature',
                 properties:{
@@ -182,7 +207,14 @@ useEffect(()=>{
                   longitude: host.longitude.replace(",", "."),
                   hostid: host.hostid,
                   descripcion:host.description,
-                  value:host.value
+                  value:host.value,
+                  hostidC: host.hostid,
+                  hostidP: '',
+                  end_lat: host.latitude.replace(",", "."),
+                  end_lon: host.longitude.replace(",", "."),
+                  name_hostC:host.name,
+                  name_hostipC:host.ip,
+                  
                 },
                 geometry: {
                   type: 'Point',
@@ -289,6 +321,41 @@ useEffect(()=>{
       search_downs()
       // search_rfid()
     },[])
+    function search_switches(){
+      setSwitches([])
+      // console.log()
+      // console.log("borra rfid")
+      setSwitchList({data:[],loading:true,error:rfid_list.error})
+        const fetchData = async () => {
+          try {
+            // console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/layers/switches_connectivity')
+         const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/layers/switches_connectivity/'+ubicacion.groupid, {                 
+                                headers: {
+                                  'Content-Type': 'application/json',
+                                  Authorization: `Bearer ${token_item}`,
+                                },
+                              });
+                              console.log(response)
+            if (response.ok) {
+              const response_data = await response.json();
+              // console.log(response_data.data)
+              // console.log("arcos")
+              // console.log(arcos_list)
+              setSwitchList({data:response_data.data,loading:false,error:rfid_list.error})
+              // setSwitchList({data:data_switches,loading:false,error:'rfid_list.error'})
+              
+            } else {
+              throw new Error('Error en la solicitud');
+            }
+          } catch (error) {
+            // Manejo de errores
+            setSwitchList({data:rfid_list.data,loading:rfid_list.loading,error:error})
+            //console.error(error);
+          }
+        };
+        fetchData();
+        // setSwitchList({data:data_switches,loading:false,error:'rfid_list.error'})
+    }
     function search_rfid(){
       setRfid([])
       console.log()
@@ -322,6 +389,89 @@ useEffect(()=>{
         };
         fetchData();
     }
+    
+    function search_devices(){
+      setRenderMap(false)
+      console.log("search device ",rfidInterval)
+      if(rfidInterval!==0){
+        clearInterval(rfidInterval);
+        setRfid([])
+      }
+      setRenderCapas(prevState => ({
+        ...prevState,
+        downs:false,
+        markersWOR:false,
+        markers: (ubicacion.templateId!==0)?false:true ,
+        rfid:(ubicacion.dispId===9)?false:true,
+        switches:(ubicacion.dispId===12)?false:true,
+      }));
+        setMarkers([])
+        setMarkersWOR([])
+        setLines([])
+        setSwitches([])
+        setLocations([])
+        setDevices({data:devices.data,loading:true,error:devices.error})
+        
+        
+        const fetchData = async () => {
+          try {
+            //console.log(`Bearer ${token_item}`)
+            const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWFuLm1hcmNpYWwiLCJleHAiOjE2OTExNjg3ODZ9.LETk5Nu-2WXF571qMqTd__RxHGcyOHzg4GfAbiFejJY'; // Reemplaza con tu token de autenticación
+            // const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/db/hosts/relations/'+ubicacion.groupid, {
+              const devicefilter=ubicacion.dispId!==0?'?dispId='+ubicacion.dispId:''
+        const subtypefilter=ubicacion.templateId!==0?'subtype_id='+ubicacion.templateId:''
+        let andAux=(devicefilter!=='' )?'&':'?'
+              andAux=(subtypefilter!=='')?andAux:''
+        console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter)
+              const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter, {                 
+                                headers: {
+                                  'Content-Type': 'application/json',
+                                  Authorization: `Bearer ${token_item}`,
+                                },
+                              });
+            if (response.ok) {
+              const response_data = await response.json();
+              setDevices({data:response_data.data,loading:false,error:devices.error})
+              // //console.log(response_data)
+             
+            } else {
+              throw new Error('Error en la solicitud');
+            }
+          } catch (error) {
+            // Manejo de errores
+            setDevices({data:devices.data,loading:devices.loading,error:error})
+            //console.error(error);
+          }
+        };
+        fetchData();
+    }
+    useEffect(()=>{
+      //console.log("entra devices")
+      if(devices.data.length!=0){
+        // search_downs()
+        // console.log("*************************************  UP  ************************************")
+        // console.log(devices.data.hosts.length)
+        // console.log("con severidad: ",devices.data.problems_by_severity)
+        setLatitudes([]) 
+        setLongitudes([])
+        if(devices.data.hosts.length!=0){
+          objeto_markers_wor(devices.data)
+          
+        }
+        if(devices.data.relations.length!=0){
+          //console.log("entra a relaciones!!!!!!!!")
+          objeto_relaciones(devices.data)
+        }
+        if(devices.data.subgroup_info.length!=0){
+          objeto_subgroup_info(devices.data)
+        }else if(devices.data.hosts.length!=0 && ubicacion.dispId===2){
+          objeto_antenas(devices.data)
+        }
+        
+        
+      }
+      
+    },[devices.data])
     function search_downs(){
       setDowns([])
       console.log("use downs",ubicacion)
@@ -353,85 +503,6 @@ useEffect(()=>{
         };
         fetchData();
     }
-    function search_devices(){
-      setRenderMap(false)
-      console.log("search device ",rfidInterval)
-      if(rfidInterval!==0){
-        clearInterval(rfidInterval);
-        setRfid([])
-      }
-      setRenderCapas(prevState => ({
-        ...prevState,
-        downs:false,
-        markersWOR:false,
-        markers: (ubicacion.templateId!==0)?false:true ,
-        rfid:(ubicacion.dispId===9)?false:true
-      }));
-        setMarkers([])
-        setMarkersWOR([])
-        setLines([])
-        setLocations([])
-        setDevices({data:devices.data,loading:true,error:devices.error})
-        
-        
-        const fetchData = async () => {
-          try {
-            //console.log(`Bearer ${token_item}`)
-            const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWFuLm1hcmNpYWwiLCJleHAiOjE2OTExNjg3ODZ9.LETk5Nu-2WXF571qMqTd__RxHGcyOHzg4GfAbiFejJY'; // Reemplaza con tu token de autenticación
-            // const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/db/hosts/relations/'+ubicacion.groupid, {
-              const devicefilter=ubicacion.dispId!==0?'?dispId='+ubicacion.dispId:''
-        const subtypefilter=ubicacion.templateId!==0?'subtype_id='+ubicacion.templateId:''
-        let andAux=(devicefilter!=='' )?'&':'?'
-              andAux=(subtypefilter!=='')?andAux:''
-        console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter)
-              const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter, {                 
-                                headers: {
-                                  'Content-Type': 'application/json',
-                                  Authorization: `Bearer ${token_item}`,
-                                },
-                              });
-            if (response.ok) {
-              const response_data = await response.json();
-              setDevices({data:response_data.data,loading:false,error:devices.error})
-              // //console.log(response_data)
-              
-            } else {
-              throw new Error('Error en la solicitud');
-            }
-          } catch (error) {
-            // Manejo de errores
-            setDevices({data:devices.data,loading:devices.loading,error:error})
-            //console.error(error);
-          }
-        };
-        fetchData();
-    }
-    useEffect(()=>{
-      //console.log("entra devices")
-      if(devices.data.length!=0){
-        // console.log("*************************************  UP  ************************************")
-        // console.log(devices.data.hosts.length)
-        // console.log("con severidad: ",devices.data.problems_by_severity)
-        setLatitudes([]) 
-        setLongitudes([])
-        if(devices.data.hosts.length!=0){
-          objeto_markers_wor(devices.data)
-          
-        }
-        if(devices.data.relations.length!=0){
-          //console.log("entra a relaciones!!!!!!!!")
-          objeto_relaciones(devices.data)
-        }
-        if(devices.data.subgroup_info.length!=0){
-          objeto_subgroup_info(devices.data)
-        }else if(devices.data.hosts.length!=0 && ubicacion.dispId===2){
-          objeto_antenas(devices.data)
-        }
-        
-        
-      }
-      
-    },[devices.data])
     function objeto_subgroup_info(devices_data){
       devices_data.subgroup_info.map((host, index, array)=>
           {
@@ -593,6 +664,60 @@ useEffect(()=>{
                 geometry: {
                   type: 'LineString',
                   coordinates: [[host.init_lon, host.init_lat], [host.end_lon, host.end_lat]],
+                },
+              }])
+              /****************************************************************** */
+              
+            }else{
+              //console.log(host)
+            }
+        }
+        )
+    }
+    function objeto_switches(switch_list){
+      // console.log(switch_list)
+      //console.log(devices_data.relations)
+      switch_list.map((host, index, array)=>
+          {
+            // if (index === 1) {
+            //   setUbicacion({latitud:host.init_lat,longitud:host.init_lon,groupid:ubicacion.groupid,dispId:ubicacion.dispId,templateId:ubicacion.templateId})
+            //   //console.log('Recorrido completo');
+            // }
+            if(host.length!==0 && host.latitude_p.replace(",", ".")>=-90 && host.latitude_p.replace(",", ".")<=90 && host.latitude_c.replace(",", ".")>=-90 && host.latitude_c.replace(",", ".")<=90){
+              
+             
+                let colorSG='#00ff70'
+                
+              
+              if(host.Metric==1){
+                colorSG='#4fb7f3'
+                // severity=1
+              }else{
+                colorSG='#ee0808'
+              }
+              
+              //azul #4fb7f3
+              // verde "#1fee08"
+              
+              
+              setSwitches(lines=>[...lines,{
+                type: 'Feature',
+                properties:{
+                  name:host.name,
+                  date:host.Date,
+                  hostidP: host.hostidP,
+                  hostidC: host.hostidC,
+                  init_lat: host.latitude_p,
+                  init_lon: host.longitude_p,
+                  end_lat: host.latitude_c,
+                  end_lon: host.longitude_c,
+                  color_alineacion:colorSG,
+                  severity:host.Metric,
+                  metrica:metricaSelected,
+                },
+                geometry: {
+                  type: 'LineString',
+                  coordinates: [[host.longitude_p, host.latitude_p], [host.longitude_c, host.latitude_c]],
                 },
               }])
               /****************************************************************** */
@@ -795,35 +920,39 @@ useEffect(()=>{
     
     return (
         <>
-        <RightQuadrant metricaSelected={metricaSelected} setMetricaSelected={setMetricaSelected} ubiActual={ubiActual} setUbiActual={setUbiActual}  server={server} setRfid={setRfid} search_rfid={search_rfid} search_devices={search_devices} markersWOR={markersWOR}  search_downs={search_downs} downs={downs} search_problems={search_problems} token={token_item} ubicacion={ubicacion} markers={markers}  dataHosts={devices} setUbicacion={setUbicacion} />
-        {/* <SearchHost  devices={devices} markersWOR={markersWOR}></SearchHost> */}
-        {
-        devices.loading ?<LoadData/>:
-        <>
-        <SearchHost mapAux={mapAux} setmapAux={setmapAux}  devices={devices} markersWOR={markersWOR}></SearchHost>
-        {
+
+
+          <SearchHost mapAux={mapAux} setmapAux={setmapAux}  devices={devices} markersWOR={markersWOR}></SearchHost>
+          <RightQuadrant capas={capas} setCapas={setCapas} metricaSelected={metricaSelected} setMetricaSelected={setMetricaSelected} ubiActual={ubiActual} setUbiActual={setUbiActual}  server={server} setRfid={setRfid} search_rfid={search_rfid} search_switches={search_switches} search_devices={search_devices} markersWOR={markersWOR}  search_downs={search_downs} downs={downs} search_problems={search_problems} token={token_item} ubicacion={ubicacion} markers={markers}  dataHosts={devices} setUbicacion={setUbicacion} />
+
           
-          allTrue?<MapBox mapAux={mapAux} setmapAux={setmapAux} search_rfid={search_rfid}actualizar_rfi={actualizar_rfi} global_latitude={global_latitude} global_longitud={global_longitud} global_zoom={global_zoom} devices={devices} markers={markers} markersWOR={markersWOR} lines={lines} downs={downs}towers={towers} rfid={rfid} ubicacion={ubicacion} handleMarkerClick={handleMarkerClick}/>:''
-        }
-        
-        
-        <LeftQuadrant server={server} zoom={zoom} setZoom={setZoom}   markersWOR={markersWOR} markers={markers} token ={token_item} setLatitudes={setLatitudes} setLongitudes={setLongitudes} setLocations={setLocations}
-           longitudes={longitudes} locations={locations} search_problems={search_problems}
-          ubicacion={ubicacion} dataHosts={devices} setUbicacion={setUbicacion} dataProblems={dataProblems} setDataProblems={setDataProblems}/>
-        <Modal
-          isOpen={infoMarkerOpen}
-          // onAfterOpen={afterOpenExeption}
-          onRequestClose={closeInfoMarker}
-          style={infoMarkerStyles}
-          contentLabel="Example Modal2"
-          // shouldCloseOnOverlayClick={false}
-          >
-            <InfoMarker  devices={devices} server={server} isOpen={infoMarkerOpen} data={infoMarker} closeInfoMarker={closeInfoMarker} ubiActual={ubiActual}></InfoMarker>
-        </Modal>
+          {
+            devices.loading ?<LoadData/>:
+              <>
+                <ShowLayers capas={capas} setCapas={setCapas} mapAux={mapAux} setmapAux={setmapAux}  ></ShowLayers>
+                {
+                  allTrue?<MapBox capas={capas} setCapas={setCapas} mapAux={mapAux} setmapAux={setmapAux} search_rfid={search_rfid}actualizar_rfi={actualizar_rfi} global_latitude={global_latitude} global_longitud={global_longitud} global_zoom={global_zoom} devices={devices} markers={markers} markersWOR={markersWOR} lines={lines} downs={downs}towers={towers} rfid={rfid} ubicacion={ubicacion} switches={switches}handleMarkerClick={handleMarkerClick}/>:''
+                }
+                
+                <LeftQuadrant mapAux={mapAux} setmapAux={setmapAux} server={server} zoom={zoom} setZoom={setZoom}   markersWOR={markersWOR} markers={markers} token ={token_item} setLatitudes={setLatitudes} setLongitudes={setLongitudes} setLocations={setLocations}
+                  longitudes={longitudes} locations={locations} search_problems={search_problems}
+                  ubicacion={ubicacion} dataHosts={devices} setUbicacion={setUbicacion} dataProblems={dataProblems} setDataProblems={setDataProblems}/>
+                <Modal
+                  isOpen={infoMarkerOpen}
+                  // onAfterOpen={afterOpenExeption}
+                  onRequestClose={closeInfoMarker}
+                  style={infoMarkerStyles}
+                  contentLabel="Example Modal2"
+                  // shouldCloseOnOverlayClick={false}
+                  >
+                    <InfoMarker mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} devices={devices} server={server} isOpen={infoMarkerOpen} data={infoMarker} closeInfoMarker={closeInfoMarker} ubiActual={ubiActual}></InfoMarker>
+                </Modal>
+              </>
+          }
+
+
         </>
-        }
-        
-          </>
+
         
     )
 }

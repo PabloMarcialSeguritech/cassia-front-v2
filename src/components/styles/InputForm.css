@@ -66,6 +66,7 @@ letter-spacing: 1px;
     align-items: center !important;
     display: flex !important;
     text-align: center !important;
+    z-index: 3 !important;
 }
 .react-select__menu-list{
     width: 100% !important;
