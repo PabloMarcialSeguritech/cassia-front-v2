@@ -12,9 +12,11 @@ import Modal from 'react-modal';
 import { LineChart, Line,Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 
+
 const MenuSearch=({dataTec,dataLocations,setElementos,eliminarElemento,setDataTec,dataMarca,setDataMarca,dataModelo,setDataModelo,index,server,prevOpcionesArray,setPrevOpcionesArray,opcionesArray,opcionesTxtArray,setOpciones,setOpcionesArray,setOpcionesTxtArray,opciones,action1,action2,completo})=>{
   
     // const dataLocations=useFetch('zabbix/groups/municipios','','token','GET',server)
+
 
     // const [dataTec,setDataTec]=useState({data:[[]],loading:[true],error:null})
     // const [dataMarca,setDataMarca]=useState({data:[[]],loading:[true],error:null})
@@ -24,10 +26,12 @@ const MenuSearch=({dataTec,dataLocations,setElementos,eliminarElemento,setDataTe
     
     const [indexSelected,setIndexSelected]=useState(0)
 
+
 // useEffect(()=>{
   // console.log(opcionesArray)
 
 // },[dataTec])
+
 
     // console.log('indice activo ',indiceActived,index)
     const changeOption=(option,index)=>{
@@ -238,7 +242,9 @@ function search_tecnologias(indiceActualizado){
 },[opciones.tecnologia])
 useEffect(() => {
 
+
   // console.log(`Se actualizó el elemento tecnologia`,index, opcionesArray.tecnologia);
+
 
 
   // Función que será ejecutada cada vez que el municipio se actualice
