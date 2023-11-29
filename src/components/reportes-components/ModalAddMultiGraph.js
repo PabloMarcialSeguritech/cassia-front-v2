@@ -6,8 +6,34 @@ import InputAdmin from '../InputAdmin';
 import { useFetch } from '../../hooks/useFetch';
 import MenuSearch from './MenuSearch';
 import { LineChart, Line,Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+const CustomTooltip = ({ active, payload, label }) => {
+  // console.log(payload)
+  const objetoOrdenado = payload.sort((a, b) => a.value - b.value)
+  console.log(objetoOrdenado)
+  if (active && payload) {
+    return (
+      <div className="custom-tooltip-disponibilidad">
+        <div className="cont-tooltip-disponibilidad">
+        <div className='row-tooltip'><p className='title-tooltip' style={{color:'#505050',fontSize:'small'}}>Fecha:&nbsp;</p><p style={{color:'#505050',fontSize:'small'}}>{label}</p></div>
+        {objetoOrdenado.slice(0, 15).map((element, index) => (
+          <div className='row-tooltip'><p style={{color:element.stroke,fontSize:'x-small'}} >{`  ${element.name}: `}&nbsp;</p><p style={{color:'#505050',fontSize:'x-small',fontWeight:'bold'}}>{element.value.toFixed(2)}</p></div>
+        
+          
+        ))}
+        {
+          (objetoOrdenado.length>15)?<div className='row-tooltip' style={{fontSize:'x-small',color:'#505050'}}>Mostrando 15 de {objetoOrdenado.length} elementos . . .</div>:''
+        }
+        </div>
+        
+      </div>
+    );
+  }
 
-const ModalCreateCis =({server,opcionesTxtArray,color_graf,setTotalLineas,elementosToRender,dataInfo,closAddMultiGraphModal})=>{
+  return null;
+};
+
+const ModalCreateCis =({server,flagTodos,flagGeneral,setFlagGeneral,generateColorOptions,indexSelected,opcionesTxtArrayFijo,color_graf,setTotalLineas,elementosToRender,dataInfo,closAddMultiGraphModal})=>{
+
 const [disabled,setDisabled]=useState(true)
 //     const [elementos, setElementos] = useState([]);
 //     const [countElements, setCountElementos] = useState(1);
@@ -73,18 +99,21 @@ const [elementos, setElementos] = useState([]);
                         name='Agregar'
                         onClick={closAddMultiGraphModal}
                       />
-        </div>
-           <div className='cont-list-graf'>
+          </div>
+
+          {(!flagTodos)?
+            <div className='cont-list-graf'>
+
             <div className='compact-list-graf'>
 
             
-          {elementosToRender.map((key, index) => (
+          {dataInfo.data.metrics[indexSelected].indices.map((key, index) => (
                                   <>
                                   <div className='cont-row-graf'>
               <div className='cont-color-graf'>
-                  <div className='square-color-graf' style={{background:color_graf[index+1]}}></div>
+                  <div className='square-color-graf' style={{background:color_graf[key]}}></div>
               </div>
-              <div className='cont-name-graf'> {opcionesTxtArray.municipio[index]+' / '+opcionesTxtArray.tecnologia[index]+' / '+opcionesTxtArray.marca[index]+' / '+opcionesTxtArray.modelo[index]}</div>
+              <div className='cont-name-graf'> {opcionesTxtArrayFijo.municipio[key-1]+' / '+opcionesTxtArrayFijo.tecnologia[key-1]+' / '+opcionesTxtArrayFijo.marca[key-1]+' / '+opcionesTxtArrayFijo.modelo[key-1]}</div>
               
             </div>
             <hr className='separate-rof-graf'></hr>
@@ -92,7 +121,18 @@ const [elementos, setElementos] = useState([]);
                                   ))}
           </div>
           
-        </div> 
+        </div>:
+        <div className='cont-list-graf' style={{width:'14%'}}>
+        <div className='compact-list-graf'>
+              <div className='cont-option-todos'>
+              <input defaultChecked={flagGeneral}   value={1} name="ce" type="checkbox" id={`show-general`} onClick={()=>setFlagGeneral(!flagGeneral)}  style={{width:'20px',height:'20px'}}/>
+                <label htmlFor={`close-event`}>General</label>
+              </div>
+              
+      </div>
+      
+    </div>
+        } 
            <div className='cont-graf-disp-graf'>
                 <div className='cont-info-graf'>
                     {/* <div className='cont-info-top'>
@@ -104,7 +144,10 @@ const [elementos, setElementos] = useState([]);
                                 width={400}
                                 height={200}
                                 // data={dataInfo.data.metrics[0].dataset}
-                                data={dataInfo.data.metrics[0].dataset}
+
+                                // data={dataInfo.data.metrics[indexSelected].dataset}
+                                data={(flagGeneral)?dataInfo.data.metrics[indexSelected].dataset:dataInfo.data.metrics[indexSelected].dataset2}
+
                                 // data={data}
                                 margin={{
                                   top: 5,
@@ -117,24 +160,51 @@ const [elementos, setElementos] = useState([]);
                                 {/* <XAxis dataKey="Tiempo" /> */}
                                 <XAxis dataKey="Tiempo" />
                                 <YAxis />
-                                <Tooltip />
+                                <Tooltip content={<CustomTooltip />} />
                                 <Legend />
                                 {/* <Line type="monotone" dataKey="Disponibilidad_1" stroke="#8884d8" strokeWidth={2}  /> */}
                                 {/* <Area type="monotone" dataKey="Disponibilidad" fill="#8884d8" fillOpacity={0.3} /> */}
                                 {/* <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
                                 <Line type="monotone" dataKey="pv" stroke="#82ca9d" /> */}
-                                
                                 {
+                                  (flagGeneral)?
+                                  dataInfo.data.metrics[indexSelected].indices.map((key, index) => (
+                                    <Line
+                                    key={index}
+                                      type="monotone"
+                                      // dataKey={elementosToRender[index]}
+                                      dataKey={"Disponibilidad_"+key}
+                                      // stroke={`#${Math.floor(Math.random()*16777215).toString(16)}`} // Color aleatorio
+                                    // stroke={color_graf[index+1]}
+                                    stroke={color_graf[key]}
+                                    />
+                                  ))
+                                  :
+                                  dataInfo.data.metrics[indexSelected].municipality.map((key, index) => (
+                                    <Line
+                                    key={index}
+                                      type="monotone"
+                                      // dataKey={elementosToRender[index]}
+                                      dataKey={key}
+                                      // stroke={`#${Math.floor(Math.random()*16777215).toString(16)}`} // Color aleatorio
+                                    // stroke={color_graf[index+1]}
+                                    stroke={color_graf[((index+1)>50)?(index+1)-50:(index+1)]}
+                                    // stroke={generateColorOptions()}
+                                    />
+                                  ))
+                                  
+                                }
+                                {/* {
                                 // (elementosToRender.length==1)?<Line type="monotone" dataKey="Disponibilidad" stroke="#8884d8" strokeWidth={2}  />:
-                                elementosToRender.map((key, index) => (
+                                dataInfo.data.metrics[indexSelected].indices.map((key, index) => (
                                   <Line
                                     key={index}
                                     type="monotone"
-                                    dataKey={key}
+                                    dataKey={elementosToRender[index]}
                                     // stroke={`#${Math.floor(Math.random()*16777215).toString(16)}`} // Color aleatorio
-                                  stroke={color_graf[index+1]}
+                                  stroke={color_graf[dataInfo.data.metrics[indexSelected].indices[index]]}
                                   />
-                                ))}
+                                ))} */}
                               </LineChart>
                               </ResponsiveContainer>
                         

@@ -33,6 +33,7 @@ const Main=({ onLogin,token,setToken,server })=>{
     // const [globals,setGlobals]=useState([])
     const dataGlobals=useFetch('cassia/configuration','','','GET',server)
     console.log(dataGlobals)
+    // dataGlobals.loading=true
     useEffect(()=>{
       
       try {
@@ -67,12 +68,16 @@ const Main=({ onLogin,token,setToken,server })=>{
 
     return(
         <div className='main' style={{height:'100%',width:'100%',position: 'absolute'}}>
+      {/* <div className='load-main' style={{height:'100%',width:'100%',position: 'absolute'}}>
+
+      </div> */}
+      <>
       <NavBar/>
-      <SideBar dataGlobals={dataGlobals.data.data} rolId={rol_id} onLogin={onLogin} pageSelected={pageSelected} setPageSelected={setPageSelected}/>
+      <SideBar dataGlobals={dataGlobals} rolId={rol_id} onLogin={onLogin} pageSelected={pageSelected} setPageSelected={setPageSelected}/>
       <Container>
       {(() => {
         if (pageSelected === "perfil") {
-            return <Perfil server={server}  dataGlobals={dataGlobals.data.data} />;
+            return <Perfil server={server}  dataGlobals={dataGlobals} />;
         } else  if (pageSelected === "monitoreo"){
             return <Monitoreo server={server} token={token} dataGlobals={dataGlobals.data.data}/>;
         }else if (pageSelected === "panel-admin"){
@@ -85,6 +90,7 @@ const Main=({ onLogin,token,setToken,server })=>{
     })()}
         
       </Container>
+      </>
       <Modal
         isOpen={verificateUserModalOpen}
         // isOpen={false}

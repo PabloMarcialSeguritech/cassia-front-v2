@@ -11,35 +11,31 @@ import React, { PureComponent } from 'react';
 import Modal from 'react-modal';
 import { LineChart, Line,Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-const MenuSearch=({dataTec,setDataTec,dataMarca,setDataMarca,dataModelo,setDataModelo,index,server,prevOpcionesArray,setPrevOpcionesArray,opcionesArray,opcionesTxtArray,setOpciones,setOpcionesArray,setOpcionesTxtArray,opciones,action1,action2,completo})=>{
-  //  console.log("index",index)
-    const dataLocations=useFetch('zabbix/groups/municipios','','token','GET',server)
+
+const MenuSearch=({dataTec,dataLocations,setElementos,eliminarElemento,setDataTec,dataMarca,setDataMarca,dataModelo,setDataModelo,index,server,prevOpcionesArray,setPrevOpcionesArray,opcionesArray,opcionesTxtArray,setOpciones,setOpcionesArray,setOpcionesTxtArray,opciones,action1,action2,completo})=>{
+  
+    // const dataLocations=useFetch('zabbix/groups/municipios','','token','GET',server)
+
     // const [dataTec,setDataTec]=useState({data:[[]],loading:[true],error:null})
     // const [dataMarca,setDataMarca]=useState({data:[[]],loading:[true],error:null})
     // const [dataModelo,setDataModelo]=useState({data:[[]],loading:[true],error:null})
     const token_item=localStorage.getItem('access_token')
     const [indiceActived,setindiceActived]=useState(0);
-    // console.log(dataTec)
+    
+    const [indexSelected,setIndexSelected]=useState(0)
+
+// useEffect(()=>{
+  // console.log(opcionesArray)
+
+// },[dataTec])
+
     // console.log('indice activo ',indiceActived,index)
     const changeOption=(option,index)=>{
-        // console.log(option,index)
-        // switch(option.filter){
-        //     case 'Municipio': setOpciones({municipio:option.value,tecnologia:opciones.tecnologia,marca:opciones.marca,modelo:opciones.modelo,fecha_ini:opciones.fecha_ini,fecha_fin:opciones.fecha_fin})
-        //                         break;
-        //     case 'Tecnología': setOpciones({municipio:opciones.municipio,tecnologia:option.value,marca:opciones.marca,modelo:opciones.modelo,fecha_ini:opciones.fecha_ini,fecha_fin:opciones.fecha_fin})
-        //                         break; 
-        //     case 'Marca': setOpciones({municipio:opciones.municipio,tecnologia:opciones.tecnologia,marca:option.value,modelo:opciones.modelo,fecha_ini:opciones.fecha_ini,fecha_fin:opciones.fecha_fin})
-        //                         break;  
-        //     case 'Modelo': setOpciones({municipio:opciones.municipio,tecnologia:opciones.tecnologia,marca:opciones.marca,modelo:option.value,fecha_ini:opciones.fecha_ini,fecha_fin:opciones.fecha_fin})
-        //                         break;                    
-        //     default:
-        //             break;                        
-        // }
-        console.log(option)
+      console.log("changeOption")
         switch(option.filter){
           
             case 'Municipio':
-                      setOpcionesArray((prevState)=>{
+              setOpcionesArray((prevState)=>{
                         const nuevoArreglo = [...prevState.municipio];
                       nuevoArreglo[index] = option.value;
                         return {
@@ -112,12 +108,23 @@ const MenuSearch=({dataTec,setDataTec,dataMarca,setDataMarca,dataModelo,setDataM
         }
 }
 useEffect(()=>{
-    // console.log("cambio la ubicacion")
+    console.log("cambio la ubicacion")
     setOpciones({municipio:opciones.municipio,tecnologia:11,marca:opciones.marca,modelo:opciones.modelo,fecha_ini:opciones.fecha_ini,fecha_fin:opciones.fecha_fin})
     
 },[opciones.municipio])
 useEffect(() => {
-  // console.log(`Se actualizó el elemento municipio`);
+  console.log(`Se actualizó el elemento municipio`,index, opcionesArray.municipio[index]);
+  console.log(index,opcionesArray.municipio[0],opcionesArray.municipio.length)
+  if(index==0 && opcionesArray.municipio[0]==0 && opcionesArray.municipio.length>1){
+    
+    setElementos(['Serie 1'])
+    setOpcionesArray({municipio:[0],tecnologia:[11],marca:[0],modelo:[0]})
+    setOpcionesTxtArray({municipio:['TODOS'],tecnologia:['SUSCRIPTORES'],marca:['TODAS'],modelo:['TODOS']})
+    // setOpcionesTxtArrayFijo({municipio:['TODOS'],tecnologia:['SUSCRIPTORES'],marca:['TODAS'],modelo:['TODOS']})
+    setPrevOpcionesArray({municipio:[-1],tecnologia:[-1],marca:[-1],modelo:[-1]})
+    
+    
+  }
   // Función que será ejecutada cada vez que el municipio se actualice
   const handleMunicipioUpdate = (prevMunicipio, nuevoMunicipio) => {
     // console.log(prevMunicipio, nuevoMunicipio)
@@ -140,11 +147,8 @@ useEffect(() => {
   };
 }, [opcionesArray.municipio]);
 function search_tecnologias(indiceActualizado){
-  // console.log("search tecnologia ",index,indiceActualizado)
-  // console.log("***********entro*************",index,indiceActualizado)
+  
   if(index==indiceActualizado){
-    // console.log("***********modificara*************",index,indiceActualizado)
-    // setDataTec({data:dataTec.data,loading:[true],error:dataTec.error})
     setDataTec(prevState => {
       const auxArray = [...prevState.loading];
       auxArray[index] = true;
@@ -156,8 +160,8 @@ function search_tecnologias(indiceActualizado){
     });
       const fetchData = async () => {
         try {
-          // console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/groups/devices/'+opcionesArray.municipio[indiceActived])
-       const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/groups/devices/'+opcionesArray.municipio[indiceActived], {                 
+          console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/groups/devices/'+opcionesArray.municipio[index])
+       const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/groups/devices/'+opcionesArray.municipio[index], {                 
                               headers: {
                                 'Content-Type': 'application/json',
                                 Authorization: `Bearer ${token_item}`,
@@ -167,7 +171,37 @@ function search_tecnologias(indiceActualizado){
           if (response.ok) {
             const response_data = await response.json();
             // setDataTec({data:response_data.data,loading:false,error:dataTec.error})
-           
+           console.log("response tecnologias ",index)
+           console.log(response_data.data)
+           let op=response_data.data.find(obj => obj.dispId === 11)
+  console.log(op)
+  let dispId=11;
+  let txtDisp='SUSCRIPTORES'
+  if(typeof(op)=="undefined" ){
+    console.log('no tiene suscriptores')
+    // console.log(dataTec.data[0])
+    dispId=response_data.data[0].dispId
+    txtDisp=response_data.data[0].name
+  }else{
+    dispId=11
+    txtDisp='SUSCRIPTORES'
+  }
+  let txtTec=opcionesTxtArray.tecnologia
+    txtTec[index]=txtDisp
+    let txtMarca=opcionesTxtArray.marca
+    txtMarca[index]='TODAS'
+    let txtModelo=opcionesTxtArray.modelo
+    txtModelo[index]='TODOS'
+    setOpcionesTxtArray({municipio:opcionesTxtArray.municipio,tecnologia:txtTec,marca:txtMarca,modelo:txtModelo})
+  
+    let tec=opcionesArray.tecnologia
+    tec[index]=dispId
+    let marca=opcionesArray.marca
+    marca[index]=0
+    let modelo=opcionesArray.modelo
+    modelo[index]=0
+    setOpcionesArray({municipio:opcionesArray.municipio,tecnologia:tec,marca:marca,modelo:modelo})
+  
             setDataTec(prevState => {
               // console.log([...prevState.loading])
               const auxArray = [...prevState.data];
@@ -197,23 +231,28 @@ function search_tecnologias(indiceActualizado){
   }
 
   useEffect(()=>{
-    // console.log("cambio la ubicacion")
+    
     setOpciones({municipio:opciones.municipio,tecnologia:opciones.tecnologia,marca:0,modelo:opciones.modelo,fecha_ini:opciones.fecha_ini,fecha_fin:opciones.fecha_fin})
     // search_marca()
     
 },[opciones.tecnologia])
 useEffect(() => {
-  // console.log(`Se actualizó el elemento tecnologia`);
+
+  // console.log(`Se actualizó el elemento tecnologia`,index, opcionesArray.tecnologia);
+
+
   // Función que será ejecutada cada vez que el municipio se actualice
   const handleMunicipioUpdate = (prevMunicipio, nuevoMunicipio) => {
     // console.log(prevMunicipio, nuevoMunicipio)
     const indiceActualizado = nuevoMunicipio.findIndex((valor, indice) => valor !== prevMunicipio[indice]);
-    
+    console.log(indiceActualizado)
     if (indiceActualizado !== -1) {
       setindiceActived(indiceActualizado)
       // console.log(`Se actualizó el elemento en el índice ${indiceActualizado}`);
       search_marca(indiceActualizado)
       setPrevOpcionesArray(opcionesArray)
+    }else{
+      search_marca(index)
     }
   }
 
@@ -223,7 +262,7 @@ useEffect(() => {
   return () => {
     // Haz algo si es necesario cuando el componente se desmonta o cuando el municipio cambia
   };
-}, [opcionesArray.tecnologia]);
+}, [opcionesArray.tecnologia[index],opcionesArray.municipio[index]]);
 function search_marca(indiceActualizado){
   if(index==indiceActualizado){
   // setDataMarca({data:dataTec.data,loading:true,error:dataTec.error})
@@ -238,7 +277,7 @@ function search_marca(indiceActualizado){
       const fetchData = async () => {
         try {
           // console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/groups/brands/'+opcionesArray.tecnologia[indiceActived])
-       const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/groups/brands/'+opcionesArray.tecnologia[indiceActived], {                 
+       const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/groups/brands/'+opcionesArray.tecnologia[index], {                 
                               headers: {
                                 'Content-Type': 'application/json',
                                 Authorization: `Bearer ${token_item}`,
@@ -283,7 +322,7 @@ function search_marca(indiceActualizado){
 },[opciones.marca])
 useEffect(() => {
   
-  // console.log(`Se actualizó el elemento marca`);
+  console.log(`Se actualizó el elemento marca`);
   // Función que será ejecutada cada vez que el municipio se actualice
   const handleMunicipioUpdate = (prevMunicipio, nuevoMunicipio) => {
     // console.log(prevMunicipio, nuevoMunicipio)
@@ -294,6 +333,8 @@ useEffect(() => {
       // console.log(`Se actualizó el elemento en el índice ${indiceActualizado}`);
       search_modelo(indiceActualizado)
       setPrevOpcionesArray(opcionesArray)
+    }else{
+      search_modelo(index)
     }
   }
 
@@ -303,7 +344,7 @@ useEffect(() => {
   return () => {
     // Haz algo si es necesario cuando el componente se desmonta o cuando el municipio cambia
   };
-}, [opcionesArray.marca]);
+}, [opcionesArray.marca[index],opcionesArray.tecnologia[index],opcionesArray.municipio[index]]);
 function search_modelo(indiceActualizado){
   if(index==indiceActualizado){
   // setDataModelo({data:dataTec.data,loading:true,error:dataTec.error})
@@ -319,7 +360,7 @@ function search_modelo(indiceActualizado){
       const fetchData = async () => {
         try {
           
-       const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/groups/models/'+opciones.marca, {                 
+       const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/groups/models/'+opcionesArray.marca[index], {                 
                               headers: {
                                 'Content-Type': 'application/json',
                                 Authorization: `Bearer ${token_item}`,
@@ -386,7 +427,7 @@ function search_modelo(indiceActualizado){
         <div className='compact-menu-disp'>
                   <div className={(completo)?'compact-option':'compact-option-large'}>
                       <div className="user-box-disp">
-                                      <SelectorAdmin opGeneral={true} txtOpGen={'TODOS'}  opt_de={'0'}origen={'Admin'} data={dataLocations.data.data} loading={dataLocations.loading}  titulo='Municipio' selectFunction={changeOption} index={index}></SelectorAdmin>
+                                      <SelectorAdmin opGeneral={(index==0)?true:false} txtOpGen={'TODOS'}  opt_de={'0'}origen={'Admin'} data={dataLocations.data.data} loading={dataLocations.loading}  titulo='Municipio' selectFunction={changeOption} index={index}></SelectorAdmin>
                       </div>
                   </div>
                   <div className={(completo)?'compact-option':'compact-option-large'}>
@@ -395,7 +436,7 @@ function search_modelo(indiceActualizado){
                        
                       // (!dataTec.loading && indiceActived===index)?
                       (!dataTec.loading[index] && typeof(dataTec.data[index])!='undefined' )?
-                            <SelectorAdmin  opGeneral={false} txtOpGen={''} opt_de={'11'} origen={'Admin'}  data={dataTec.data[index]} loading={dataTec.loading[index]}  selectFunction={changeOption} titulo='Tecnología' index={index}></SelectorAdmin>
+                            <SelectorAdmin opGeneral={false} txtOpGen={''} opt_de={'11'} origen={'Admin'}  data={dataTec.data[index]} loading={dataTec.loading[index]}  selectFunction={changeOption} titulo='Tecnología' index={index}></SelectorAdmin>
                           :<p className='loadSelect'  style={{color:'#003757'}}>cargando...</p>
                       }
                       </div>
@@ -413,7 +454,7 @@ function search_modelo(indiceActualizado){
                   <div className={(completo)?'compact-option':'compact-option-large'}>
                       <div className="user-box-disp">
                       {(!dataModelo.loading[index] && typeof(dataModelo.data[index])!='undefined')?
-                       <SelectorAdmin opGeneral={false} txtOpGen={''} origen={'Admin'} data={dataModelo.data[index]} loading={dataModelo.loading[index]}  titulo='Modelo' selectFunction={changeOption} index={index}></SelectorAdmin>
+                       <SelectorAdmin  opGeneral={false} txtOpGen={''} origen={'Admin'} data={dataModelo.data[index]} loading={dataModelo.loading[index]}  titulo='Modelo' selectFunction={changeOption} index={index}></SelectorAdmin>
                           :<p className='loadSelect' style={{color:'#003757'}}>cargando...</p>
                       }
                       </div>

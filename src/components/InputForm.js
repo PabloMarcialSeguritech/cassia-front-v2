@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import Select from 'react-select'
 import data_ubi from './ubicaciones'
 import { useFetch } from '../hooks/useFetch'
-const InputForm=({titulo,data,loading,text,disabled,setValidaBtn})=>{
+const InputForm=({titulo,data,loading,text,setText,disabled,setValidaBtn})=>{
     
     
     
@@ -15,7 +15,7 @@ const InputForm=({titulo,data,loading,text,disabled,setValidaBtn})=>{
     }else{
         setValidaBtn(false)
     }
-    
+    setText(event.target.value)
     setInputValue(event.target.value);
   };
    

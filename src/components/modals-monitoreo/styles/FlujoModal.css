@@ -1,0 +1,217 @@
+.contFlujoModal{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+.contflujoload{
+    width:100%;
+    height:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center
+}
+.bodyContFlujoModal  .contflujoload  .loadSimple circle{
+    stroke: hsl(215.3, 36.2%, 90.8%);
+}
+
+.headContFlujoModal
+{
+    position: relative;
+    width: 100%;
+    height: 8%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: aliceblue;
+    font-size: larger;
+    color: #092a52;
+    font-weight: bolder;
+    z-index:1;
+}
+.bodyContFlujoModal{
+    position: relative;
+  width: 100%;
+  height: 90%;
+  display: block;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
+  padding-top: 10px;
+  /* padding-bottom: 10px */
+}
+
+.rowLevel{
+position: relative;
+width: 100%;
+height: 20%;
+display: flex;
+}
+.rowSide{
+    position: relative;
+width: 50%;
+height: 100%;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+.leftSideRow{
+    border-right: 2px solid #ec5141;
+}
+.RightSideRow{
+    border-left: 2px solid #ec5141;
+}
+.contInfoFlujo{
+    position: relative;
+    width: 80%;
+    height: 80%;
+    background-color: #eaedf0ef;
+    border: 1px solid aliceblue;
+    border-radius: 10px;
+    display: block;
+    padding: 5px;
+}
+.consArrowflujo{
+    position: absolute;
+    
+   
+}
+ 
+.arrowLeft{
+    left: 0%;
+    width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 10px 20px 10px 0;
+  border-color: transparent #007bff transparent transparent;
+}
+.arrowRight{
+    right: 0%;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 10px 0 10px 20px; /* Tamaño del triángulo ajustable */
+    border-color: transparent transparent transparent #007bff;
+}
+
+.contTopInfoFlujo{
+    position: relative;
+    width: 100%;
+    height: 20%;
+    display: flex;
+    justify-content: center;
+}
+.contTopLeftFlujo{
+    position: relative;
+    width: 30%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.contTopRightFlujo{
+    position: relative;
+    width: 70%;
+    height: 100%;
+    display: flex;
+    
+    align-items: center;
+}
+.contTopRightFlujo.impar{
+     justify-content: left;
+}
+.contTopRightFlujo.par{
+     justify-content: right;
+}
+.txtStatusFlujo{
+    position: relative;
+    width: 90%;
+    height: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background-color: green; */
+    color: rgb(51, 51, 51);
+    font-size: small;
+    font-weight: bold;
+}
+.txtStatusFlujo.FINALIZADO{
+    background-color: green;
+}
+.txtStatusFlujo.ENPROCESO{
+    background-color: rgb(203, 219, 0);
+    font-size: x-small;
+    text-align: center;
+}
+.txtTimeFlujo{
+    color: rgb(43, 43, 43);
+    font-size: small;
+}
+.contBotInfoFlujo{
+    position: relative;
+    width: 100%;
+    height: 80%;
+    display: flex;
+    justify-content: center;
+}
+.contBotLeftFlujo{
+    position: relative;
+    width: 30%;
+    height: 100%;
+    display: block;
+    justify-content: center;
+    align-items: center;
+}
+.contTicketInfo{
+    position: relative;
+    width: 100%;
+    height: 25%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #991607;
+    font-size: x-small;
+    font-weight: bold;
+}
+.contBotRightFlujo{
+    position: relative;
+    width: 70%;
+    height: 100%;
+    display: block;
+    justify-content: right;
+    align-items: center;
+}
+.contMsgFlujo{
+    position: relative;
+    width: 100%;
+    height: 80%;
+    display: flex;
+    /* justify-content: right; */
+    align-items: center;
+    font-size: small;
+}
+.contMsgFlujo.par{
+    justify-content: right;
+}
+
+.contMsgFlujo.impar{
+    justify-content: left;
+}
+.contMsgBotFlujo{
+
+    position: relative;
+    width: 100%;
+    height: 20%;
+    display: flex;
+    
+    align-items: center;
+    font-size: small;
+    font-weight: bolder;
+}
+
+.contMsgBotFlujo.par{
+    justify-content: right;
+}
+.contMsgBotFlujo.impar{
+    justify-content: left;
+}

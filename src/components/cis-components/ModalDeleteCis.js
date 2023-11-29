@@ -2,17 +2,20 @@ import Action from '../Action'
 import './styles/ModalDeleteCis.css'
 import { useState } from 'react';
 import LoadSimple from '../LoadSimple';
-const ModalDeleteCis =({user,closDeleteCisModal,setRegisterIsValid,setData,setLoading,setError,server})=>{
+const ModalDeleteCis =({cis,closDeleteCisModal,setRegisterIsValid,setData,setLoading,setError,server})=>{
     const [loadingM,setLoadingM]=useState(false);
+    console.log(cis)
     const Eliminar=()=>{
         console.log("eliminar")
         
-        setLoadingM(true)
+        setLoading(true)
         setRegisterIsValid(true)
           const fetchDataPost = async () => {
-            
+            let url=(typeof cis.conf_id=='undefined')?'http://'+server.ip+':'+server.port+'/api/v1/cassia/ci_elements/'+cis.element_id:'http://'+server.ip+':'+server.port+'/api/v1/cassia/ci_elements/history/'+cis.conf_id
          try {
-              const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/cassia/ci/'+user.ci_id, {
+              // const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/cassia/ci_elements/'+cis.element_id, {
+              console.log(url)  
+              const response = await fetch(url, {
                 method: 'DELETE',  
                 headers: {
                   'Content-Type': 'application/json',
@@ -23,7 +26,7 @@ const ModalDeleteCis =({user,closDeleteCisModal,setRegisterIsValid,setData,setLo
               if (response.ok) {
                 
                 const data1 = await response.json();
-                setLoadingM(false)
+                setLoading(false)
                 setRegisterIsValid(false)
                 // Manejo de la respuesta
                 setData(data1)
@@ -54,12 +57,12 @@ const ModalDeleteCis =({user,closDeleteCisModal,setRegisterIsValid,setData,setLo
                                 <div className='cont-info-modal-delete'>
                                     <div className='cont-message-modal-delete'>
                                             <div className='txt-message-modal-delete'>
-                                                Se eliminara la configuracion con ip:
+                                                Se eliminara la configuracion:
                                             </div>
                                     </div>
                                     <div className='cont-user-modal-delete'>
                                             <div className='txt-user-modal-delete'>
-                                                {user.ip}
+                                                {(typeof cis.ip === 'undefined')?cis.description:cis.ip}
                                             </div>
                                     </div>
                                     <div className='cont-btn-modal-delete'>

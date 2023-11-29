@@ -23,11 +23,12 @@ const pingModalStyles = {
     padding:'20px'
   },
 };
-const InfoMarker = ({isOpen,devices, data,closeInfoMarker,server,ubiActual }) => {
+const InfoMarker = ({isOpen,devices,mapAux,setmapAux, data,closeInfoMarker,server,ubiActual,search_problems }) => {
   console.log("info marker")
   console.log(data)
   console.log(devices.data)
-  const ubicacion_mix=devices.data.hosts.filter(obj => obj.latitude === data.end_lat)
+  const ubicacion_mix=devices.data.hosts.filter(obj => obj.latitude === data.end_lat )
+  // const ubicacion_mix=devices.data.hosts.filter(obj => (obj.latitude === data.end_lat && obj.longitude === data.end_lon ))
   let relation = devices.data.relations.find(obj => obj.hostidC === data.hostidC)
 
   const [pingModalOpen, setPingModalOpen] =useState(false);
@@ -187,7 +188,7 @@ setListSelected(1)
                     
                       <>
                       <div className='contCheck'>
-                        <input name="radio" type="radio" class="checkHost" onClick={()=>handleChangeOption(1)} />
+                        <input name="radio" type="radio" className="checkHost" onClick={()=>handleChangeOption(1)} />
                       </div>
                       <div className='contInfoHost'>
                       <label className='lblInfoHost'>Host padre</label>
@@ -300,7 +301,7 @@ setListSelected(1)
                     </div>
                   </div>
                 ) : listSelected === 2 ? (
-                    <AlertsByHost hostId={hostSelected===1?hostIdP:hostId} server={server}></AlertsByHost>
+                    <AlertsByHost mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} hostId={hostSelected===1?hostIdP:hostId} server={server}></AlertsByHost>
                 ) : listSelected === 3 ? (
                   <HealthByHost hostId={hostSelected===1?hostIdP:hostId} server={server}></HealthByHost>
                 ) : listSelected === 9 ? (

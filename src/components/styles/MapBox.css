@@ -8,7 +8,9 @@
     height: auto;
     
   }
-  
+  /* .mapboxgl-map{
+    z-index: -1 !important;
+  } */
   /* Estilos para la clase "poop" dentro del contenido del popup */
   .cont-pop {
     font-weight: bold;

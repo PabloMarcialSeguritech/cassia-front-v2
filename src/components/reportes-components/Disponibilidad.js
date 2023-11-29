@@ -28,14 +28,100 @@ const AddMultiGraphModalStyles = {
    
   },
 };
+const CustomTooltip = ({ active, payload, label }) => {
+  // console.log(payload)
+  const objetoOrdenado = payload.sort((a, b) => a.value - b.value)
+  console.log(objetoOrdenado)
+  if (active && payload) {
+    return (
+      <div className="custom-tooltip-disponibilidad">
+        <div className="cont-tooltip-disponibilidad">
+        <div className='row-tooltip'><p className='title-tooltip' style={{color:'#505050',fontSize:'small'}}>Fecha:&nbsp;</p><p style={{color:'#505050',fontSize:'small'}}>{label}</p></div>
+        {objetoOrdenado.slice(0, 15).map((element, index) => (
+          <div className='row-tooltip'><p style={{color:element.stroke,fontSize:'x-small'}} >{`  ${element.name}: `}&nbsp;</p><p style={{color:'#505050',fontSize:'x-small',fontWeight:'bold'}}>{element.value.toFixed(2)}</p></div>
+        
+          
+        ))}
+        {
+          (objetoOrdenado.length>15)?<div className='row-tooltip' style={{fontSize:'x-small',color:'#505050'}}>Mostrando 15 de {objetoOrdenado.length} elementos . . .</div>:''
+        }
+        </div>
+        
+      </div>
+    );
+  }
+
+  return null;
+};
 const Disponibilidad=({server})=>{
   const color_graf={
     1:"#c680ff",
     2:"#80cfff",
-    3:"#56e1ad"
+    3:"#56e1ad",
+    4:"#3b83bd",
+    5:"#6285aa",
+    6:"#7a8697",
+    7:"#8c8884",
+    8:"#9a8a71",
+    9:"#a68d5d",
+    10:"#b18f47",
+    11:"#3b83bd",
+    12:"#346c9b",
+    13:"#2d567a",
+    14:"#25415a",
+    15:"#1d2c3d",
+    16:"#131a21",
+    17:"#7f4a83",
+    18:"#86518a",
+    19:"#8e5892",
+    20:"#955f99",
+    21:"#9d66a0",
+    22:"#a46da8",
+    23:"#ac74b0",
+    24:"#614064",
+    25:"#49314a",    
+    26:"#b4031c",
+    27:"#bc1521",
+    28:"#c52127",
+    29:"#cd2b2d",
+    30:"#d53433",
+    31:"#de3d39",
+    32:"#e6453f",
+    33:"#cd2b2d",
+    34:"#dc574c",
+    35:"#e87b6d",
+    36:"#f29c90",
+    37:"#fabdb4",
+    38:"#00a87f",
+    39:"#00b48a",
+    40:"#00c096",
+    41:"#00cca1",
+    42:"#27d8ac",
+    43:"#3ce5b8",
+    44:"#4df1c4",
+    45:"#80debf",
+    46:"#a3e7cf",
+    47:"#393939",
+    48:"#5c5c5c",
+    49:"#828282",
+    50:"#aaaaaa" ,
   }
+  const generateColorOptions = () => {
+    const colorOptions = {};
   
-  // console.log(countArray)
+    for (let i = 1; i <= 100; i++) {
+      const red = Math.floor((255 * i) / 100);
+      const green = Math.floor((255 * (100 - i)) / 100);
+      const blue = Math.floor((255 * (i % 50)) / 50);
+  
+      const color = `#${red.toString(16).padStart(2, '0')}${green.toString(16).padStart(2, '0')}${blue.toString(16).padStart(2, '0')}`;
+      
+      colorOptions[i] = color;
+    }
+  
+    return colorOptions[Math.floor(Math.random() * 100) + 1];
+  };
+ 
   const obtenerPrimerDiaDelMes = () => {
     const hoy = new Date();
     const primerDiaDelMes = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
@@ -62,11 +148,12 @@ const Disponibilidad=({server})=>{
 
 
  
-  
+    const dataLocations=useFetch('zabbix/groups/municipios','','token','GET',server)
     const [dataInfo,setDataInfo]=useState({data:[],loading:true,error:null})
     const [opciones,setOpciones]=useState({municipio:0,tecnologia:11,marca:0,modelo:0,fecha_ini:''+obtenerPrimerDiaDelMes(),fecha_fin:''+obtenerFechaActualLocal()})
     const [opcionesArray,setOpcionesArray]=useState({municipio:[0],tecnologia:[11],marca:[0],modelo:[0]})
     const [opcionesTxtArray,setOpcionesTxtArray]=useState({municipio:['TODOS'],tecnologia:['SUSCRIPTORES'],marca:['TODAS'],modelo:['TODOS']})
+    const [opcionesTxtArrayFijo,setOpcionesTxtArrayFijo]=useState({municipio:['TODOS'],tecnologia:['SUSCRIPTORES'],marca:['TODAS'],modelo:['TODOS']})
     const [prevOpcionesArray,setPrevOpcionesArray]=useState({municipio:[-1],tecnologia:[-1],marca:[-1],modelo:[-1]})
     const token_item=localStorage.getItem('access_token')
     const [addMultiGraphModalOpen, setAddMultiGraphModalOpen]=useState(false);
@@ -76,10 +163,17 @@ const Disponibilidad=({server})=>{
     const [dataTec,setDataTec]=useState({data:[[]],loading:[true],error:[null]})
     const [dataMarca,setDataMarca]=useState({data:[[]],loading:[true],error:[null]})
     const [dataModelo,setDataModelo]=useState({data:[[]],loading:[true],error:[null]})
-    console.log(opcionesTxtArray)
-    console.log(opcionesArray)
-    // console.log(dataTec)
-    // console.log("total de lineas ",totalLienas)
+    const [indexSelected,setIndexSelected] =useState(0)
+
+    const [flagTodos,setFlagTodos]=useState(true)
+    const [flagGeneral,setFlagGeneral]=useState(false)
+    // console.log(opcionesTxtArrayFijo)
+    // console.log(opcionesTxtArray)
+    // console.log(opcionesArray.municipio[0])
+    // console.log("total.metr ",totalLienas)
+    // console.log('flag general',flagGeneral)
+    // console.log('flag todos',flagTodos)
+
     const Ampliar = () => {
       // Aquí puedes realizar la búsqueda usando el valor de 'query'
       // Por ejemplo, puedes actualizar el estado 'searchResult' con los resultados
@@ -227,9 +321,14 @@ useEffect(()=>{
   search_reporte_disponibilidad()
 },[])
 const Buscar=()=>{
+  
   search_reporte_disponibilidad()
 }
 function search_reporte_disponibilidad(){
+ opcionesTxtArrayFijo.municipio=[...opcionesTxtArray.municipio]
+ opcionesTxtArrayFijo.tecnologia=[...opcionesTxtArray.tecnologia]
+ opcionesTxtArrayFijo.modelo=[...opcionesTxtArray.modelo]
+ opcionesTxtArrayFijo.marca=[...opcionesTxtArray.marca]
   let baseURL
   // setSeriesKeys(countArray[elementos.length])
   // if(elementos.length==1){
@@ -237,7 +336,13 @@ function search_reporte_disponibilidad(){
   // }else{
     baseURL = 'http://'+server.ip+':'+server.port+'/api/v1/cassia/reports/availability/multiple';
   // }
-  
+  if(opcionesArray.municipio[0]==0){
+    setFlagTodos(true)
+    setFlagGeneral(false)
+  }else{
+    setFlagTodos(false)
+    setFlagGeneral(true)
+  }
   const municipioParam = opcionesArray.municipio.map(id => `municipality_id=${id}`).join('&');
   const tecParam = opcionesArray.tecnologia.map(id => `tech_id=${id}`).join('&');
   const marcaParam = opcionesArray.marca.map(id => `brand_id=${id}`).join('&');
@@ -249,26 +354,23 @@ function search_reporte_disponibilidad(){
   setDataInfo({data:dataInfo.data,loading:true,error:dataInfo.error})
     const fetchData = async () => {
       try {
-    //  const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/cassia/reports/availability?municipality_id='+opciones.municipio+'&tech_id='+opciones.tecnologia+'&brand_id='+opciones.marca+'&model_id='+opciones.modelo+'&init_date='+opciones.fecha_ini+'&end_date='+opciones.fecha_fin, {     
-      const response = await fetch(url,{
-        // const response = await fetch('http://172.18.200.14:8002/api/v1/cassia/reports/availability/multiple?municipality_id=0&tech_id=11&brand_id=0&model_id=0&init_date=2023-10-01T00:00&end_date=2023-10-16T03:41', {
-      // const response = await fetch('http://172.18.200.14:8002/api/v1/cassia/reports/availability/multiple?municipality_id=81&municipality_id=68&tech_id=11&tech_id=9&brand_id=0&brand_id=0&model_id=0&model_id=0&init_date=2023-09-15%2012%3A15%3A00&end_date=2023-09-15%2022%3A16%3A00', {          
-    headers: {
+        const response = await fetch(url,{
+     headers: {
                               'Content-Type': 'application/json',
                               Authorization: `Bearer ${token_item}`,
                             },
                           });
-                          console.log(response)
+                          // console.log(response)
         if (response.ok) {
           const response_data = await response.json();
           console.log(response_data.data)
           
-      
           setTotalLineas(1)
           // setSeriesKeys(countArray[totalLienas]) 
           // setDataInfo({data:response_data.data,loading:false,error:dataInfo.error})
           setDataInfo({data:response_data.data,loading:false,error:dataInfo.error})
           // console.log(dataInfo)
+          // setOpcionesTxtArrayFijo([...opcionesTxtArray])
         } else {
           throw new Error('Error en la solicitud');
         }
@@ -337,7 +439,10 @@ function download_reporte_disponibilidad(){
     };
     fetchData();
 }
-      const handleChangeOption=()=>{}
+      const handleChangeOption=(index)=>{
+        console.log("indice seleccionado "+index)
+        setIndexSelected(index)
+      }
       
       const generateColor = (progress) => {
         const purple = [128, 0, 128]; // Morado
@@ -370,19 +475,20 @@ function download_reporte_disponibilidad(){
       // Uso
       const progress = 0.5;
       const [elementos, setElementos] = useState(['Serie 1']);
+      
       const [elementosToRender,setElementosToRender]=useState(['Disponibilidad_1']);
       const [disabled,setDisabled]=useState(true)
       // console.log(elementos)
       // console.log(elementosToRender)
   const handleClickAdd = () => {
-    // console.log('entro')
+    // console.log(dataLocations.data.data[0].id,dataLocations.data.data[0].name)
     
     setElementos([...elementos, 'Serie '+(parseInt(elementos.length,10) +1)]);
     setElementosToRender([...elementosToRender, 'Disponibilidad_'+(parseInt(elementosToRender.length,10) +1)]);
     setOpcionesArray(prevState => {
       return {
         ...prevState,
-        municipio: [...prevState.municipio, 0],
+        municipio: [...prevState.municipio, dataLocations.data.data[0].id],
         tecnologia:[...prevState.tecnologia, 11],
         marca:[...prevState.marca, 0],
         modelo:[...prevState.modelo, 0]
@@ -391,7 +497,7 @@ function download_reporte_disponibilidad(){
     setOpcionesTxtArray(prevState => {
       return {
         ...prevState,
-        municipio: [...prevState.municipio, 'TODOS'],
+        municipio: [...prevState.municipio, dataLocations.data.data[0].name],
         tecnologia:[...prevState.tecnologia, 'SUSCRIPTORES'],
         marca:[...prevState.marca, 'TODAS'],
         modelo:[...prevState.modelo, 'TODOS']
@@ -430,7 +536,9 @@ function download_reporte_disponibilidad(){
     }
   };
 
+
   const eliminarElemento = (indice) => {
+    console.log("+++++++++++++++++++++++++++ elimina ",indice)
     const nuevosElementos = elementos.filter((elemento, index) => index !== indice);
     const nuevosElementosTR = elementosToRender.filter((elemento, index) => index !== indice);
     // const newOpcionesArray=opcionesArray.filter((elemento, index) => index !== indice);
@@ -451,6 +559,7 @@ function download_reporte_disponibilidad(){
     }
     setOpcionesArray(newOpcionesArray);
     setOpcionesTxtArray(newOpcionesTxtArray);
+    
     const newPrevOpcionesArray = { ...prevOpcionesArray };
 
     for (let propiedad in newPrevOpcionesArray) {
@@ -476,7 +585,7 @@ function download_reporte_disponibilidad(){
     });
   }, []);
   const handleChangeGraf=(e)=>{
-    console.log(e.target)
+    // console.log(e.target)
     const {name,value}=e.target
     
         setOpciones((prevState)=>{
@@ -487,12 +596,13 @@ function download_reporte_disponibilidad(){
         })
   }
   // console.log((typeof(dataInfo.data.metrics)!=='undefined')?dataInfo.data.metrics[0]:'') 
-
+  // console.log(elementosToRender)
+  // console.log(dataInfo.data.metrics[indexSelected].metric_name+"_"+(parseInt(0)+parseInt(1)))
     return (
       <>
         <div className="main-reporte-disp">
         <div className='cont-add-graf'>
-        {(elementos.length<3)?<img
+        {(elementos.length<3 && (opcionesArray.municipio[0]!=0))?<img
                         className='img-field-add-graf'
                         src='/iconos/add.png'
                         title='Agregar'
@@ -507,8 +617,8 @@ function download_reporte_disponibilidad(){
         {<img
                         className='img-field-download-graf'
                         src='/iconos/download.png'
-                        title='Agregar'
-                        name='Agregar'
+                        title='Descargar'
+                        name='Descargar'
                         onClick={download_reporte_disponibilidad}
                       />}
         </div>
@@ -516,29 +626,46 @@ function download_reporte_disponibilidad(){
         {<img
                         className='img-field-expand-graf'
                         src='/iconos/full-screen.png'
-                        title='Agregar'
-                        name='Agregar'
+                        title='Expandir'
+                        name='Expandir'
                         onClick={Ampliar}
                       />}
         </div>
-        <div className='cont-list-graf'>
-          <div className='compact-list-graf'>
 
-          
-        {/* {elementosToRender.map((key, index) => (
-                                 <>
-                                 <div className='cont-row-graf'>
-             <div className='cont-color-graf'>
-                <div className='square-color-graf' style={{background:color_graf[index+1]}}></div>
-             </div>
-             <div className='cont-name-graf'> {opcionesTxtArray.municipio[index]+' / '+opcionesTxtArray.tecnologia[index]+' / '+opcionesTxtArray.marca[index]+' / '+opcionesTxtArray.modelo[index]}</div>
-             
+        {(!flagTodos)?
+          <div className='cont-list-graf' style={{width:'14%'}}>
+
+            <div className='compact-list-graf'>
+
+            
+          {(dataInfo.loading || typeof(dataInfo.data.metrics)=='undefined' )?'':dataInfo.data.metrics[indexSelected].indices.map((key, index) => (
+                                  <>
+                                  <div className='cont-row-graf'>
+              <div className='cont-color-graf'>
+                  <div className='square-color-graf' style={{background:color_graf[key]}}></div>
+              </div>
+              <div className='cont-name-graf'> {opcionesTxtArrayFijo.municipio[key-1]+' / '+opcionesTxtArrayFijo.tecnologia[key-1]+' / '+opcionesTxtArrayFijo.marca[key-1]+' / '+opcionesTxtArrayFijo.modelo[key-1]}</div>
+              
+            </div>
+            <hr className='separate-rof-graf'></hr>
+                                  </>
+                                  ))}
+
           </div>
-          <hr className='separate-rof-graf'></hr>
-                                 </>
-                                ))} */}
-         </div>
-        </div>
+          
+          </div>:
+              <div className='cont-list-graf' style={{width:'14%'}}>
+              <div className='compact-list-graf'>
+                    <div className='cont-option-todos'>
+                    <input    value={1} name="ce" type="checkbox" id={`show-general`} onClick={()=>setFlagGeneral(!flagGeneral)}  style={{width:'20px',height:'20px',zIndex:'2'}}/>
+                      <label htmlFor={`close-event`}>Promedio</label>
+                    </div>
+                    
+            </div>
+            
+          </div>
+        }
+
             <div className='cont-reporte-disp'>
             <div className='cont-menu-disp'>
               
@@ -574,15 +701,16 @@ function download_reporte_disponibilidad(){
                       {elemento}
                     </div>
                     <div className='cont-options-menu'>
-                      <MenuSearch dataTec={dataTec} setDataTec={setDataTec} dataModelo={dataModelo} setDataModelo={setDataModelo} dataMarca={dataMarca} setDataMarca={setDataMarca} index={index} prevOpcionesArray={prevOpcionesArray}  setPrevOpcionesArray={setPrevOpcionesArray} opcionesArray={opcionesArray}    opcionesTxtArray={opcionesTxtArray} setOpcionesTxtArray={setOpcionesTxtArray} setOpcionesArray={setOpcionesArray} server={server} opciones={opciones} setOpciones={setOpciones} completo={false}></MenuSearch>
+                      <MenuSearch  dataLocations={dataLocations} eliminarElemento={eliminarElemento}  setElementos={setElementos} dataTec={dataTec} setDataTec={setDataTec} dataModelo={dataModelo} setDataModelo={setDataModelo} dataMarca={dataMarca} setDataMarca={setDataMarca} index={index} prevOpcionesArray={prevOpcionesArray}  setPrevOpcionesArray={setPrevOpcionesArray} opcionesArray={opcionesArray}    opcionesTxtArray={opcionesTxtArray} setOpcionesTxtArray={setOpcionesTxtArray} setOpcionesArray={setOpcionesArray} server={server} opciones={opciones} setOpciones={setOpciones} completo={false}></MenuSearch>
                     </div>
                     <div className='cont-action-menu'>
                       <div className='cont-img-field-delete-graf'>
                         {
-                            (index!==0)? <img
-                            className='img-field-delete-graf'
+                          
+                            (index!==0 && index==elementos.length-1 )? <img
+                            className='img-field-delete-graf ' 
                             src='/iconos/delete.png'
-                            title='Eliminar'
+                            title={'Eliminar'+index+'|'+elementos.length}
                             name='Eliminar'
                             onClick={() => eliminarElemento(index)}
                           />:''
@@ -600,13 +728,16 @@ function download_reporte_disponibilidad(){
                   <>
                   <div className='compact-periodo-manual'>
 
-                  
+
+                  <div className='menuSearchOption' style={{height:'unset'}}>
+
                   <div className='compact-option-date'>
                       <div className="user-box-disp">
                           <input required name="fecha_ini"  type="datetime-local" value={opciones.fecha_ini}
                           onChange={handleChangeGraf} />
                                           <label className=' active lbl-option-date' >Desde:</label>
                       </div>
+                  </div>
                   </div>
                   <div className='compact-option-date'>
                     <div className="user-box-disp">
@@ -664,7 +795,7 @@ function download_reporte_disponibilidad(){
               </div>
                 
             </div>
-            
+             
             <div className='cont-graf-disp'>
                 <div className='cont-info-graf'>
                     {/* <div className='cont-info-top'>
@@ -678,7 +809,9 @@ function download_reporte_disponibilidad(){
                                 width={400}
                                 height={200}
                                 // data={dataInfo.data.metrics[0].dataset}
-                                data={dataInfo.data.metrics[0].dataset}
+
+                                data={(flagGeneral)?dataInfo.data.metrics[indexSelected].dataset:dataInfo.data.metrics[indexSelected].dataset2}
+
                                 // data={data}
                                 margin={{
                                   top: 5,
@@ -690,25 +823,46 @@ function download_reporte_disponibilidad(){
                                 <CartesianGrid strokeDasharray="3 3" />
                                 {/* <XAxis dataKey="Tiempo" /> */}
                                 <XAxis dataKey="Tiempo" />
-                                <YAxis />
-                                <Tooltip />
+                                <YAxis domain={[0, 100]}/>
+                                <Tooltip content={<CustomTooltip />} />
+                                
                                 <Legend />
+
                                 {/* <Line type="monotone" dataKey="Disponibilidad_1" stroke="#8884d8" strokeWidth={2}  /> */}
                                 {/* <Area type="monotone" dataKey="Disponibilidad" fill="#8884d8" fillOpacity={0.3} /> */}
                                 {/* <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
                                 <Line type="monotone" dataKey="pv" stroke="#82ca9d" /> */}
                                 
                                 {
-                                // (elementosToRender.length==1)?<Line type="monotone" dataKey="Disponibilidad" stroke="#8884d8" strokeWidth={2}  />:
-                                elementosToRender.map((key, index) => (
-                                  <Line
+
+                                  (flagGeneral)?
+                                  dataInfo.data.metrics[indexSelected].indices.map((key, index) => (
+                                    <Line
                                     key={index}
-                                    type="monotone"
-                                    dataKey={key}
-                                    // stroke={`#${Math.floor(Math.random()*16777215).toString(16)}`} // Color aleatorio
-                                  stroke={color_graf[index+1]}
-                                  />
-                                ))}
+                                      type="monotone"
+                                      // dataKey={elementosToRender[index]}
+                                      dataKey={"Disponibilidad_"+key}
+                                      // stroke={`#${Math.floor(Math.random()*16777215).toString(16)}`} // Color aleatorio
+                                    // stroke={color_graf[index+1]}
+                                    stroke={color_graf[key]}
+                                    activeDot={{ onClick: (e)=>{console.log(e)}, r: 8 }}
+                                    />
+                                  ))
+                                  :
+                                  dataInfo.data.metrics[indexSelected].municipality.map((key, index) => (
+                                    <Line
+                                    key={index}
+                                      type="monotone"
+                                      // dataKey={elementosToRender[index]}
+                                      dataKey={key}
+                                      // stroke={`#${Math.floor(Math.random()*16777215).toString(16)}`} // Color aleatorio
+                                    stroke={color_graf[((index+1)>50)?(index+1)-50:(index+1)]}
+                                    // stroke={generateColorOptions()}
+                                    />
+                                  ))
+                                  
+                                }
+
                               </LineChart>
                               </ResponsiveContainer>
                         }
@@ -718,9 +872,9 @@ function download_reporte_disponibilidad(){
                             <div className='txt-info-fijo'>Funcionalidad Promedio:    </div>
                             {
                               (typeof dataInfo.data.metrics !== 'undefined')?
-                                dataInfo.data.metrics[0].availability_average.map((key, index) => (
+                                dataInfo.data.general_funcionality_average.map((key, index) => (
                                   // console.log(dataInfo.data.metrics[0].availability_average.length,index)
-                                  <div className='txt-info-dinamic' style={{color:color_graf[index+1]}}> &nbsp; {typeof dataInfo.data.metrics === 'undefined' ?'---':((dataInfo.data.metrics[0].availability_average[index]==="" ?0:dataInfo.data.metrics[0].availability_average[index].toFixed(2)))}%</div>
+                                  <div className='txt-info-dinamic' id={'fp'+index} style={{color:color_graf[index+1]}}> &nbsp; {typeof dataInfo.data.general_funcionality_average === 'undefined' ?'---':((dataInfo.data.general_funcionality_average[index]==="" ?0:dataInfo.data.general_funcionality_average[index].toFixed(2)))}%</div>
                                 )):''}
                               
                                
@@ -734,45 +888,25 @@ function download_reporte_disponibilidad(){
                               (typeof dataInfo.data.metrics !== 'undefined')?
                               dataInfo.data.metrics[0].days.map((key, index) => (
                                 // console.log(dataInfo.data.metrics[0].availability_average.length,index)
-                                <div className='txt-info-dinamic' style={{color:color_graf[index+1]}}> &nbsp; {typeof dataInfo.data.metrics === 'undefined' ?'---':((dataInfo.data.metrics[0].days[index]==="" ?0:dataInfo.data.metrics[0].days[index].toFixed(2)))}dias</div>
+                                <div className='txt-info-dinamic' id={'lt'+index} style={{color:color_graf[index+1]}}> &nbsp; {typeof dataInfo.data.metrics === 'undefined' ?'---':((dataInfo.data.metrics[0].days[index]==="" ?0:dataInfo.data.metrics[0].days[index].toFixed(2)))}dias</div>
                               )):''}
-                               {/* elementosToRender.map((key, index) => (
-                               <div className='txt-info-dinamic' style={{color:color_graf[index+1]}}> &nbsp; {typeof dataInfo.data.metrics === 'undefined'?'---':((dataInfo.data.metrics[0].days[index]==="" || index<=dataInfo.data.metrics[0].availability_average.length ?0:dataInfo.data.metrics[0].days[index].toFixed(2)))} dias</div>
-                              ))} */}
-                            {/* <div className='txt-info-dinamic' style={{color:'red'}}>&nbsp; {typeof dataInfo.data.days === 'undefined'?'---': (''+(dataInfo.data.days===""?0:dataInfo.data.days.toFixed(2))+' dias')}</div> */}
-                        </div>
+                           </div>
                         <div className='cont-text-info'>
                             <div className='txt-info-fijo'>Dispositivos:    </div>
                             {
                               (typeof dataInfo.data.metrics !== 'undefined')?
                               dataInfo.data.metrics[0].device_count.map((key, index) => (
                                 // console.log(dataInfo.data.metrics[0].availability_average.length,index)
-                                <div className='txt-info-dinamic' style={{color:color_graf[index+1]}}> &nbsp; {typeof dataInfo.data.metrics === 'undefined' ?'---':((dataInfo.data.metrics[0].device_count[index]==="" ?0:dataInfo.data.metrics[0].device_count[index]))}</div>
+                                <div className='txt-info-dinamic' id={'dis'+index} style={{color:color_graf[index+1]}}> &nbsp; {typeof dataInfo.data.metrics === 'undefined' ?'---':((dataInfo.data.metrics[0].device_count[index]==="" ?0:dataInfo.data.metrics[0].device_count[index]))}</div>
                               )):''}
-                            {/* {
-                               elementosToRender.map((key, index) => (
-                               <div className='txt-info-dinamic' style={{color:color_graf[index+1]}}> &nbsp; {typeof dataInfo.data.metrics === 'undefined'?'---':((dataInfo.data.metrics[0].device_count[index]==="" || index<=dataInfo.data.metrics[0].availability_average.length ?0:dataInfo.data.metrics[0].device_count[index].toFixed(2)))} dispositivos</div>
-                              ))} */}
-                            {/* <div className='txt-info-dinamic' style={{color:'red'}}>&nbsp; {dataInfo.data.device_count}</div> */}
-                        </div>
+                          </div>
                     </div>
                 </div>
             </div>
             <div className='cont-table-disp'>
             <div className='bodyInfoTable'>
                   <div className='contTableDisp'>
-                    {/* <div className='contCheckDisp'>
-                    <div className='space' style={{height:'20%'}}> </div>
-                    <div style={{height:'24%'}}>
-                        <input name="radio" type="radio" className="checkTableDisp" defaultChecked onClick={()=>handleChangeOption(2)} />
-                    </div>
-                    <div style={{height:'24%'}}>
-                        <input name="radio" type="radio" className="checkTableDisp" defaultChecked onClick={()=>handleChangeOption(2)} />
-                    </div>
-                    <div style={{height:'24%'}}>
-                        
-                    </div>
-                     </div> */}
+                    
                     <div className='contInfoDisp'>
                       <div className='infoDisp'>
                         <div className='titlesInfoDisp'>
@@ -805,110 +939,61 @@ function download_reporte_disponibilidad(){
                           </div>
                           
                         </div>
-                        <div className='rowInfoDisp'>
-                            <div className='DispInfoCell' style={{width:'5%'}}>
-                              <input name="radio" type="radio" className="checkTableDisp" defaultChecked onClick={()=>handleChangeOption(2)} />
-                            </div>
-                            <div className='DispInfoCell' style={{width:'25%'}}>
-                                
-                                <div className='txtDispInfoCell' >
-                                Conectividad
-                                
-                                </div> 
-                            </div>
-                            <div className='DispInfoCell' style={{width:'25%'}}>
-                                <div className='txtDispInfoCell'>
-                                {
-                              (typeof dataInfo.data.metrics !== 'undefined')?
-                              dataInfo.data.metrics[0].availability_average.map((key, index) => (
-                                // console.log(dataInfo.data.metrics[0].availability_average.length,index)
-                                <div className='txt-info-dinamic' style={{color:color_graf[index+1]}}> &nbsp; {typeof dataInfo.data.metrics === 'undefined' ?'---':((dataInfo.data.metrics[0].availability_average[index]==="" ?0:dataInfo.data.metrics[0].availability_average[index].toFixed(2)))}%</div>
-                              )):''}
-                                {/* {typeof dataInfo.data.general_funcionality_average === 'undefined'?'---':(dataInfo.data.general_funcionality_average.toFixed(2))}% */}
-                                </div>
-                            </div>
-                            <div className='DispInfoCell' style={{width:'20%'}}>
-                                <div className='txtDispInfoCell'>
-                                {
-                              (typeof dataInfo.data.metrics !== 'undefined')?
-                              dataInfo.data.metrics[0].days.map((key, index) => (
-                                // console.log(dataInfo.data.metrics[0].availability_average.length,index)
-                                <div className='txt-info-dinamic' style={{color:color_graf[index+1]}}> &nbsp; {typeof dataInfo.data.metrics === 'undefined' ?'---':((dataInfo.data.metrics[0].days[index]==="" ?0:dataInfo.data.metrics[0].days[index].toFixed(2)))}dias</div>
-                              )):''}
-                                {/* {typeof dataInfo.data.days === 'undefined'?'---': (''+(dataInfo.data.days===""?0:dataInfo.data.days.toFixed(2))+' dias')} */}
-                                </div>
-                            </div>
-                            <div className='DispInfoCell' style={{width:'25%'}}>
-                                <div className='txtDispInfoCell'>
-                                {
-                              (typeof dataInfo.data.metrics !== 'undefined')?
-                              dataInfo.data.metrics[0].device_count.map((key, index) => (
-                                // console.log(dataInfo.data.metrics[0].availability_average.length,index)
-                                <div className='txt-info-dinamic' style={{color:color_graf[index+1]}}> &nbsp; {typeof dataInfo.data.metrics === 'undefined' ?'---':((dataInfo.data.metrics[0].device_count[index]==="" ?0:dataInfo.data.metrics[0].device_count[index]))} </div>
-                              )):''}
-                                {/* {dataInfo.data.device_count} */}
-                                </div>
-                            </div>
-                  
-                        </div>
-                        {(opciones.tecnologia===110)?
+                        { (dataInfo.data.length==0 )?'':
+                        dataInfo.data.metrics.map((key, index) => (
+                          <>
                           <div className='rowInfoDisp'>
-                        <div className='DispInfoCell' style={{width:'5%'}}>
-                              <input name="radio" type="radio" className="checkTableDisp"  onClick={()=>handleChangeOption(2)} />
-                            </div>
+                          <div className='DispInfoCell' style={{width:'5%'}}>
+                            <input name="radio" type="radio" className="checkTableDisp" defaultChecked={(index===0)?true:false} onClick={()=>handleChangeOption(index)} />
+                          </div>
                           <div className='DispInfoCell' style={{width:'25%'}}>
                               
                               <div className='txtDispInfoCell' >
-                              Alineacion
-                              
+                              {dataInfo.data.metrics[index].metric_name  }
                               </div> 
                           </div>
                           <div className='DispInfoCell' style={{width:'25%'}}>
                               <div className='txtDispInfoCell'>
-                              98%
+                              {
+                            (typeof dataInfo.data.metrics !== 'undefined')?
+                            dataInfo.data.metrics[index].availability_average.map((key, index2) => (
+                              // console.log(dataInfo.data.metrics[0].availability_average.length,index)
+                              <div className='txt-info-dinamic' id={'avail'+index2} style={{color:color_graf[dataInfo.data.metrics[index].indices[index2]]}}> &nbsp; {typeof dataInfo.data.metrics === 'undefined' ?'---':((dataInfo.data.metrics[index].availability_average[index2]==="" ?0:dataInfo.data.metrics[index].availability_average[index2].toFixed(2)))}%</div>
+                            )):''}
+                              {/* {typeof dataInfo.data.general_funcionality_average === 'undefined'?'---':(dataInfo.data.general_funcionality_average.toFixed(2))}% */}
+                              </div>
+                          </div>
+                          <div className='DispInfoCell' style={{width:'20%'}}>
+                              <div className='txtDispInfoCell'>
+                              {
+                            (typeof dataInfo.data.metrics !== 'undefined')?
+                            dataInfo.data.metrics[index].days.map((key, index2) => (
+                              // console.log(dataInfo.data.metrics[0].availability_average.length,index)
+                              <div className='txt-info-dinamic' id={'dias'+key} style={{color:color_graf[dataInfo.data.metrics[index].indices[index2]]}}> &nbsp; {typeof dataInfo.data.metrics === 'undefined' ?'---':((dataInfo.data.metrics[index].days[index2]==="" ?0:dataInfo.data.metrics[index].days[index2].toFixed(2)))}dias</div>
+                            )):''}
+                              {/* {typeof dataInfo.data.days === 'undefined'?'---': (''+(dataInfo.data.days===""?0:dataInfo.data.days.toFixed(2))+' dias')} */}
                               </div>
                           </div>
                           <div className='DispInfoCell' style={{width:'25%'}}>
                               <div className='txtDispInfoCell'>
-                              {/* {typeof dataInfo.data.days === 'undefined'?'---': (''+dataInfo.data.days.toFixed(2)+' dias')} */}
+                              {
+                            (typeof dataInfo.data.metrics !== 'undefined')?
+                            dataInfo.data.metrics[index].device_count.map((key, index2) => (
+                              // console.log(dataInfo.data.metrics[0].availability_average.length,index)
+                              <div className='txt-info-dinamic' id={'dev'+index2} style={{color:color_graf[dataInfo.data.metrics[index].indices[index2]]}}> &nbsp; {typeof dataInfo.data.metrics === 'undefined' ?'---':((dataInfo.data.metrics[index].device_count[index2]==="" ?0:dataInfo.data.metrics[index].device_count[index2]))} </div>
+                            )):''}
+                              {/* {dataInfo.data.device_count} */}
                               </div>
                           </div>
-                          <div className='DispInfoCell' style={{width:'25%'}}>
-                              <div className='txtDispInfoCell'>
-                              {dataInfo.data.device_count}
-                              </div>
-                          </div>
-                
                       </div>
-                      :''
+                          </>
+                          ))
+                        
                         }
                         
-                        {/* <div className='rowInfoDisp'>
                         
-                            <div className='DispInfoCell' style={{width:'25%'}}>
-                                
-                                <div className='txtDispInfoCell' >
-                                Velocidad
-                                
-                                </div> 
-                            </div>
-                            <div className='DispInfoCell' style={{width:'25%'}}>
-                                <div className='txtDispInfoCell'>
-                                98%
-                                </div>
-                            </div>
-                            <div className='DispInfoCell' style={{width:'25%'}}>
-                                <div className='txtDispInfoCell'>
-                                6
-                                </div>
-                            </div>
-                            <div className='DispInfoCell' style={{width:'25%'}}>
-                                <div className='txtDispInfoCell'>
-                                356
-                                </div>
-                            </div>
-                  
-                        </div> */}
+                        
+                        
                       </div>
                     </div>
                   </div>
@@ -926,7 +1011,9 @@ function download_reporte_disponibilidad(){
         contentLabel="Example Modal2"
         // shouldCloseOnOverlayClick={false}
         >
-          <ModalAddMultiGraph dataInfo={dataInfo} elementosToRender={elementosToRender}closAddMultiGraphModal={closAddMultiGraphModal} setTotalLineas={setTotalLineas} color_graf={color_graf} opcionesTxtArray={opcionesTxtArray}></ModalAddMultiGraph>
+
+          <ModalAddMultiGraph flagTodos={flagTodos} flagGeneral={flagGeneral} setFlagGeneral={setFlagGeneral} generateColorOptions={generateColorOptions} indexSelected={indexSelected} dataInfo={dataInfo} elementosToRender={elementosToRender}closAddMultiGraphModal={closAddMultiGraphModal} setTotalLineas={setTotalLineas} color_graf={color_graf} opcionesTxtArrayFijo={opcionesTxtArrayFijo} ></ModalAddMultiGraph>
+
     </Modal>
         </>
     )
