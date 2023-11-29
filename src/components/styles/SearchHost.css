@@ -3,7 +3,7 @@
     /* background-color: aliceblue; */
     height: auto;
     width: auto;
-    z-index: 1;
+    z-index: 2;
     display: block;
     justify-content: left;
     align-items: center;
@@ -26,7 +26,11 @@
     display: flex;
     justify-content: center;
     max-height: 150px;
-    
+    font-size: medium;
+  }
+  .container-searchHost-list.large{
+    width: 650px;
+    font-size: x-small;
   }
   .compact-searchHost-list{
     
@@ -38,6 +42,13 @@
     overflow: scroll;
     border: 1px solid rgba(240, 248, 255, 0.575) !important;
     border-radius: 5px;
+  }
+  .compact-searchHost-list.large{
+    width: 650px;
+  }
+  .cont-row-searchHost-txt{
+    display: flex;
+    justify-content: center;
   }
   .row-searchHost-list{
     background-color: #030915;
@@ -54,6 +65,12 @@ color: #088eee;
   .row-searchHost-list:hover{
     background-color: aliceblue;
     cursor: pointer;
+  }
+  .ip-row-searchHost{
+    color: aliceblue;
+  }
+  .row-searchHost-list:hover .ip-row-searchHost {
+    color: #34373c;
   }
   .mainbox-searchHost {
     box-sizing: border-box;
@@ -77,7 +94,8 @@ color: #088eee;
   }
   
   .checkbox-searchHost:checked {
-    right: 10px;
+    right: 10px !important;
+    left: unset;
   }
   
   .checkbox-searchHost:checked ~ .mainbox-searchHost {
@@ -101,7 +119,8 @@ color: #088eee;
     width: 30px;
     height: 30px;
     position: absolute;
-    right: 17px;
+    /* right: 17px; */
+    left: 185px;
     top: 10px;
     z-index: 9;
     cursor: pointer;
@@ -145,7 +164,7 @@ color: #088eee;
     width: 120px;
   height: 15px;
   position: relative;
-  background-color: rgb(245, 241, 6);
+  background-color: rgb(252, 255, 153);
   color: #34373c;
   font-size: small;
   border-radius: 100px;
@@ -153,6 +172,25 @@ color: #088eee;
   justify-content: center;
   align-items: center;
   font-weight: bold;
+  }
+  .findHost-txt{
+    width: 85%;
+    height: 100%;
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  }
+  .findHost-close{
+    width: 15%;
+    height: 100%;
+    background-color: #ff4b4b;
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0px 100px 100px 0px ;
+  }
+  .findHost-close:hover{
+    cursor: pointer;
   }
   .row-close-list{
     color: red;
