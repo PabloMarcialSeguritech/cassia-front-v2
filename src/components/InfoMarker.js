@@ -23,7 +23,7 @@ const pingModalStyles = {
     padding:'20px'
   },
 };
-const InfoMarker = ({isOpen,devices, data,closeInfoMarker,server,ubiActual,search_problems }) => {
+const InfoMarker = ({isOpen,devices,mapAux,setmapAux, data,closeInfoMarker,server,ubiActual,search_problems }) => {
   console.log("info marker")
   console.log(data)
   console.log(devices.data)
@@ -301,7 +301,7 @@ setListSelected(1)
                     </div>
                   </div>
                 ) : listSelected === 2 ? (
-                    <AlertsByHost search_problems={search_problems} hostId={hostSelected===1?hostIdP:hostId} server={server}></AlertsByHost>
+                    <AlertsByHost mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} hostId={hostSelected===1?hostIdP:hostId} server={server}></AlertsByHost>
                 ) : listSelected === 3 ? (
                   <HealthByHost hostId={hostSelected===1?hostIdP:hostId} server={server}></HealthByHost>
                 ) : listSelected === 9 ? (

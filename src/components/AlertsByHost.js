@@ -5,7 +5,7 @@ import data_ubi from './ubicaciones'
 import { useFetch } from '../hooks/useFetch'
 import RowProblem from './RowProblem'
 import LoadAlerts from './LoadAlerts'
-const AlertsByHost=({hostId,server,search_problems})=>{
+const AlertsByHost=({hostId,mapAux,setmapAux,server,search_problems})=>{
     const alerts_list=useFetch('zabbix/hosts/detail/alerts',hostId,'','GET',server)
     const dataAgencies=useFetch('zabbix/exception_agencies','','props.token','GET',server)
     console.log(alerts_list)
@@ -13,17 +13,17 @@ const AlertsByHost=({hostId,server,search_problems})=>{
         <div className='contAlertsByHost'>
            <div className='TableHeader' style={{backgroundColor:'#e3290f6e'}}>
                   
-                  <div className='headerCell' style={{width:'10%'}}>
+                  <div className='headerCell' style={{width:'6%'}}>
                     <div className='txtHeaderCell' >
                         Severidad
                     </div>
                   </div>
-                  <div className='headerCell' style={{width:'30%'}}>
+                  <div className='headerCell' style={{width:'26%'}}>
                     <div className='txtHeaderCell' >
                         Host
                     </div>
                   </div>
-                  <div className='headerCell' style={{width:'20%'}}>
+                  <div className='headerCell' style={{width:'15%'}}>
                     <div className='txtHeaderCell'>
                         Incidencia
                     </div>
@@ -44,7 +44,17 @@ const AlertsByHost=({hostId,server,search_problems})=>{
                         Ack_message
                     </div>
                   </div>
-                  <div className='headerCell'style={{width:'9%'}}>
+                  <div className='headerCell'style={{width:'12%'}}>
+                    <div className='txtHeaderCell'>
+                        Tiempo Activo
+                    </div>
+                  </div>
+                  <div className='headerCell'style={{width:'7%'}}>
+                    <div className='txtHeaderCell'>
+                        Fecha
+                    </div>
+                  </div>
+                  <div className='headerCell'style={{width:'7%'}}>
                     <div className='txtHeaderCell'>
                         Hora
                     </div>
@@ -57,7 +67,7 @@ const AlertsByHost=({hostId,server,search_problems})=>{
                   alerts_list.loading?<LoadAlerts/>:(alerts_list.data.data.length===0?<div className='txtLoader'>Sin Resultados</div>:
                   alerts_list.data.data.map((elemento, indice)=>(
                     
-                    <RowProblem search_problems={search_problems} key={indice} severity={elemento.severity} dataAgencies={dataAgencies} data={elemento} server={server}/>
+                    <RowProblem mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} key={indice} severity={elemento.severity} dataAgencies={dataAgencies} data={elemento} server={server}/>
                   )))
                   }
                 </div>
