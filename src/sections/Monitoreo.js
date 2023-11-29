@@ -924,6 +924,7 @@ useEffect(()=>{
         devices.loading ?<LoadData/>:
 
         <ShowLayers capas={capas} setCapas={setCapas} mapAux={mapAux} setmapAux={setmapAux}  ></ShowLayers>
+        }
 
         {
           
@@ -944,9 +945,7 @@ useEffect(()=>{
           >
             <InfoMarker search_problems={search_problems} devices={devices} server={server} isOpen={infoMarkerOpen} data={infoMarker} closeInfoMarker={closeInfoMarker} ubiActual={ubiActual}></InfoMarker>
         </Modal>
-        </>
-        }
-        
+
           </>
         
     )
