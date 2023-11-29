@@ -150,7 +150,7 @@ const PanelCis=({server})=>{
               <>
               <div className='cont-search'>
                     
-                    <Search  searchResults={searchResults} setSearchResults={setSearchResults} searchTerm={searchTerm} setSearchTerm={setSearchTerm} onSearch={handleSearch}  dataUsers={dataUsers.data} setDataUsers={setDataUsers} />
+                    <Search  searchResults={searchResults} setSearchResults={setSearchResults} searchTerm={searchTerm} setSearchTerm={setSearchTerm} onSearch={handleSearch}  dataObject={dataUsers.data} setDataObject={setDataUsers} />
                 </div>
                 <div className='cont-search-space'>
 

@@ -42,7 +42,7 @@ const infoMarkerStyles = {
 };
 const LeftQuadrant =(props)=>{
  
-
+console.log(props)
 
   const mapContainerRef = useRef(null);
   
@@ -144,7 +144,7 @@ const LeftQuadrant =(props)=>{
             </div>
           <div className={`columnLeft ${alertsIsOpen ? 'columnAlert' : 'columnAlertMin'}`}>
             <div className='card' style={{width:'95%'}}>
-              <TableAlerts server={props.server} action={openModal} modalIsOpen={false}  alertsIsOpen={alertsIsOpen} setAlertsIsOpen={setAlertsIsOpen} dataProblems={props.dataProblems} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion} search_problems={props.search_problems}></TableAlerts>
+              <TableAlerts mapAux={props.mapAux} setmapAux={props.setmapAux} server={props.server} action={openModal} modalIsOpen={false}  alertsIsOpen={alertsIsOpen} setAlertsIsOpen={setAlertsIsOpen} dataProblems={props.dataProblems} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion} search_problems={props.search_problems}></TableAlerts>
             
             </div>
           </div>
@@ -156,7 +156,7 @@ const LeftQuadrant =(props)=>{
         style={customStyles}
         contentLabel="Example Modal"
       >
-        <TableAlerts server={props.server} action={closeModal}  modalIsOpen={true} alertsIsOpen={alertsIsOpen} setAlertsIsOpen={setAlertsIsOpen} dataProblems={props.dataProblems} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion}  search_problems={props.search_problems}></TableAlerts>
+        <TableAlerts mapAux={props.mapAux} setmapAux={props.setmapAux} server={props.server} action={closeModal}  modalIsOpen={true} alertsIsOpen={alertsIsOpen} setAlertsIsOpen={setAlertsIsOpen} dataProblems={props.dataProblems} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion}  search_problems={props.search_problems}></TableAlerts>
       </Modal>
 
       </>
