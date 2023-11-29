@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import './styles/Search.css'
-const Search = ({ searchResults, setSearchResults,onSearch,dataUsers,setDataUsers,searchTerm, setSearchTerm }) => {
+const Search = ({ searchResults, setSearchResults,onSearch,dataObject,setDataObject,searchTerm, setSearchTerm }) => {
   const [query, setQuery] = useState('');
-console.log(dataUsers)
+console.log(dataObject)
   const handleChange = (e) => {
     setQuery(e.target.value);
   }
@@ -20,13 +20,13 @@ console.log(dataUsers)
     setSearchTerm(term);
 
     // Filtrar los resultados que coincidan con el término de búsqueda
-    const filteredResults = dataUsers.filter((item) => {
+    const filteredResults = dataObject.filter((item) => {
       // Convierte todos los valores a cadenas para realizar una búsqueda sin distinción entre mayúsculas y minúsculas
       return Object.values(item).some((value) =>
         String(value).toLowerCase().includes(term.toLowerCase())
       );
     });
-
+console.log(filteredResults)
     setSearchResults(filteredResults);
   };
 
