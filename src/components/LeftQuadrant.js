@@ -42,7 +42,7 @@ const infoMarkerStyles = {
 };
 const LeftQuadrant =(props)=>{
  
-console.log(props)
+// console.log(props)
 
   const mapContainerRef = useRef(null);
   

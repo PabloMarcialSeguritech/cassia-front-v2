@@ -19,7 +19,7 @@ const customStyles = {
   };
 
 const TableAlerts=(props)=>{
-  console.log(props)
+  // console.log(props)
   const dataAgencies=useFetch('zabbix/exception_agencies','',props.token,'GET',props.server)
   // console.log(dataAgencies)
   const [searchResults, setSearchResults] = useState([]);
