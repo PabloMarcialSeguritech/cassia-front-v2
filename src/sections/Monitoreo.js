@@ -54,7 +54,7 @@ const Monitoreo=({token_item,dataGlobals,server})=>{
     const[downs_list,setDownsList]=useState({data:[],loading:true,error:null});
     const tower_list=useFetch('zabbix/layers/aps',0,token_item,'GET',server)
     const[rfid_list,setRfidList]=useState({data:[],loading:true,error:null});
-
+    const [rfidData,setRfidData]=useState({map:{},getSource:{},popup:null});
     const[switch_list,setSwitchList]=useState({data:[],loading:true,error:null});
     const [mapAux,setmapAux]=useState({});
     const [rfidInterval,setRfidInterval]=useState(0)
