@@ -14,14 +14,16 @@ const MapBox = ({capas,setCapas,actualizar_rfi,mapAux,setmapAux,search_rfid,glob
 
   
   console.log("markers*****************************************************")
-  console.log(downs)
-  console.log(switches.length)
+  // console.log(downs)
+  // console.log(switches.length)
   // console.log(markers)
   // console.log(markersWOR)
   // console.log(global_latitude,global_longitud)
+ 
   let latitud_provicional=(ubicacion.groupid===0?global_latitude.value:ubicacion.latitud)
   let longitud_provicional=(ubicacion.groupid===0?global_longitud.value:ubicacion.longitud)
   const zoom_provicional=(ubicacion.groupid===0?global_zoom.value:11)
+  // console.log(longitud_provicional,latitud_provicional)
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
   const [rfidInterval,setRfidInterval]=useState(0)
@@ -48,6 +50,8 @@ const MapBox = ({capas,setCapas,actualizar_rfi,mapAux,setmapAux,search_rfid,glob
       // style: 'mapbox://styles/mapbox/dark-v11',
       zoom: zoom_provicional,
       center:[longitud_provicional,latitud_provicional]
+      // zoom:15,
+      // center:[-98.974519,19.601019]
     });
     let Popup;
     const map = mapRef.current;
@@ -452,77 +456,33 @@ map.on('click', 'host-markerWOR', (e) => {
     };
 
 
-      // map.addLayer({
-      //   id: 'host-down',
-      //   type: 'circle',
-      //   source:  {
-      //     type: 'geojson',
-      //     data: {
-      //       type: 'FeatureCollection',
-      //       features: downs
-      //     },
-      //   },
-      //   filter: ['!', ['has', 'point_count']],
-      //   paint: {
-      //     'circle-color': "#FF0000",
-      //     'circle-radius': 7,
-      //     'circle-stroke-width':1,
-      //     'circle-stroke-color': '#fff',
-      //   },
-      // });
-      // map.on('mouseleave', 'host-down', (e) => {
-      //   Popup.remove();
-      //   });
-      // map.on('mouseenter', 'host-down', (e) => {
-      //   const coordinates = e.features[0].geometry.coordinates.slice();
-      //   while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-      //     coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-      //   }
-      //   Popup= new mapboxgl.Popup({
-      //     className: 'custom-popup',
-      //     closeButton: true,
-      // })
-      //     .setLngLat(coordinates)
-      //     .setHTML(`<div class='cont-pop' style='border: 1px solid #ff0000;'>
-      //     <div>${e.features[0].properties.Name.slice(0, 25)}...</div><br>
-      //     <div> Descripcion: <b style='color: #ff0000;'>${e.features[0].properties.descripcion}</b> </div>
-      //     </div>`)
-      //     .addTo(map);
-      // });
-      // map.on('click', 'host-down', (e) => {
-       
-      // })
-
-
-
-
       
       map.addImage('pulsing-dot', pulsingDot, { pixelRatio: 2 });
 
-  map.addSource('dot-point', {
-    'type': 'geojson',
-    'data': {
-      'type': 'FeatureCollection',
-      'features': [
-        {
-          'type': 'Feature',
-          'geometry': {
-            'type': 'Point',
-            'coordinates': [0, 0]
-          }
-        }
-      ]
-    }
-  });
+  // map.addSource('dot-point', {
+  //   'type': 'geojson',
+  //   'data': {
+  //     'type': 'FeatureCollection',
+  //     'features': [
+  //       {
+  //         'type': 'Feature',
+  //         'geometry': {
+  //           'type': 'Point',
+  //           'coordinates': [0, 0]
+  //         }
+  //       }
+  //     ]
+  //   }
+  // });
 
-  map.addLayer({
-    'id': 'layer-with-pulsing-dot',
-    'type': 'symbol',
-    'source': 'dot-point',
-    'layout': {
-      'icon-image': 'pulsing-dot'
-    }
-  });
+  // map.addLayer({
+  //   'id': 'layer-with-pulsing-dot',
+  //   'type': 'symbol',
+  //   'source': 'dot-point',
+  //   'layout': {
+  //     'icon-image': 'pulsing-dot'
+  //   }
+  // });
 
   const downLayer={
     id: 'host-down',
@@ -542,7 +502,6 @@ map.on('click', 'host-markerWOR', (e) => {
     },
   }
    map.addLayer(downLayer);
-  //  map.setLayerZoomRange('host-down', 1, 15);
   if(!idCapaExistente('host-down')){
     setCapas((prevCapas) => ({
       ...prevCapas,
@@ -622,10 +581,10 @@ map.on('click', 'host-markerWOR', (e) => {
             // Popup.remove();
             const popups = document.querySelectorAll('.custom-popup');
       
-      popups.forEach(popup => {
-      
-      popup.remove();
-      });
+                popups.forEach(popup => {
+                
+                popup.remove();
+                });
             });
           map.on('mouseenter', 'tower-marker', (e) => {
             const coordinates = e.features[0].geometry.coordinates.slice();
@@ -644,7 +603,7 @@ map.on('click', 'host-markerWOR', (e) => {
           });
         }
       );
-      // setMapInstance(map)
+      // // setMapInstance(map)
       
      
       

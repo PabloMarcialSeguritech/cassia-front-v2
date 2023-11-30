@@ -22,7 +22,8 @@ const RowProblem=(props)=>{
   const handleSelected=(element)=>{
     
     console.log(element)
-const coordinates=[element.longitude,element.latitude]
+    if( element.latitude.replace(",", ".")>=-90 && element.latitude.replace(",", ".")<=90){
+const coordinates=[element.longitude.replace(",", "."),element.latitude.replace(",", ".")]
 // console.log(coordinates)
 const popups = document.querySelectorAll('.custom-popup-findHost');
   
@@ -43,7 +44,7 @@ const popups = document.querySelectorAll('.custom-popup-findHost');
             <div class='findHost-close' > </div>
             </div>`)
         .addTo(props.mapAux);
-    
+      }
 }
   const closeMenuAlert = () => {
     const popups = document.querySelectorAll('.custom-popup-findHost');
