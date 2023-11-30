@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  app:
+    container_name: cassia-frontend-qa
+    image: cassia-frontend-qa
+    build:
+      context: .
+      target: development
+    volumes:
+      - ./src:/app/src
+    ports:
+      - 8003:8003
