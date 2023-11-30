@@ -87,7 +87,7 @@ useEffect(()=>{
   }, [markersWOR]); 
   useEffect(() => {
     console.log('El proceso de downs ha terminado');
-    console.log(downs)
+    // console.log(downs)
     setRenderCapas(prevState => ({
       ...prevState,
       downs: true 
@@ -191,7 +191,7 @@ useEffect(()=>{
     
      /****************************************************************** */
      function objeto_downs(downs_list){
-      console.log(devices)
+      // console.log(devices)
       downs_list.map((host, index, array)=>
           {
             if(host.length!==0 && host.latitude.replace(",", ".")>=-90 && host.latitude.replace(",", ".")<=90 ){
@@ -254,7 +254,7 @@ useEffect(()=>{
             // }else{
             //   //console.log(host)
             // }
-            if(host.length!==0 && host.latitude>=-90 && host.latitude<=90 ){
+            if(host.length!==0 && host.latitude.replace(",", ".")>=-90 && host.latitude.replace(",", ".")<=90 ){
             
               setRfid(rfid=>[...rfid,{
                 type: 'Feature',
@@ -287,7 +287,7 @@ useEffect(()=>{
       const subtypefilter=ubicacion.templateId!==0?'subtype='+ubicacion.templateId:''
       let andAux=(devicefilter!=='' )?'&':'?'
             andAux=(subtypefilter!=='')?andAux:''
-      console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/problems/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter)
+      // console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/problems/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter)
           const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/problems/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter, {                 
                               headers: {
                                 'Content-Type': 'application/json',
@@ -392,7 +392,7 @@ useEffect(()=>{
     
     function search_devices(){
       setRenderMap(false)
-      console.log("search device ",rfidInterval)
+      // console.log("search device ",rfidInterval)
       if(rfidInterval!==0){
         clearInterval(rfidInterval);
         setRfid([])
@@ -422,7 +422,7 @@ useEffect(()=>{
         const subtypefilter=ubicacion.templateId!==0?'subtype_id='+ubicacion.templateId:''
         let andAux=(devicefilter!=='' )?'&':'?'
               andAux=(subtypefilter!=='')?andAux:''
-        console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter)
+        // console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter)
               const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter, {                 
                                 headers: {
                                   'Content-Type': 'application/json',
@@ -474,13 +474,13 @@ useEffect(()=>{
     },[devices.data])
     function search_downs(){
       setDowns([])
-      console.log("use downs",ubicacion)
+      // console.log("use downs",ubicacion)
         setDownsList({data:downs_list.data,loading:true,error:downs_list.error})
         const fetchData = async () => {
           try {
             
             let body = (ubicacion.dispId===0)?'':'?dispId='+ubicacion.dispId
-            console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/layers/downs/'+ubicacion.groupid+''+body)
+            // console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/layers/downs/'+ubicacion.groupid+''+body)
             const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/layers/downs/'+ubicacion.groupid+''+body, {                 
                                 headers: {
                                   'Content-Type': 'application/json',
@@ -506,10 +506,10 @@ useEffect(()=>{
     function objeto_subgroup_info(devices_data){
       devices_data.subgroup_info.map((host, index, array)=>
           {
-            if (index === 1) {
-              setUbicacion({latitud:host.latitude,longitud:host.longitude,groupid:ubicacion.groupid,dispId:ubicacion.dispId,templateId:ubicacion.templateId})
-              //console.log('Recorrido completo');
-            }
+            // if (index === 1) {
+            //   setUbicacion({latitud:host.latitude,longitud:host.longitude,groupid:ubicacion.groupid,dispId:ubicacion.dispId,templateId:ubicacion.templateId})
+            //   console.log(host);
+            // }
             if(host.length!==0 && host.latitude.replace(",", ".")>=-90 && host.latitude.replace(",", ".")<=90 ){
               let colorSG='#4fb7f3'
               // let colorSG='#ffffff'
@@ -593,10 +593,10 @@ useEffect(()=>{
       //console.log(devices_data.relations)
       devices_data.relations.map((host, index, array)=>
           {
-            if (index === 1) {
-              setUbicacion({latitud:host.init_lat,longitud:host.init_lon,groupid:ubicacion.groupid,dispId:ubicacion.dispId,templateId:ubicacion.templateId})
-              //console.log('Recorrido completo');
-            }
+            // if (index === 1) {
+            //   setUbicacion({latitud:host.init_lat,longitud:host.init_lon,groupid:ubicacion.groupid,dispId:ubicacion.dispId,templateId:ubicacion.templateId})
+            //   console.log(host);
+            // }
             if(host.length!==0 && host.init_lat.replace(",", ".")>=-90 && host.init_lat.replace(",", ".")<=90 && host.end_lat.replace(",", ".")>=-90 && host.end_lat.replace(",", ".")<=90){
               
               const hostidC = devices_data.hosts.find(obj => obj.hostid === host.hostidC)
@@ -731,11 +731,15 @@ useEffect(()=>{
     /************************************************************************************ */
     function objeto_markers_wor(devices_data){
       console.log("WOR")
+      let flag_ubicacion=false
       devices_data.hosts.map((host, index, array)=>
           {
-            if (index === 1) {
-              setUbicacion({latitud:host.latitude,longitud:host.longitude,groupid:ubicacion.groupid,dispId:ubicacion.dispId,templateId:ubicacion.templateId})
-              //console.log('Recorrido completo WOR');
+            if (!flag_ubicacion) {
+              if(host.length!==0 && host.latitude.replace(",", ".")>=-90 && host.latitude.replace(",", ".")<=90){
+                setUbicacion({latitud:host.latitude,longitud:host.longitude,groupid:ubicacion.groupid,dispId:ubicacion.dispId,templateId:ubicacion.templateId})
+                // console.log(host);
+                flag_ubicacion=true
+              }
             }
             if(host.length!==0 && host.latitude.replace(",", ".")>=-90 && host.latitude.replace(",", ".")<=90){
               
@@ -790,10 +794,10 @@ useEffect(()=>{
     function objeto_antenas(devices_data){
       devices_data.hosts.map((host, index, array)=>
           {
-            if (index === 1) {
-              setUbicacion({latitud:host.latitude,longitud:host.longitude,groupid:ubicacion.groupid,dispId:ubicacion.dispId,templateId:ubicacion.templateId})
-              //console.log('Recorrido completo');
-            }
+            // if (index === 1) {
+            //   setUbicacion({latitud:host.latitude,longitud:host.longitude,groupid:ubicacion.groupid,dispId:ubicacion.dispId,templateId:ubicacion.templateId})
+            //   console.log(host);
+            // }
             if(host.length!==0 && host.latitude.replace(",", ".")>=-90 && host.latitude.replace(",", ".")<=90 ){
               
               

@@ -59,7 +59,7 @@ const RightQuadrant =(props)=>{
     }
     
     useEffect(()=>{
-        console.log("cambio la ubicacion")
+
         search_tecnologias()
     },[props.ubicacion.groupid])
     useEffect(()=>{
@@ -105,7 +105,7 @@ const RightQuadrant =(props)=>{
           fetchData();
       }
       useEffect(()=>{
-        console.log("cambio la tecnologia")
+        
         search_metricas()
     },[props.ubicacion.dispId])
     useEffect(()=>{
