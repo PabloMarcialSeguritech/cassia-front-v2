@@ -1,0 +1,176 @@
+.cont-menu-eventos{
+    left: 0px;
+    position: absolute;
+    width: 40%;
+    /* background-color: aliceblue; */
+    /* height: 15%; */
+    display: flex;
+}
+.cont-option-eventos{
+    position: relative;
+    display: flex;
+    width: 50%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+.selector-multiple{
+    width: 80%;
+  height: 20px;
+  line-height: 28px;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  outline: none;
+  background-color: #fbfbfb21;
+  color: #424242;
+  font-size: 14px;
+  transition: .3s ease;
+  color: rgba(240, 248, 255, 0.795);
+  display: flex;
+}
+.selector-cont-text{
+ position: relative;
+ width: 80%;
+ height: 100%;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ color: #959595;
+ white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.selector-cont-depliegue{
+    position: relative;
+    width: 20%;
+    height: 100%;
+    border-left: 2px solid gainsboro;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.select-multiple-list{
+    position: absolute;
+    width: 80%;
+    height: auto;
+    top: 100%;
+    z-index: 3;
+    background-color: #1c2950;
+    border: #959595 1px solid;
+    border-radius: 10px;
+}
+.row-option-select-list{
+    position: relative;
+    width: 100%;
+    height: 25px;
+    display: flex;
+
+}
+.row-option-select-list:hover{
+  cursor: pointer;
+  background-color: rgba(240, 248, 255, 0.425);
+}
+.cont-row-check-option{
+    position: relative;
+    display: flex;
+    width: 20%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+.cont-row-text-option{
+    position: relative;
+    display: flex;
+    width: 80%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+/* Hide the default checkbox */
+.container-check-select-multiple input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+  
+  .container-check-select-multiple {
+    display: flex;
+    gap: 10px;
+  }
+  
+  
+  /* Create a custom checkbox */
+  .checkmark {
+    position: relative;
+    box-shadow: rgb(255, 84, 0) 0px 0px 0px 2px;
+    background-color: rgba(16, 16, 16, 0.5);
+    height: 20px;
+    width: 20px;
+    margin-right: 10px;
+    flex-shrink: 0;
+    margin-top: -1px;
+    transition: all 0.2s ease 0s;
+    cursor: pointer;
+    transform-origin: 0px 10px;
+    border-radius: 4px;
+    margin: -1px 10px 0px 0px;
+    padding: 0px;
+    box-sizing: border-box;
+  }
+  
+  .container-check-select-multiple input:checked ~ .checkmark {
+    box-shadow: rgb(255, 84, 0) 0px 0px 0px 2px;
+    background-color: rgba(245, 24, 24, 0.5);
+    height: 20px;
+    width: 20px;
+    margin-right: 10px;
+    flex-shrink: 0;
+    margin-top: -1px;
+    transition: all 0.2s ease 0s;
+    cursor: pointer;
+    transform-origin: 0px 10px;
+    border-radius: 4px;
+    margin: -1px 10px 0px 0px;
+    padding: 0px;
+    box-sizing: border-box;
+  }
+  
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+  
+  .container-check-select-multiple input:checked ~ .checkmark:after {
+    display: block;
+  }
+  
+  /* Style the checkmark/indicator */
+  .container-check-select-multiple .checkmark:after {
+    left: 0.45em;
+    top: 0.25em;
+    width: 0.25em;
+    height: 0.5em;
+    border: solid white;
+    border-width: 0 0.15em 0.15em 0;
+    transform: rotate(45deg);
+    transition: all 500ms ease-in-out;
+  }
+
+  .row-option-select-list input{
+    width: 10%;
+    position: relative;
+    left: 10%;
+  }
+  .row-option-select-list label{
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .option_bloqueado {
+    pointer-events: none;
+    opacity: 0.5; /* Puedes reducir la opacidad para indicar visualmente que está inactivo */
+  }

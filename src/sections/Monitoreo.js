@@ -23,7 +23,7 @@ const Monitoreo=({token_item,dataGlobals,server})=>{
   const global_latitude=dataGlobals.find(obj => obj.name === 'state_latitude')
   const global_zoom=dataGlobals.find(obj => obj.name === 'zoom')
   token_item=localStorage.getItem('access_token')
-
+  const [severityProblms,setSeverityProblms]=useState(["6"])
     // const [ubicacion,setUbicacion]=useState({latitud:'20.01808757489169',longitud:'-101.21789252823293',groupid:0,dispId:11,templateId:0})
     const [ubicacion,setUbicacion]=useState({latitud:global_latitude.value,longitud:global_longitud.value,groupid:0,dispId:11,templateId:0})
     const [ubiActual,setUbiActual]=useState({municipio:'TODOS',groupid:0,dispId:11,templateId:0})
@@ -275,17 +275,20 @@ useEffect(()=>{
         // setTimeout(search_rfid, 10000); 
     }
      /****************************************************************** */
+    
     function search_problems(){
+      
     setDataProblems({data:dataProblems.data,loading:true,error:dataProblems.error})
       const fetchData = async () => {
         try {
           const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWFuLm1hcmNpYWwiLCJleHAiOjE2OTExNjg3ODZ9.LETk5Nu-2WXF571qMqTd__RxHGcyOHzg4GfAbiFejJY'; // Reemplaza con tu token de autenticación
           const devicefilter=ubicacion.dispId!==0?'?tech_host_type='+ubicacion.dispId:''
       const subtypefilter=ubicacion.templateId!==0?'subtype='+ubicacion.templateId:''
+      const severityfilter=severityProblms.length>0?'&severities='+severityProblms.join(', '):''
       let andAux=(devicefilter!=='' )?'&':'?'
             andAux=(subtypefilter!=='')?andAux:''
-      // console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/problems/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter)
-          const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/problems/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter, {                 
+      console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/problems/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter+severityfilter)
+          const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/problems/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter+severityfilter, {                 
                               headers: {
                                 'Content-Type': 'application/json',
                                 Authorization: `Bearer ${token_item}`,
@@ -738,6 +741,7 @@ useEffect(()=>{
                 flag_ubicacion=true
               }
             }
+            // console.log(host.ip,host.latitude)
             if(host.length!==0 && host.latitude.replace(",", ".")>=-90 && host.latitude.replace(",", ".")<=90){
               
               // const hostidC = devices_data.relations.find(obj => obj.hostidC === host.hostid)
@@ -934,7 +938,7 @@ useEffect(()=>{
                 
                 <LeftQuadrant mapAux={mapAux} setmapAux={setmapAux} server={server} zoom={zoom} setZoom={setZoom}   markersWOR={markersWOR} markers={markers} token ={token_item} setLatitudes={setLatitudes} setLongitudes={setLongitudes} setLocations={setLocations}
                   longitudes={longitudes} locations={locations} search_problems={search_problems}
-                  ubicacion={ubicacion} dataHosts={devices} setUbicacion={setUbicacion} dataProblems={dataProblems} setDataProblems={setDataProblems}/>
+                  ubicacion={ubicacion} dataHosts={devices} setUbicacion={setUbicacion} dataProblems={dataProblems} setDataProblems={setDataProblems} severityProblms={severityProblms} setSeverityProblms={setSeverityProblms}/>
                 <Modal
                   isOpen={infoMarkerOpen}
                   // onAfterOpen={afterOpenExeption}
