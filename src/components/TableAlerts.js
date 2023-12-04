@@ -29,17 +29,11 @@ const TableAlerts=(props)=>{
   const [searchResults, setSearchResults] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
   const [openSelectList,setOpenSelect]=useState(false)
-  const [optionsSelectList, setOptionsSelectList] = useState([
-    { value: '6', label: 'Down', status: true },
-    { value: '5', label: 'Severidad 5', status: false },
-    { value: '4', label: 'Severidad 4', status: false },
-    { value: '3', label: 'Severidad 3', status: false },
-    { value: '2', label: 'Severidad 2', status: false },
-    { value: '1', label: 'Severidad 1', status: false },
-  ]);
+ 
   
   const [flagSearch,setFlagsearch]=useState(false)
-  console.log(openSelectList)
+  console.log(props.severityProblms)
+  console.log(props.optionsSelectList)
   function expandAlerts(){
     console.log(typeof props.search_problems)
     if(!props.modalIsOpen){
@@ -74,11 +68,11 @@ const selectOptionList=(element)=>{
     props.setSeverityProblms([...props.severityProblms, ...element.value])
   }
   
-  const index = optionsSelectList.findIndex((option) => option.value === element.value);
+  const index = props.optionsSelectList.findIndex((option) => option.value === element.value);
 
   if (index !== -1) {
     // Clonar el array actual para evitar mutar el estado directamente
-    const updatedOptions = [...optionsSelectList];
+    const updatedOptions = [...props.optionsSelectList];
     
     // Actualizar el atributo status del objeto en el índice encontrado
     updatedOptions[index] = {
@@ -87,7 +81,7 @@ const selectOptionList=(element)=>{
     };
 
     // Actualizar el estado con el nuevo array
-    setOptionsSelectList(updatedOptions);
+    props.setOptionsSelectList(updatedOptions);
 
    
   }
@@ -122,11 +116,11 @@ const selectOptionList=(element)=>{
                               {(openSelectList)?
                                 <div className='select-multiple-list' >
                                   {
-                                      optionsSelectList.map((element,index)=>(
+                                      props.optionsSelectList.map((element,index)=>(
                                         <>
-                                    <div className={'row-option-select-list '+(((props.severityProblms=="6" && optionsSelectList[index].value!="6") || (props.severityProblms!="" && props.severityProblms!="6" && optionsSelectList[index].value=="6"))?'option_bloqueado':'')} >
-                                        <input   defaultChecked={optionsSelectList[index].status} onClick={()=>selectOptionList(element)} value={optionsSelectList[index].value} name="r" type="checkbox" id={`checkboxList-${index}`}  />
-                                        <label htmlFor={`checkboxList-${index}`}>{optionsSelectList[index].label}</label>
+                                    <div className={'row-option-select-list '+(((props.severityProblms=="6" && props.optionsSelectList[index].value!="6") || (props.severityProblms!="" && props.severityProblms!="6" && props.optionsSelectList[index].value=="6"))?'option_bloqueado':'')} >
+                                        <input   defaultChecked={props.optionsSelectList[index].status} onClick={()=>selectOptionList(element)} value={props.optionsSelectList[index].value} name="r" type="checkbox" id={`checkboxList-${index}`}  />
+                                        <label htmlFor={`checkboxList-${index}`}>{props.optionsSelectList[index].label}</label>
                                         </div>
                                         </>
                                     ))
