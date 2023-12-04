@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './styles/Search.css'
 const Search = ({ searchResults, setSearchResults,onSearch,dataObject,setDataObject,searchTerm, setSearchTerm }) => {
   const [query, setQuery] = useState('');
-console.log(dataObject)
+
   const handleChange = (e) => {
     setQuery(e.target.value);
   }
@@ -14,7 +14,7 @@ console.log(dataObject)
 
   
   
-   console.log(searchResults)
+   
   const handleSearch = (e) => {
     const term = e.target.value;
     setSearchTerm(term);
