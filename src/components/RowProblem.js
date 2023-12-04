@@ -97,7 +97,8 @@ const popups = document.querySelectorAll('.custom-popup-findHost');
                   </div>
                   <div className='problemCell' style={{width:'26%'}}>
                     <div className='txtProblemCell' >
-                    {props.data.Host.length > 35 ? `${props.data.Host.slice(0, 35)}...` : props.data.Host}
+                    {/* {props.data.Host.length > 35 ? `${props.data.Host.slice(0, 35)}...` : props.data.Host} */}
+                    { props.data.Host}
                     
                     </div>
                   </div>
