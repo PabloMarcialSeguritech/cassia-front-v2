@@ -26,8 +26,7 @@ const TableAlerts=(props)=>{
   // console.log(props)
   const dataAgencies=useFetch('zabbix/exception_agencies','',props.token,'GET',props.server)
   // console.log(dataAgencies)
-  const [searchResults, setSearchResults] = useState([]);
-    const [searchTerm, setSearchTerm] = useState('');
+  
   const [openSelectList,setOpenSelect]=useState(false)
  
   
@@ -47,6 +46,9 @@ const TableAlerts=(props)=>{
     
     
   }
+  useEffect(()=>{
+    props.setSeverityProblms(["6"])
+  },[])
   useEffect(()=>{
     setOpenSelect(false)
   },[props.modalIsOpen])
@@ -88,7 +90,7 @@ const selectOptionList=(element)=>{
 }
 
 
-  var dataList=(searchTerm==='')?props.dataProblems.data:searchResults;
+  var dataList=(props.searchTerm==='')?props.dataProblems.data:props.searchResults;
     return(
 <>
 <div className={props.alertsIsOpen?'menuAlertTitle' :'menuAlertTitleMin' } onClick={(!props.alertsIsOpen)?expandAlerts:()=>{}}>
@@ -97,7 +99,7 @@ const selectOptionList=(element)=>{
                         {props.modalIsOpen || props.alertsIsOpen?
                         <div className='cont-menu-eventos'>
                           <div className='cont-option-eventos'>
-                          <Search searchResults={searchResults} setSearchResults={setSearchResults} searchTerm={searchTerm} setSearchTerm={setSearchTerm}   dataObject={props.dataProblems.data} />
+                          <Search searchResults={props.searchResults} setSearchResults={props.setSearchResults} searchTerm={props.searchTerm} setSearchTerm={props.setSearchTerm}   dataObject={props.dataProblems.data} />
                           </div>
                           <div className='cont-option-eventos'>
                               <>
