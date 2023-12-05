@@ -287,11 +287,12 @@ useEffect(()=>{
           const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWFuLm1hcmNpYWwiLCJleHAiOjE2OTExNjg3ODZ9.LETk5Nu-2WXF571qMqTd__RxHGcyOHzg4GfAbiFejJY'; // Reemplaza con tu token de autenticación
           const devicefilter=ubicacion.dispId!==0?'?tech_host_type='+ubicacion.dispId:''
       const subtypefilter=ubicacion.templateId!==0?'subtype='+ubicacion.templateId:''
-      const severityfilter=severityProblms.length>0?'&severities='+severityProblms.join(', '):''
+      const severityfilter=severityProblms.length>0?'severities='+severityProblms.join(', '):''
       let andAux=(devicefilter!=='' )?'&':'?'
             andAux=(subtypefilter!=='')?andAux:''
-      console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/problems/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter+severityfilter)
-          const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/problems/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter+severityfilter, {                 
+            
+      console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/problems/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter+((ubicacion.dispId==0 && ubicacion.templateId==0)?'?':'&')+severityfilter)
+          const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/problems/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter+((ubicacion.dispId==0 && ubicacion.templateId==0)?'?':'&')+severityfilter, {                 
                               headers: {
                                 'Content-Type': 'application/json',
                                 Authorization: `Bearer ${token_item}`,
