@@ -298,7 +298,9 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                               <Action origen='General' disabled={false} titulo='Ack...' action={openAck}/>
                           </div>
                           <div className='menuActionCell' style={{border: 'unset'}}>
+
                               <Action origen='General' disabled={false} titulo='Flujo' action={openFlujo}/>
+
                           </div>
                           <div className='menuActionCell' style={{border: 'unset'}}>
                               <Action origen='General' disabled={false} titulo='Link ticket' action ={openTicket}/>
@@ -363,9 +365,11 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
             >
                 <div className='exceptCont card'>
                 <div className='menuActiontitle' style={{width: "100%"}}>
+
                 <div className='cardTitle cardTitleAlert' style={{background:'aliceblue'}} >
                             <div className='textCardTitle' style={{color:'#003757',fontsize:'medium'}}>
                             CREAR ACKNOWLEDGE:
+
 
                             </div>
                         </div>
@@ -408,8 +412,10 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                             }
 
                             </div>
+
                             <div className='formColumn' style={{height:'50px'}}>
                             <Action origen='General' titulo='GUARDAR' action={addAck} disabled={validaBtn}/>
+
                             <Action origen='Alert' titulo='CANCELAR' action={closeAck} disabled={false} />
                             </div>
                         

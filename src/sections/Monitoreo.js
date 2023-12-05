@@ -32,7 +32,9 @@ const Monitoreo=({token_item,dataGlobals,server})=>{
     const [latitudes,setLatitudes]=useState([])
     const [longitudes,setLongitudes]=useState([])
     const [locations,setLocations]=useState([])
+
     // console.log(ubiActual)
+
     const [markers,setMarkers]=useState([])
     const [markersWOR,setMarkersWOR]=useState([])
     const [lines,setLines]=useState([])
@@ -58,6 +60,7 @@ const Monitoreo=({token_item,dataGlobals,server})=>{
     const [rfidInterval,setRfidInterval]=useState(0)
     const [renderCapas,setRenderCapas]=useState({downs:false,markersWOR:false,markers:true,rfid:true,switches:true})
     
+
    const [renderMap,setRenderMap]=useState(false)
    const allTrue = Object.values(renderCapas).every(value => value === true);
 // console.log(devices)
@@ -926,6 +929,7 @@ useEffect(()=>{
     return (
         <>
 
+
           <SearchHost mapAux={mapAux} setmapAux={setmapAux}  devices={devices} markersWOR={markersWOR}></SearchHost>
           <RightQuadrant capas={capas} setCapas={setCapas} metricaSelected={metricaSelected} setMetricaSelected={setMetricaSelected} ubiActual={ubiActual} setUbiActual={setUbiActual}  server={server} setRfid={setRfid} search_rfid={search_rfid} search_switches={search_switches} search_devices={search_devices} markersWOR={markersWOR}  search_downs={search_downs} downs={downs} search_problems={search_problems} token={token_item} ubicacion={ubicacion} markers={markers}  dataHosts={devices} setUbicacion={setUbicacion} />
 
@@ -953,6 +957,7 @@ useEffect(()=>{
                 </Modal>
               </>
           }
+
 
         </>
 
