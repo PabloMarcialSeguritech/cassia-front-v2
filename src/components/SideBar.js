@@ -3,7 +3,6 @@ import './styles/SideBar.css'
 const SideBar =({rolId,onLogin,pageSelected,setPageSelected,dataGlobals})=>{
     const handleSection=(e)=>{
        
-        console.log(e.target.attributes.name.value)
         setPageSelected(e.target.attributes.name.value)
     }
     var estado=''
