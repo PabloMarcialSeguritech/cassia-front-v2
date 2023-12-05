@@ -66,6 +66,8 @@ const LeftQuadrant =(props)=>{
     { value: '2', label: 'Severidad 2', status: false },
     { value: '1', label: 'Severidad 1', status: false },
   ]);
+  const [searchResults, setSearchResults] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
   // const [infoMarkerOpen, setInfoMarkerOpen] = React.useState(false);
   // const  [infoMarker, setInfoMarker]=useState([])
   // function openInfoMarker() {
@@ -106,6 +108,7 @@ const LeftQuadrant =(props)=>{
      setS1(props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 1))
     }
   },[props.dataHosts.data])
+
     return(
       <>
       
@@ -152,7 +155,7 @@ const LeftQuadrant =(props)=>{
             </div>
           <div className={`columnLeft ${alertsIsOpen ? 'columnAlert' : 'columnAlertMin'}`}>
             <div className='card' style={{width:'95%'}}>
-              <TableAlerts  optionsSelectList={optionsSelectList} setOptionsSelectList={setOptionsSelectList} severityProblms={props.severityProblms} setSeverityProblms={props.setSeverityProblms} mapAux={props.mapAux} setmapAux={props.setmapAux} server={props.server} action={openModal} modalIsOpen={false}  alertsIsOpen={alertsIsOpen} setAlertsIsOpen={setAlertsIsOpen} dataProblems={props.dataProblems} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion} search_problems={props.search_problems}></TableAlerts>
+              <TableAlerts searchTerm={searchTerm} setSearchTerm={setSearchTerm} searchResults={searchResults} setSearchResults={setSearchResults} optionsSelectList={optionsSelectList} setOptionsSelectList={setOptionsSelectList} severityProblms={props.severityProblms} setSeverityProblms={props.setSeverityProblms} mapAux={props.mapAux} setmapAux={props.setmapAux} server={props.server} action={openModal} modalIsOpen={false}  alertsIsOpen={alertsIsOpen} setAlertsIsOpen={setAlertsIsOpen} dataProblems={props.dataProblems} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion} search_problems={props.search_problems}></TableAlerts>
             
             </div>
           </div>
@@ -164,7 +167,7 @@ const LeftQuadrant =(props)=>{
         style={customStyles}
         contentLabel="Example Modal"
       >
-        <TableAlerts optionsSelectList={optionsSelectList} setOptionsSelectList={setOptionsSelectList} severityProblms={props.severityProblms} setSeverityProblms={props.setSeverityProblms} mapAux={props.mapAux} setmapAux={props.setmapAux} server={props.server} action={closeModal}  modalIsOpen={true} alertsIsOpen={alertsIsOpen} setAlertsIsOpen={setAlertsIsOpen} dataProblems={props.dataProblems} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion}  search_problems={props.search_problems}></TableAlerts>
+        <TableAlerts searchTerm={searchTerm} setSearchTerm={setSearchTerm} searchResults={searchResults} setSearchResults={setSearchResults}  optionsSelectList={optionsSelectList} setOptionsSelectList={setOptionsSelectList} severityProblms={props.severityProblms} setSeverityProblms={props.setSeverityProblms} mapAux={props.mapAux} setmapAux={props.setmapAux} server={props.server} action={closeModal}  modalIsOpen={true} alertsIsOpen={alertsIsOpen} setAlertsIsOpen={setAlertsIsOpen} dataProblems={props.dataProblems} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion}  search_problems={props.search_problems}></TableAlerts>
       </Modal>
 
       </>
