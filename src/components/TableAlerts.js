@@ -5,8 +5,12 @@ import Modal from 'react-modal';
 import RowProblem from './RowProblem'
 import LoadAlerts from './LoadAlerts'
 import { useFetch } from '../hooks/useFetch';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import Search from './cis-components/Search';
+import Select from 'react-select';
+
+
+
 const customStyles = {
     content: {
       top: '50%',
@@ -24,6 +28,12 @@ const TableAlerts=(props)=>{
   // console.log(dataAgencies)
   const [searchResults, setSearchResults] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+  const [openSelectList,setOpenSelect]=useState(false)
+ 
+  
+  const [flagSearch,setFlagsearch]=useState(false)
+  console.log(props.severityProblms)
+  console.log(props.optionsSelectList)
   function expandAlerts(){
     console.log(typeof props.search_problems)
     if(!props.modalIsOpen){
@@ -37,19 +47,104 @@ const TableAlerts=(props)=>{
     
     
   }
+  useEffect(()=>{
+    setOpenSelect(false)
+  },[props.modalIsOpen])
+ const openSelector=()=>{
+  setOpenSelect(!openSelectList)
+ }
+useEffect(()=>{
+  // props.search_problems()
+  setFlagsearch(true)
+},[props.severityProblms])
+const selectOptionList=(element)=>{
   
+  if (props.severityProblms.includes(element.value)) {
+    // Si existe, eliminarlo
+    const newArray = props.severityProblms.filter(value => value !== element.value);
+    console.log(newArray); // Output: [1, 3]
+    props.setSeverityProblms(newArray)
+  }else{
+    props.setSeverityProblms([...props.severityProblms, ...element.value])
+  }
+  
+  const index = props.optionsSelectList.findIndex((option) => option.value === element.value);
+
+  if (index !== -1) {
+    // Clonar el array actual para evitar mutar el estado directamente
+    const updatedOptions = [...props.optionsSelectList];
+    
+    // Actualizar el atributo status del objeto en el índice encontrado
+    updatedOptions[index] = {
+      ...updatedOptions[index],
+      status: !updatedOptions[index].status, // Invertir el valor de status
+    };
+
+    // Actualizar el estado con el nuevo array
+    props.setOptionsSelectList(updatedOptions);
+
+   
+  }
+}
+
+
   var dataList=(searchTerm==='')?props.dataProblems.data:searchResults;
     return(
 <>
-<div className={props.alertsIsOpen?'menuAlertTitle' :'menuAlertTitleMin' }onClick={expandAlerts}>
+<div className={props.alertsIsOpen?'menuAlertTitle' :'menuAlertTitleMin' } onClick={(!props.alertsIsOpen)?expandAlerts:()=>{}}>
+{/* <div className={props.alertsIsOpen?'menuAlertTitle' :'menuAlertTitleMin' }> */}
                         <div className='cardTitle cardTitleAlert'>
-                        {props.modalIsOpen?
-                        <div className='cont-search' style={{left:'0',position:'absolute'}}>
-                    {(props.dataProblems.loading )?''
-                    :<Search searchResults={searchResults} setSearchResults={setSearchResults} searchTerm={searchTerm} setSearchTerm={setSearchTerm}   dataObject={props.dataProblems.data} />
-                    }
+                        {props.modalIsOpen || props.alertsIsOpen?
+                        <div className='cont-menu-eventos'>
+                          <div className='cont-option-eventos'>
+                          <Search searchResults={searchResults} setSearchResults={setSearchResults} searchTerm={searchTerm} setSearchTerm={setSearchTerm}   dataObject={props.dataProblems.data} />
+                          </div>
+                          <div className='cont-option-eventos'>
+                              <>
+                              <div className='selector-multiple'>
+                                  <div className='selector-cont-text'>
+                                      {(props.severityProblms=="")?'Severidades...':props.severityProblms.map((element,index)=>(
+                                        element=="6"?'Down, ':'S'+element+', '
+                                      ))}
+                                  </div>
+                                  <hr class="vertical-line"></hr>
+                                  <div className='selector-cont-depliegue ' >
+                                  <img className='img-field-acciones' src={'/iconos/'+((openSelectList)?'up':'down')+'-arrow-select.png'} title='expand' alt='expand' name='expand'    onClick={openSelector} />
+                                  </div>
+                                  
+                              </div>
+                              {(openSelectList)?
+                                <div className='select-multiple-list' >
+                                  {
+                                      props.optionsSelectList.map((element,index)=>(
+                                        <>
+                                    <div className={'row-option-select-list '+(((props.severityProblms=="6" && props.optionsSelectList[index].value!="6") || (props.severityProblms!="" && props.severityProblms!="6" && props.optionsSelectList[index].value=="6"))?'option_bloqueado':'')} >
+                                        <input   defaultChecked={props.optionsSelectList[index].status} onClick={()=>selectOptionList(element)} value={props.optionsSelectList[index].value} name="r" type="checkbox" id={`checkboxList-${index}`}  />
+                                        <label htmlFor={`checkboxList-${index}`}>{props.optionsSelectList[index].label}</label>
+                                        </div>
+                                        </>
+                                    ))
+                                    }
+                                    
+                              </div>:''
+                              }
+                              {
+                                flagSearch?<div className='imgCardTitleMin'>
+                                <div className='imgContent'>
+                                <img src={"/iconos/search_select.png"}  className="expandLogo" alt="Logo" onClick={()=>{props.search_problems();setFlagsearch(false);setOpenSelect(false)}}/>
+                                </div>
+                              </div>:''
+                              }
+                              
+                              </>
+                          </div>
+                        </div>:''
+                //         <div className='cont-search' style={{left:'0px',position:'absolute'}}>
+                //     {(!props.dataProblems.loading )?''
+                //     :<Search searchResults={searchResults} setSearchResults={setSearchResults} searchTerm={searchTerm} setSearchTerm={setSearchTerm}   dataObject={props.dataProblems.data} />
+                //     }
                     
-                </div>:''
+                // </div>:''
                 }
                             <div className='textCardTitle'>
                             EVENTOS ({props.dataProblems.data.length})
@@ -59,6 +154,15 @@ const TableAlerts=(props)=>{
                               <img src={props.modalIsOpen?"/iconos/minimize.svg":"/iconos/maximize.svg"}  className="expandLogo" alt="Logo" onClick={props.action}/>
                               </div>
                             </div>
+                            {
+                              (props.alertsIsOpen && props.modalIsOpen==false)?
+                              <div className='imgCardTitleMin' style={{left:'96%'}}>
+                              <div className='imgContent'>
+                              <img  style={{top:'40%'}}src={"/iconos/minimizar.png"}  className="expandLogo" alt="Logo" onClick={()=>{ props.setAlertsIsOpen(false)}}/>
+                              </div>
+                            </div>:''
+                            }
+                            
                         </div>
                         
               </div>
@@ -123,35 +227,7 @@ const TableAlerts=(props)=>{
                   }
 
                   {
-                  // props.dataProblems.data.map((elemento, indice)=>(
-                    
-                  //   <RowProblem  key={indice} severity={elemento.severity} data={elemento} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion} />
-                  // ))
-                 
-                    // <>
-                    
-                    // // <RowProblem severity={1} />
-                    // // <RowProblem severity={2}/>
-                    // // <RowProblem severity={3}/>
-                    // // <RowProblem severity={4} />
-                    // // <RowProblem severity={2}/>
-                    // // <RowProblem severity={3}/>
-                    // // <RowProblem severity={1} />
-                    // // <RowProblem severity={2}/>
-                    // // <RowProblem severity={3}/>
-                    // // <RowProblem severity={4} />
-                    // // <RowProblem severity={2}/>
-                    // // <RowProblem severity={3}/>
-                    // // <RowProblem severity={1} />
-                    // // <RowProblem severity={2}/>
-                    // // <RowProblem severity={3}/>
-                    // // <RowProblem severity={4} />
-                    // // <RowProblem severity={2}/>
-                    // // <RowProblem severity={3}/>
-                     
-                    // </>
-                    
-                 
+                  
                 }
                 </div>
               </div>

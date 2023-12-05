@@ -132,11 +132,18 @@ const popups = document.querySelectorAll('.custom-popup-findHost');
                     </div>:
                         
                         resultList.map((element, index) => (
-                            <div className='row-searchHost-list' onClick={()=>handleSelected(element)}>
+
+                            <div className='row-searchHost-list' id={index} onClick={()=>handleSelected(element)}>
+                            
+
 
                                 <div className='cont-row-searchHost-txt'>
                                     <div className='ip-row-searchHost' >{element.ip+" / "}</div>
                                     <div> &nbsp; {element.Host}</div>
+                                    {(element.latitude.replace(",", ".")<-90 || element.latitude.replace(",", ".")>90)?
+                                    <div style={{color:'red'}}> &nbsp; coordenadas erroneas</div>:''
+                                    }
+                                    
                                 </div>
                                 {/* {(flagSearch)?element.ip:element.Host} */}
 
