@@ -101,7 +101,7 @@ const selectOptionList=(element)=>{
                           </div>
                           <div className='cont-option-eventos'>
                               <>
-                              <div className='selector-multiple'>
+                              <div className='selector-multiple'  onClick={openSelector} >
                                   <div className='selector-cont-text'>
                                       {(props.severityProblms=="")?'Severidades...':props.severityProblms.map((element,index)=>(
                                         element=="6"?'Down, ':'S'+element+', '
@@ -109,7 +109,7 @@ const selectOptionList=(element)=>{
                                   </div>
                                   <hr class="vertical-line"></hr>
                                   <div className='selector-cont-depliegue ' >
-                                  <img className='img-field-acciones' src={'/iconos/'+((openSelectList)?'up':'down')+'-arrow-select.png'} title='expand' alt='expand' name='expand'    onClick={openSelector} />
+                                  <img className='img-field-acciones' src={'/iconos/'+((openSelectList)?'up':'down')+'-arrow-select.png'} title='expand' alt='expand' name='expand'   />
                                   </div>
                                   
                               </div>
