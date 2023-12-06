@@ -29,82 +29,48 @@ const AddMultiGraphModalStyles = {
   },
 };
 const CustomTooltip = ({ active, payload, label }) => {
-  // console.log(payload)
-  const objetoOrdenado = payload.sort((a, b) => a.value - b.value)
-  console.log(objetoOrdenado)
-  if (active && payload) {
-    return (
-      <div className="custom-tooltip-disponibilidad">
-        <div className="cont-tooltip-disponibilidad">
-        <div className='row-tooltip'><p className='title-tooltip' style={{color:'#505050',fontSize:'small'}}>Fecha:&nbsp;</p><p style={{color:'#505050',fontSize:'small'}}>{label}</p></div>
-        {objetoOrdenado.slice(0, 15).map((element, index) => (
-          <div className='row-tooltip'><p style={{color:element.stroke,fontSize:'x-small'}} >{`  ${element.name}: `}&nbsp;</p><p style={{color:'#505050',fontSize:'x-small',fontWeight:'bold'}}>{element.value.toFixed(2)}</p></div>
-        
+  
+  
+  try{
+    const objetoOrdenado = payload.sort((a, b) => a.value - b.value)
+    
+    if (active && payload) {
+      return (
+        <div className="custom-tooltip-disponibilidad">
+          <div className="cont-tooltip-disponibilidad">
+          <div className='row-tooltip'><p className='title-tooltip' style={{color:'#505050',fontSize:'small'}}>Fecha:&nbsp;</p><p style={{color:'#505050',fontSize:'small'}}>{label}</p></div>
+          {objetoOrdenado.slice(0, 15).map((element, index) => (
+            <div className='row-tooltip'><p style={{color:element.stroke,fontSize:'x-small'}} >{`  ${element.name}: `}&nbsp;</p><p style={{color:'#505050',fontSize:'x-small',fontWeight:'bold'}}>{element.value.toFixed(2)}</p></div>
           
-        ))}
-        {
-          (objetoOrdenado.length>15)?<div className='row-tooltip' style={{fontSize:'x-small',color:'#505050'}}>Mostrando 15 de {objetoOrdenado.length} elementos . . .</div>:''
-        }
+            
+          ))}
+          {
+            (objetoOrdenado.length>15)?<div className='row-tooltip' style={{fontSize:'x-small',color:'#505050'}}>Mostrando 15 de {objetoOrdenado.length} elementos . . .</div>:''
+          }
+          </div>
+          
         </div>
-        
-      </div>
-    );
+      );
+    }
+  
+    return null;
+  }catch(error){
+    console.log("sin datos")
   }
-
-  return null;
+  
 };
 const Disponibilidad=({server})=>{
   const color_graf={
-    1:"#c680ff",
-    2:"#80cfff",
-    3:"#56e1ad",
-    4:"#3b83bd",
-    5:"#6285aa",
-    6:"#7a8697",
-    7:"#8c8884",
-    8:"#9a8a71",
-    9:"#a68d5d",
-    10:"#b18f47",
-    11:"#3b83bd",
-    12:"#346c9b",
-    13:"#2d567a",
-    14:"#25415a",
-    15:"#1d2c3d",
-    16:"#131a21",
-    17:"#7f4a83",
-    18:"#86518a",
-    19:"#8e5892",
-    20:"#955f99",
-    21:"#9d66a0",
-    22:"#a46da8",
-    23:"#ac74b0",
-    24:"#614064",
-    25:"#49314a",    
-    26:"#b4031c",
-    27:"#bc1521",
-    28:"#c52127",
-    29:"#cd2b2d",
-    30:"#d53433",
-    31:"#de3d39",
-    32:"#e6453f",
-    33:"#cd2b2d",
-    34:"#dc574c",
-    35:"#e87b6d",
-    36:"#f29c90",
-    37:"#fabdb4",
-    38:"#00a87f",
-    39:"#00b48a",
-    40:"#00c096",
-    41:"#00cca1",
-    42:"#27d8ac",
-    43:"#3ce5b8",
-    44:"#4df1c4",
-    45:"#80debf",
-    46:"#a3e7cf",
-    47:"#393939",
-    48:"#5c5c5c",
-    49:"#828282",
-    50:"#aaaaaa" ,
+    1:"#c680ff",2:"#80cfff",3:"#56e1ad",4:"#3b83bd",5:"#6285aa",
+    6:"#7a8697",7:"#8c8884",8:"#9a8a71",9:"#a68d5d",10:"#b18f47",
+    11:"#3b83bd",12:"#346c9b",13:"#2d567a",14:"#25415a",15:"#1d2c3d",
+    16:"#131a21",17:"#7f4a83",18:"#86518a",19:"#8e5892",20:"#955f99",
+    21:"#9d66a0",22:"#a46da8",23:"#ac74b0",24:"#614064",25:"#49314a",    
+    26:"#b4031c",27:"#bc1521",28:"#c52127",29:"#cd2b2d",30:"#d53433",
+    31:"#de3d39",32:"#e6453f",33:"#cd2b2d",34:"#dc574c",35:"#e87b6d",
+    36:"#f29c90",37:"#fabdb4",38:"#00a87f",39:"#00b48a",40:"#00c096",
+    41:"#00cca1",42:"#27d8ac",43:"#3ce5b8",44:"#4df1c4",45:"#80debf",
+    46:"#a3e7cf",47:"#393939",48:"#5c5c5c",49:"#828282",50:"#aaaaaa",
   }
   const generateColorOptions = () => {
     const colorOptions = {};
@@ -166,6 +132,7 @@ const Disponibilidad=({server})=>{
     const [indexSelected,setIndexSelected] =useState(0)
     const [flagTodos,setFlagTodos]=useState(true)
     const [flagGeneral,setFlagGeneral]=useState(false)
+    const [periodoSeleccionado, setPeriodoSeleccionado] = useState(null);
     // console.log(opcionesTxtArrayFijo)
     // console.log(opcionesTxtArray)
     // console.log(opcionesArray.municipio[0])
@@ -189,7 +156,7 @@ const Disponibilidad=({server})=>{
     },[seriesKeys])
 
     const ultimasNHoras = (n) => {
-      console.log("ultimas ",n)
+      
       const ahora = new Date();
       const haceNHoras = new Date(ahora.getTime() - (n * 60 * 60 * 1000));
       const anio = haceNHoras.getFullYear();
@@ -209,7 +176,7 @@ const Disponibilidad=({server})=>{
         }
        
     })
-    console.log(opciones)
+    // console.log(opciones)
       // setFechaFin(ahora.toISOString().slice(0, 16));
     };
 const formatDate=(date)=>{
@@ -222,7 +189,7 @@ const formatDate=(date)=>{
   return `${anio}-${mes}-${dia}T${horas}:${minutos}`;
 }
     const ultimoPeriodo = (n) => {
-      console.log("ultimas ",n)
+      
       const fechaActual = new Date();
       const anioActual = new Date().getFullYear();
   // Calcula la fecha de inicio de la semana actual
@@ -252,7 +219,7 @@ const formatDate=(date)=>{
   const ultimoDiaAnioPasado = new Date(fechaActual.getFullYear() - 1, 11, 31);
   const primerDiaAnoActual = new Date(anioActual, 0, 1);
     // return `${anio}-${mes}-${dia}T${horas}:${minutos}`;
-      console.log(formatDate(inicioSemanaPasada))
+      // console.log(formatDate(inicioSemanaPasada))
       switch(n){
         case 1:
           setOpciones((prevState)=>{
@@ -361,8 +328,8 @@ function search_reporte_disponibilidad(){
                           // console.log(response)
         if (response.ok) {
           const response_data = await response.json();
-          console.log(response_data.data)
-          
+          // console.log(response_data.data)
+         
           setTotalLineas(1)
           // setSeriesKeys(countArray[totalLienas]) 
           // setDataInfo({data:response_data.data,loading:false,error:dataInfo.error})
@@ -395,7 +362,7 @@ function download_reporte_disponibilidad(){
   const modeloParam = opcionesArray.modelo.map(id => `model_id=${id}`).join('&');
   
   const url=`${baseURL}?${municipioParam}&${tecParam}&${marcaParam}&${modeloParam}&init_date=${opciones.fecha_ini}&end_date=${opciones.fecha_fin}`
-  console.log(url)  
+  // console.log(url)  
   // console.log('http://'+server.ip+':'+server.port+'/api/v1/cassia/reports/availability?municipality_id='+opciones.municipio+'&tech_id='+opciones.tecnologia+'&brand_id='+opciones.marca+'&model_id='+opciones.modelo+'&init_date='+opciones.fecha_ini+'&end_date='+opciones.fecha_fin)
   // setDataInfo({data:dataInfo.data,loading:true,error:dataInfo.error})
     const fetchData = async () => {
@@ -411,11 +378,9 @@ function download_reporte_disponibilidad(){
                           });
                           console.log(response)
         if (response.ok) {
-          console.log("entro")
-          
           try {
             const response_data = await response.blob();
-            console.log(response_data)
+            // console.log(response_data)
       
             // Crear un enlace para descargar el archivo
             const url = window.URL.createObjectURL(response_data);
@@ -536,7 +501,6 @@ function download_reporte_disponibilidad(){
 
 
   const eliminarElemento = (indice) => {
-    console.log("+++++++++++++++++++++++++++ elimina ",indice)
     const nuevosElementos = elementos.filter((elemento, index) => index !== indice);
     const nuevosElementosTR = elementosToRender.filter((elemento, index) => index !== indice);
     // const newOpcionesArray=opcionesArray.filter((elemento, index) => index !== indice);
@@ -794,8 +758,13 @@ function download_reporte_disponibilidad(){
 
                     </div> */}
                     <div className='cont-info-center'>
+                      
                       {
                             (dataInfo.loading || typeof(dataInfo.data.metrics)=='undefined' )?<div style={{width:'100%',height:'95%',display:'flex',justifyContent:'center'}}><LoadSimple></LoadSimple></div>:
+                              <>
+                              {
+                                (dataInfo.data.metrics[indexSelected].dataset2.length>0 )?'':<h1 style={{position: 'absolute',top: '30%',left: '50%',transform: 'translate(-50%, -50%)',color: '#cecece'}}>Sin Datos</h1>
+                              }
                               <ResponsiveContainer width="100%" height="95%">
                               <LineChart
                                 width={400}
@@ -853,6 +822,7 @@ function download_reporte_disponibilidad(){
                                 }
                               </LineChart>
                               </ResponsiveContainer>
+                              </>
                         }
                     </div>
                     <div className='cont-info-bottom'>

@@ -40,7 +40,7 @@ const Monitoreo=({token_item,dataGlobals,server})=>{
     const [towers,setTowers]=useState([])
     const [rfid,setRfid]=useState([])
     const [switches,setSwitches]=useState([])
-     
+    //  console.log(switches)
     const [token,setToken]=useState("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWFuLm1hcmNpYWwiLCJleHAiOjE2OTExNjg3ODZ9.LETk5Nu-2WXF571qMqTd__RxHGcyOHzg4GfAbiFejJY")
     const [data,setData]=useState([]);
     const [loading,setLoading]=useState(true);
@@ -54,6 +54,7 @@ const Monitoreo=({token_item,dataGlobals,server})=>{
     const[rfid_list,setRfidList]=useState({data:[],loading:true,error:null});
     const [rfidData,setRfidData]=useState({map:{},getSource:{},popup:null});
     const[switch_list,setSwitchList]=useState({data:[],loading:true,error:null});
+    // console.log(switch_list)
     const [mapAux,setmapAux]=useState({});
     const [rfidInterval,setRfidInterval]=useState(0)
     const [renderCapas,setRenderCapas]=useState({downs:false,markersWOR:false,markers:true,rfid:true,switches:true})
@@ -67,7 +68,7 @@ useEffect(()=>{
     // setRenderMap(true)
   } else {
     console.log('Al menos uno de los atributos está en false');
-    // console.log(renderCapas)
+    console.log(renderCapas)
   }
 },[renderCapas])
    useEffect(() => {
@@ -102,7 +103,7 @@ useEffect(()=>{
     
   }, [rfid]);
   useEffect(() => {
-    if(switches.length>0){
+    if(switches.length>0 || switch_list.data.length==0){
       console.log('El proceso de switches ha terminado');
       console.log(switches)
       setRenderCapas(prevState => ({
@@ -926,6 +927,7 @@ useEffect(()=>{
     
     return (
         <>
+        
           <SearchHost mapAux={mapAux} setmapAux={setmapAux}  devices={devices} markersWOR={markersWOR}></SearchHost>
           <RightQuadrant capas={capas} setCapas={setCapas} metricaSelected={metricaSelected} setMetricaSelected={setMetricaSelected} ubiActual={ubiActual} setUbiActual={setUbiActual}  server={server} setRfid={setRfid} search_rfid={search_rfid} search_switches={search_switches} search_devices={search_devices} markersWOR={markersWOR}  search_downs={search_downs} downs={downs} search_problems={search_problems} token={token_item} ubicacion={ubicacion} markers={markers}  dataHosts={devices} setUbicacion={setUbicacion} />
           

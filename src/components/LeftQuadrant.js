@@ -108,7 +108,9 @@ const LeftQuadrant =(props)=>{
      setS1(props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 1))
     }
   },[props.dataHosts.data])
-
+  useEffect(()=>{
+    props.setSeverityProblms(["6"])
+  },[])
     return(
       <>
       
