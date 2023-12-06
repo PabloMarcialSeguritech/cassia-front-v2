@@ -31,8 +31,8 @@ const TableAlerts=(props)=>{
  
   
   const [flagSearch,setFlagsearch]=useState(false)
-  console.log(props.severityProblms)
-  console.log(props.optionsSelectList)
+  // console.log(props.severityProblms)
+  // console.log(props.optionsSelectList)
   function expandAlerts(){
     console.log(typeof props.search_problems)
     if(!props.modalIsOpen){
@@ -46,9 +46,7 @@ const TableAlerts=(props)=>{
     
     
   }
-  useEffect(()=>{
-    props.setSeverityProblms(["6"])
-  },[])
+  
   useEffect(()=>{
     setOpenSelect(false)
   },[props.modalIsOpen])
@@ -133,7 +131,7 @@ const selectOptionList=(element)=>{
                               {
                                 flagSearch?<div className='imgCardTitleMin'>
                                 <div className='imgContent'>
-                                <img src={"/iconos/search_select.png"}  className="expandLogo" alt="Logo" onClick={()=>{props.search_problems();setFlagsearch(false);setOpenSelect(false)}}/>
+                                <img src={"/iconos/search_select.png"}  className="expandLogo" alt="Logo" onClick={()=>{props.search_problems();setFlagsearch(false);setOpenSelect(false);props.setSearchTerm("")}}/>
                                 </div>
                               </div>:''
                               }
