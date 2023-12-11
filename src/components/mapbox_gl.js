@@ -12,6 +12,31 @@ import serverImg2 from '../img/server_2.png';
 import serverImg3 from '../img/server_3.png';
 import serverImg4 from '../img/server_4.png';
 
+function calcularPuntoMedio(coordenadas1, coordenadas2) {
+  // Extraer las coordenadas de los puntos
+  const [x1, y1] = coordenadas1;
+  const [x2, y2] = coordenadas2;
+
+  // Calcular el punto medio
+  const puntoMedioX = (x1 + x2) / 2;
+  const puntoMedioY = (y1 + y2) / 2;
+
+  return [puntoMedioX, puntoMedioY];
+}
+function bitsToGB(bits) {
+  const bytes = bits / 8;
+  const kilobytes = bytes / 1024;
+  const megabytes = kilobytes / 1024;
+  const gigabytes = megabytes / 1024;
+  return megabytes;
+}
+function bitsToGigabits(bits) {
+  const gigabits = bits / 1e6; // 1e9 es equivalente a 1 billion (mil millones)
+  return gigabits;
+}
+
+
+
 const MapBox = ({capas,setCapas,actualizar_rfi,mapAux,setmapAux,search_rfid,global_longitud,global_latitude,global_zoom,devices,markers,markersWOR,lines,downs,towers,rfid,ubicacion,switches,handleMarkerClick}) => {
 
 
@@ -53,6 +78,8 @@ const MapBox = ({capas,setCapas,actualizar_rfi,mapAux,setmapAux,search_rfid,glob
       // style: 'mapbox://styles/mapbox/dark-v11',
       zoom: zoom_provicional,
       center:[longitud_provicional,latitud_provicional]
+//       center: [-73.9709, 40.6712], // starting position [lng, lat]
+// zoom: 15.773 // starting zoom
       // zoom:15,
       // center:[-98.974519,19.601019]
     });
@@ -159,7 +186,7 @@ map.on('mouseenter', 'host-markerWOR', (e) => {
 
   
   const coordinates = e.features[0].geometry.coordinates.slice();
-  
+  // console.log(coordinates)
 
   while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
     coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
@@ -222,36 +249,128 @@ map.on('click', 'host-markerWOR', (e) => {
     
          /************************************************************ CAPA LINEAS Switches ************************************************************************ */
         if(switches.length!==0){
-           const switchesConect={
-               id: 'switches-conection',
-               // id: 'linea',
-               type: 'line',
-               source: {
-                 type: 'geojson',
-                 data: {
-                   type: 'FeatureCollection',
-                   features: switches,
-                 },
-               },
-               paint: {
-                'line-color':[
-                              'match',
-                              ['get', 'severity'], 
-                              0, '#ee0808', 
-                              1, '#4fb7f3', 
-                              2, '#ee9d08', 
-                              3, '#ee5c08', 
-                              4, '#ee0808', 
-                              '#4fb7f3', // Color predeterminado si no se cumplen las condiciones anteriores
-                            ],
-                 'line-width': 1,
-               },
-             }
-             map.addLayer(switchesConect);
+          //  const switchesConect={
+          //      id: 'switches-conection',
+          //      // id: 'linea',
+          //      type: 'line',
+          //      source: {
+          //        type: 'geojson',
+          //        data: {
+          //          type: 'FeatureCollection',
+          //          features: switches,
+          //        },
+          //      },
+          //      paint: {
+          //       'line-color':[
+          //                     'match',
+          //                     ['get', 'severity'], 
+          //                     0, '#ee0808', 
+          //                     1, '#4fb7f3', 
+          //                     2, '#ee9d08', 
+          //                     3, '#ee5c08', 
+          //                     4, '#ee0808', 
+          //                     '#4fb7f3', // Color predeterminado si no se cumplen las condiciones anteriores
+          //                   ],
+          //        'line-width': 1,
+          //      },
+          //    }
+             
+        
+          const switchesConectSource={
+            type: 'geojson',
+            data: {
+              type: 'FeatureCollection',
+              features: switches
+            }
+          }
+              map.addSource('switches-conection',switchesConectSource);
+        
+              // const switchesConect={
+              //   type: 'line',
+              //   source: 'switches-conection',
+              //   id: 'switches-conection',
+              //   paint: {
+              //     'line-color': [
+              //       'match',
+              //       ['get', 'severity'], 
+              //       0, '#ee0808', 
+              //       1, '#4fb7f3', 
+              //       2, '#ee9d08', 
+              //       3, '#ee5c08', 
+              //       4, '#ee0808', 
+              //       '#4fb7f3', // Color predeterminado si no se cumplen las condiciones anteriores
+              //     ],
+              //     'line-width': 4,
+              //     'line-opacity': 0.4
+              //   }
+              // }
+              // map.addLayer(switchesConect);
+              const switchesConect={
+                type: 'line',
+                source: 'switches-conection',
+                id: 'switches-conection',
+                paint: {
+                  
+                  'line-color': [
+                    'match',
+                    ['get', 'severity'], 
+                    0, 'red', 
+                    1, 'lime', 
+                    2, '#ee9d08', 
+                    3, '#ee5c08', 
+                    4, '#ee0808', 
+                    '#4fb7f3', // Color predeterminado si no se cumplen las condiciones anteriores
+                  ],
+                  'line-width': 5,
+                  'line-dasharray': [0, 4, 3]
+                }
+              }
+              map.addLayer(switchesConect);
+        
+              const dashArraySequence = [
+                [0, 4, 3],
+                [0.5, 4, 2.5],
+                [1, 4, 2],
+                [1.5, 4, 1.5],
+                [2, 4, 1],
+                [2.5, 4, 0.5],
+                [3, 4, 0],
+                [0, 0.5, 3, 3.5],
+                [0, 1, 3, 3],
+                [0, 1.5, 3, 2.5],
+                [0, 2, 3, 2],
+                [0, 2.5, 3, 1.5],
+                [0, 3, 3, 1],
+                [0, 3.5, 3, 0.5]
+                ];
+        
+              let step = 0;
+        
+              function animateDashArray(timestamp) {
+                const newStep = parseInt((timestamp / 50) % dashArraySequence.length);
+        
+                if (newStep !== step) {
+                  try{
+                    let layerExists = map.getLayer('switches-conection');
+                    if (layerExists) {
+                      map.setPaintProperty('switches-conection', 'line-dasharray', dashArraySequence[step]);
+                    }
+                  }catch(error){
+                    // console.log(error)
+                  }
+                  
+                  step = newStep;
+                }
+        
+                requestAnimationFrame(animateDashArray);
+              }
+        
+              animateDashArray.bind(this)(0);
+             
              if(!idCapaExistente('switches-conection')){
                setCapas((prevCapas) => ({
                  ...prevCapas,
-                 [Object.keys(prevCapas).length ]: { show: true, name: 'Conexion Switches',id:`switches-conection`,layer:switchesConect ,source:null,nivel:2},
+                 [Object.keys(prevCapas).length ]: { show: true, name: 'Conexion Switches',id:`switches-conection`,layer:switchesConect ,source:switchesConectSource,nivel:2},
                }));
              }
            }
@@ -331,48 +450,99 @@ map.on('click', 'host-markerWOR', (e) => {
        /************************************************************ CAPA Metricas ************************************************************************ */
       if(markers.length!==0){
         
-       
-          const alineacionLayer={
-            id: 'host-marker',
-            type: 'circle',
-            source:  {
-              type: 'geojson',
-              data: {
-                type: 'FeatureCollection',
-                features: markers
-              },
-            },
-            filter: ['!', ['has', 'point_count']],
-            paint: {
-              'circle-color': [
-                'match',
-                ['get', 'severity'], 
-                -1, '#1fee08',
-                0, '#4fb7f3', 
-                1, '#ffee00', 
-                2, '#ee9d08', 
-                3, '#ee5c08', 
-                4, '#ee0808', 
-                '#11b4da', // Color predeterminado si no se cumplen las condiciones anteriores
-              ],
-              'circle-radius': 5,
-              'circle-stroke-width':1,
-              'circle-stroke-color': '#fff',
-            },
+       if(ubicacion.dispId===12){
+ 
+        const throughtputSource={
+          type: 'geojson',
+          data: {
+            type: 'FeatureCollection',
+            features: markers
+          }
+        }
+            map.addSource('line-throughtput',throughtputSource);
+      
+            
+            const throughtputLayer={
+              type: 'line',
+              source: 'line-throughtput',
+              id: 'line-throughtput',
+              paint: {
+                
+                'line-color': [
+                  'match',
+                  ['get', 'severity'], 
+                  -1, '#1fee08',
+              0, '#4fb7f3', 
+              1, '#ffee00', 
+              2, '#ee9d08', 
+              3, '#ee5c08', 
+              4, '#ee0808', 
+              '#11b4da', // Color predeterminado si no se cumplen las condiciones anteriores
+                ],
+                'line-width': 5,
+                'line-dasharray': [0, 4, 3]
+              }
             }
-          map.addLayer(alineacionLayer);
-            if(!idCapaExistente('host-marker')){
-              setCapas((prevCapas) => ({
-                ...prevCapas,
-                [Object.keys(prevCapas).length ]: { show: true, name: 'Metrica',id:`host-marker`,layer:alineacionLayer,source:null,nivel:4},
-              }));
+            map.addLayer(throughtputLayer);
+      
+            const dashArraySequence = [
+              [0, 4, 3],
+              [0.5, 4, 2.5],
+              [1, 4, 2],
+              [1.5, 4, 1.5],
+              [2, 4, 1],
+              [2.5, 4, 0.5],
+              [3, 4, 0],
+              [0, 0.5, 3, 3.5],
+              [0, 1, 3, 3],
+              [0, 1.5, 3, 2.5],
+              [0, 2, 3, 2],
+              [0, 2.5, 3, 1.5],
+              [0, 3, 3, 1],
+              [0, 3.5, 3, 0.5]
+              ];
+      
+            let step = 0;
+      
+            function animateDashArray(timestamp) {
+              const newStep = parseInt((timestamp / 50) % dashArraySequence.length);
+      
+              if (newStep !== step) {
+                try{
+                  let layerExists = map.getLayer('line-throughtput');
+                  if (layerExists) {
+                    map.setPaintProperty('line-throughtput', 'line-dasharray', dashArraySequence[step]);
+                    // Puedes realizar operaciones adicionales aquí si la capa existe
+                  }   
+                }catch(error){
+                  // console.log(error)
+                }
+                
+                step = newStep;
+              }
+      
+              requestAnimationFrame(animateDashArray);
             }
 
+      
+            animateDashArray.bind(this)(0);
+           
+           if(!idCapaExistente('line-throughtput')){
+             setCapas((prevCapas) => ({
+               ...prevCapas,
+               [Object.keys(prevCapas).length ]: { show: true, name: 'Metrica',id:`line-throughtput`,layer:throughtputLayer ,source:throughtputSource,nivel:2},
+             }));
+           }
+           map.on('mouseleave', 'line-throughtput', (e) => {
+            
+
+
         
-        
-          map.on('mouseleave', 'host-marker', (e) => {
-            //  //console.log(e)
-            // Popup.remove();
+
+
+
+            
+
             const popups = document.querySelectorAll('.custom-popup');
           
 
@@ -382,11 +552,13 @@ map.on('click', 'host-markerWOR', (e) => {
           popup.remove();
           });
             });
-          map.on('mouseenter', 'host-marker', (e) => {
-            // //console.log(e)
-            const coordinates = e.features[0].geometry.coordinates.slice();
+          map.on('mouseenter', 'line-throughtput', (e) => {
+            // console.log(e.features[0].geometry.coordinates)
+            const coordinates = calcularPuntoMedio(e.features[0].geometry.coordinates[0],e.features[0].geometry.coordinates[1])
+          // console.log(coordinates)
+            //   const coordinates = e.features[0].geometry.coordinates.slice();
             
-
+  
             while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
               coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
             }
@@ -398,15 +570,87 @@ map.on('click', 'host-markerWOR', (e) => {
               .setLngLat(coordinates)
               
               .setHTML(`<div class='cont-pop' style='border: 1px solid ${e.features[0].properties.color_alineacion};'>
-              <div>${e.features[0].properties.name_hostC.slice(0, 25)}...</div><br>
-              <div> ${e.features[0].properties.metrica}: <b style='color: ${e.features[0].properties.color_alineacion};'>${e.features[0].properties.Alineacion}</b> </div>
+              <div>${e.features[0].properties.name}...</div><br>
+              <div> ${e.features[0].properties.metrica}: <b style='color: ${e.features[0].properties.color_alineacion};'>${bitsToGigabits(e.features[0].properties.Metric).toFixed(4)} Mbps</b> </div>
               
               </div>`)
               .addTo(map);
           });
-          map.on('click', 'host-marker', (e) => {
-            handleMarkerClick(e.features[0].properties)
+          }else{
+        const alineacionLayer={
+          id: 'host-marker',
+          type: 'circle',
+          source:  {
+            type: 'geojson',
+            data: {
+              type: 'FeatureCollection',
+              features: markers
+            },
+          },
+          filter: ['!', ['has', 'point_count']],
+          paint: {
+            'circle-color': [
+              'match',
+              ['get', 'severity'], 
+              -1, '#1fee08',
+              0, '#4fb7f3', 
+              1, '#ffee00', 
+              2, '#ee9d08', 
+              3, '#ee5c08', 
+              4, '#ee0808', 
+              '#11b4da', // Color predeterminado si no se cumplen las condiciones anteriores
+            ],
+            'circle-radius': 5,
+            'circle-stroke-width':1,
+            'circle-stroke-color': '#fff',
+          },
+          }
+        map.addLayer(alineacionLayer);
+          if(!idCapaExistente('host-marker')){
+            setCapas((prevCapas) => ({
+              ...prevCapas,
+              [Object.keys(prevCapas).length ]: { show: true, name: 'Metrica',id:`host-marker`,layer:alineacionLayer,source:null,nivel:4},
+            }));
+          }
+      
+      
+        map.on('mouseleave', 'host-marker', (e) => {
+          //  //console.log(e)
+          // Popup.remove();
+          const popups = document.querySelectorAll('.custom-popup');
+        
+        popups.forEach(popup => {
+        
+        popup.remove();
+        });
           });
+        map.on('mouseenter', 'host-marker', (e) => {
+          // //console.log(e)
+          const coordinates = e.features[0].geometry.coordinates.slice();
+          
+
+          while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+          }
+          
+          Popup= new mapboxgl.Popup({
+            className: 'custom-popup',
+            closeButton: false,
+        })
+            .setLngLat(coordinates)
+            
+            .setHTML(`<div class='cont-pop' style='border: 1px solid ${e.features[0].properties.color_alineacion};'>
+            <div>${e.features[0].properties.name_hostC.slice(0, 25)}...</div><br>
+            <div> ${e.features[0].properties.metrica}: <b style='color: ${e.features[0].properties.color_alineacion};'>${e.features[0].properties.Alineacion}</b> </div>
+            
+            </div>`)
+            .addTo(map);
+        });
+        map.on('click', 'host-marker', (e) => {
+          handleMarkerClick(e.features[0].properties)
+        });
+       }
+          
      }
       /************************************************************ CAPA DOWNS ************************************************************************ */
       console.log("downs map")
@@ -554,6 +798,97 @@ map.on('click', 'host-markerWOR', (e) => {
         handleMarkerClick(e.features[0].properties)
      
     })
+    /************************************************************ CAPA Lineas ************************************************************************ */
+    
+    // const geojson = {
+    //   type: 'FeatureCollection',
+    //   features: switches
+    // };
+
+    
+    //   map.addSource('line', {
+    //     type: 'geojson',
+    //     data: geojson
+    //   });
+
+    //   map.addLayer({
+    //     type: 'line',
+    //     source: 'line',
+    //     id: 'line-background',
+    //     paint: {
+    //       'line-color': [
+    //         'match',
+    //         ['get', 'severity'], 
+    //         0, '#ee0808', 
+    //         1, '#4fb7f3', 
+    //         2, '#ee9d08', 
+    //         3, '#ee5c08', 
+    //         4, '#ee0808', 
+    //         '#4fb7f3', // Color predeterminado si no se cumplen las condiciones anteriores
+    //       ],
+    //       'line-width': 4,
+    //       'line-opacity': 0.4
+    //     }
+    //   });
+
+    //   map.addLayer({
+    //     type: 'line',
+    //     source: 'line',
+    //     id: 'line-dashed',
+    //     paint: {
+          
+    //       'line-color': [
+    //         'match',
+    //         ['get', 'severity'], 
+    //         0, '#ee0808', 
+    //         1, '#4fb7f3', 
+    //         2, '#ee9d08', 
+    //         3, '#ee5c08', 
+    //         4, '#ee0808', 
+    //         '#4fb7f3', // Color predeterminado si no se cumplen las condiciones anteriores
+    //       ],
+    //       'line-width': 5,
+    //       'line-dasharray': [0, 4, 3]
+    //     }
+    //   });
+
+    //   const dashArraySequence = [
+    //     [0, 4, 3],
+    //     [0.5, 4, 2.5],
+    //     [1, 4, 2],
+    //     [1.5, 4, 1.5],
+    //     [2, 4, 1],
+    //     [2.5, 4, 0.5],
+    //     [3, 4, 0],
+    //     [0, 0.5, 3, 3.5],
+    //     [0, 1, 3, 3],
+    //     [0, 1.5, 3, 2.5],
+    //     [0, 2, 3, 2],
+    //     [0, 2.5, 3, 1.5],
+    //     [0, 3, 3, 1],
+    //     [0, 3.5, 3, 0.5]
+    //     ];
+
+    //   let step = 0;
+
+    //   function animateDashArray(timestamp) {
+    //     const newStep = parseInt((timestamp / 50) % dashArraySequence.length);
+
+    //     if (newStep !== step) {
+    //       try{
+    //         map.setPaintProperty('line-dashed', 'line-dasharray', dashArraySequence[step]);
+    //       }catch(error){
+    //         // console.log(error)
+    //       }
+          
+    //       step = newStep;
+    //     }
+
+    //     requestAnimationFrame(animateDashArray);
+    //   }
+
+    //   animateDashArray.bind(this)(0);
+    
  /************************************************************ CAPA TORRES ************************************************************************ */
       map.loadImage(
         towerImg,
