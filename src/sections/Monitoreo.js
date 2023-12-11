@@ -9,6 +9,7 @@ import {  useEffect, useState } from 'react'
 import { useFetch } from '../hooks/useFetch'
 import mapboxgl from 'mapbox-gl'
 import MapBox from '../components/mapbox_gl'
+import MapComponent from '../components/Map'
 import LoadData from '../components/LoadData'
 import Modal from 'react-modal';
 import InfoMarker from '../components/InfoMarker'
@@ -97,7 +98,7 @@ useEffect(()=>{
   useEffect(() => {
     if(rfid.length>0){
       console.log('El proceso de rfid ha terminado');
-      console.log(rfid)
+      // console.log(rfid)
       setRenderCapas(prevState => ({
         ...prevState,
         rfid: true 
@@ -106,6 +107,8 @@ useEffect(()=>{
     
   }, [rfid]);
   useEffect(() => {
+  console.log("switches")
+  console.log(switches.length+" | "+switch_list.data.length)
     if(switches.length>0 || switch_list.data.length==0){
       console.log('El proceso de switches ha terminado');
       console.log(switches)
@@ -145,8 +148,8 @@ useEffect(()=>{
     },[rfid_list.data])
     useEffect(()=>{
       if(rfid.length!==0){
-        console.log('actualizo rfid')
-        console.log(rfid)
+        // console.log('actualizo rfid')
+        // console.log(rfid)
         actualizar_layer_rfid(rfid)
         }
 
@@ -231,8 +234,8 @@ useEffect(()=>{
     }
     /****************************************************************** */
     function objeto_rfid(rfid_list){
-      console.log("objeto rfid")
-      console.log(rfid_list)
+      // console.log("objeto rfid")
+      // console.log(rfid_list)
       setRfid([])
       rfid_list.map((host, index, array)=>
           {
@@ -272,7 +275,7 @@ useEffect(()=>{
               }])
               
             }else{
-              console.log(host)
+              // console.log(host)
             }
         }
         )
@@ -292,7 +295,7 @@ useEffect(()=>{
       let andAux=(devicefilter!=='' )?'&':'?'
             andAux=(subtypefilter!=='')?andAux:''
             
-      console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/problems/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter+((ubicacion.dispId==0 && ubicacion.templateId==0)?'?':'&')+severityfilter)
+      // console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/problems/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter+((ubicacion.dispId==0 && ubicacion.templateId==0)?'?':'&')+severityfilter)
           const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/problems/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter+((ubicacion.dispId==0 && ubicacion.templateId==0)?'?':'&')+severityfilter, {                 
                               headers: {
                                 'Content-Type': 'application/json',
@@ -343,7 +346,7 @@ useEffect(()=>{
                               console.log(response)
             if (response.ok) {
               const response_data = await response.json();
-              // console.log(response_data.data)
+              console.log(response_data.data)
               // console.log("arcos")
               // console.log(arcos_list)
               setSwitchList({data:response_data.data,loading:false,error:rfid_list.error})
@@ -363,8 +366,8 @@ useEffect(()=>{
     }
     function search_rfid(){
       setRfid([])
-      console.log()
-      console.log("borra rfid")
+      // console.log()
+      // console.log("borra rfid")
       setRfidList({data:[],loading:true,error:rfid_list.error})
         const fetchData = async () => {
           try {
@@ -377,9 +380,9 @@ useEffect(()=>{
                               });
             if (response.ok) {
               const response_data = await response.json();
-              console.log(response_data.data)
-              console.log("arcos")
-              console.log(arcos_list)
+              // console.log(response_data.data)
+              // console.log("arcos")
+              // console.log(arcos_list)
               setRfidList({data:response_data.data,loading:false,error:rfid_list.error})
               // setRfidList({data:arcos_list,loading:false,error:rfid_list.error})
               
@@ -434,10 +437,11 @@ useEffect(()=>{
                                   Authorization: `Bearer ${token_item}`,
                                 },
                               });
+                              
             if (response.ok) {
               const response_data = await response.json();
               setDevices({data:response_data.data,loading:false,error:devices.error})
-              // //console.log(response_data)
+              console.log(response_data)
              
             } else {
               throw new Error('Error en la solicitud');
@@ -511,84 +515,125 @@ useEffect(()=>{
     function objeto_subgroup_info(devices_data){
       devices_data.subgroup_info.map((host, index, array)=>
           {
-            // if (index === 1) {
-            //   setUbicacion({latitud:host.latitude,longitud:host.longitude,groupid:ubicacion.groupid,dispId:ubicacion.dispId,templateId:ubicacion.templateId})
-            //   console.log(host);
-            // }
-            if(host.length!==0 && host.latitude.replace(",", ".")>=-90 && host.latitude.replace(",", ".")<=90 ){
-              let colorSG='#4fb7f3'
-              // let colorSG='#ffffff'
-              // const hostidC = devices_data.hosts.find(obj => obj.hostid === host.hostid)
-              const relation = devices_data.relations.find(obj => obj.hostid === host.hostid)
+            if(ubicacion.dispId===12){
+              if(host.length!==0 && host.latitudeP.replace(",", ".")>=-90 && host.latitudeP.replace(",", ".")<=90 && host.latitudeC.replace(",", ".")>=-90 && host.latitudeC.replace(",", ".")<=90){
               
-              let hostidP={}
-              if(relation!==undefined){
-               hostidP = devices_data.hosts.find(obj => obj.hostid === relation.hostidP)
-              // //console.log(hostidP)
-              }
+                
+                //console.log(host.hostidC)
+                // console.log(hostSub   )
+                let alineacion=0
                 let severity=0
-              if(host.value===0){
-                  colorSG='#1fee08'
-                  severity=-1
-              }else
-              // if(host.value>-60 && host.value<=-50){
-              //   colorSG='#ffee00'
-              //   // severity=1
-              // }else if(host.value>-70 && host.value<=-60){
-              //   colorSG='#ee9d08'
-              //   // severity=2
-              // }else if(host.value>-80 && host.value<=-70){
-              //   colorSG='#ee5c08'
-              //   // severity=3
-              // }else if(host.value<=-80){
-              //   colorSG='#ee0808'
-              //   // severity=4
-              // }
-              if(host.severity==1){
-                colorSG='#ffee00'
-                // severity=1
-              }else if(host.severity==2){
-                colorSG='#ee9d08'
-                // severity=2
-              }else if(host.severity==3){
-                colorSG='#ee5c08'
-                // severity=3
-              }else if(host.severity==4){
-                colorSG='#ee0808'
-                // severity=4
+                
+                
+                  let colorSG='#00ff70'
+                  
+                
+                  if(host.severity==1){
+                    colorSG='#ffee00'
+                    // severity=1
+                  }else if(host.severity==2){
+                    colorSG='#ee9d08'
+                    // severity=2
+                  }else if(host.severity==3){
+                    colorSG='#ee5c08'
+                    // severity=3
+                  }else if(host.severity==4){
+                    colorSG='#ee0808'
+                    // severity=4
+                  }
+                //azul #4fb7f3
+                // verde "#1fee08"
+                
+                
+                setMarkers(markers=>[...markers,{
+                  type: 'Feature',
+                  properties:{
+                    correlarionid: host.relationid,
+                    init_lat: host.latitudeP.replace(",", "."),
+                    init_lon: host.longitudeP.replace(",", "."),
+                    end_lat: host.latitudeC.replace(",", "."),
+                    end_lon: host.longitudeC.replace(",", "."),
+                    Metric:host.Metric,
+                    name:host.name,
+                    hostidC: host.hostidC,
+                    hostidP: host.hostidP,
+                    BitsSent: host.BitsSent,
+                    color_alineacion:colorSG,
+                    severity:host.severity,
+                    // severity:Math.floor(Math.random() * 4) + 1,
+                    metrica:metricaSelected,
+                  },
+                  geometry: {
+                    type: 'LineString',
+                    coordinates: [[host.longitudeP.replace(",", "."), host.latitudeP.replace(",", ".")], [host.longitudeC.replace(",", "."), host.latitudeC.replace(",", ".")]],
+                  },
+                }])
+                /****************************************************************** */
+                
               }
-              //azul #4fb7f3
-              // verde "#1fee08"
-              setMarkers(markers=>[...markers,{
-                type: 'Feature',
-                properties:{
-                  correlarionid: host.correlarionid,
-                  hostidP: hostidP.hostid,
-                  hostidC: host.hostid,
-                  init_lat: hostidP.latitude,
-                  init_lon: hostidP.longitude,
-                  end_lat: host.latitude.replace(",", "."),
-                  end_lon: host.longitude.replace(",", "."),
-                  hostid: host.hostid,
-                  name_hostP:hostidP.Host,
-                  name_hostC:host.name,
-                  name_hostipP:hostidP.ip,
-                  name_hostipC:host.ip,
-                  Alineacion: host.value,
-                  color_alineacion:colorSG,
-                  severity:host.severity,
-                  metrica:metricaSelected,
-                  lg:'lg'
-                },
-                geometry: {
-                  type: 'Point',
-                  coordinates: [host.longitude, host.latitude],
-                },
-              }]) 
-             
             }else{
-              //console.log(host)
+              if(host.length!==0 && host.latitude.replace(",", ".")>=-90 && host.latitude.replace(",", ".")<=90 ){
+                let colorSG='#4fb7f3'
+                // let colorSG='#ffffff'
+                // const hostidC = devices_data.hosts.find(obj => obj.hostid === host.hostid)
+                const relation = devices_data.relations.find(obj => obj.hostid === host.hostid)
+                
+                let hostidP={}
+                if(relation!==undefined){
+                 hostidP = devices_data.hosts.find(obj => obj.hostid === relation.hostidP)
+                // //console.log(hostidP)
+                }
+                  let severity=0
+                if(host.value===0){
+                    colorSG='#1fee08'
+                    severity=-1
+                }else
+               
+                if(host.severity==1){
+                  colorSG='#ffee00'
+                  // severity=1
+                }else if(host.severity==2){
+                  colorSG='#ee9d08'
+                  // severity=2
+                }else if(host.severity==3){
+                  colorSG='#ee5c08'
+                  // severity=3
+                }else if(host.severity==4){
+                  colorSG='#ee0808'
+                  // severity=4
+                }
+                //azul #4fb7f3
+                // verde "#1fee08"
+                setMarkers(markers=>[...markers,{
+                  type: 'Feature',
+                  properties:{
+                    correlarionid: host.correlarionid,
+                    hostidP: hostidP.hostid,
+                    hostidC: host.hostid,
+                    init_lat: hostidP.latitude,
+                    init_lon: hostidP.longitude,
+                    end_lat: host.latitude.replace(",", "."),
+                    end_lon: host.longitude.replace(",", "."),
+                    hostid: host.hostid,
+                    name_hostP:hostidP.Host,
+                    name_hostC:host.name,
+                    name_hostipP:hostidP.ip,
+                    name_hostipC:host.ip,
+                    Alineacion: host.value,
+                    color_alineacion:colorSG,
+                    severity:host.severity,
+                    metrica:metricaSelected,
+                    lg:'lg'
+                  },
+                  geometry: {
+                    type: 'Point',
+                    coordinates: [host.longitude, host.latitude],
+                  },
+                }]) 
+               
+              }
             }
+            
         }
         )
     }
@@ -735,7 +780,7 @@ useEffect(()=>{
     }
     /************************************************************************************ */
     function objeto_markers_wor(devices_data){
-      console.log("WOR")
+      // console.log("WOR")
       let flag_ubicacion=false
       devices_data.hosts.map((host, index, array)=>
           {
@@ -873,8 +918,8 @@ useEffect(()=>{
       function actualizar_rfi(map,popup2,rfidI){
         // console.log(map.getSource('host-rfid'))
         try {
-          console.log("actualizar_rfi rfidInterval")
-        console.log(rfidI)
+        //   console.log("actualizar_rfi rfidInterval")
+        // console.log(rfidI)
         setRfidInterval(rfidI)
           setRfidData({map:map,getSource:map.getSource('host-rfid'),popup:popup2})
         
