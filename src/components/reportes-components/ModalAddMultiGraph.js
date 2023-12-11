@@ -31,7 +31,9 @@ const CustomTooltip = ({ active, payload, label }) => {
 
   return null;
 };
+
 const ModalCreateCis =({server,flagTodos,flagGeneral,setFlagGeneral,generateColorOptions,indexSelected,opcionesTxtArrayFijo,color_graf,setTotalLineas,elementosToRender,dataInfo,closAddMultiGraphModal})=>{
+
 const [disabled,setDisabled]=useState(true)
 //     const [elementos, setElementos] = useState([]);
 //     const [countElements, setCountElementos] = useState(1);
@@ -98,8 +100,10 @@ const [elementos, setElementos] = useState([]);
                         onClick={closAddMultiGraphModal}
                       />
           </div>
+
           {(!flagTodos)?
             <div className='cont-list-graf'>
+
             <div className='compact-list-graf'>
 
             
@@ -140,8 +144,10 @@ const [elementos, setElementos] = useState([]);
                                 width={400}
                                 height={200}
                                 // data={dataInfo.data.metrics[0].dataset}
+
                                 // data={dataInfo.data.metrics[indexSelected].dataset}
                                 data={(flagGeneral)?dataInfo.data.metrics[indexSelected].dataset:dataInfo.data.metrics[indexSelected].dataset2}
+
                                 // data={data}
                                 margin={{
                                   top: 5,
