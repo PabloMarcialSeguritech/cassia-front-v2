@@ -33,8 +33,11 @@ const Monitoreo=({token_item,dataGlobals,server})=>{
     const [latitudes,setLatitudes]=useState([])
     const [longitudes,setLongitudes]=useState([])
     const [locations,setLocations]=useState([])
-    // console.log(ubiActual)
+    console.log(ubicacion)
     const [markers,setMarkers]=useState([])
+    const [markers1, setMarkers1] = useState([]);
+const [markers2, setMarkers2] = useState([]);
+console.log(markers1,markers2,markers)
     const [markersWOR,setMarkersWOR]=useState([])
     const [lines,setLines]=useState([])
     const [downs,setDowns]=useState([])
@@ -72,6 +75,13 @@ useEffect(()=>{
     console.log(renderCapas)
   }
 },[renderCapas])
+useEffect(()=>{
+  console.log("actualiza markers")
+  if(ubicacion.templateId!=0){
+    setMarkers([markers1,markers2])
+  }
+ 
+},[markers1,markers2])
    useEffect(() => {
     // console.log(renderCapas.markersWOR)
     if(markersWOR.length!==0){
@@ -411,6 +421,8 @@ useEffect(()=>{
         switches:(ubicacion.dispId===12)?false:true,
       }));
         setMarkers([])
+        setMarkers1([])
+        setMarkers2([])
         setMarkersWOR([])
         setLines([])
         setSwitches([])
@@ -510,13 +522,14 @@ useEffect(()=>{
         fetchData();
     }
     function objeto_subgroup_info(devices_data){
+      console.log(devices_data.subgroup_info)
       devices_data.subgroup_info.map((host, index, array)=>
           {
             if(ubicacion.dispId===12){
               if(host.length!==0 && host.latitudeP.replace(",", ".")>=-90 && host.latitudeP.replace(",", ".")<=90 && host.latitudeC.replace(",", ".")>=-90 && host.latitudeC.replace(",", ".")<=90){
               
                 
-                //console.log(host.hostidC)
+                console.log("indice"+index+" | tipo:"+host.type_connection)
                 // console.log(hostSub   )
                 let alineacion=0
                 let severity=0
@@ -540,31 +553,63 @@ useEffect(()=>{
                   }
                 //azul #4fb7f3
                 // verde "#1fee08"
+                if(host.type_connection==1){
+                  console.log("fibra optica")
+                  setMarkers1(markers1 =>[...markers1,{
+                    type: 'Feature',
+                    properties:{
+                      correlarionid: host.relationid,
+                      init_lat: host.latitudeP.replace(",", "."),
+                      init_lon: host.longitudeP.replace(",", "."),
+                      end_lat: host.latitudeC.replace(",", "."),
+                      end_lon: host.longitudeC.replace(",", "."),
+                      Metric:host.Metric,
+                      name:host.name,
+                      hostidC: host.hostidC,
+                      hostidP: host.hostidP,
+                      BitsSent: host.BitsSent,
+                      color_alineacion:colorSG,
+                      severity:host.severity,
+                      type_connection: host.type_connection,
+                      // severity:Math.floor(Math.random() * 4) + 1,
+                      metrica:metricaSelected,
+                    },
+                    geometry: {
+                      type: 'LineString',
+                      coordinates: [[host.longitudeP.replace(",", "."), host.latitudeP.replace(",", ".")], [host.longitudeC.replace(",", "."), host.latitudeC.replace(",", ".")]],
+                    },
+                  }])
+                }else if(host.type_connection==2){
+                  console.log("microonda")
+                  setMarkers2(markers2 =>[...markers2,{
+                    type: 'Feature',
+                    properties:{
+                      correlarionid: host.relationid,
+                      init_lat: host.latitudeP.replace(",", "."),
+                      init_lon: host.longitudeP.replace(",", "."),
+                      end_lat: host.latitudeC.replace(",", "."),
+                      end_lon: host.longitudeC.replace(",", "."),
+                      Metric:host.Metric,
+                      name:host.name,
+                      hostidC: host.hostidC,
+                      hostidP: host.hostidP,
+                      BitsSent: host.BitsSent,
+                      color_alineacion:colorSG,
+                      severity:host.severity,
+                      type_connection: host.type_connection,
+                      // severity:Math.floor(Math.random() * 4) + 1,
+                      metrica:metricaSelected,
+                    },
+                    geometry: {
+                      type: 'LineString',
+                      coordinates: [[host.longitudeP.replace(",", "."), host.latitudeP.replace(",", ".")], [host.longitudeC.replace(",", "."), host.latitudeC.replace(",", ".")]],
+                    },
+                  }])
+                }
                 
-                
-                setMarkers(markers=>[...markers,{
-                  type: 'Feature',
-                  properties:{
-                    correlarionid: host.relationid,
-                    init_lat: host.latitudeP.replace(",", "."),
-                    init_lon: host.longitudeP.replace(",", "."),
-                    end_lat: host.latitudeC.replace(",", "."),
-                    end_lon: host.longitudeC.replace(",", "."),
-                    Metric:host.Metric,
-                    name:host.name,
-                    hostidC: host.hostidC,
-                    hostidP: host.hostidP,
-                    BitsSent: host.BitsSent,
-                    color_alineacion:colorSG,
-                    severity:host.severity,
-                    // severity:Math.floor(Math.random() * 4) + 1,
-                    metrica:metricaSelected,
-                  },
-                  geometry: {
-                    type: 'LineString',
-                    coordinates: [[host.longitudeP.replace(",", "."), host.latitudeP.replace(",", ".")], [host.longitudeC.replace(",", "."), host.latitudeC.replace(",", ".")]],
-                  },
-                }])
+                // setMarkers([markers1,markers2])
+              //   console.log(markers1)
+              //  console.log(markers2) 
                 /****************************************************************** */
                 
               }
@@ -722,7 +767,7 @@ useEffect(()=>{
         )
     }
     function objeto_switches(switch_list){
-      // console.log(switch_list)
+      console.log(switch_list)
       //console.log(devices_data.relations)
       switch_list.map((host, index, array)=>
           {

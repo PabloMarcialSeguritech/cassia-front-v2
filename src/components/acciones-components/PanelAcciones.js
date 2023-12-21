@@ -1,16 +1,17 @@
 
 import { useState,useEffect } from 'react'
-import './styles/PanelCis.css'
+import './styles/PanelAcciones.css'
 import Search from '../generales/Search';
 import Action from '../Action';
 import Modal from 'react-modal';
-import ModalCreateCis from './ModalCreateCis';
-import CisList from './CisList';
-import LoadSimple from '../LoadSimple';
-import TableCis from './TableCis';
-import InfoCis from './InfoCis';
+// import ModalCreateCis from './ModalCreateCis';
+// import CisList from './CisList';
+// import LoadSimple from '../LoadSimple';
+// import TableCis from './TableCis';
+// import InfoCis from './InfoCis';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import TableAcciones from './TableAcciones';
 const CreateCisModalStyles = {
     content: {
       top: '50%',
@@ -25,7 +26,7 @@ const CreateCisModalStyles = {
       padding:'20px'
     },
   };
-const PanelCis=({server})=>{
+const PanelAcciones=({server})=>{
     const [CreateCisModalOpen, setCreateCisModalOpen] =useState(false);
     const [dataUsers,setDataUsers]=useState({data:[],loading:true,error:null})
     const [searchResults, setSearchResults] = useState([]);
@@ -82,8 +83,8 @@ const PanelCis=({server})=>{
           const fetchDataPost = async () => {
             
          try {
-            console.log('http://'+server.ip+':'+server.port+'/api/v1/cassia/ci_elements/'+ci_id)
-            const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/cassia/ci_elements/'+ci_id, {
+            console.log('http://'+server.ip+':'+server.port+'/api/v1/cassia/actions/')
+            const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/cassia/actions/', {
                 method: 'GET',  
                 headers: {
                   'Content-Type': 'application/json',
@@ -143,9 +144,9 @@ const PanelCis=({server})=>{
     }
     return (
         <>
-        <div className='main-panel-cis'>
-            <div className='content-cis'>
-                <div className='cont-cis-search'>
+        <div className='main-panel-accManage'>
+            <div className='content-accManage'>
+                <div className='cont-accManage-search'>
               {(cisSelected.length===0)?
               <>
               <div className='cont-search'>
@@ -156,7 +157,7 @@ const PanelCis=({server})=>{
 
                 </div>
                 <div className='cont-search-buttons'>
-                <Action disabled={false} origen='Blanco' titulo='+ Crear Registro'  action={crear}/>
+                {/* <Action disabled={false} origen='Blanco' titulo='+ Crear Registro'  action={crear}/> */}
                 </div>
               </>
               :
@@ -182,12 +183,12 @@ const PanelCis=({server})=>{
                     
                 </div>
                
-                <div className='cont-cis-table'>
-                <div className='content-card-cis' id='content'>
-                              {(cisSelected.length===0)?
-                              <TableCis  cisSelected={cisSelected} setCisSelected={setCisSelected} registerIsValid={registerIsValid} searchResults={searchResults} setSearchResults={setSearchResults} searchTerm={searchTerm} setSearchTerm={setSearchTerm} dataUsers={dataUsers} setDataUsers={setDataUsers} server={server} setRegisterIsValid={setRegisterIsValid} setData={setData} setLoading={setLoading} setError={setError}  handleChangEdit={handleChangEdit}></TableCis>:
-                              <InfoCis server={server} cisSelected={cisSelected} searchResults={searchResults} setSearchResults={setSearchResults} searchTerm={searchTerm} setSearchTerm={setSearchTerm} onSearch={handleSearch}  dataUsers={dataUsers} setDataUsers={setDataUsers} setCisSelected={setCisSelected} registerIsValid={registerIsValid}  ></InfoCis>
-                            }
+                <div className='cont-accManage-table'>
+                <div className='content-card-accManage' id='content'>
+                           
+                              <TableAcciones  cisSelected={cisSelected} setCisSelected={setCisSelected} registerIsValid={registerIsValid} searchResults={searchResults} setSearchResults={setSearchResults} searchTerm={searchTerm} setSearchTerm={setSearchTerm} dataUsers={dataUsers} setDataUsers={setDataUsers} server={server} setRegisterIsValid={setRegisterIsValid} setData={setData} setLoading={setLoading} setError={setError}  handleChangEdit={handleChangEdit}/>
+                           
+                            
                                 
                             </div>
                 </div>
@@ -202,10 +203,10 @@ const PanelCis=({server})=>{
         contentLabel="Example Modal2"
         // shouldCloseOnOverlayClick={false}
         >
-          <ModalCreateCis server={server} editActive={editActive} setEditActive={setEditActive} dataCis={dataCis} setData={setData} loading={loading} setLoading={setLoading} setError={setError} setRegisterIsValid={setRegisterIsValid} closCreateCisModal={closCreateCisModal}></ModalCreateCis>
+          {/* <ModalCreateCis server={server} editActive={editActive} setEditActive={setEditActive} dataCis={dataCis} setData={setData} loading={loading} setLoading={setLoading} setError={setError} setRegisterIsValid={setRegisterIsValid} closCreateCisModal={closCreateCisModal}></ModalCreateCis> */}
     </Modal>
     </>
     )
 }
 
-export default PanelCis
+export default PanelAcciones

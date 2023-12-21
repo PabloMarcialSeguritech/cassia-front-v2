@@ -1,0 +1,380 @@
+.main-panel-accManage{
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.content-accManage{
+    position: relative;
+    justify-content: center;
+    display: block;
+    height: 98%;
+    width: 94%;
+border-radius:10px ;
+box-shadow: 0 0 5px 5px rgba(24, 94, 224, 0.15), 0 6px 12px 0 rgba(24, 94, 224, 0.15);
+border: 2px solid #003757;
+  border-radius: 10px;
+}
+.cont-accManage-search{
+position: relative;
+  height: 10%;
+  width: 100%;
+  /* background: rgba(195,195,195); */
+  background: #003757;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px 5px 0px 0px;
+}
+.cont-search{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 20%;
+}
+.cont-search-space{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 60%;
+}
+.cont-search-buttons{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 20%;
+}
+.cont-accManage-table{
+    position: relative;
+  height: 90%;
+  width: 100%;
+  /* background: rgba(195,195,195); */
+  /* background: #003757; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.content-card-accManage{
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+  /****************************** tabla acciones ******************************************/
+  .cont-table-accManage{
+    width: 98%;
+    height: 99%;
+    /* border: 1px solid #56575746; */
+    border-radius: 5px;
+    display: block;
+    position: relative;
+  }
+  .head-table-accManage{
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 7%;
+    background-color: rgb(138, 138, 138);
+    /* background:#4392c0; */
+    /* border-bottom: 1px solid #003757; */
+     border-radius: 5px 5px 0px 0px;
+     font-size: 11px;
+  }
+  .field-head-table-accManage{
+    height: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: aliceblue;
+    text-align: center;
+  }
+  .field-head-table-accManage.field-nombre,.field-head-table-accManage.field-small{
+    border-right: 1px solid rgba(240, 248, 255, 0.473);
+  }
+
+  .field-small{
+    width: 5%;
+    border-right: 1px solid rgba(240, 248, 255, 0.473);
+  }
+  .field-x-larger{
+    width: 15%;
+    border-right: 1px solid rgba(240, 248, 255, 0.473);
+  }
+  .field-larger{
+    width: 12%;
+    border-right: 1px solid rgba(240, 248, 255, 0.473);
+  }
+
+  .field-medium{
+    width: 7%;
+    border-right: 1px solid rgba(240, 248, 255, 0.473);
+  }
+  .body-table-accManage{
+    width: 100%;
+    position: relative;
+    display:block;
+    justify-content: center;
+    align-items: center;
+    height: 90%;
+    overflow: 'auto';
+     
+    
+  }
+  .row-table-accManage{
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 40px;
+    color:#003757;
+    justify-content: center;
+    align-items: center;
+  }
+  .row-table-accManage:nth-child(odd){
+    background-color: #f8f9fa;
+  }
+  .row-table-accManage:nth-child(even){
+    background-color: #eeeeee;
+  }
+  .field-body-table-accManage {
+    position: relative;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 11px;
+    text-align: center;
+  }
+  .row-table-accManage:hover{
+    /* background-color: #00375771; */
+    background-color: #004e7ba4;
+    cursor: pointer;
+    color: aliceblue !important;
+  }
+  /* .field-body-table-accManage.field-nombre,.field-body-table-accManage.field-acciones{
+    border-right: 1px solid #0037573a;
+  } */
+/****************************** tabla usuarios Config ******************************************/
+.cont-table-accManage-config{
+  width: 98%;
+  height: 99%;
+  /* border: 1px solid #56575746; */
+  border-radius: 5px;
+  display: block;
+  position: relative;
+}
+.head-table-accManage-config{
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10%;
+  background-color: rgb(138, 138, 138);
+  /* background:#4392c0; */
+  /* border-bottom: 1px solid #003757; */
+   border-radius: 5px 5px 0px 0px;
+   font-size: 11px;
+  
+}
+.field-head-table-accManage-config{
+  height: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: aliceblue;
+  text-align: center;
+}
+.field-head-table-accManage-config.field-nombre,.field-head-table-accManage-config.field-small{
+  border-right: 1px solid rgba(240, 248, 255, 0.473);
+}
+
+.field-small{
+  width: 4%;
+  border-right: 1px solid rgba(240, 248, 255, 0.473);
+}
+.field-larger{
+  width: 12%;
+  border-right: 1px solid rgba(240, 248, 255, 0.473);
+}
+
+.field-medium{
+  width: 7%;
+  border-right: 1px solid rgba(240, 248, 255, 0.473);
+}
+.body-table-accManage-config{
+  width: 100%;
+  position: relative;
+  display:block;
+  justify-content: center;
+  align-items: center;
+  height: 90%;
+  overflow: 'auto';
+   
+  
+}
+.row-table-accManage-config{
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 40px;
+  color:#003757;
+}
+.row-table-accManage-config:nth-child(odd){
+  background-color: #f8f9fa;
+}
+.row-table-accManage-config:nth-child(even){
+  background-color: #eeeeee;
+}
+.field-body-table-accManage-config {
+  position: relative;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 11px;
+  text-align: center;
+}
+.row-table-accManage-config:hover{
+  background-color: #003757d3;
+  cursor: pointer;
+  color: aliceblue !important;
+}
+/* .field-body-table-accManage-config.field-nombre,.field-body-table-accManage-config.field-acciones{
+  border-right: 1px solid #0037573a;
+} */
+  .cont-img-field-acciones{
+    position: relative;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .img-field-acciones{
+    position: relative;
+    height: 70%;
+  }
+
+  .img-field-acciones:hover{
+    transform: scale(1.1);
+    transition: 0.3s;
+  }
+  .cont-load-user-list{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+  .cont-row-user-list{
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+  }
+  .field-body-table-accManage {
+    position: relative;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* font-size: small; */
+    
+  }
+  .row-table-accManage{
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 40px;
+    color:#003757;
+  }
+  .row-table-accManage:nth-child(odd){
+    background-color: #f8f9fa;
+  }
+  .row-table-accManage:nth-child(even){
+    background-color: #eeeeee;
+  }
+  .field-body-table-accManage {
+    position: relative;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* font-size: small; */
+    
+  }
+  .row-table-accManage:hover{
+    background-color: #003757d3;
+    cursor: pointer;
+    color: aliceblue !important;
+  }
+ 
+  .form-msg-ok{
+    color: #149209;
+    position: absolute;
+    left:0;
+    /* top:10% */
+    bottom: 0%;
+    background-color: rgba(211, 255, 217, 0.64);
+    width: 99%;
+    text-align: center;
+    border: 2px solid #149209;
+    border-radius: 5px;
+  }
+  .no-results{
+    position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: gray;
+  }
+  .pdf-download{
+    position: absolute;
+    width: 10%;
+    left: 90%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .img-down-pdf{
+    height: 70%;
+  }
+  .img-down-pdf:hover{
+    height: 80%;
+    cursor: pointer;
+  }
+
+ .txtCisCancelada{
+  font-weight: bold;
+  color:red
+ }
+ .txtCisCerrada{
+  font-weight: bold;
+  color:green
+ }
+ .txtCisIniciada{
+  font-weight: bold;
+  color:#d9bb18
+ }
+
+
+ 
