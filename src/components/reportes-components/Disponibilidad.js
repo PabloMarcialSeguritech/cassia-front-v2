@@ -131,6 +131,7 @@ const Disponibilidad=({server})=>{
     const [dataModelo,setDataModelo]=useState({data:[[]],loading:[true],error:[null]})
     const [indexSelected,setIndexSelected] =useState(0)
 
+
     const [flagTodos,setFlagTodos]=useState(true)
     const [flagGeneral,setFlagGeneral]=useState(false)
     const [periodoSeleccionado, setPeriodoSeleccionado] = useState(null);
@@ -140,6 +141,7 @@ const Disponibilidad=({server})=>{
     // console.log("total.metr ",totalLienas)
     // console.log('flag general',flagGeneral)
     // console.log('flag todos',flagTodos)
+
 
     const Ampliar = () => {
       // Aquí puedes realizar la búsqueda usando el valor de 'query'
@@ -596,10 +598,12 @@ function download_reporte_disponibilidad(){
                       />}
         </div>
 
+
         {(!flagTodos)?
           <div className='cont-list-graf' style={{width:'14%'}}>
 
             <div className='compact-list-graf'>
+
 
             
           {(dataInfo.loading || typeof(dataInfo.data.metrics)=='undefined' )?'':dataInfo.data.metrics[indexSelected].indices.map((key, index) => (
@@ -615,6 +619,7 @@ function download_reporte_disponibilidad(){
                                   </>
                                   ))}
 
+
           </div>
           
           </div>:
@@ -629,6 +634,7 @@ function download_reporte_disponibilidad(){
             
           </div>
         }
+
 
             <div className='cont-reporte-disp'>
             <div className='cont-menu-disp'>
@@ -779,7 +785,9 @@ function download_reporte_disponibilidad(){
                                 height={200}
                                 // data={dataInfo.data.metrics[0].dataset}
 
+
                                 data={(flagGeneral)?dataInfo.data.metrics[indexSelected].dataset:dataInfo.data.metrics[indexSelected].dataset2}
+
 
                                 // data={data}
                                 margin={{
@@ -793,8 +801,10 @@ function download_reporte_disponibilidad(){
                                 {/* <XAxis dataKey="Tiempo" /> */}
                                 <XAxis dataKey="Tiempo" />
                                 <YAxis domain={[0, 100]}/>
+
                                 <Tooltip content={<CustomTooltip />} />
                                 
+
                                 <Legend />
 
                                 {/* <Line type="monotone" dataKey="Disponibilidad_1" stroke="#8884d8" strokeWidth={2}  /> */}
@@ -803,6 +813,7 @@ function download_reporte_disponibilidad(){
                                 <Line type="monotone" dataKey="pv" stroke="#82ca9d" /> */}
                                 
                                 {
+
 
                                   (flagGeneral)?
                                   dataInfo.data.metrics[indexSelected].indices.map((key, index) => (
@@ -831,6 +842,7 @@ function download_reporte_disponibilidad(){
                                   ))
                                   
                                 }
+
 
                               </LineChart>
                               </ResponsiveContainer>
@@ -982,7 +994,9 @@ function download_reporte_disponibilidad(){
         // shouldCloseOnOverlayClick={false}
         >
 
+
           <ModalAddMultiGraph flagTodos={flagTodos} flagGeneral={flagGeneral} setFlagGeneral={setFlagGeneral} generateColorOptions={generateColorOptions} indexSelected={indexSelected} dataInfo={dataInfo} elementosToRender={elementosToRender}closAddMultiGraphModal={closAddMultiGraphModal} setTotalLineas={setTotalLineas} color_graf={color_graf} opcionesTxtArrayFijo={opcionesTxtArrayFijo} ></ModalAddMultiGraph>
+
 
     </Modal>
         </>

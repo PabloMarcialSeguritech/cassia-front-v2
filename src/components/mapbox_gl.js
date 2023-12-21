@@ -5,6 +5,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import './styles/MapBox.css'
 import towerImg from '../img/torre2_blanca.png';
 
+
 import serverImg from '../img/server_up_2.png';
 import serverImg0 from '../img/server_0.png';
 import serverImg1 from '../img/server_1.png';
@@ -41,6 +42,7 @@ const MapBox = ({capas,setCapas,actualizar_rfi,mapAux,setmapAux,search_rfid,glob
 
 
   
+
   console.log("markers*****************************************************")
   // console.log(downs)
   console.log(switches)
@@ -86,6 +88,7 @@ const MapBox = ({capas,setCapas,actualizar_rfi,mapAux,setmapAux,search_rfid,glob
     let Popup;
     const map = mapRef.current;
     setmapAux(map)
+
     
 
 
@@ -93,6 +96,7 @@ const MapBox = ({capas,setCapas,actualizar_rfi,mapAux,setmapAux,search_rfid,glob
       console.log("on load map")
        /************************************************************ CAPA Servers ************************************************************************ */
        
+
 
 if(ubicacion.dispId==10){
   map.loadImage(
@@ -410,8 +414,10 @@ map.on('click', 'host-markerWOR', (e) => {
       
      
 
+
        /************************************************************ CAPA Metricas ************************************************************************ */
       if(markers.length!==0){
+
         
        if(ubicacion.dispId===12){
  
@@ -614,6 +620,12 @@ map.on('click', 'host-markerWOR', (e) => {
       
               
 
+
+
+
+            
+
+            
             
             popups.forEach(popup => {
             
