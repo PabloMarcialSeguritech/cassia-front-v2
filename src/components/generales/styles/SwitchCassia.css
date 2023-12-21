@@ -1,0 +1,75 @@
+/********************************************/
+.switch-cassia {
+    --circle-dim: 1em;
+    font-size: 15px;
+    position: relative;
+    display: inline-block;
+    width: 3.5em;
+    height: 1.5em;
+  }
+  
+  /* Hide default HTML checkbox */
+  .switch-cassia input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  /* The slider */
+  .slider-switch-cassia {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #f5aeae;
+    transition: .4s;
+    border-radius: 30px;
+  }
+  
+  .slider-card-switch-cassia {
+    position: absolute;
+    content: "";
+    height: var(--circle-dim);
+    width: var(--circle-dim);
+    border-radius: 20px;
+    left: 0.3em;
+    bottom: 0.3em;
+    transition: .4s;
+    pointer-events: none;
+  }
+  
+  .slider-card-face-switch-cassia {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    perspective: 1000px;
+    border-radius: 50%;
+    transition: .4s transform;
+  }
+  
+  .slider-card-front-switch-cassia {
+    background-color: #DC3535;
+  }
+  
+  .slider-card-back-switch-cassia {
+    background-color: #379237;
+    transform: rotateY(180deg);
+  }
+  
+  input:checked ~ .slider-card-switch-cassia .slider-card-back-switch-cassia {
+    transform: rotateY(0);
+  }
+  
+  input:checked ~ .slider-card-switch-cassia .slider-card-front-switch-cassia {
+    transform: rotateY(-180deg);
+  }
+  
+  input:checked ~ .slider-card-switch-cassia {
+    transform: translateX(1.5em);
+  }
+  
+  input:checked ~ .slider-switch-cassia {
+    background-color: #9ed99c;
+  }

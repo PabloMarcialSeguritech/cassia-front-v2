@@ -4,7 +4,7 @@ import { useState ,useEffect} from 'react';
 import LoadSimple from '../LoadSimple';
 import InputAdmin from '../InputAdmin';
 import { useFetch } from '../../hooks/useFetch';
-import Search from './Search';
+import Search from '../generales/Search';
 import SelectorAdmin from '../SelectorAdmin'
 const ModalCisAfecta =({server,cisSelected})=>{
     
