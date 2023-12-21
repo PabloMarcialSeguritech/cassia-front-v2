@@ -11,6 +11,7 @@ import Modal from 'react-modal';
 import ModalVerificateUser from "../components/main-components/ModalVerificateUser";
 import { useState,useEffect,Component  } from 'react';
 import { useFetch } from '../hooks/useFetch'
+import Acciones from '../sections/Acciones'
 const verificateUserModalStyles = {
     content: {
       top: '50%',
@@ -86,7 +87,9 @@ const Main=({ onLogin,token,setToken,server })=>{
         return <Cis server={server} dataGlobals={dataGlobals.data.data} />;
     }else if (pageSelected === "reportes"){
       return <Reportes server={server} dataGlobals={dataGlobals.data.data} />;
-  }
+  }else if (pageSelected === "acciones"){
+    return <Acciones server={server} dataGlobals={dataGlobals.data.data} />;
+}
     })()}
         
       </Container>

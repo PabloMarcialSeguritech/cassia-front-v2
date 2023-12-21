@@ -6,13 +6,13 @@ import Selector from './Selector'
 import InputForm from './InputForm';
 import LoadAdding from './LoadAdding';
 import { useFetch } from '../hooks/useFetch'
-const PingModal = ({isOpen, data,statusPing,closePingModal ,server}) => {
-    console.log(data)
+const PingModal = ({isOpen, data,actionSelected,statusPing,closePingModal ,server}) => {
+    console.log(actionSelected)
     const host=data.length===1?data[0]:data[1]
     console.log("host")
     console.log(host)
-    const dataPing=useFetch('zabbix/hosts/ping',data.hostidC,'','POST',server)
-    
+    const dataPing=useFetch('zabbix/hosts/action',actionSelected.ip+'/'+actionSelected.action_id,'','POST',server)
+    console.log(dataPing)
     return (
       <>
         <div className='contPingModal'>
@@ -31,7 +31,7 @@ const PingModal = ({isOpen, data,statusPing,closePingModal ,server}) => {
                     <img src="antena_1.png"  className='icon-ping' alt="Logo"/>
                     </div>
                     <div className='divtextPing'>
-                        {data.name_hostipP}
+                        { dataPing.loading===true?'Buscando servidor':dataPing.data.data.ip}
                     </div>
                 </div>
                 <div className='contAnimation'>
@@ -46,8 +46,8 @@ const PingModal = ({isOpen, data,statusPing,closePingModal ,server}) => {
                         <div className="dot"></div>
                         <div className="dot"></div>
                     </section>:
-                    <p className={dataPing.data.data.online==="true"?'msgPing':'msgErrorPing '} >
-                         {dataPing.data.data.online==="true"?'Conexión correcta':'Sin conexión'}
+                    <p className={dataPing.data.data.action==="true"?'msgPing':'msgErrorPing '} >
+                         {dataPing.data.data.action==="true"?'Conexión correcta':'Sin conexión'}
                     </p>
                     }
                 

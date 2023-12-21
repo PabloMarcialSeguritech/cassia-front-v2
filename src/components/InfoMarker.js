@@ -9,6 +9,8 @@ import HostSelector from './HostSelector'
 import AlertsByHost from './AlertsByHost'
 import HealthByHost from './HealthByHost';
 import CarrilesArco from './CarrilesArco';
+import { useFetch } from '../hooks/useFetch';
+import LoadSimple from './LoadSimple';
 const pingModalStyles = {
   content: {
     top: '50%',
@@ -24,9 +26,7 @@ const pingModalStyles = {
   },
 };
 const InfoMarker = ({isOpen,devices,mapAux,setmapAux, data,closeInfoMarker,server,ubiActual,search_problems }) => {
-  console.log("info marker")
-  console.log(data)
-  console.log(devices.data)
+  
   const ubicacion_mix=devices.data.hosts.filter(obj => obj.latitude === data.end_lat )
   // const ubicacion_mix=devices.data.hosts.filter(obj => (obj.latitude === data.end_lat && obj.longitude === data.end_lon ))
   let relation = devices.data.relations.find(obj => obj.hostidC === data.hostidC)
@@ -39,8 +39,10 @@ const InfoMarker = ({isOpen,devices,mapAux,setmapAux, data,closeInfoMarker,serve
   const [hostIdP,setHostIdP]=useState(0)
   const [listSelected,setListSelected]=useState(1)
   const [hostSelected,setHostSelected]=useState(2)
-  console.log("infomarkerP:")
-  
+  const [actionSelected,setActionSelected]=useState({})
+  console.log("infomarkerP:"+data.name_hostipC)
+  const response_acciones=useFetch('zabbix/hosts/actions',data.name_hostipC,'','GET',server)
+  console.log((response_acciones.loading)?'cargando acciones':response_acciones.data.data.actions)
   console.log(infoHostC)
     const hadleChangeList=(e)=>{
         setListSelected(e)
@@ -73,6 +75,8 @@ const InfoMarker = ({isOpen,devices,mapAux,setmapAux, data,closeInfoMarker,serve
     setPingModalOpen(false);
   }
   const handlePingClick = (data) => {
+    console.log(data)
+    setActionSelected(data)
     setStatusPing(true)
     openPingModal()
     // Realiza las acciones deseadas al hacer clic en el marcador
@@ -285,19 +289,16 @@ setListSelected(1)
                   {listSelected === 1 ? (
                     <div className='contAcciones'>
                     <div className='menuActionData' style={{display:'flex'}}>
-                        <div className='menuActionCell' style={{border: 'unset',width:'25%'}}>
-                            <Action origen='General' disabled={false} titulo='PING' action={handlePingClick}/>
-                        </div>
-                        <div className='menuActionCell' style={{border: 'unset',width:'25%'}}>
-                            <Action origen='General' disabled={true} titulo='Accion 2'/>
-                        </div>
-                        <div className='menuActionCell' style={{border: 'unset',width:'25%'}}>
-                            <Action origen='General' disabled={true} titulo='Accion 3'/>
-                        </div>
-                        <div className='menuActionCell' style={{border: 'unset',width:'25%'}}>
-                        {/* <Action origen='Alert' disabled={false} titulo='Salir' action={closeInfoMarker} /> */}
-                            {/* <Action origen='General' disabled={true} titulo='Accion 4'/> */}
-                        </div>
+                      {
+                        (response_acciones.loading)?<LoadSimple></LoadSimple>:
+                        
+                        response_acciones.data.data.actions.map((elemento, indice)=>(
+                          <div className='menuActionCell' style={{border: 'unset',width:'25%'}}>
+                          <Action origen='General' disabled={false} titulo={elemento.name} action={()=>handlePingClick(elemento)}/>
+                      </div>
+                        ))
+                      }
+                        
                     </div>
                   </div>
                 ) : listSelected === 2 ? (
@@ -323,7 +324,7 @@ setListSelected(1)
           contentLabel="Example Modal2"
           // shouldCloseOnOverlayClick={false}
           >
-            <PingModal server={server}isOpen={pingModalOpen} data={data} statusPing={statusPing} closePingModal={closePingModal}></PingModal>
+            <PingModal actionSelected={actionSelected} server={server}isOpen={pingModalOpen} data={data} statusPing={statusPing} closePingModal={closePingModal}></PingModal>
         </Modal>
       </>
     );
