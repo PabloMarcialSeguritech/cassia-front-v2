@@ -36,9 +36,8 @@ function bitsToGigabits(bits) {
   return gigabits;
 }
 
+const MapBox = ({capas,switchesFO,switchesMO,setCapas,actualizar_rfi,mapAux,setmapAux,search_rfid,global_longitud,global_latitude,global_zoom,devices,markers,markersWOR,lines,downs,towers,rfid,ubicacion,switches,handleMarkerClick}) => {
 
-
-const MapBox = ({capas,setCapas,actualizar_rfi,mapAux,setmapAux,search_rfid,global_longitud,global_latitude,global_zoom,devices,markers,markersWOR,lines,downs,towers,rfid,ubicacion,switches,handleMarkerClick}) => {
 
 
   
@@ -46,7 +45,8 @@ const MapBox = ({capas,setCapas,actualizar_rfi,mapAux,setmapAux,search_rfid,glob
   console.log("markers*****************************************************")
   // console.log(downs)
   console.log(switches)
-  console.log(markers)
+  // console.log(switchesMO)
+  // console.log(markers)
   // console.log(markersWOR)
   // console.log(global_latitude,global_longitud)
  
@@ -252,95 +252,312 @@ map.on('click', 'host-markerWOR', (e) => {
 
     
          /************************************************************ CAPA LINEAS Switches ************************************************************************ */
-        // if(switches.length!==0){
+        // if(switchesFO.length!==0 || switchesMO.length!==0){
+        console.log("entra a pintar switches")
+          if(ubicacion.dispId===12 && ubicacion.templateId==0){
+ 
         
-        
-        //   const switchesConectSource={
-        //     type: 'geojson',
-        //     data: {
-        //       type: 'FeatureCollection',
-        //       features: switches
-        //     }
-        //   }
-              
-        
-              
-        //       const switchesConect={
-        //         type: 'line',
-        //         source: 'switches-conection',
-        //         id: 'switches-conection',
-        //         paint: {
+          
+            //   /**************************************************** */
+              const throughtputSource={
+                type: 'geojson',
+                data: {
+                  type: 'FeatureCollection',
+                  features: switches[0]
+                }
+              }
+                  map.addSource('line-throughtput',throughtputSource);
+            
                   
-        //           'line-color': [
-        //             'match',
-        //             ['get', 'severity'], 
-        //             0, 'red', 
-        //             1, 'lime', 
-        //             2, '#ee9d08', 
-        //             3, '#ee5c08', 
-        //             4, '#ee0808', 
-        //             '#4fb7f3', // Color predeterminado si no se cumplen las condiciones anteriores
-        //           ],
-        //           'line-width': 5,
-        //           'line-dasharray': [0, 4, 3]
-        //         }
-        //       }
-        //       if(markers.length==0){
-        //         map.addSource('switches-conection',switchesConectSource);
-        //         map.addLayer(switchesConect);
-        //       }
+                  const throughtputLayer={
+                    type: 'line',
+                    source: 'line-throughtput',
+                    id: 'line-throughtput',
+                    paint: {
+                      
+                      'line-color': [
+                        'match',
+                        ['get', 'connectivity'], 
+                        -1, '#1fee08',
+                    0, 'red', 
+                    1, 'lime', 
+                    '#11b4da', // Color predeterminado si no se cumplen las condiciones anteriores
+                      ],
+                      'line-width': 8,
+                      'line-dasharray': [0, 0.3, 0.2]
+                    }
+                  }
+                  map.addLayer(throughtputLayer);
+            
+                  const dashArraySequence = [
+                    [0, 0.3, 0.2],
+                      [0, 0.1, 0.2, 0.4],
+                      [0, 0.2, 0.2, 0.3],
+                      [0, 0.3, 0.2, 0.2],
+                      [0, 0.4, 0.2, 0.1],
+                      [0, 0.5, 0.2, 0],
+                    
+                    ];
+            
+                  let step = 0;
+            
+                  function animateDashArray(timestamp) {
+                    const newStep = parseInt((timestamp / 50) % dashArraySequence.length);
+            
+                    if (newStep !== step) {
+                      try{
+                        let layerExists = map.getLayer('line-throughtput');
+                        if (layerExists) {
+                          map.setPaintProperty('line-throughtput', 'line-dasharray', dashArraySequence[step]);
+                          // Puedes realizar operaciones adicionales aquí si la capa existe
+                        }   
+                      }catch(error){
+                        // console.log(error)
+                      }
+                      
+                      step = newStep;
+                    }
+            
+                    requestAnimationFrame(animateDashArray);
+                  }
+            
+                  animateDashArray.bind(this)(0);
+                 
+                 if(!idCapaExistente('line-throughtput')){
+                   setCapas((prevCapas) => ({
+                     ...prevCapas,
+                     [Object.keys(prevCapas).length ]: { show: true, name: 'Fibra optica',id:`line-throughtput`,layer:throughtputLayer ,source:throughtputSource,nivel:2},
+                   }));
+                 }
+                 map.on('mouseleave', 'line-throughtput', (e) => {
+                  
+                  const popups = document.querySelectorAll('.custom-popup');
+                
+                popups.forEach(popup => {
+                
+                popup.remove();
+                });
+                  });
+                map.on('mouseenter', 'line-throughtput', (e) => {
+                  // console.log(e.features[0].geometry.coordinates)
+                  const coordinates = calcularPuntoMedio(e.features[0].geometry.coordinates[0],e.features[0].geometry.coordinates[1])
+                // console.log(coordinates)
+                  //   const coordinates = e.features[0].geometry.coordinates.slice();
+                  
+        
+                  while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                    coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+                  }
+                  
+                  Popup= new mapboxgl.Popup({
+                    className: 'custom-popup',
+                    closeButton: false,
+                })
+                    .setLngLat(coordinates)
+                    
+                    .setHTML(`<div class='cont-pop' style='border: 1px solid ${e.features[0].properties.color_alineacion};'>
+                    <div>${e.features[0].properties.name}...</div>
+                   
+                    
+                    </div>`)
+                    .addTo(map);
+                });
+                /*********************************************************************************** */
+           
+            const throughtputSource2={
+              type: 'geojson',
+              data: {
+                type: 'FeatureCollection',
+                features: switches[1]
+              }
+            }
+                map.addSource('line-throughtput2',throughtputSource2);
+          
+                
+                const throughtputLayer2={
+                  type: 'line',
+                  source: 'line-throughtput2',
+                  id: 'line-throughtput2',
+                  paint: {
+                    
+                    'line-color': [
+                      'match',
+                      ['get', 'connectivity'], 
+                        -1, '#1fee08',
+                    0, 'red', 
+                    1, 'lime', 
+                    '#11b4da', // Color predeterminado si no se cumplen las condiciones anteriores
+                      ],
+                    'line-width': 5,
+                    'line-dasharray': [0, 4, 3]
+                  }
+                }
+                map.addLayer(throughtputLayer2);
+          
+                const dashArraySequence2 = [
+                  [0, 4, 3],
+                [0.5, 4, 2.5],
+                [1, 4, 2],
+                [1.5, 4, 1.5],
+                [2, 4, 1],
+                [2.5, 4, 0.5],
+                [3, 4, 0],
+                [0, 0.5, 3, 3.5],
+                [0, 1, 3, 3],
+                [0, 1.5, 3, 2.5],
+                [0, 2, 3, 2],
+                [0, 2.5, 3, 1.5],
+                [0, 3, 3, 1],
+                [0, 3.5, 3, 0.5]
+                  ];
+          
+                let step2 = 0;
+          
+                function animateDashArray2(timestamp) {
+                  const newStep = parseInt((timestamp / 50) % dashArraySequence2.length);
+          
+                  if (newStep !== step2) {
+                    try{
+                      let layerExists = map.getLayer('line-throughtput2');
+                      if (layerExists) {
+                        map.setPaintProperty('line-throughtput2', 'line-dasharray', dashArraySequence2[step2]);
+                        // Puedes realizar operaciones adicionales aquí si la capa existe
+                      }   
+                    }catch(error){
+                      // console.log(error)
+                    }
+                    
+                    step2 = newStep;
+                  }
+          
+                  requestAnimationFrame(animateDashArray2);
+                }
+          
+                animateDashArray2.bind(this)(0);
+               
+               if(!idCapaExistente('line-throughtput2')){
+                 setCapas((prevCapas) => ({
+                   ...prevCapas,
+                   [Object.keys(prevCapas).length ]: { show: true, name: 'Microonda',id:`line-throughtput2`,layer:throughtputLayer2 ,source:throughtputSource2,nivel:2},
+                 }));
+               }
+               map.on('mouseleave', 'line-throughtput2', (e) => {
+                
+                const popups = document.querySelectorAll('.custom-popup');
+              
+              popups.forEach(popup => {
+              
+              popup.remove();
+              });
+                });
+              map.on('mouseenter', 'line-throughtput2', (e) => {
+                // console.log(e.features[0].geometry.coordinates)
+                const coordinates = calcularPuntoMedio(e.features[0].geometry.coordinates[0],e.features[0].geometry.coordinates[1])
+              // console.log(coordinates)
+                //   const coordinates = e.features[0].geometry.coordinates.slice();
+                
+      
+                while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                  coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+                }
+                
+                Popup= new mapboxgl.Popup({
+                  className: 'custom-popup',
+                  closeButton: false,
+              })
+                  .setLngLat(coordinates)
+                  
+                  .setHTML(`<div class='cont-pop' style='border: 1px solid ${e.features[0].properties.color_alineacion};'>
+                  <div>${e.features[0].properties.name}...</div>
+                  
+                  </div>`)
+                  .addTo(map);
+              });
+            }
+          // const switchesConectSource={
+          //   type: 'geojson',
+          //   data: {
+          //     type: 'FeatureCollection',
+          //     features: switches
+          //   }
+          // }
               
         
-        //       const dashArraySequence = [
-        //         [0, 4, 3],
-        //         [0.5, 4, 2.5],
-        //         [1, 4, 2],
-        //         [1.5, 4, 1.5],
-        //         [2, 4, 1],
-        //         [2.5, 4, 0.5],
-        //         [3, 4, 0],
-        //         [0, 0.5, 3, 3.5],
-        //         [0, 1, 3, 3],
-        //         [0, 1.5, 3, 2.5],
-        //         [0, 2, 3, 2],
-        //         [0, 2.5, 3, 1.5],
-        //         [0, 3, 3, 1],
-        //         [0, 3.5, 3, 0.5]
-        //         ];
-        
-        //       let step = 0;
-        
-        //       function animateDashArray(timestamp) {
-        //         const newStep = parseInt((timestamp / 50) % dashArraySequence.length);
-        
-        //         if (newStep !== step) {
-        //           try{
-        //             let layerExists = map.getLayer('switches-conection');
-        //             if (layerExists) {
-        //               map.setPaintProperty('switches-conection', 'line-dasharray', dashArraySequence[step]);
-        //             }
-        //           }catch(error){
-        //             // console.log(error)
-        //           }
+              
+          //     const switchesConect={
+          //       type: 'line',
+          //       source: 'switches-conection',
+          //       id: 'switches-conection',
+          //       paint: {
                   
-        //           step = newStep;
-        //         }
+          //         'line-color': [
+          //           'match',
+          //           ['get', 'severity'], 
+          //           0, 'red', 
+          //           1, 'lime', 
+          //           2, '#ee9d08', 
+          //           3, '#ee5c08', 
+          //           4, '#ee0808', 
+          //           '#4fb7f3', // Color predeterminado si no se cumplen las condiciones anteriores
+          //         ],
+          //         'line-width': 5,
+          //         'line-dasharray': [0, 4, 3]
+          //       }
+          //     }
+          //     if(markers.length==0){
+          //       map.addSource('switches-conection',switchesConectSource);
+          //       map.addLayer(switchesConect);
+          //     }
+              
         
-        //         requestAnimationFrame(animateDashArray);
-        //       }
+          //     const dashArraySequence = [
+          //       [0, 4, 3],
+          //       [0.5, 4, 2.5],
+          //       [1, 4, 2],
+          //       [1.5, 4, 1.5],
+          //       [2, 4, 1],
+          //       [2.5, 4, 0.5],
+          //       [3, 4, 0],
+          //       [0, 0.5, 3, 3.5],
+          //       [0, 1, 3, 3],
+          //       [0, 1.5, 3, 2.5],
+          //       [0, 2, 3, 2],
+          //       [0, 2.5, 3, 1.5],
+          //       [0, 3, 3, 1],
+          //       [0, 3.5, 3, 0.5]
+          //       ];
         
-        //       animateDashArray.bind(this)(0);
+          //     let step = 0;
+        
+          //     function animateDashArray(timestamp) {
+          //       const newStep = parseInt((timestamp / 50) % dashArraySequence.length);
+        
+          //       if (newStep !== step) {
+          //         try{
+          //           let layerExists = map.getLayer('switches-conection');
+          //           if (layerExists) {
+          //             map.setPaintProperty('switches-conection', 'line-dasharray', dashArraySequence[step]);
+          //           }
+          //         }catch(error){
+          //           // console.log(error)
+          //         }
+                  
+          //         step = newStep;
+          //       }
+        
+          //       requestAnimationFrame(animateDashArray);
+          //     }
+        
+          //     animateDashArray.bind(this)(0);
              
 
-        //      if(!idCapaExistente('switches-conection')){
-        //        setCapas((prevCapas) => ({
-        //          ...prevCapas,
-        //          [Object.keys(prevCapas).length ]: { show: (markers.length==0)?true:false, name: 'Conexion Switches',id:`switches-conection`,layer:switchesConect ,source:switchesConectSource,nivel:2},
-        //        }));
-        //      }
-        //    }
-
-             
+          //    if(!idCapaExistente('switches-conection')){
+          //      setCapas((prevCapas) => ({
+          //        ...prevCapas,
+          //        [Object.keys(prevCapas).length ]: { show: (markers.length==0)?true:false, name: 'Conexion Switches',id:`switches-conection`,layer:switchesConect ,source:switchesConectSource,nivel:2},
+          //      }));
+          //    }
+          //  }
 
       /************************************************************ CAPA RFID ************************************************************************ */
       //console.log(downs)
@@ -444,7 +661,7 @@ map.on('click', 'host-markerWOR', (e) => {
                       'match',
                       ['get', 'severity'], 
                       -1, '#1fee08',
-                  0, '#4fb7f3', 
+                  0, 'red', 
                   1, '#ffee00', 
                   2, '#ee9d08', 
                   3, '#ee5c08', 
@@ -552,7 +769,7 @@ map.on('click', 'host-markerWOR', (e) => {
                     'match',
                     ['get', 'severity'], 
                     -1, '#1fee08',
-                0, '#4fb7f3', 
+                0, 'red', 
                 1, '#ffee00', 
                 2, '#ee9d08', 
                 3, '#ee5c08', 
