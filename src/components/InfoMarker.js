@@ -5,6 +5,7 @@ import Modal from 'react-modal';
 import InputForm from './InputForm';
 import LoadAdding from './LoadAdding';
 import PingModal from './PingModal';
+import ActionModal from './ActionModal';
 import HostSelector from './HostSelector'
 import AlertsByHost from './AlertsByHost'
 import HealthByHost from './HealthByHost';
@@ -324,7 +325,8 @@ setListSelected(1)
           contentLabel="Example Modal2"
           // shouldCloseOnOverlayClick={false}
           >
-            <PingModal actionSelected={actionSelected} server={server}isOpen={pingModalOpen} data={data} statusPing={statusPing} closePingModal={closePingModal}></PingModal>
+            <ActionModal actionSelected={actionSelected} server={server}isOpen={pingModalOpen} data={data} statusPing={statusPing} closeActionModal={closePingModal}></ActionModal>
+            {/* <PingModal actionSelected={actionSelected} server={server}isOpen={pingModalOpen} data={data} statusPing={statusPing} closePingModal={closePingModal}></PingModal> */}
         </Modal>
       </>
     );

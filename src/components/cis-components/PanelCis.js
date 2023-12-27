@@ -30,7 +30,9 @@ const PanelCis=({server})=>{
     const [dataUsers,setDataUsers]=useState({data:[],loading:true,error:null})
     const [searchResults, setSearchResults] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
-    console.log(dataUsers)
+   
+    const [devices,setDevices]=useState({data:[],loading:true,error:null});
+    console.log(devices)
     const [searchResult, setSearchResult] = useState(null);
     const [registerIsValid, setRegisterIsValid] = useState(false);
     const [editActive, setEditActive] = useState(false);
@@ -74,7 +76,9 @@ const PanelCis=({server})=>{
         
         
     }
-
+      useEffect(()=>{
+        search_devices()
+      },[])
     const buscar_cis=(ci_id)=>{
         console.log("buscar_cis",ci_id)
         
@@ -141,6 +145,46 @@ const PanelCis=({server})=>{
         pdf.save('CIs-'+obtenerFechaActualLocal()+'.pdf');
       });
     }
+
+    function search_devices(){
+      
+       
+        setDevices({data:devices.data,loading:true,error:devices.error})
+        
+        
+        const fetchData = async () => {
+          try {
+            //console.log(`Bearer ${token_item}`)
+            const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWFuLm1hcmNpYWwiLCJleHAiOjE2OTExNjg3ODZ9.LETk5Nu-2WXF571qMqTd__RxHGcyOHzg4GfAbiFejJY'; // Reemplaza con tu token de autenticación
+            // const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/db/hosts/relations/'+ubicacion.groupid, {
+              const devicefilter=''
+        const subtypefilter=''
+        let andAux=(devicefilter!=='' )?'&':'?'
+              andAux=(subtypefilter!=='')?andAux:''
+        // console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter)
+              const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/'+'0'+''+devicefilter+andAux+subtypefilter, {                 
+                                headers: {
+                                  'Content-Type': 'application/json',
+                                  Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+                                },
+                              });
+                              
+            if (response.ok) {
+              const response_data = await response.json();
+              setDevices({data:response_data.data,loading:false,error:devices.error})
+              // console.log(response_data)
+             
+            } else {
+              throw new Error('Error en la solicitud');
+            }
+          } catch (error) {
+            // Manejo de errores
+            setDevices({data:devices.data,loading:devices.loading,error:error})
+            //console.error(error);
+          }
+        };
+        fetchData();
+    }
     return (
         <>
         <div className='main-panel-cis'>
@@ -184,10 +228,16 @@ const PanelCis=({server})=>{
                
                 <div className='cont-cis-table'>
                 <div className='content-card-cis' id='content'>
-                              {(cisSelected.length===0)?
-                              <TableCis  cisSelected={cisSelected} setCisSelected={setCisSelected} registerIsValid={registerIsValid} searchResults={searchResults} setSearchResults={setSearchResults} searchTerm={searchTerm} setSearchTerm={setSearchTerm} dataUsers={dataUsers} setDataUsers={setDataUsers} server={server} setRegisterIsValid={setRegisterIsValid} setData={setData} setLoading={setLoading} setError={setError}  handleChangEdit={handleChangEdit}></TableCis>:
+                  {
+                    (devices.loading)?<LoadSimple/>:
+                    <>
+                    {(cisSelected.length===0)?
+                              <TableCis  cisSelected={cisSelected} setCisSelected={setCisSelected} registerIsValid={registerIsValid} searchResults={searchResults} setSearchResults={setSearchResults} searchTerm={searchTerm} setSearchTerm={setSearchTerm} dataUsers={dataUsers} setDataUsers={setDataUsers} server={server} setRegisterIsValid={setRegisterIsValid} setData={setData} setLoading={setLoading} setError={setError}  handleChangEdit={handleChangEdit} devices={devices}></TableCis>:
                               <InfoCis server={server} cisSelected={cisSelected} searchResults={searchResults} setSearchResults={setSearchResults} searchTerm={searchTerm} setSearchTerm={setSearchTerm} onSearch={handleSearch}  dataUsers={dataUsers} setDataUsers={setDataUsers} setCisSelected={setCisSelected} registerIsValid={registerIsValid}  ></InfoCis>
                             }
+                    </>
+                  }
+                              
                                 
                             </div>
                 </div>
@@ -202,7 +252,7 @@ const PanelCis=({server})=>{
         contentLabel="Example Modal2"
         // shouldCloseOnOverlayClick={false}
         >
-          <ModalCreateCis server={server} editActive={editActive} setEditActive={setEditActive} dataCis={dataCis} setData={setData} loading={loading} setLoading={setLoading} setError={setError} setRegisterIsValid={setRegisterIsValid} closCreateCisModal={closCreateCisModal}></ModalCreateCis>
+          <ModalCreateCis devices={devices} server={server} editActive={editActive} setEditActive={setEditActive} dataCis={dataCis} setData={setData} loading={loading} setLoading={setLoading} setError={setError} setRegisterIsValid={setRegisterIsValid} closCreateCisModal={closCreateCisModal}></ModalCreateCis>
     </Modal>
     </>
     )
