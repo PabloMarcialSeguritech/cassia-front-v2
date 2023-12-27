@@ -163,3 +163,10 @@ letter-spacing: 1px;
 .react-select-admin__option{
     border-bottom-color: rgba(255, 255, 255, 0.127) !important;
 }
+
+
+.react-select-admin__placeholder{
+ color: #c4c4c4 !important;
+ font-size: medium !important;
+ /* margin-left:; */
+}

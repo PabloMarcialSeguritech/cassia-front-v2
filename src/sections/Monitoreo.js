@@ -17,6 +17,7 @@ import '../components/styles/MapBox.css'
 import arcos_list from '../components/arcos'
 import data_switches from '../components/switches'
 import ShowLayers from '../components/ShowLayers'
+import { render } from '@testing-library/react'
 const Monitoreo=({token_item,dataGlobals,server})=>{
   // console.log(dataGlobals)
   const [capas,setCapas]=useState({})
@@ -33,11 +34,13 @@ const Monitoreo=({token_item,dataGlobals,server})=>{
     const [latitudes,setLatitudes]=useState([])
     const [longitudes,setLongitudes]=useState([])
     const [locations,setLocations]=useState([])
-    console.log(ubicacion)
+    // console.log(ubicacion)
     const [markers,setMarkers]=useState([])
     const [markers1, setMarkers1] = useState([]);
 const [markers2, setMarkers2] = useState([]);
-console.log(markers1,markers2,markers)
+const [switchesFO, setSwitchesFO] = useState([]);
+const [switchesMO, setSwitchesMO] = useState([]);
+console.log(switchesFO,switchesFO,markers)
     const [markersWOR,setMarkersWOR]=useState([])
     const [lines,setLines]=useState([])
     const [downs,setDowns]=useState([])
@@ -62,7 +65,7 @@ console.log(markers1,markers2,markers)
     const [mapAux,setmapAux]=useState({});
     const [rfidInterval,setRfidInterval]=useState(0)
     const [renderCapas,setRenderCapas]=useState({downs:false,markersWOR:false,markers:true,rfid:true,switches:true})
-    
+    console.log(renderCapas)
    const [renderMap,setRenderMap]=useState(false)
    const allTrue = Object.values(renderCapas).every(value => value === true);
 // console.log(devices)
@@ -82,6 +85,14 @@ useEffect(()=>{
   }
  
 },[markers1,markers2])
+useEffect(()=>{
+  console.log("actualiza markers")
+ console.log(switchesFO,switchesMO)
+ if(switchesFO.length>0 && switchesMO.length>0){
+    setSwitches([switchesFO,switchesMO])
+ }
+ 
+},[switchesFO,switchesMO])
    useEffect(() => {
     // console.log(renderCapas.markersWOR)
     if(markersWOR.length!==0){
@@ -116,7 +127,7 @@ useEffect(()=>{
   useEffect(() => {
   console.log("switches")
   console.log(switches.length+" | "+switch_list.data.length)
-    if(switches.length>0 || switch_list.data.length==0){
+    if(switchesFO.length>0  || switchesMO.length>0){
       console.log('El proceso de switches ha terminado');
       console.log(switches)
       setRenderCapas(prevState => ({
@@ -169,7 +180,8 @@ useEffect(()=>{
     },[tower_list.data])
     useEffect(()=>{
       if(switch_list.data.length!==0){
-        //console.log("pinta")
+        console.log(switch_list.data)
+        
         objeto_switches(switch_list.data)
         }
     },[switch_list.data])
@@ -338,13 +350,16 @@ useEffect(()=>{
     },[])
     function search_switches(){
       setSwitches([])
+      setSwitchesFO([])
+      setSwitchesMO([])
       // console.log()
       // console.log("borra rfid")
       setSwitchList({data:[],loading:true,error:rfid_list.error})
         const fetchData = async () => {
           try {
             // console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/layers/switches_connectivity')
-         const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/layers/switches_connectivity/'+ubicacion.groupid, {                 
+        //  const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/layers/switches_connectivity/'+ubicacion.groupid, {  
+          const response = await fetch('http://172.18.200.14:8004/api/v1/zabbix/hosts/0?dispId=12&subtype_id=Interface Bridge-Aggregation_: Bits', {                
                                 headers: {
                                   'Content-Type': 'application/json',
                                   Authorization: `Bearer ${token_item}`,
@@ -529,7 +544,7 @@ useEffect(()=>{
               if(host.length!==0 && host.latitudeP.replace(",", ".")>=-90 && host.latitudeP.replace(",", ".")<=90 && host.latitudeC.replace(",", ".")>=-90 && host.latitudeC.replace(",", ".")<=90){
               
                 
-                console.log("indice"+index+" | tipo:"+host.type_connection)
+                // console.log("indice"+index+" | tipo:"+host.type_connection)
                 // console.log(hostSub   )
                 let alineacion=0
                 let severity=0
@@ -554,7 +569,7 @@ useEffect(()=>{
                 //azul #4fb7f3
                 // verde "#1fee08"
                 if(host.type_connection==1){
-                  console.log("fibra optica")
+                  // console.log("fibra optica")
                   setMarkers1(markers1 =>[...markers1,{
                     type: 'Feature',
                     properties:{
@@ -569,7 +584,7 @@ useEffect(()=>{
                       hostidP: host.hostidP,
                       BitsSent: host.BitsSent,
                       color_alineacion:colorSG,
-                      severity:host.severity,
+                      severity:(host.connectivity==0)?host.connectivity:host.severity,
                       type_connection: host.type_connection,
                       // severity:Math.floor(Math.random() * 4) + 1,
                       metrica:metricaSelected,
@@ -580,7 +595,7 @@ useEffect(()=>{
                     },
                   }])
                 }else if(host.type_connection==2){
-                  console.log("microonda")
+                  // console.log("microonda")
                   setMarkers2(markers2 =>[...markers2,{
                     type: 'Feature',
                     properties:{
@@ -595,7 +610,7 @@ useEffect(()=>{
                       hostidP: host.hostidP,
                       BitsSent: host.BitsSent,
                       color_alineacion:colorSG,
-                      severity:host.severity,
+                      severity:(host.connectivity==0)?host.connectivity:host.severity,
                       type_connection: host.type_connection,
                       // severity:Math.floor(Math.random() * 4) + 1,
                       metrica:metricaSelected,
@@ -766,60 +781,156 @@ useEffect(()=>{
         }
         )
     }
-    function objeto_switches(switch_list){
-      console.log(switch_list)
-      //console.log(devices_data.relations)
-      switch_list.map((host, index, array)=>
+    function objeto_switches(devices_data){
+      console.log("entra al objeto switches -----------------------------")
+      console.log(devices_data.subgroup_info.length)
+      devices_data.subgroup_info.map((host, index, array)=>
           {
-            // if (index === 1) {
-            //   setUbicacion({latitud:host.init_lat,longitud:host.init_lon,groupid:ubicacion.groupid,dispId:ubicacion.dispId,templateId:ubicacion.templateId})
-            //   //console.log('Recorrido completo');
-            // }
-            if(host.length!==0 && host.latitude_p.replace(",", ".")>=-90 && host.latitude_p.replace(",", ".")<=90 && host.latitude_c.replace(",", ".")>=-90 && host.latitude_c.replace(",", ".")<=90){
+            if(ubicacion.dispId===12){
+              if(host.length!==0 && host.latitudeP.replace(",", ".")>=-90 && host.latitudeP.replace(",", ".")<=90 && host.latitudeC.replace(",", ".")>=-90 && host.latitudeC.replace(",", ".")<=90){
               
-             
-                let colorSG='#00ff70'
                 
-              
-              if(host.Metric==1){
-                colorSG='#4fb7f3'
-                // severity=1
-              }else{
-                colorSG='#ee0808'
+                // console.log("indice"+index+" | tipo:"+host.type_connection)
+                // console.log(hostSub   )
+                let alineacion=0
+                let severity=0
+                
+                
+                  let colorSG='#00ff70'
+                  
+                
+                  if(host.connectivity==1){
+                    colorSG='lime'
+                    // severity=1
+                  }else if(host.severity==0){
+                    colorSG='red'
+                    // severity=2
+                  }
+                //azul #4fb7f3
+                // verde "#1fee08"
+                if(host.type_connection==1){
+                  // console.log("fibra optica")
+                  setSwitchesFO(switchesFO =>[...switchesFO,{
+                    type: 'Feature',
+                    properties:{
+                      correlarionid: host.relationid,
+                      init_lat: host.latitudeP.replace(",", "."),
+                      init_lon: host.longitudeP.replace(",", "."),
+                      end_lat: host.latitudeC.replace(",", "."),
+                      end_lon: host.longitudeC.replace(",", "."),
+                      Metric:host.Metric,
+                      name:host.name,
+                      hostidC: host.hostidC,
+                      hostidP: host.hostidP,
+                      BitsSent: host.BitsSent,
+                      color_alineacion:colorSG,
+                      severity:host.severity,
+                      type_connection: host.type_connection,
+                      connectivity:host.connectivity,
+                      // severity:Math.floor(Math.random() * 4) + 1,
+                      metrica:metricaSelected,
+                    },
+                    geometry: {
+                      type: 'LineString',
+                      coordinates: [[host.longitudeP.replace(",", "."), host.latitudeP.replace(",", ".")], [host.longitudeC.replace(",", "."), host.latitudeC.replace(",", ".")]],
+                    },
+                  }])
+                }else if(host.type_connection==2){
+                  // console.log("microonda")
+                  setSwitchesMO(switchesMO =>[...switchesMO,{
+                    type: 'Feature',
+                    properties:{
+                      correlarionid: host.relationid,
+                      init_lat: host.latitudeP.replace(",", "."),
+                      init_lon: host.longitudeP.replace(",", "."),
+                      end_lat: host.latitudeC.replace(",", "."),
+                      end_lon: host.longitudeC.replace(",", "."),
+                      Metric:host.Metric,
+                      name:host.name,
+                      hostidC: host.hostidC,
+                      hostidP: host.hostidP,
+                      BitsSent: host.BitsSent,
+                      color_alineacion:colorSG,
+                      severity:host.severity,
+                      type_connection: host.type_connection,
+                      connectivity:host.connectivity,
+                      // severity:Math.floor(Math.random() * 4) + 1,
+                      metrica:metricaSelected,
+                    },
+                    geometry: {
+                      type: 'LineString',
+                      coordinates: [[host.longitudeP.replace(",", "."), host.latitudeP.replace(",", ".")], [host.longitudeC.replace(",", "."), host.latitudeC.replace(",", ".")]],
+                    },
+                  }])
+                }
+                
+                // setMarkers([markers1,markers2])
+              //   console.log(markers1)
+              //  console.log(markers2) 
+                /****************************************************************** */
+                
               }
-              
-              //azul #4fb7f3
-              // verde "#1fee08"
-              
-              
-              setSwitches(lines=>[...lines,{
-                type: 'Feature',
-                properties:{
-                  name:host.name,
-                  date:host.Date,
-                  hostidP: host.hostidP,
-                  hostidC: host.hostidC,
-                  init_lat: host.latitude_p,
-                  init_lon: host.longitude_p,
-                  end_lat: host.latitude_c,
-                  end_lon: host.longitude_c,
-                  color_alineacion:colorSG,
-                  severity:host.Metric,
-                  metrica:metricaSelected,
-                },
-                geometry: {
-                  type: 'LineString',
-                  coordinates: [[host.longitude_p, host.latitude_p], [host.longitude_c, host.latitude_c]],
-                },
-              }])
-              /****************************************************************** */
-              
             }else{
-              //console.log(host)
+             
             }
+            
         }
         )
     }
+    // function objeto_switches(switch_list){
+    //   console.log(switch_list)
+    //   //console.log(devices_data.relations)
+    //   switch_list.map((host, index, array)=>
+    //       {
+    //         // if (index === 1) {
+    //         //   setUbicacion({latitud:host.init_lat,longitud:host.init_lon,groupid:ubicacion.groupid,dispId:ubicacion.dispId,templateId:ubicacion.templateId})
+    //         //   //console.log('Recorrido completo');
+    //         // }
+    //         if(host.length!==0 && host.latitude_p.replace(",", ".")>=-90 && host.latitude_p.replace(",", ".")<=90 && host.latitude_c.replace(",", ".")>=-90 && host.latitude_c.replace(",", ".")<=90){
+              
+             
+    //             let colorSG='#00ff70'
+                
+              
+    //           if(host.Metric==1){
+    //             colorSG='#4fb7f3'
+    //             // severity=1
+    //           }else{
+    //             colorSG='#ee0808'
+    //           }
+              
+    //           //azul #4fb7f3
+    //           // verde "#1fee08"
+              
+              
+    //           setSwitches(lines=>[...lines,{
+    //             type: 'Feature',
+    //             properties:{
+    //               name:host.name,
+    //               date:host.Date,
+    //               hostidP: host.hostidP,
+    //               hostidC: host.hostidC,
+    //               init_lat: host.latitude_p,
+    //               init_lon: host.longitude_p,
+    //               end_lat: host.latitude_c,
+    //               end_lon: host.longitude_c,
+    //               color_alineacion:colorSG,
+    //               severity:host.Metric,
+    //               metrica:metricaSelected,
+    //             },
+    //             geometry: {
+    //               type: 'LineString',
+    //               coordinates: [[host.longitude_p, host.latitude_p], [host.longitude_c, host.latitude_c]],
+    //             },
+    //           }])
+    //           /****************************************************************** */
+              
+    //         }else{
+    //           //console.log(host)
+    //         }
+    //     }
+    //     )
+    // }
     /************************************************************************************ */
     function objeto_markers_wor(devices_data){
       // console.log("WOR")
@@ -1026,7 +1137,7 @@ useEffect(()=>{
               <>
                 <ShowLayers capas={capas} setCapas={setCapas} mapAux={mapAux} setmapAux={setmapAux}  ></ShowLayers>
                 {
-                  allTrue?<MapBox capas={capas} setCapas={setCapas} mapAux={mapAux} setmapAux={setmapAux} search_rfid={search_rfid}actualizar_rfi={actualizar_rfi} global_latitude={global_latitude} global_longitud={global_longitud} global_zoom={global_zoom} devices={devices} markers={markers} markersWOR={markersWOR} lines={lines} downs={downs}towers={towers} rfid={rfid} ubicacion={ubicacion} switches={switches}handleMarkerClick={handleMarkerClick}/>:''
+                  allTrue?<MapBox capas={capas} setCapas={setCapas} mapAux={mapAux} setmapAux={setmapAux} search_rfid={search_rfid}actualizar_rfi={actualizar_rfi} global_latitude={global_latitude} global_longitud={global_longitud} global_zoom={global_zoom} devices={devices} markers={markers} markersWOR={markersWOR} lines={lines} downs={downs}towers={towers} rfid={rfid} ubicacion={ubicacion} switches={switches} switchesFO={switchesFO} switchesMO={switchesMO} handleMarkerClick={handleMarkerClick}/>:''
                 }
                 
                 <LeftQuadrant mapAux={mapAux} setmapAux={setmapAux} server={server} zoom={zoom} setZoom={setZoom}   markersWOR={markersWOR} markers={markers} token ={token_item} setLatitudes={setLatitudes} setLongitudes={setLongitudes} setLocations={setLocations}
