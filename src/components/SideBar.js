@@ -11,11 +11,11 @@ const SideBar =({rolId,onLogin,pageSelected,setPageSelected,dataGlobals})=>{
     var cis=0
     var acciones=0
     if(dataGlobals.data.data!==undefined){
-        // console.log(dataGlobals.data.data)
+        console.log(dataGlobals.data.data)
         estado=dataGlobals.data.data.find(obj => obj.name === 'estado')
         reportes=dataGlobals.data.data.find(obj => obj.name === 'report_module')
         cis=dataGlobals.data.data.find(obj => obj.name === 'ci_module')
-        acciones={value:1}
+        acciones=dataGlobals.data.data.find(obj => obj.name === 'action_module')
     }
     
     return(
