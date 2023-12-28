@@ -29,6 +29,7 @@ const pingModalStyles = {
 const InfoMarker = ({isOpen,devices,mapAux,setmapAux, data,closeInfoMarker,server,ubiActual,search_problems }) => {
   
   const ubicacion_mix=devices.data.hosts.filter(obj => obj.latitude === data.end_lat )
+  // console.log(ubicacion_mix)
   // const ubicacion_mix=devices.data.hosts.filter(obj => (obj.latitude === data.end_lat && obj.longitude === data.end_lon ))
   let relation = devices.data.relations.find(obj => obj.hostidC === data.hostidC)
 
@@ -41,13 +42,53 @@ const InfoMarker = ({isOpen,devices,mapAux,setmapAux, data,closeInfoMarker,serve
   const [listSelected,setListSelected]=useState(1)
   const [hostSelected,setHostSelected]=useState(2)
   const [actionSelected,setActionSelected]=useState({})
+  const[listActions,setListActions]=useState({data:[],loading:true,error:null});
   console.log("infomarkerP:"+data.name_hostipC)
-  const response_acciones=useFetch('zabbix/hosts/actions',data.name_hostipC,'','GET',server)
-  console.log((response_acciones.loading)?'cargando acciones':response_acciones.data.data.actions)
-  console.log(infoHostC)
+  // const response_acciones=useFetch('zabbix/hosts/actions',data.name_hostipC,'','GET',server)
+  console.log((listActions.loading)?'cargando acciones':listActions)
+  console.log(infoHostC.ip)
     const hadleChangeList=(e)=>{
         setListSelected(e)
         
+    }
+useEffect(()=>{
+  search_actions()
+},[infoHostC.ip])
+useEffect(()=>{
+  search_actions()
+},[])
+    function search_actions(ip){
+      
+      setListActions({data:[],loading:true,error:listActions.error})
+        const fetchData = async () => {
+          try {
+            // console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/layers/switches_connectivity')
+        //  const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/layers/switches_connectivity/'+ubicacion.groupid, { 
+          console.log('http://172.18.200.14:8004/api/v1/zabbix/hosts/actions/'+infoHostC.ip) 
+          const response = await fetch('http://172.18.200.14:8004/api/v1/zabbix/hosts/actions/'+infoHostC.ip, {                
+                                headers: {
+                                  'Content-Type': 'application/json',
+                                  Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+                                },
+                              });
+                              console.log(response)
+            if (response.ok) {
+              const response_data = await response.json();
+              console.log(response_data.data)
+              setListActions({data:response_data.data,loading:false,error:listActions.error})
+              // setSwitchList({data:data_switches,loading:false,error:'rfid_list.error'})
+              
+            } else {
+              throw new Error('Error en la solicitud');
+            }
+          } catch (error) {
+            // Manejo de errores
+            setListActions({data:listActions.data,loading:listActions.loading,error:error})
+            //console.error(error);
+          }
+        };
+        fetchData();
+        // setSwitchList({data:data_switches,loading:false,error:'rfid_list.error'})
     }
   useEffect(() => {
     if (relation !== undefined) {
@@ -154,7 +195,7 @@ setListSelected(1)
                     {data.name_hostC}
                   </div>
                   :
-                  <HostSelector setListSelected={setListSelected} setHostId={setHostId} opGeneral={false}   txtOpGen={'N/A'} opt_de={data.hostidC} origen={'mapa'}  data={ubicacion_mix}  loading={false}  titulo='hosts' />
+                  <HostSelector search_actions={search_actions} setListSelected={setListSelected} setHostId={setHostId} opGeneral={false}   txtOpGen={'N/A'} opt_de={data.hostidC} origen={'mapa'}  data={ubicacion_mix}  loading={false}  titulo='hosts' />
                   
                   }
                     
@@ -291,9 +332,9 @@ setListSelected(1)
                     <div className='contAcciones'>
                     <div className='menuActionData' style={{display:'flex'}}>
                       {
-                        (response_acciones.loading)?<LoadSimple></LoadSimple>:
+                        (listActions.loading)?<LoadSimple></LoadSimple>:
                         
-                        response_acciones.data.data.actions.map((elemento, indice)=>(
+                        listActions.data.actions.map((elemento, indice)=>(
                           <div className='menuActionCell' style={{border: 'unset',width:'25%'}}>
                           <Action origen='General' disabled={false} titulo={elemento.name} action={()=>handlePingClick(elemento)}/>
                       </div>

@@ -24,6 +24,8 @@ const ModalCreateCis =({user,devices,server,setRegisterIsValid,dataCis,setData,l
     const [cisData,setCisData]=useState({ip:(editActive)?dataCis.ip:"",host_id:0,tech_id:(editActive)?dataCis.tech_id:"",device_name:(editActive)?dataCis.device_name:"",description:(editActive)?dataCis.description:"",location:(editActive)?dataCis.location:"",criticality:(editActive)?dataCis.criticality:0,status:(editActive)?dataCis.status:"Inactivo",referencia:(editActive)?dataCis.status:""})
     const [hostName,setHostName]=useState("") 
     const [hostLocation,setHostLocation]=useState("") 
+    const [hostActivate,setHostActivate]=useState(0)
+    console.log(hostActivate)
     const tec_list=useFetch('cassia/ci_elements/technologies','','','GET',server)
     const [msgError,setMsgError]=useState("")
     const [listSearchIP,setListSearchIP]=useState(false)
@@ -35,6 +37,7 @@ const ModalCreateCis =({user,devices,server,setRegisterIsValid,dataCis,setData,l
             console.log("escribe")
             setHostName(host[0].name)
             setHostLocation(host[0].location)
+            setHostActivate(host[0].status)
             setCisData((prevState)=>{
                 return {
                     ...prevState,
@@ -110,6 +113,7 @@ const ModalCreateCis =({user,devices,server,setRegisterIsValid,dataCis,setData,l
         if(e.target.name==="ip"){
             if(value==""){
                 setHostLocation("")
+                setHostActivate(0)
                 setIpValid(true)
                 sethost([])
                 setHostName("")
@@ -239,6 +243,7 @@ const ModalCreateCis =({user,devices,server,setRegisterIsValid,dataCis,setData,l
                     sethost([])
                 setHostName("")
                 setHostLocation("")
+                setHostActivate(0)
                     setMsgError("La IP no existe o no esta dada de alta")
                     setIpValid(false)
                 }else{
@@ -286,6 +291,7 @@ const ModalCreateCis =({user,devices,server,setRegisterIsValid,dataCis,setData,l
             sethost([])
                 setHostName("")
                 setHostLocation("")
+                setHostActivate(0)
         }
         return result;
       };
@@ -466,14 +472,22 @@ const ModalCreateCis =({user,devices,server,setRegisterIsValid,dataCis,setData,l
                                         
                                     </div>
                                     <div className="user-box-cis">
-                                    <input required name="status" defaultChecked={(status=="Activo")?true:false} className='checkbox-cis' type="checkbox" value={status}
-                                    onChange={handleChange} />
-                                        <label className='label-checkbox-cis '>Activo</label>
-                                        {
-                                            // (name==="" || nombreIsValid)?'':<span className='form-msg-error'> Nombre no valido</span>
-                                        }
-                                        
-                                    </div>
+      {hostActivate === 1 ? (
+        <input
+          required
+          name="status"
+          disabled
+          defaultChecked={true}
+          className='checkbox-cis'
+          type="checkbox"
+          value={status}
+          onChange={handleChange}
+        />
+      ) : (
+        <></>
+      )}
+      <label className='label-checkbox-cis'>{(hostActivate==1)?'Activo':'Desactivado'}</label>
+    </div>
                                     
                                     <div className="user-box-cis">
                                         {

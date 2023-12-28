@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import Select from 'react-select'
 import data_ubi from './ubicaciones'
 import { useFetch } from '../hooks/useFetch'
-const HostSelector=({setListSelected,setHostId,opGeneral,txtOpGen,opt_de,titulo,data,loading,origen})=>{
+const HostSelector=({search_actions,setListSelected,setHostId,opGeneral,txtOpGen,opt_de,titulo,data,loading,origen})=>{
     console.log(titulo)
     // console.log(opt_de)
     console.log(data)
@@ -45,7 +45,7 @@ const HostSelector=({setListSelected,setHostId,opGeneral,txtOpGen,opt_de,titulo,
         cont_i++
         let op;
         
-        op={ filter:titulo,value: datas.hostid, label: datas.Host ,id:datas.hostid};
+        op={ filter:titulo,value: datas.hostid, label: datas.ip+" / "+datas.Host ,id:datas.hostid};
             
         return op                           // <option key={datas.uuid}> {datas.name} </option>
 })
@@ -63,6 +63,7 @@ const HostSelector=({setListSelected,setHostId,opGeneral,txtOpGen,opt_de,titulo,
         // setValue((state)=>({
         //     ...state,[name]:selected.label
         // }))
+        // search_actions()
         setValue(selected)
         setHostId(selected.value)
         setListSelected(1)
@@ -87,7 +88,7 @@ const HostSelector=({setListSelected,setHostId,opGeneral,txtOpGen,opt_de,titulo,
                             // placeholder={loading?'cargando..':options[0].label}
                             noOptionsMessage={() => "No existe"}
                             isDisabled={loading}
-                            isSearchable={false} 
+                            isSearchable={true} 
                             menuPortalTarget={document.body} 
                         />
                         
