@@ -42,6 +42,8 @@ const Monitoreo=({token_item,dataGlobals,server})=>{
 const [markers2, setMarkers2] = useState([]);
 const [switchesFO, setSwitchesFO] = useState([]);
 const [switchesMO, setSwitchesMO] = useState([]);
+const [switchesDownFO, setSwitchesDownFO] = useState([]);
+const [switchesDownMO, setSwitchesDownMO] = useState([]);
 console.log(switchesFO,switchesFO,markers)
     const [markersWOR,setMarkersWOR]=useState([])
     const [lines,setLines]=useState([])
@@ -93,7 +95,7 @@ useEffect(()=>{
   console.log("actualiza markers")
  console.log(switchesFO,switchesMO)
  if(switchesFO.length>0 && switchesMO.length>0){
-    setSwitches([switchesFO,switchesMO])
+    setSwitches([switchesFO,switchesMO,switchesDownFO,switchesDownMO])
  }
  
 },[switchesFO,switchesMO])
@@ -812,7 +814,7 @@ useEffect(()=>{
                   }
                 //azul #4fb7f3
                 // verde "#1fee08"
-                if(host.type_connection==1){
+                if(host.type_connection==1 && host.connectivity==1){
                   // console.log("fibra optica")
                   setSwitchesFO(switchesFO =>[...switchesFO,{
                     type: 'Feature',
@@ -839,9 +841,63 @@ useEffect(()=>{
                       coordinates: [[host.longitudeP.replace(",", "."), host.latitudeP.replace(",", ".")], [host.longitudeC.replace(",", "."), host.latitudeC.replace(",", ".")]],
                     },
                   }])
-                }else if(host.type_connection==2){
+                }else if(host.type_connection==1 && host.connectivity==0){
+                  // console.log("fibra optica")
+                  setSwitchesDownFO(switchesDownFO =>[...switchesDownFO,{
+                    type: 'Feature',
+                    properties:{
+                      correlarionid: host.relationid,
+                      init_lat: host.latitudeP.replace(",", "."),
+                      init_lon: host.longitudeP.replace(",", "."),
+                      end_lat: host.latitudeC.replace(",", "."),
+                      end_lon: host.longitudeC.replace(",", "."),
+                      Metric:host.Metric,
+                      name:host.name,
+                      hostidC: host.hostidC,
+                      hostidP: host.hostidP,
+                      BitsSent: host.BitsSent,
+                      color_alineacion:colorSG,
+                      severity:host.severity,
+                      type_connection: host.type_connection,
+                      connectivity:host.connectivity,
+                      // severity:Math.floor(Math.random() * 4) + 1,
+                      metrica:metricaSelected,
+                    },
+                    geometry: {
+                      type: 'LineString',
+                      coordinates: [[host.longitudeP.replace(",", "."), host.latitudeP.replace(",", ".")], [host.longitudeC.replace(",", "."), host.latitudeC.replace(",", ".")]],
+                    },
+                  }])
+                } else if(host.type_connection==2 && host.connectivity==1){
                   // console.log("microonda")
                   setSwitchesMO(switchesMO =>[...switchesMO,{
+                    type: 'Feature',
+                    properties:{
+                      correlarionid: host.relationid,
+                      init_lat: host.latitudeP.replace(",", "."),
+                      init_lon: host.longitudeP.replace(",", "."),
+                      end_lat: host.latitudeC.replace(",", "."),
+                      end_lon: host.longitudeC.replace(",", "."),
+                      Metric:host.Metric,
+                      name:host.name,
+                      hostidC: host.hostidC,
+                      hostidP: host.hostidP,
+                      BitsSent: host.BitsSent,
+                      color_alineacion:colorSG,
+                      severity:host.severity,
+                      type_connection: host.type_connection,
+                      connectivity:host.connectivity,
+                      // severity:Math.floor(Math.random() * 4) + 1,
+                      metrica:metricaSelected,
+                    },
+                    geometry: {
+                      type: 'LineString',
+                      coordinates: [[host.longitudeP.replace(",", "."), host.latitudeP.replace(",", ".")], [host.longitudeC.replace(",", "."), host.latitudeC.replace(",", ".")]],
+                    },
+                  }])
+                }else if(host.type_connection==2 && host.connectivity==0){
+                  // console.log("fibra optica")
+                  setSwitchesDownMO(switchesDownMO =>[...switchesDownMO,{
                     type: 'Feature',
                     properties:{
                       correlarionid: host.relationid,
