@@ -69,7 +69,7 @@ const HealthByHost=({hostId,server})=>{
                               </div>
                               <div className='problemCell' style={{width:'22%'}}>
                                 <div className='txtProblemCell'>
-                            {elemento.Metric}
+                            {(elemento.units!="")?elemento.Metric+" ("+elemento.units+")":elemento.Metric}
                                 
                                 </div>
                               </div>
