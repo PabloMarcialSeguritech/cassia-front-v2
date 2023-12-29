@@ -350,13 +350,13 @@ map.on('click', 'host-markerWOR', (e) => {
                 });
                 /*********************************************************************************** */
            
-            const throughtputSource2={
-              type: 'geojson',
-              data: {
-                type: 'FeatureCollection',
-                features: switches[1]
+              const throughtputSource2={
+                type: 'geojson',
+                data: {
+                  type: 'FeatureCollection',
+                  features: switches[1]
+                }
               }
-            }
                 map.addSource('line-throughtput2',throughtputSource2);
           
                 
@@ -376,6 +376,13 @@ map.on('click', 'host-markerWOR', (e) => {
                       ],
                     'line-width': 5,
                     'line-dasharray': [0, 4, 3]
+                    // 'line-dasharray': [
+                    //   'match',
+                    //   ['get', 'connectivity'],
+                    //   0, ['solid'], // Valor cuando connectivity es 0
+                    //   1, [0, 4, 3], // Valor cuando connectivity es 1
+                    //   ['solid'] // Valor predeterminado si no se cumplen las condiciones anteriores
+                    // ]
                   }
                 }
                 map.addLayer(throughtputLayer2);
@@ -459,7 +466,216 @@ map.on('click', 'host-markerWOR', (e) => {
                   </div>`)
                   .addTo(map);
               });
-            }
+            
+
+
+
+
+/********************************************************************* */
+const throughtputSourceD1={
+  type: 'geojson',
+  data: {
+    type: 'FeatureCollection',
+    features: switches[2]
+  }
+}
+    map.addSource('line-throughtputD1',throughtputSourceD1);
+
+    
+    const throughtputLayerD1={
+      type: 'line',
+      source: 'line-throughtputD1',
+      id: 'line-throughtputD1',
+      paint: {
+        
+        'line-color': [
+          'match',
+          ['get', 'connectivity'], 
+          -1, '#1fee08',
+      0, 'red', 
+      1, 'lime', 
+      '#11b4da', // Color predeterminado si no se cumplen las condiciones anteriores
+        ],
+        'line-width': 8,
+        'line-dasharray': [0, 0.3, 0.2]
+      }
+    }
+    map.addLayer(throughtputLayerD1);
+
+    const dashArraySequenceD1 = [
+      [0, 0.3, 0.2],
+        [0, 0.1, 0.2, 0.4],
+        [0, 0.2, 0.2, 0.3],
+        [0, 0.3, 0.2, 0.2],
+        [0, 0.4, 0.2, 0.1],
+        [0, 0.5, 0.2, 0],
+      
+      ];
+
+    let stepd1= 0;
+
+    
+
+   if(!idCapaExistente('line-throughtputD1')){
+     setCapas((prevCapas) => ({
+       ...prevCapas,
+       [Object.keys(prevCapas).length ]: { show: true, name: 'Donw Fibra optica',id:`line-throughtputD1`,layer:throughtputLayerD1 ,source:throughtputSourceD1,nivel:2},
+     }));
+   }
+   map.on('mouseleave', 'line-throughtputD1', (e) => {
+    
+    const popups = document.querySelectorAll('.custom-popup');
+  
+  popups.forEach(popup => {
+  
+  popup.remove();
+  });
+    });
+  map.on('mouseenter', 'line-throughtputD1', (e) => {
+    // console.log(e.features[0].geometry.coordinates)
+    const coordinates = calcularPuntoMedio(e.features[0].geometry.coordinates[0],e.features[0].geometry.coordinates[1])
+  // console.log(coordinates)
+    //   const coordinates = e.features[0].geometry.coordinates.slice();
+    
+
+    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+      coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+    }
+    
+    Popup= new mapboxgl.Popup({
+      className: 'custom-popup',
+      closeButton: false,
+  })
+      .setLngLat(coordinates)
+      
+      .setHTML(`<div class='cont-pop' style='border: 1px solid ${e.features[0].properties.color_alineacion};'>
+      <div>${e.features[0].properties.name}...</div>
+     
+      
+      </div>`)
+      .addTo(map);
+  });
+  /*********************************************************************************** */
+
+const throughtputSource2D2={
+type: 'geojson',
+data: {
+  type: 'FeatureCollection',
+  features: switches[3]
+}
+}
+  map.addSource('line-throughtput2D2',throughtputSource2D2);
+
+  
+  const throughtputLayer2D2={
+    type: 'line',
+    source: 'line-throughtput2D2',
+    id: 'line-throughtput2D2',
+    paint: {
+      
+      'line-color': [
+        'match',
+        ['get', 'connectivity'], 
+          -1, '#1fee08',
+      0, 'red', 
+      1, 'lime', 
+      '#11b4da', // Color predeterminado si no se cumplen las condiciones anteriores
+        ],
+      'line-width': 5,
+      'line-dasharray': [0, 4, 3]
+      // 'line-dasharray': [
+      //   'match',
+      //   ['get', 'connectivity'],
+      //   0, ['solid'], // Valor cuando connectivity es 0
+      //   1, [0, 4, 3], // Valor cuando connectivity es 1
+      //   ['solid'] // Valor predeterminado si no se cumplen las condiciones anteriores
+      // ]
+    }
+  }
+  map.addLayer(throughtputLayer2D2);
+
+  const dashArraySequence2D2 = [
+    [0, 4, 3],
+  [0.5, 4, 2.5],
+  [1, 4, 2],
+  [1.5, 4, 1.5],
+  [2, 4, 1],
+  [2.5, 4, 0.5],
+  [3, 4, 0],
+  [0, 0.5, 3, 3.5],
+  [0, 1, 3, 3],
+  [0, 1.5, 3, 2.5],
+  [0, 2, 3, 2],
+  [0, 2.5, 3, 1.5],
+  [0, 3, 3, 1],
+  [0, 3.5, 3, 0.5]
+    ];
+
+  let step2d2 = 0;
+
+  function animateDashArray2D2(timestamp) {
+    const newStep = parseInt((timestamp / 50) % dashArraySequence2D2.length);
+
+    if (newStep !== step2d2) {
+      try{
+        let layerExists = map.getLayer('line-throughtput2D2');
+        if (layerExists) {
+          map.setPaintProperty('line-throughtput2D2', 'line-dasharray', dashArraySequence2D2[step2]);
+          // Puedes realizar operaciones adicionales aquí si la capa existe
+        }   
+      }catch(error){
+        // console.log(error)
+      }
+      
+      step2 = newStep;
+    }
+
+    // requestAnimationFrame(animateDashArray2);
+  }
+
+  animateDashArray2D2.bind(this)(0);
+ 
+ if(!idCapaExistente('line-throughtput2D2')){
+   setCapas((prevCapas) => ({
+     ...prevCapas,
+     [Object.keys(prevCapas).length ]: { show: true, name: 'Down Microonda',id:`line-throughtput2D2`,layer:throughtputLayer2D2 ,source:throughtputSource2D2,nivel:2},
+   }));
+ }
+ map.on('mouseleave', 'line-throughtput2D2', (e) => {
+  
+  const popups = document.querySelectorAll('.custom-popup');
+
+popups.forEach(popup => {
+
+popup.remove();
+});
+  });
+map.on('mouseenter', 'line-throughtput2D2', (e) => {
+  // console.log(e.features[0].geometry.coordinates)
+  const coordinates = calcularPuntoMedio(e.features[0].geometry.coordinates[0],e.features[0].geometry.coordinates[1])
+// console.log(coordinates)
+  //   const coordinates = e.features[0].geometry.coordinates.slice();
+  
+
+  while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+    coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+  }
+  
+  Popup= new mapboxgl.Popup({
+    className: 'custom-popup',
+    closeButton: false,
+})
+    .setLngLat(coordinates)
+    
+    .setHTML(`<div class='cont-pop' style='border: 1px solid ${e.features[0].properties.color_alineacion};'>
+    <div>${e.features[0].properties.name}...</div>
+    
+    </div>`)
+    .addTo(map);
+});
+
+          }
+            
           // const switchesConectSource={
           //   type: 'geojson',
           //   data: {
@@ -640,7 +856,7 @@ map.on('click', 'host-markerWOR', (e) => {
                       'match',
                       ['get', 'severity'], 
                       -1, '#1fee08',
-                  0, 'red', 
+                  0, '#4fb7f3', 
                   1, '#ffee00', 
                   2, '#ee9d08', 
                   3, '#ee5c08', 
@@ -748,7 +964,7 @@ map.on('click', 'host-markerWOR', (e) => {
                     'match',
                     ['get', 'severity'], 
                     -1, '#1fee08',
-                0, 'red', 
+                0, '#4fb7f3', 
                 1, '#ffee00', 
                 2, '#ee9d08', 
                 3, '#ee5c08', 
