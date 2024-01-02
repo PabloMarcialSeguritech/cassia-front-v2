@@ -41,7 +41,7 @@ const CisList =({devices,handleChangEdit,setData,setRegisterIsValid ,setLoading,
     const [CisAfectaModalOpen, setCisAfectaModalOpen] =useState(false); 
     const [cisSelectedAux,setCisSelectedAux]=useState([])
     var dataList=(searchTerm==='')?dataUsers.data:searchResults;
-    // console.log(userSelected)
+    console.log(dataList)
     function openDeleteUserModal() {
         setdeleteCisModalOpen(true);
       }
