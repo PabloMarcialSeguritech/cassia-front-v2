@@ -21,7 +21,7 @@ const ModalCreateCis =({user,devices,server,setRegisterIsValid,dataCis,setData,l
     const [matchPassword,setMatchPassword]=useState(false)
     const [disabled,setDisabled]=useState(true)
     const [host,sethost]=useState([])
-    const [cisData,setCisData]=useState({ip:(editActive)?dataCis.ip:"",host_id:0,tech_id:(editActive)?dataCis.tech_id:"",device_name:(editActive)?dataCis.device_name:"",description:(editActive)?dataCis.description:"",location:(editActive)?dataCis.location:"",criticality:(editActive)?dataCis.criticality:0,status:(editActive)?dataCis.status:"Inactivo",referencia:(editActive)?dataCis.status:""})
+    const [cisData,setCisData]=useState({ip:(editActive)?dataCis.ip:"",host_id:0,tech_id:(editActive)?dataCis.tech_id:"",device_name:(editActive)?dataCis.device_name:"",description:(editActive)?dataCis.description:"",location:(editActive)?dataCis.location:"",criticality:(editActive)?dataCis.criticality:0,status:(editActive)?dataCis.status:"Inactivo",referencia:(editActive)?dataCis.referencia:""})
     const [hostName,setHostName]=useState("") 
     const [hostLocation,setHostLocation]=useState("") 
     const [hostActivate,setHostActivate]=useState(0)
@@ -52,13 +52,13 @@ const ModalCreateCis =({user,devices,server,setRegisterIsValid,dataCis,setData,l
                 }
                 
             })
-            // setCisData((prevState)=>{
-            //     return {
-            //         ...prevState,
-            //         ['device_name']:host[0].name
-            //     }
+            setCisData((prevState)=>{
+                return {
+                    ...prevState,
+                    ['status']:(host[0].status!=0)?"Activo":"Inactivo"
+                }
                 
-            // })
+            })
            }else{
             console.log("borra")
             setHostName("")
