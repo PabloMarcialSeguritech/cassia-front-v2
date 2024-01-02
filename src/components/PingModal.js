@@ -6,13 +6,13 @@ import Selector from './Selector'
 import InputForm from './InputForm';
 import LoadAdding from './LoadAdding';
 import { useFetch } from '../hooks/useFetch'
-const PingModal = ({isOpen, data,actionSelected,statusPing,closePingModal ,server}) => {
+const PingModal = ({isOpen, ip,data,actionSelected,statusPing,closePingModal ,server}) => {
     console.log(actionSelected)
     const host=data.length===1?data[0]:data[1]
     console.log("host")
-    console.log(host)
-    const dataPing=useFetch('zabbix/hosts/action',actionSelected.ip+'/'+actionSelected.action_id,'','POST',server)
-    console.log(dataPing)
+    console.log('zabbix/hosts/action',ip+'/'+actionSelected.action_id)
+    const dataPing=useFetch('zabbix/hosts/action',ip+'/'+actionSelected.action_id,'','POST',server)
+    console.log(data)
     return (
       <>
         <div className='contPingModal'>
