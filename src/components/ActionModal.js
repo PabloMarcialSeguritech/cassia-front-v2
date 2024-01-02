@@ -6,7 +6,7 @@ import Selector from './Selector'
 import InputForm from './InputForm';
 import LoadAdding from './LoadAdding';
 import { useFetch } from '../hooks/useFetch'
-const ActionModal = ({isOpen, data,actionSelected,statusPing,closeActionModal ,server}) => {
+const ActionModal = ({isOpen,ip, data,actionSelected,statusPing,closeActionModal ,server}) => {
     console.log(actionSelected)
     const host=data.length===1?data[0]:data[1]
     console.log("host")
@@ -24,10 +24,10 @@ const ActionModal = ({isOpen, data,actionSelected,statusPing,closeActionModal ,s
           const fetchDataPost = async () => {
             
          try {
-            console.log(method,'http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/action/',actionSelected.ip+'/'+actionSelected.action_id)
+            console.log(method,'http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/action/',ip+'/'+actionSelected.action_id)
           
             // console.log(localStorage.getItem('access_token'))
-              const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/action/'+actionSelected.ip+'/'+actionSelected.action_id, {
+              const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/action/'+ip+'/'+actionSelected.action_id, {
                 method: method,  
                 headers: {
                     'Content-Type': 'application/json',
@@ -69,7 +69,7 @@ const ActionModal = ({isOpen, data,actionSelected,statusPing,closeActionModal ,s
             </div>
             <div className='contAnimationActionModal'>
                
-                <div className='contAnimation' style={{width:'45%'}}>
+                <div className='contAnimation' style={{width:'60%',textAlign:'center'}}>
 
                     {
                         (ejecuta==false)?<p className={'msgErrorPing '} >
@@ -87,7 +87,7 @@ const ActionModal = ({isOpen, data,actionSelected,statusPing,closeActionModal ,s
                         <div className="dot" style={{height:'15px'}}></div>
                     </section>:
                     <p className={dataPing.data.data.action==="true"?'msgPing':'msgErrorPing '} >
-                         {dataPing.data.data.action==="true"?'Conexión correcta':'Sin conexión'}
+                         {dataPing.data.data.action==="true"?'Acción "'+actionSelected.name+'" al dispositivo "'+ip+'" ejecutada correctamente':'Acción  "'+actionSelected.name+'" ejecutada sin exitó'}
                     </p>}
                        </>
                     }
