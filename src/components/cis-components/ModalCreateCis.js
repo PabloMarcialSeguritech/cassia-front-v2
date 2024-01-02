@@ -4,7 +4,8 @@ import { useState ,useEffect} from 'react';
 import LoadSimple from '../LoadSimple';
 import InputAdmin from '../InputAdmin';
 import { useFetch } from '../../hooks/useFetch';
-const ModalCreateCis =({user,server,setRegisterIsValid,dataCis,setData,loading,setLoading,setError,setEditActive,editActive,closCreateCisModal})=>{
+import SelectorAdmin from '../SelectorAdmin';
+const ModalCreateCis =({user,devices,server,setRegisterIsValid,dataCis,setData,loading,setLoading,setError,setEditActive,editActive,closCreateCisModal})=>{
     const obtenerFechaActualLocal = () => {
         const ahora = new Date();
         const anio = ahora.getFullYear();
@@ -20,15 +21,14 @@ const ModalCreateCis =({user,server,setRegisterIsValid,dataCis,setData,loading,s
     const [matchPassword,setMatchPassword]=useState(false)
     const [disabled,setDisabled]=useState(true)
     const [host,sethost]=useState([])
-    // const [cisData,setCisData]=useState({ip:(editActive)?dataCis.ip:"",host_id:(editActive)?dataCis.host_id:0,date:(editActive)?dataCis.date:"",responsible_name:(editActive)?dataCis.responsible_name:"",auth_name:(editActive)?dataCis.auth_name:"",device_description:(editActive)?dataCis.device_description:"",justification:(editActive)?dataCis.justification:"",previous_state:(editActive)?dataCis.previous_state:"",new_state:(editActive)?dataCis.new_state:"",impact:(editActive)?dataCis.impact:"",result:(editActive)?dataCis.result:"",observations:(editActive)?dataCis.observations:"",files:(editActive)?dataCis.files:[],status:(editActive)?dataCis.status:'Activo'})
-    const [cisData,setCisData]=useState({ip:(editActive)?dataCis.ip:"",host_id:0,folio:(editActive)?dataCis.folio:"",technology:(editActive)?dataCis.technology:"",device_name:(editActive)?dataCis.device_name:"",description:(editActive)?dataCis.description:"",location:(editActive)?dataCis.location:"",criticality:(editActive)?dataCis.criticality:0,status:(editActive)?dataCis.status:"Inactivo"})
-    // const [cisData,setCisData]=useState({ip:(editActive)?dataCis.ip:"",host_id:0,date:(editActive)?dataCis.date:obtenerFechaActualLocal(),responsible_name:(editActive)?dataCis.responsible_name:"",auth_name:(editActive)?dataCis.auth_name:"",device_description:(editActive)?dataCis.device_description:"",justification:(editActive)?dataCis.justification:"",previous_state:(editActive)?dataCis.previous_state:"",new_state:(editActive)?dataCis.new_state:"",impact:(editActive)?dataCis.impact:"",result:(editActive)?dataCis.result:"",observations:(editActive)?dataCis.observations:"",files:[],status:(editActive)?dataCis.status:'Activo'})
-    // const [cisData,setCisData]=useState({ip:"",host_id:0,date:"",responsible_name:"",auth_name:"",device_description:"",justification:"",previous_state:"",new_state:"",impact:"",result:"",observations:"",files:[],status:'Activo'})
+    const [cisData,setCisData]=useState({ip:(editActive)?dataCis.ip:"",host_id:0,tech_id:(editActive)?dataCis.tech_id:"",device_name:(editActive)?dataCis.device_name:"",description:(editActive)?dataCis.description:"",location:(editActive)?dataCis.location:"",criticality:(editActive)?dataCis.criticality:0,status:(editActive)?dataCis.status:"Inactivo",referencia:(editActive)?dataCis.referencia:""})
     const [hostName,setHostName]=useState("") 
-    // const [data,setData]=useState([]);
-    // const [loading,setLoading]=useState(false);
-    // const [error,setError]=useState(null); 
-    
+    const [hostLocation,setHostLocation]=useState("") 
+    const [hostActivate,setHostActivate]=useState(0)
+    console.log(hostActivate)
+    const tec_list=useFetch('cassia/ci_elements/technologies','','','GET',server)
+    const [msgError,setMsgError]=useState("")
+    const [listSearchIP,setListSearchIP]=useState(false)
     console.log(cisData)
     //     console.log(host)
         useEffect(()=>{
@@ -36,6 +36,15 @@ const ModalCreateCis =({user,server,setRegisterIsValid,dataCis,setData,loading,s
            if(host.length>=1){
             console.log("escribe")
             setHostName(host[0].name)
+            setHostLocation(host[0].location)
+            setHostActivate(host[0].status)
+            setCisData((prevState)=>{
+                return {
+                    ...prevState,
+                    ['location']:host[0].location
+                }
+                
+            })
             setCisData((prevState)=>{
                 return {
                     ...prevState,
@@ -43,13 +52,13 @@ const ModalCreateCis =({user,server,setRegisterIsValid,dataCis,setData,loading,s
                 }
                 
             })
-            // setCisData((prevState)=>{
-            //     return {
-            //         ...prevState,
-            //         ['device_name']:host[0].name
-            //     }
+            setCisData((prevState)=>{
+                return {
+                    ...prevState,
+                    ['status']:(host[0].status!=0)?"Activo":"Inactivo"
+                }
                 
-            // })
+            })
            }else{
             console.log("borra")
             setHostName("")
@@ -69,6 +78,7 @@ const ModalCreateCis =({user,server,setRegisterIsValid,dataCis,setData,loading,s
             // })
            }
       },[host])
+      
     const handleChange=(e)=>{
         console.log(e.target.name)
         const {name,value}=e.target
@@ -80,7 +90,7 @@ const ModalCreateCis =({user,server,setRegisterIsValid,dataCis,setData,loading,s
                 }
                 
             })
-        } else if(e.target.name==="status"){
+        }  else if(e.target.name==="status"){
             setCisData((prevState)=>{
                 return {
                     ...prevState,
@@ -101,8 +111,17 @@ const ModalCreateCis =({user,server,setRegisterIsValid,dataCis,setData,loading,s
           
        
         if(e.target.name==="ip"){
-            
-            setIpValid(validateIp(value))
+            if(value==""){
+                setHostLocation("")
+                setHostActivate(0)
+                setIpValid(true)
+                sethost([])
+                setHostName("")
+                setHostLocation("")
+            }else{
+                setIpValid(validateIp(value))
+            }
+           
            
           }
 
@@ -112,7 +131,7 @@ const ModalCreateCis =({user,server,setRegisterIsValid,dataCis,setData,loading,s
 
       useEffect(()=>{
        
-            if(cisData.folio==="" || cisData.technology==="" || IpValid===false || cisData.device_name==="" || cisData.description==="" || cisData.location==="" || cisData.new_state==="" || cisData.criticality==="" || cisData.status==="" ){
+            if( (cisData.tech_id===0 || cisData.tech_id==="") || IpValid===false  || cisData.location==="" || cisData.new_state==="" || cisData.criticality==="" || cisData.status==="" ){
                 console.log('disabled')
                 setDisabled(true)
             }else{
@@ -220,6 +239,17 @@ const ModalCreateCis =({user,server,setRegisterIsValid,dataCis,setData,loading,s
                 const data1 = await response.json();
                 setLoadingM(false)
                 console.log(data1)
+                if(data1.data.length==0){
+                    sethost([])
+                setHostName("")
+                setHostLocation("")
+                setHostActivate(0)
+                    setMsgError("La IP no existe o no esta dada de alta")
+                    setIpValid(false)
+                }else{
+                    setIpValid(true)
+
+                }
                 sethost(data1.data)
                 setDisabled(true)
               } else {
@@ -235,7 +265,19 @@ const ModalCreateCis =({user,server,setRegisterIsValid,dataCis,setData,loading,s
           fetchDataPost();
         
     }
-
+    const changeOption=(option,index)=>{
+        
+        console.log(option)
+        setCisData((prevState)=>{
+            return {
+                ...prevState,
+                ['tech_id']:option.value===""?0:(parseInt(option.value))
+            }
+            
+        })
+        // setCisRelation(option.value)
+            
+    }
     const [fecha, setDate] = useState('2023-09-28')
     const validateIp= (ip) => {
         console.log("validando correo: ",ip )
@@ -244,11 +286,63 @@ const ModalCreateCis =({user,server,setRegisterIsValid,dataCis,setData,loading,s
         if(result){
             buscar_host(ip)
         }else{
-            
+            setHostLocation("")
+            setMsgError("Direccion ip no valida")
+            sethost([])
+                setHostName("")
+                setHostLocation("")
+                setHostActivate(0)
         }
         return result;
       };
-    const {ip,host_id,folio,technology,device_name,description,location,criticality,status}=cisData;
+      const [resultList,setResultList]=useState([])
+      const handleSearchHost=(e)=>{
+        
+        const term = e.target.value;
+        const {name,value}=e.target
+        if(name=="ip"){
+            setCisData((prevState)=>{
+                return {
+                    ...prevState,
+                    ['ip']:value
+                }
+                
+            })
+        }
+        // console.log(value)
+        // setInputIP(value)
+        setIpValid(validateIp(value))
+        
+        const filteredResults = devices.data.hosts.filter((item) => {
+            
+            return Object.entries(item).some(([key, value]) => {
+              if (key === 'ip' || key=== 'Host') {
+                return String(value).toLowerCase().includes(term.toLowerCase());
+              }
+              return false; // Si no es el atributo 'ip', retorna falso para continuar buscando en otros atributos
+            });
+          });
+       
+          setResultList(filteredResults)
+      }
+      
+    //   console.log(resultList)
+    const handleSelected=(element)=>{
+        console.log(element)
+        setIpValid(validateIp(element.ip))
+        setCisData((prevState)=>{
+            return {
+                ...prevState,
+                ['ip']:element.ip
+            }
+            
+        })
+        setListSearchIP(false)
+    }
+    const closeListSearch=()=>{
+        setListSearchIP(false)
+    }
+    const {ip,host_id,tech_id,referencia,device_name,description,criticality,status}=cisData;
     return(
         <div className="modal-user-content">
             <div className='card-users modal-verificate'>
@@ -262,45 +356,77 @@ const ModalCreateCis =({user,server,setRegisterIsValid,dataCis,setData,loading,s
                                     <div className="form-cis-box"> 
                                     
                                     <div className="user-box-cis">
-                                    <input required name="ip"  type="text" value={ip}
-                                    onChange={handleChange} />
-                                        <label className='label-cis'>Host IP</label>
                                         {
-                                            IpValid?'':<span className='form-msg-error'> Direccion ip no valida</span>
+                                            (listSearchIP)?<div className='closeListSearch' onClick={closeListSearch}>X</div>:''
+                                        }
+                                    
+                                    <input required name="ip"  placeholder='Buscar por IP/Host' type="text" value={ip}
+                                    onChange={handleSearchHost} onFocus={()=>{setListSearchIP(true)}} onBlur={()=>{setListSearchIP(true)}} />
+                                    <div className={`container-searchHostCis-list ${!true ? 'large' : 'small'}`}>
+                
+                   
+                    {(listSearchIP)?
+                    
+                    <div className={`compact-searchHostCis-list ${!true ? 'large' : 'small'}`}>
+                    {
+                        (2==="" )?'':(resultList.length==0)?<div className='row-searchHostCis-list' >
+                        Sin Resultados
+                    </div>:
+                        
+                        resultList.map((element, index) => (
+                            <div className='row-searchHostCis-list' id={index} onClick={()=>handleSelected(element)}>
+                                <div className='cont-row-searchHostCis-txt'>
+                                    <div className='ip-row-searchHostCis' >{element.ip+" / "}</div>
+                                    <div> &nbsp; {element.Host}</div>
+                                    {(element.latitude.replace(",", ".")<-90 || element.latitude.replace(",", ".")>90)?
+                                    <div style={{color:'red'}}> &nbsp; coordenadas erroneas</div>:''
+                                    }
+                                    
+                                </div>
+                                {/* {(flagSearch)?element.ip:element.Host} */}
+                            </div>
+                        ))
+                       
+                            
+                    }
+                    
+                     
+                </div>:''}
+                
+               
+            </div>
+                                        <label className='label-cis active'>Host IP</label>
+                                        {
+                                            IpValid?'':<span className='form-msg-error'> {msgError}</span>
                                         }
                                         
                                     </div>
+                                    
                                     <div className="user-box-cis">
-                                    <input required name="host_id" placeholder='Ingrese una direccion IP' type="text" value={hostName}
+                                    <input required name="host_id" style={{background: "#ddd"}} placeholder='Realize una busqueda de dispositivo' type="text" value={hostName}
                                     onChange={handleChange} disabled />
                                         <label className='label-cis active '>Host name</label>
                                         
                                     </div>
+                                   
                                     <div className="user-box-cis">
-                                    {/* <input required name="date"  type="datetime-local" value={date}
-                                    onChange={handleChange} />
-                                        <label className='label-cis active' >Fecha de ejecución</label> */}
-                                        <input required name="folio"  type="text" value={folio}
-                                    onChange={handleChange}  />
-                                        <label className='label-cis  '>Folio</label>
+                                        {
+                                            (tec_list.loading)?'. . .':
+                                            <SelectorAdmin placeholder={'Seleccionar tecnología...'} opGeneral={true} txtOpGen={'TODOS'}  opt_de={tech_id} origen={'Admin'} data={tec_list.data.data} loading={tec_list.loading}  titulo='CisTec' selectFunction={changeOption} index={0}></SelectorAdmin>
+
+                                        }
+                                    {/* <input required name="technology"  type="text" value={technology}
+                                    onChange={handleChange} />*/}
+                                        <label className='label-cis'>Tecnologia</label> 
                                         {
                                             // (name==="" || nombreIsValid)?'':<span className='form-msg-error'> Nombre no valido</span>
                                         }
                                         
                                     </div>
                                     <div className="user-box-cis">
-                                    <input required name="technology"  type="text" value={technology}
+                                    <input disabled required name="device_name" style={{background: "#ddd"}}   className='read' type="text" value={device_name}
                                     onChange={handleChange} />
-                                        <label className='label-cis'>Tecnologia</label>
-                                        {
-                                            // (name==="" || nombreIsValid)?'':<span className='form-msg-error'> Nombre no valido</span>
-                                        }
-                                        
-                                    </div>
-                                    <div className="user-box-cis">
-                                    <input required name="device_name"  type="text" value={device_name}
-                                    onChange={handleChange} />
-                                        <label className='label-cis'>Nombre Dispositivo</label>
+                                        <label className='label-cis active'>Nombre Dispositivo</label>
                                         {
                                             // (name==="" || nombreIsValid)?'':<span className='form-msg-error'> Nombre no valido</span>
                                         }
@@ -316,9 +442,21 @@ const ModalCreateCis =({user,server,setRegisterIsValid,dataCis,setData,loading,s
                                         
                                     </div>
                                     <div className="user-box-cis">
-                                    <input required name="location"  type="text" value={location}
+                                    {/* <input required name="date"  type="datetime-local" value={date}
                                     onChange={handleChange} />
-                                        <label className='label-cis'>Ubicación</label>
+                                        <label className='label-cis active' >Fecha de ejecución</label> */}
+                                        <input required name="referencia"  type="text" value={referencia}
+                                    onChange={handleChange}  />
+                                        <label className='label-cis  '>Referencia</label>
+                                        {
+                                            // (name==="" || nombreIsValid)?'':<span className='form-msg-error'> Nombre no valido</span>
+                                        }
+                                        
+                                    </div>
+                                    <div className="user-box-cis">
+                                    <input disabled name="location"  style={{background: "#ddd"}}  placeholder='Realize una busqueda de dispositivo' type="text" value={hostLocation}
+                                    onChange={handleChange} />
+                                        <label className='label-cis active '>Ubicación</label>
                                         {
                                             // (name==="" || nombreIsValid)?'':<span className='form-msg-error'> Nombre no valido</span>
                                         }
@@ -334,14 +472,22 @@ const ModalCreateCis =({user,server,setRegisterIsValid,dataCis,setData,loading,s
                                         
                                     </div>
                                     <div className="user-box-cis">
-                                    <input required name="status"  className='checkbox-cis' type="checkbox" value={status}
-                                    onChange={handleChange} />
-                                        <label className='label-checkbox-cis '>Activo</label>
-                                        {
-                                            // (name==="" || nombreIsValid)?'':<span className='form-msg-error'> Nombre no valido</span>
-                                        }
-                                        
-                                    </div>
+      {hostActivate === 1 ? (
+        <input
+          required
+          name="status"
+          disabled
+          defaultChecked={true}
+          className='checkbox-cis'
+          type="checkbox"
+          value={status}
+          onChange={handleChange}
+        />
+      ) : (
+        <></>
+      )}
+      <label className='label-checkbox-cis'>{(hostActivate==1)?'Activo':'Desactivado'}</label>
+    </div>
                                     
                                     <div className="user-box-cis">
                                         {

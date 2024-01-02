@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import './styles/SideBar.css'
 const SideBar =({rolId,onLogin,pageSelected,setPageSelected,dataGlobals})=>{
+
     const handleSection=(e)=>{
        
         setPageSelected(e.target.attributes.name.value)
@@ -8,10 +9,13 @@ const SideBar =({rolId,onLogin,pageSelected,setPageSelected,dataGlobals})=>{
     var estado=''
     var reportes=0
     var cis=0
+    var acciones=0
     if(dataGlobals.data.data!==undefined){
+        console.log(dataGlobals.data.data)
         estado=dataGlobals.data.data.find(obj => obj.name === 'estado')
         reportes=dataGlobals.data.data.find(obj => obj.name === 'report_module')
         cis=dataGlobals.data.data.find(obj => obj.name === 'ci_module')
+        acciones=dataGlobals.data.data.find(obj => obj.name === 'action_module')
     }
     
     return(
@@ -90,7 +94,21 @@ const SideBar =({rolId,onLogin,pageSelected,setPageSelected,dataGlobals})=>{
                     </div>
                 </div>:''
             }
-            
+            {
+                (acciones.value==1)?
+                <div className={'sidebarRow '+(pageSelected==="acciones"?'sideRowSelected':'')}>
+                    <div className={'sidebarCont '+(pageSelected==="acciones"?'sideSelected':'')} name="acciones" onClick={handleSection}>
+                    
+                    <div className='imgSideCont' name="acciones" >
+                    <img src={'/iconos/acciones'+(pageSelected==="acciones"?'-blanco.png':'.png')} name="acciones" />
+                    
+                        </div>
+                        <div className='textSideCont ' name="acciones" >
+                        ACCIONES
+                        </div>
+                    </div>
+                </div>:''
+            }
             <div className="sidebarRow">
                 <div className='sidebarCont ' onClick={onLogin} >
                     <div className='imgSideCont'>

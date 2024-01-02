@@ -16,6 +16,7 @@ const Search = ({ searchResults, setSearchResults,onSearch,dataObject,setDataObj
   
    
   const handleSearch = (e) => {
+    console.log(dataObject)
     const term = e.target.value;
     setSearchTerm(term);
 

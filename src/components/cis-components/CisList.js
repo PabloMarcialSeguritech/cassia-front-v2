@@ -33,7 +33,7 @@ const CisAfectaModalStyles = {
     padding:'20px'
   },
 };
-const CisList =({handleChangEdit,setData,setRegisterIsValid ,setLoading,setError,server,dataUsers,setDataUsers,searchResults, setSearchResults,searchTerm,cisSelected,setCisSelected})=>{
+const CisList =({devices,handleChangEdit,setData,setRegisterIsValid ,setLoading,setError,server,dataUsers,setDataUsers,searchResults, setSearchResults,searchTerm,cisSelected,setCisSelected})=>{
     // const dataUsers=useFetch('cassia/ci','',localStorage.getItem('access_token'),'GET',server)
     
     const [deleteCisModalOpen, setdeleteCisModalOpen] =useState(false);
@@ -41,7 +41,7 @@ const CisList =({handleChangEdit,setData,setRegisterIsValid ,setLoading,setError
     const [CisAfectaModalOpen, setCisAfectaModalOpen] =useState(false); 
     const [cisSelectedAux,setCisSelectedAux]=useState([])
     var dataList=(searchTerm==='')?dataUsers.data:searchResults;
-    // console.log(userSelected)
+    console.log(dataList)
     function openDeleteUserModal() {
         setdeleteCisModalOpen(true);
       }
@@ -129,8 +129,8 @@ setCisSelected(elemento)
               <div className='field-body-table-cis field-larger'>
                 {elemento.name.slice(0,35)}...
               </div>
-              <div className='field-body-table-cis field-medium'>
-                {elemento.technology}
+              <div className='field-body-table-cis field-larger'>
+                {(elemento.technology=="")?elemento.tech_name:elemento.technology}
               </div>
               <div className='field-body-table-cis field-medium'>
                 {elemento.device_name}

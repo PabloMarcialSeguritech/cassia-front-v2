@@ -13,7 +13,9 @@
     stroke-linecap: round;
     animation: dash4 1.5s ease-in-out infinite;
    }
-   
+   .menuActionData circle{
+    stroke: hsl(215, 100%, 92%);
+   }
    @keyframes rotate4 {
     100% {
      transform: rotate(360deg);
