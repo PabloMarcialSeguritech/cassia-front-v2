@@ -18,7 +18,7 @@ import arcos_list from '../components/arcos'
 import data_switches from '../components/switches'
 import ShowLayers from '../components/ShowLayers'
 import { render } from '@testing-library/react'
-const Monitoreo=({token_item,dataGlobals,server})=>{
+const Monitoreo=({token_item,dataGlobals,server,handleShowPopup})=>{
   // console.log(dataGlobals)
   const [capas,setCapas]=useState({})
   const global_longitud=dataGlobals.find(obj => obj.name === 'state_longitude')
@@ -361,7 +361,7 @@ useEffect(()=>{
           try {
             // console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/layers/switches_connectivity')
         //  const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/layers/switches_connectivity/'+ubicacion.groupid, {  
-          const response = await fetch('http://172.18.200.14:8004/api/v1/zabbix/hosts/0?dispId=12&subtype_id=Interface Bridge-Aggregation_: Bits', {                
+          const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/0?dispId=12&subtype_id=Interface Bridge-Aggregation_: Bits', {                
                                 headers: {
                                   'Content-Type': 'application/json',
                                   Authorization: `Bearer ${token_item}`,
@@ -1260,7 +1260,7 @@ useEffect(()=>{
                   contentLabel="Example Modal2"
                   // shouldCloseOnOverlayClick={false}
                   >
-                    <InfoMarker mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} devices={devices} server={server} isOpen={infoMarkerOpen} data={infoMarker} closeInfoMarker={closeInfoMarker} ubiActual={ubiActual}></InfoMarker>
+                    <InfoMarker handleShowPopup={handleShowPopup} mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} devices={devices} server={server} isOpen={infoMarkerOpen} data={infoMarker} closeInfoMarker={closeInfoMarker} ubiActual={ubiActual}></InfoMarker>
                 </Modal>
               </>
           }
