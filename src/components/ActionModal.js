@@ -6,7 +6,7 @@ import Selector from './Selector'
 import InputForm from './InputForm';
 import LoadAdding from './LoadAdding';
 import { useFetch } from '../hooks/useFetch'
-const ActionModal = ({isOpen,ip, data,actionSelected,statusPing,closeActionModal ,server}) => {
+const ActionModal = ({isOpen,ip,handleShowPopup, data,actionSelected,statusPing,closeActionModal ,server}) => {
     console.log(actionSelected)
     const host=data.length===1?data[0]:data[1]
     console.log("host")
@@ -40,6 +40,9 @@ const ActionModal = ({isOpen,ip, data,actionSelected,statusPing,closeActionModal
                 
                 const data1 = await response.json();
                 // setDataPing(data1)
+                // if(!isOpen){
+                  handleShowPopup(((data1.success)?'Completado':data1.message),data1.data.action==="true"?'Acción "'+actionSelected.name+'" al dispositivo "'+ip+'" ejecutada correctamente':'Acción  "'+actionSelected.name+'" al dispositivo "'+ip+'" ejecutada sin exitó',((data1.success)?'':data1.recommendation), data1.success)
+                // }
                 setDataPing({data:data1,loading:false,error:null})
              
             
@@ -109,7 +112,7 @@ const ActionModal = ({isOpen,ip, data,actionSelected,statusPing,closeActionModal
                               <Action origen='General' disabled={false} titulo={'Ejecutar'} action={Ejecutar} />
                           </div>:''}
                           <div className='menuActionCell' style={{border: 'unset',width:'25%'}}>
-                              <Action origen='Alert' disabled={false} titulo={dataPing.loading===true?'Cancelar':'Salir'} action={closeActionModal} />
+                              <Action origen='Alert' disabled={false} titulo={'Salir'} action={closeActionModal} />
                           </div>
                           </div>
             </div>
