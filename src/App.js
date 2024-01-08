@@ -9,12 +9,15 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [userData,setUserData]=useState({})
   const [token,setToken] = useState(localStorage.getItem('access_token'));
-
+  const [object_state_sessions,set_object_state_sessions]=useState({})
+  console.log(object_state_sessions)
   // const [server,setServer]=useState({ip:'10.60.20.250',port:8002})
-  // const [server,setServer]=useState({ip:'172.16.4.249',port:8000})
-  const [server,setServer]=useState({ip:'172.18.200.14',port:8004})
+  // const [server,setServer]=useState({ip:'172.16.4.249',port:8000})//EDOMEX
+  const [server,setServer]=useState({ip:'172.18.200.14',port:8004})//Guanajuato
   // const [server,setServer]=useState({ip:'10.21.14.219',port:8002})
   // const [server,setServer]=useState({ip:'172.16.10.50',port:8000})
+
+  
   useEffect(()=>{
     if(token===null){
          console.log("es null")
@@ -45,7 +48,7 @@ function App() {
       <Route path="/" element={loggedIn ? <Navigate to="/main" /> : <Login onLogin={handleLogin} server={server} token={token} setToken={setToken} userData={userData} setUserData={setUserData}/>}>
         
       </Route>
-      <Route path="/main" element={loggedIn ? <Main  onLogin={handleLogin} token={token}  server={server} setToken={setToken} userData={userData} setUserData={setUserData}/> : <Navigate to="/" />}>
+      <Route path="/main" element={loggedIn ? <Main object_state_sessions={object_state_sessions} set_object_state_sessions={set_object_state_sessions} setServer={setServer} onLogin={handleLogin} token={token}  server={server} setToken={setToken} userData={userData} setUserData={setUserData}/> : <Navigate to="/" />}>
         
       </Route>
     </Routes>

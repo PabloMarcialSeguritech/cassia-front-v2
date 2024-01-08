@@ -26,7 +26,7 @@ const pingModalStyles = {
     padding:'20px'
   },
 };
-const InfoMarker = ({isOpen,devices,mapAux,setmapAux, data,closeInfoMarker,server,ubiActual,search_problems }) => {
+const InfoMarker = ({isOpen,handleShowPopup,devices,mapAux,setmapAux, data,closeInfoMarker,server,ubiActual,search_problems }) => {
   
   const ubicacion_mix=devices.data.hosts.filter(obj => obj.latitude === data.end_lat )
   // console.log(ubicacion_mix)
@@ -64,8 +64,8 @@ useEffect(()=>{
           try {
             // console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/layers/switches_connectivity')
         //  const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/layers/switches_connectivity/'+ubicacion.groupid, { 
-          console.log('http://172.18.200.14:8004/api/v1/zabbix/hosts/actions/'+infoHostC.ip) 
-          const response = await fetch('http://172.18.200.14:8004/api/v1/zabbix/hosts/actions/'+infoHostC.ip, {                
+          console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/actions/'+infoHostC.ip) 
+          const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/actions/'+infoHostC.ip, {                
                                 headers: {
                                   'Content-Type': 'application/json',
                                   Authorization: `Bearer ${localStorage.getItem('access_token')}`,
@@ -366,7 +366,7 @@ setListSelected(1)
           contentLabel="Example Modal2"
           // shouldCloseOnOverlayClick={false}
           >
-            <ActionModal ip={infoHostC.ip} actionSelected={actionSelected} server={server}isOpen={pingModalOpen} data={data} statusPing={statusPing} closeActionModal={closePingModal}></ActionModal>
+            <ActionModal  handleShowPopup={handleShowPopup} ip={infoHostC.ip} actionSelected={actionSelected} server={server}isOpen={pingModalOpen} data={data} statusPing={statusPing} closeActionModal={closePingModal}></ActionModal>
             {/* <PingModal actionSelected={actionSelected} server={server}isOpen={pingModalOpen} data={data} statusPing={statusPing} closePingModal={closePingModal}></PingModal> */}
         </Modal>
       </>
