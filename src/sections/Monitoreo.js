@@ -19,7 +19,7 @@ import data_switches from '../components/switches'
 import ShowLayers from '../components/ShowLayers'
 import { render } from '@testing-library/react'
 const Monitoreo=({token_item,dataGlobals,server,handleShowPopup})=>{
-  // console.log(dataGlobals)
+  console.log(dataGlobals)
   const [capas,setCapas]=useState({})
   const global_longitud=dataGlobals.find(obj => obj.name === 'state_longitude')
   const global_latitude=dataGlobals.find(obj => obj.name === 'state_latitude')
@@ -67,7 +67,7 @@ const [switchesDownMO, setSwitchesDownMO] = useState([]);
     const [mapAux,setmapAux]=useState({});
     const [rfidInterval,setRfidInterval]=useState(0)
     const [renderCapas,setRenderCapas]=useState({downs:false,markersWOR:false,markers:true,rfid:true,switches:true})
-    console.log(renderCapas)
+    // console.log(renderCapas)
    const [renderMap,setRenderMap]=useState(false)
    const allTrue = Object.values(renderCapas).every(value => value === true);
 // console.log(devices)
@@ -140,7 +140,7 @@ useEffect(()=>{
     
   }, [switches]);
   useEffect(() => {
-    console.log('El proceso de markers ha terminado');
+    console.log('El proceso de markers ha terminado',markers);
     setRenderCapas(prevState => ({
       ...prevState,
       markers: true 

@@ -3,7 +3,7 @@ import './styles/Popup.css';
 
 const Popup = ({ infoPopup,isVisible,setShowPopup,setInfoPopup }) => {
 //   const [isVisible, setIsVisible] = useState(true);
-console.log(infoPopup)
+// console.log(infoPopup)
   const handleClose = () => {
     setShowPopup(false);
     setInfoPopup({message:'',title:'',submsg:'',type:false})

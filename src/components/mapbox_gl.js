@@ -37,11 +37,11 @@ const MapBox = ({capas,switchesFO,switchesMO,setCapas,actualizar_rfi,mapAux,setm
   
   console.log("markers*****************************************************")
   // console.log(downs)
-  console.log(switches)
+  // console.log(switches)
   // console.log(switchesMO)
   // console.log(markers)
   // console.log(markersWOR)
-  // console.log(global_latitude,global_longitud)
+  console.log(global_latitude,global_longitud)
  
   let latitud_provicional=(ubicacion.groupid===0?global_latitude.value:ubicacion.latitud)
   let longitud_provicional=(ubicacion.groupid===0?global_longitud.value:ubicacion.longitud)

@@ -1,11 +1,11 @@
 
-import './styles/perfil.css'
+
 const Perfil=({server,dataGlobals,setNameState})=>{
     
     var estado=''
     if(dataGlobals.data.data!==undefined){
         estado=dataGlobals.data.data.find(obj => obj.name === 'estado')
-        console.log(estado)
+        // console.log(estado)
         setNameState(estado.value)
     }
     
