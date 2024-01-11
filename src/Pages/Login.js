@@ -10,7 +10,7 @@ const [loginData,setLoginData]=useState({email:"",password:""})
 const [disabled,setDisabled]=useState(true)
 
 const [userVal,setUserVal]=useState(true)
-
+const [msgError,setMsgError]=useState('')
   const handleChange=(e)=>{
     const {name,value}=e.target
     setLoginData((prevState)=>{
@@ -59,19 +59,22 @@ const [userVal,setUserVal]=useState(true)
             const data = await response.json();
             setLoading(false)
             setData(data)
-            console.log('password_cassia_'+data.data.access_token)
             localStorage.setItem('user_cassia',loginData.email)
             localStorage.setItem('password_cassia_'+data.data.access_token,loginData.password)
             setUserVal(true)
             onLogin(data);
             
           } else {
+            setMsgError('Correo o Contraseña incorrectos, favor de intentar de nuevo.')
             setUserVal(false)
             throw new Error('Error en la solicitud');
           }
         
         } catch (error) {
+          setLoading(false)
             setError(error)
+            setMsgError('Error de conexion con el server')
+            setUserVal(false)
            console.log(error)
           
         }
@@ -142,7 +145,7 @@ const [userVal,setUserVal]=useState(true)
         {
           userVal===false?<div className='MessageError'>
           <div className='txtMessageError'>
-          Correo o Contraseña incorrectos, favor de intentar de nuevo.
+          {msgError}
           </div>
       </div>:''
         }
