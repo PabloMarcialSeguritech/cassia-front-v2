@@ -10,7 +10,7 @@ function App() {
   const [userData,setUserData]=useState({})
   const [token,setToken] = useState(localStorage.getItem('access_token'));
   const [object_state_sessions,set_object_state_sessions]=useState({})
-  // console.log(object_state_sessions)
+  console.log(object_state_sessions)
   // const [server,setServer]=useState({ip:'10.60.20.250',port:8002})
   const [server,setServer]=useState({ip:'172.16.4.249',port:8000})//EDOMEX
   // const [server,setServer]=useState({ip:'172.18.200.14',port:8004})//Guanajuato
@@ -19,8 +19,10 @@ function App() {
   
   
   useEffect(()=>{
+    console.log('obtencion de local storage')
+    // set_object_state_sessions(JSON.parse(localStorage.getItem('object_state_sessions')))
     localStorage.setItem('main_server_ip',server.ip );
-  localStorage.setItem('main_server_port',server.port);
+    localStorage.setItem('main_server_port',server.port);
     // console.log('reinicio la pagina')
     if(token===null){
          console.log("es null")
@@ -35,12 +37,16 @@ function App() {
     // console.log(e)
     // setLoggedIn((loggedIn?false:true));
     if(loggedIn){
+      setServer({ip:localStorage.getItem('main_server_ip'),port:localStorage.getItem('main_server_port')})
+      localStorage.removeItem('aux_change_state')
       localStorage.removeItem('password_cassia_'+ localStorage.getItem('main_access_token'))
       localStorage.removeItem('access_token');
       localStorage.removeItem('user_session');
       localStorage.removeItem('user_cassia');
       localStorage.removeItem('main_access_token');
-      
+      localStorage.removeItem('object_state_sessions');
+      localStorage.removeItem('aux_server_ip')
+  localStorage.removeItem('aux_server_ip')
       setLoggedIn(false)
     }else{
       setUserData(e)
