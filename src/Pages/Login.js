@@ -8,10 +8,11 @@ const Login = ({ onLogin,token,setToken,userData,setUserData,server}) => {
   const [error,setError]=useState(null);
 const [loginData,setLoginData]=useState({email:"",password:""})
 const [disabled,setDisabled]=useState(true)
-
+console.log(server)
 const [userVal,setUserVal]=useState(true)
 const [msgError,setMsgError]=useState('')
   const handleChange=(e)=>{
+    
     const {name,value}=e.target
     setLoginData((prevState)=>{
         return {
