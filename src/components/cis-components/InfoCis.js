@@ -3,7 +3,7 @@ import './styles/InfoCis.css'
 // import CisList from './CisList';
 // import LoadSimple from '../LoadSimple';
 import TableCisConfig from './TableCisConfig';
-import Search from './Search';
+import Search from '../generales/Search';
 import Action from '../Action';
 import ModalCreateCisConfig from './ModalCreateCisConfig';
 import ModalCisAfecta from './ModalCisAfecta';

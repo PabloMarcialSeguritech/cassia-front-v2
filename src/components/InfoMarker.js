@@ -5,10 +5,13 @@ import Modal from 'react-modal';
 import InputForm from './InputForm';
 import LoadAdding from './LoadAdding';
 import PingModal from './PingModal';
+import ActionModal from './ActionModal';
 import HostSelector from './HostSelector'
 import AlertsByHost from './AlertsByHost'
 import HealthByHost from './HealthByHost';
 import CarrilesArco from './CarrilesArco';
+import { useFetch } from '../hooks/useFetch';
+import LoadSimple from './LoadSimple';
 const pingModalStyles = {
   content: {
     top: '50%',
@@ -23,11 +26,10 @@ const pingModalStyles = {
     padding:'20px'
   },
 };
-const InfoMarker = ({isOpen,devices,mapAux,setmapAux, data,closeInfoMarker,server,ubiActual,search_problems }) => {
-  console.log("info marker")
-  console.log(data)
-  console.log(devices.data)
+const InfoMarker = ({isOpen,handleShowPopup,devices,mapAux,setmapAux, data,closeInfoMarker,server,ubiActual,search_problems }) => {
+  
   const ubicacion_mix=devices.data.hosts.filter(obj => obj.latitude === data.end_lat )
+  // console.log(ubicacion_mix)
   // const ubicacion_mix=devices.data.hosts.filter(obj => (obj.latitude === data.end_lat && obj.longitude === data.end_lon ))
   let relation = devices.data.relations.find(obj => obj.hostidC === data.hostidC)
 
@@ -39,12 +41,54 @@ const InfoMarker = ({isOpen,devices,mapAux,setmapAux, data,closeInfoMarker,serve
   const [hostIdP,setHostIdP]=useState(0)
   const [listSelected,setListSelected]=useState(1)
   const [hostSelected,setHostSelected]=useState(2)
-  console.log("infomarkerP:")
-  
-  console.log(infoHostC)
+  const [actionSelected,setActionSelected]=useState({})
+  const[listActions,setListActions]=useState({data:[],loading:true,error:null});
+  console.log("infomarkerP:"+data.name_hostipC)
+  // const response_acciones=useFetch('zabbix/hosts/actions',data.name_hostipC,'','GET',server)
+  console.log((listActions.loading)?'cargando acciones':listActions)
+  console.log(infoHostC.ip)
     const hadleChangeList=(e)=>{
         setListSelected(e)
         
+    }
+useEffect(()=>{
+  search_actions()
+},[infoHostC.ip])
+useEffect(()=>{
+  search_actions()
+},[])
+    function search_actions(ip){
+      
+      setListActions({data:[],loading:true,error:listActions.error})
+        const fetchData = async () => {
+          try {
+            // console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/layers/switches_connectivity')
+        //  const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/layers/switches_connectivity/'+ubicacion.groupid, { 
+          console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/actions/'+infoHostC.ip) 
+          const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/actions/'+infoHostC.ip, {                
+                                headers: {
+                                  'Content-Type': 'application/json',
+                                  Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+                                },
+                              });
+                              console.log(response)
+            if (response.ok) {
+              const response_data = await response.json();
+              console.log(response_data.data)
+              setListActions({data:response_data.data,loading:false,error:listActions.error})
+              // setSwitchList({data:data_switches,loading:false,error:'rfid_list.error'})
+              
+            } else {
+              throw new Error('Error en la solicitud');
+            }
+          } catch (error) {
+            // Manejo de errores
+            setListActions({data:listActions.data,loading:listActions.loading,error:error})
+            //console.error(error);
+          }
+        };
+        fetchData();
+        // setSwitchList({data:data_switches,loading:false,error:'rfid_list.error'})
     }
   useEffect(() => {
     if (relation !== undefined) {
@@ -73,6 +117,8 @@ const InfoMarker = ({isOpen,devices,mapAux,setmapAux, data,closeInfoMarker,serve
     setPingModalOpen(false);
   }
   const handlePingClick = (data) => {
+    console.log(data)
+    setActionSelected(data)
     setStatusPing(true)
     openPingModal()
     // Realiza las acciones deseadas al hacer clic en el marcador
@@ -149,7 +195,7 @@ setListSelected(1)
                     {data.name_hostC}
                   </div>
                   :
-                  <HostSelector setListSelected={setListSelected} setHostId={setHostId} opGeneral={false}   txtOpGen={'N/A'} opt_de={data.hostidC} origen={'mapa'}  data={ubicacion_mix}  loading={false}  titulo='hosts' />
+                  <HostSelector search_actions={search_actions} setListSelected={setListSelected} setHostId={setHostId} opGeneral={false}   txtOpGen={'N/A'} opt_de={data.hostidC} origen={'mapa'}  data={ubicacion_mix}  loading={false}  titulo='hosts' />
                   
                   }
                     
@@ -285,19 +331,16 @@ setListSelected(1)
                   {listSelected === 1 ? (
                     <div className='contAcciones'>
                     <div className='menuActionData' style={{display:'flex'}}>
-                        <div className='menuActionCell' style={{border: 'unset',width:'25%'}}>
-                            <Action origen='General' disabled={false} titulo='PING' action={handlePingClick}/>
-                        </div>
-                        <div className='menuActionCell' style={{border: 'unset',width:'25%'}}>
-                            <Action origen='General' disabled={true} titulo='Accion 2'/>
-                        </div>
-                        <div className='menuActionCell' style={{border: 'unset',width:'25%'}}>
-                            <Action origen='General' disabled={true} titulo='Accion 3'/>
-                        </div>
-                        <div className='menuActionCell' style={{border: 'unset',width:'25%'}}>
-                        {/* <Action origen='Alert' disabled={false} titulo='Salir' action={closeInfoMarker} /> */}
-                            {/* <Action origen='General' disabled={true} titulo='Accion 4'/> */}
-                        </div>
+                      {
+                        (listActions.loading)?<LoadSimple></LoadSimple>:
+                        
+                        listActions.data.actions.map((elemento, indice)=>(
+                          <div className='menuActionCell' style={{border: 'unset',width:'25%'}}>
+                          <Action origen='General' disabled={false} titulo={elemento.name} action={()=>handlePingClick(elemento)}/>
+                      </div>
+                        ))
+                      }
+                        
                     </div>
                   </div>
                 ) : listSelected === 2 ? (
@@ -323,7 +366,8 @@ setListSelected(1)
           contentLabel="Example Modal2"
           // shouldCloseOnOverlayClick={false}
           >
-            <PingModal server={server}isOpen={pingModalOpen} data={data} statusPing={statusPing} closePingModal={closePingModal}></PingModal>
+            <ActionModal  handleShowPopup={handleShowPopup} ip={infoHostC.ip} actionSelected={actionSelected} server={server}isOpen={pingModalOpen} data={data} statusPing={statusPing} closeActionModal={closePingModal}></ActionModal>
+            {/* <PingModal actionSelected={actionSelected} server={server}isOpen={pingModalOpen} data={data} statusPing={statusPing} closePingModal={closePingModal}></PingModal> */}
         </Modal>
       </>
     );

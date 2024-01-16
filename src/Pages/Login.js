@@ -8,10 +8,10 @@ const Login = ({ onLogin,token,setToken,userData,setUserData,server}) => {
   const [error,setError]=useState(null);
 const [loginData,setLoginData]=useState({email:"",password:""})
 const [disabled,setDisabled]=useState(true)
-
 const [userVal,setUserVal]=useState(true)
-
+const [msgError,setMsgError]=useState('')
   const handleChange=(e)=>{
+    
     const {name,value}=e.target
     setLoginData((prevState)=>{
         return {
@@ -53,30 +53,34 @@ const [userVal,setUserVal]=useState(true)
             },
             body: formData
           });
-          console.log(response)
+         
           if (response.ok) {
             
             const data = await response.json();
             setLoading(false)
             setData(data)
+            localStorage.setItem('user_cassia',loginData.email)
+            localStorage.setItem('password_cassia_'+data.data.access_token,loginData.password)
             setUserVal(true)
             onLogin(data);
             
           } else {
+            setMsgError('Correo o Contraseña incorrectos, favor de intentar de nuevo.')
             setUserVal(false)
             throw new Error('Error en la solicitud');
           }
         
         } catch (error) {
+          setLoading(false)
             setError(error)
+            setMsgError('Error de conexion con el server')
+            setUserVal(false)
            console.log(error)
           
         }
       
   };
-  function prueba(){
-    console.log(loginData.email)
-  }
+  
   const {email,password}=loginData
     return (
         <div className='main-login'> 
@@ -139,7 +143,7 @@ const [userVal,setUserVal]=useState(true)
         {
           userVal===false?<div className='MessageError'>
           <div className='txtMessageError'>
-          Correo o Contraseña incorrectos, favor de intentar de nuevo.
+          {msgError}
           </div>
       </div>:''
         }

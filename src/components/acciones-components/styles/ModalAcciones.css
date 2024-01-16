@@ -1,0 +1,255 @@
+.cont-search-relation-accManage .inputSearch{
+    background-color: #0166a0 !important;
+}
+.cont-search-relation-accManage .inputSearch:focus, .cont-search-relation-accManage .inputSearch:hover {
+    
+    color: aliceblue !important;
+  }
+.body_info_cis_relation {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+  .cont-accManage-table-relation {
+    position: relative;
+    height: 90%;
+    width: 100%;
+    /* background: rgba(195,195,195);
+    background: #003757; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .card-users.modal-verificate{
+    width: 100% !important;
+    height: 99% !important;
+}
+
+.txt-title-user-box-accManage.modal-verificate{
+    text-align: center;
+    word-wrap: break-word;
+    width: 80%;
+}
+.user-box-accManage{
+    height: 10% !important;
+}
+.user-box-accManage {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 20%;
+}
+.form-accManage-box {
+    position: relative;
+    display: block;
+    width: 80%;
+    height: 90%;
+  }
+.form-accManage-box .user-box-accManage .label-accManage {
+    position: absolute;
+    top: 0px !important;
+    left: 0;
+    padding: 10px 0;
+    font-size: 10px !important;
+    font-weight: bolder;
+    color: #003757;
+    pointer-events: none;
+    transition: .5s;
+  }
+  .form-accManage-box .user-box-accManage input:focus ~ .label-accManage, .form-accManage-box .user-box-accManage input:valid ~ .label-accManage {
+    top: -25px !important;
+    left: 0px;
+    color: #003757;
+    font-size: 12px;
+  }
+
+
+
+  
+  .form-accManage-box .user-box-accManage input:focus ~ .label-accManage,
+.form-accManage-box .user-box-accManage input:valid ~ .label-accManage,
+.form-accManage-box .user-box-accManage .active {
+    top: -25px !important;
+    left: 0px;
+    font-size: 12px;
+}
+
+
+.form-accManage-box .user-box-accManage input {
+  width: 100%;
+  padding: 10px 0;
+  font-size: 16px;
+  color: #505050;
+  margin-bottom: 30px;
+  border: none;
+  border-bottom: 2px solid #003757;
+  border-right: 2px solid #003757;
+  outline: none;
+  background: transparent;
+}
+
+.form-accManage-box .user-box-accManage input:focus ~ .label-accManage,
+.form-accManage-box .user-box-accManage input:valid ~ .label-accManage {
+  top: -10px;
+  left: 0;
+  color: #003757;
+  font-size: 12px;
+}
+.form-msg-error{
+  color: #ff4646;
+  position: absolute;
+  left:0;
+  /* top:10% */
+  bottom: 5%;
+  background-color: rgba(255, 211, 211, 0.64);
+  width: 99%;
+  text-align: center;
+  border: 2px solid #ff4646;
+  border-radius: 0px 0px 5px 5px;
+  
+  border-top: none;
+
+}
+.head-card-accManage {
+  position: relative;
+  height: 5%;
+  width: 100%;
+  background: rgba(195,195,195);
+  background: #003757;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+  .content-accManage_relation {
+    position: relative;
+    justify-content: center;
+    display: block;
+    height: 98%;
+    width: 94%;
+    border-radius: 10px;
+    /* box-shadow: 0 0 5px 5px rgba(24, 94, 224, 0.15), 0 6px 12px 0 rgba(24, 94, 224, 0.15); */
+    /* border: 2px solid #003757; */
+    border-radius: 10px;
+  }
+
+  .cont-search-relation-accManage {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 35%;
+  }
+  
+  .content-card-accManage-relation {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #003757;
+    border-radius: 10px;
+  }
+
+  .cont-elemen-relation{
+    position: relative;
+    width: 100%;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+  }
+  .elemen-relation{
+    position: relative;
+    width: 85%;
+    height: 70%;
+    border-radius: 10px;
+    border:2px solid #003757;
+    display: flex;
+
+  }
+
+  .con-elemen-relation-info{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    height: 100%;
+    color: #003757;
+  }
+  .con-elemen-relation-img{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 10%;
+    height: 100%;
+  }
+  .img-relation:hover{
+    cursor: pointer;
+  }
+  .msgErrorRelation{
+    color: red;
+  }
+  .cont-accManage-info{
+    height: 30%;
+  width: 100%;
+  /* background: rgba(195,195,195); */
+  /* background: #003757; */
+  display: block;
+  justify-content: center;
+  align-items: center;
+  }
+  .row-accManage-info{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 33.33%;
+  }
+  .cont-title-accManage-info{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 35%;
+    height: 100%;
+  }
+  .cont-box-accManage-info{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 65%;
+    height: 100%;
+  }
+  .box-accManage-info{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 95%;
+    height: 80%;
+    border-radius: 10px;
+    background-color: #dfdfdf;
+    color: #505050;
+  }
+  .title-accManage-info{
+    position: relative;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    width: 95%;
+    height: 80%;
+    text-align: left;
+    color: #003757;
+  }

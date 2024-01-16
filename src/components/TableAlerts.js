@@ -6,7 +6,7 @@ import RowProblem from './RowProblem'
 import LoadAlerts from './LoadAlerts'
 import { useFetch } from '../hooks/useFetch';
 import { useState,useEffect } from 'react';
-import Search from './cis-components/Search';
+import Search from './generales/Search';
 import Select from 'react-select';
 
 
