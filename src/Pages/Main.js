@@ -41,7 +41,7 @@ const Main=({ onLogin,token,setToken,server,setServer,object_state_sessions,set_
     const [dataPingEstado,setDataPingEstado]=useState({data:[],loading:false,error:''})
     // console.log(dataPingEstado)
     const [globals,setGlobals]=useState({data:[],loading:false,error:''})
-    const dataGlobals=useFetch('cassia/configuration','','','GET',server)
+    // const dataGlobals=useFetch('cassia/configuration','','','GET',server)
     const estados_list=useFetch('cassia/configuration/estados','','','GET',server)
     const [newLogin,setNewLogin]=useState(false)
     const [showPopup, setShowPopup] = useState(false);
@@ -58,24 +58,11 @@ const Main=({ onLogin,token,setToken,server,setServer,object_state_sessions,set_
     const idEstadoExistente = (id) => {
       return Object.values(object_state_sessions).some(estado => estado.id === id);
     };
-    // console.log(newLogin)
-    // console.log(globals)
-    // console.log(dataGlobals)
-    // console.log(estadoActivo)
-    // console.log(Object.values(estadoActivo))
-    // console.log(estadoSelected)
+    
+    
     useEffect(()=>{
-      console.log("cambia globals")
-      console.log(globals)
-    },[globals.data])
-    useEffect(()=>{
-      console.log('cambio server')
-      console.log(server)
+      
       if(serverStatus){
-        // console.log('cambio el server')
-      // console.log(globals)
-      // console.log(server)
-      // getDataGlobals()
       if(!idEstadoExistente(estadoSelected.id)){
         console.log('cambio de server 2')
         login_state()
@@ -85,33 +72,18 @@ const Main=({ onLogin,token,setToken,server,setServer,object_state_sessions,set_
       }
       
       }else{
-        console.log("server primera vez")
-        console.log(estadoActivo)
-        // if(!idEstadoExistente(estadoSelected.id)){
-        //   set_object_state_sessions((prevObj) => ({
-        //     ...prevObj,
-        //     [Object.keys(prevObj).length ]: { id:estadoSelected.id,name:estadoSelected.name,server:server.ip,port:server.port,user:'juan.marcial@seguritech.com',pass:'12345678',access_token:data.data.access_token},
-    
-        //   }))
-        // }
+        
         setServerStatus(true)
       }
       
     },[server])
     
     useEffect(()=>{
-      console.log("cambio de objeto")
-      console.log(object_state_sessions)
-      console.log(estadoActivo)
-      // if(statusObjectStates){
-          console.log('func 2 ')
-          console.log(localStorage.getItem('object_state_sessions'))
+      
+      
           if(localStorage.getItem('object_state_sessions')!=1){
             getDataGlobals()
           }
-      // }else{
-      //   setStatusObjectStates(true)
-      // }
       
       if(Object.values(object_state_sessions).length!=0){
         console.log("primer escritura de localstorage")
@@ -121,9 +93,7 @@ const Main=({ onLogin,token,setToken,server,setServer,object_state_sessions,set_
     function getDataGlobals(){
       var object_state=''
       var token_state=''
-      // console.log(object_state_sessions)
-      console.log(estadoActivo)
-      // console.log(estadoSelected)
+      
       if(Object.values(object_state_sessions).length!=0 && Object.values(estadoActivo).length!=0){
           if(Object.values(object_state_sessions).length>0){
           var id_state=0
@@ -157,17 +127,21 @@ const Main=({ onLogin,token,setToken,server,setServer,object_state_sessions,set_
                                 console.log(response)
               if (response.ok) {
                 const response_data = await response.json();
-                console.log(response_data)
-                setGlobals({data:response_data,loading:false,error:globals.error})
+                
+                setGlobals({data:response_data,loading:false,error:false})
                 localStorage.setItem('access_token',token_state)
-                console.log(estadoSelected)
+                
                 setEstadoActivo(estadoSelected)
                 setEstadoSelected({})
                 // if(Object.values.)
               } else {
+                console.log('error de configuracion')
+                setGlobals({data:globals.data,loading:false,error:true})
                 throw new Error('Error en la solicitud');
               }
             } catch (error) {
+              console.log('catch error de configuracion')
+              setGlobals({data:globals.data,loading:false,error:true})
               // Manejo de errores
               // setDataPingEstado({data:dataPingEstado.data,loading:dataPingEstado.loading,error:error})
               //console.error(error);
@@ -176,7 +150,7 @@ const Main=({ onLogin,token,setToken,server,setServer,object_state_sessions,set_
           fetchData();
         }
    useEffect(()=>{
-      console.log('acaba de cambiar el estado '+estadoSelected.id ,estadoActivo.id)
+      
       if(estadoSelected.id!=estadoActivo.id){
           if(!idEstadoExistente(estadoSelected.id)){
             console.log('no hay credenciales hara ping '+estadoSelected.id)
@@ -184,10 +158,9 @@ const Main=({ onLogin,token,setToken,server,setServer,object_state_sessions,set_
             ping_estado(estadoSelected.id)
           }
         }else{
-          console.log('ya hay credenciales')
-          console.log(idEstadoExistente(estadoSelected.id))
+          
           const object_state=Object.values(object_state_sessions).find(obj => obj.id == estadoSelected.id)
-          console.log(object_state)
+          
           setServer({ip:object_state.server,port:object_state.port})
           localStorage.setItem('access_token',object_state.access_token)
         }
@@ -199,17 +172,13 @@ const Main=({ onLogin,token,setToken,server,setServer,object_state_sessions,set_
     // console.log(dataPingEstado.data)
     if(dataPingEstado.data!=undefined){
       if(dataPingEstado.data.available){
-      console.log("reedirigiendo pagina")
-      // console.log(estadoSelected)
-      // setEstadoActivo(estadoSelected)
-      // setEstadoSelected({})
-      // console.log(estadoActivo)
+      
       const ipPattern = /\b(?:\d{1,3}\.){3}\d{1,3}\b/;
     const match = estadoSelected.url.match(ipPattern);
 
           if (match) {
             const ipAddress = match[0];
-            setServer({ip:ipAddress,port:8002})
+            setServer({ip:ipAddress,port:8000})
             
           } 
       // window.open(estadoSelected.url_front, '_blank');
@@ -252,7 +221,7 @@ const Main=({ onLogin,token,setToken,server,setServer,object_state_sessions,set_
   formData.append("client_secret", "");
   localStorage.removeItem('aux_server_ip')
   localStorage.removeItem('aux_server_ip')
-  console.log(formData)
+  
   try {
     console.log('http://'+server.ip+':'+server.port+'/api/v1/auth/login')
     const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/auth/login', {
@@ -267,10 +236,7 @@ const Main=({ onLogin,token,setToken,server,setServer,object_state_sessions,set_
     if (response.ok) {
       
       const data = await response.json();
-      console.log(data)
-      console.log(server.ip,server.port)
-      console.log(estadoSelected)
-      console.log("login exitoso!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11")
+      
       setNewLogin(true)
       setStatusChangeState(false)
       setStatusLoginState(true)
@@ -284,22 +250,23 @@ const Main=({ onLogin,token,setToken,server,setServer,object_state_sessions,set_
       
       
     } else {
+      setEstadoSelected({})
       // setUserVal(false)
       throw new Error('Error en la solicitud');
     }
   
   } catch (error) {
+    setEstadoSelected({})
       // setError(error)
       setServerStatus(false)
       localStorage.setItem('aux_server_ip',server.ip)
       localStorage.setItem('aux_server_port',server.port)
       setServer({ip:localStorage.getItem('main_server_ip'),port:localStorage.getItem('main_server_port')})
       setMsgCharge('Credenciales no aceptadas')
-      console.log(estadoSelected)
+      
       setStatusLoginState(false)
       setDataPingEstado({data:dataPingEstado.data,loading:false,error:dataPingEstado.error})
-     console.log(error)
-    
+     
   }
  }
     useEffect(()=>{
@@ -342,25 +309,27 @@ const Main=({ onLogin,token,setToken,server,setServer,object_state_sessions,set_
         setDataPingEstado({data:dataPingEstado.data,loading:true,error:dataPingEstado.error})
           const fetchData = async () => {
             try {
-              console.log('http://'+server.ip+':'+server.port+'/api/v1/cassia/configuration/estados/ping/'+id_estado)
-             const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/cassia/configuration/estados/ping/'+id_estado, {                 
+              console.log('http://'+localStorage.getItem('main_server_ip')+':'+localStorage.getItem('main_server_port')+'/api/v1/cassia/configuration/estados/ping/'+id_estado)
+             const response = await fetch('http://'+localStorage.getItem('main_server_ip')+':'+localStorage.getItem('main_server_port')+'/api/v1/cassia/configuration/estados/ping/'+id_estado, {  
+                             
                                   headers: {
                                     'Content-Type': 'application/json',
-                                    Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+                                    Authorization: `Bearer ${localStorage.getItem('main_access_token')}`,
                                   },
                                 });
-                                console.log(response)
+                                
               if (response.ok) {
                 const response_data = await response.json();
-                console.log(response_data)
                 
                 setDataPingEstado({data:response_data.data,loading:false,error:response_data.message})
                 
                 
               } else {
+                setEstadoSelected({})
                 throw new Error('Error en la solicitud');
               }
             } catch (error) {
+              setEstadoSelected({})
               // Manejo de errores
               // setDataPingEstado({data:dataPingEstado.data,loading:dataPingEstado.loading,error:error})
               //console.error(error);
@@ -407,21 +376,63 @@ const Main=({ onLogin,token,setToken,server,setServer,object_state_sessions,set_
                 </div>
           </>
         }else{
-          if (pageSelected === "perfil") {
-            return <Perfil server={server}  dataGlobals={globals} setNameState={setNameState} />;
-        } else  if (pageSelected === "monitoreo"){
-            return <Monitoreo handleShowPopup={handleShowPopup} server={server} token={token} dataGlobals={globals.data.data}/>;
-        }else if (pageSelected === "panel-admin"){
-          return <Admin server={server} dataGlobals={globals.data.data} />;
-      }else if (pageSelected === "cis"){
-        return <Cis server={server} dataGlobals={globals.data.data} />;
-    }else if (pageSelected === "reportes"){
-      return <Reportes server={server} dataGlobals={globals.data.data} />;
-  }else if (pageSelected === "acciones"){
-    return <Acciones server={server} dataGlobals={globals.data.data} />;
-}else if (pageSelected === "host-manage"){
-  return <Hosts server={server} dataGlobals={globals.data.data} />;
-}
+           if(globals.error){
+            return <>
+            <div className='top-welcome'>
+                      <div className='Title'>
+                      <img src="logo_cassia.png"  style={{height: '50%'}} alt="Logo"/>
+                      </div>
+                  </div>
+            <div className='mid-welcome' style={{display:'block'}}>
+                      
+                      {
+                          <>
+                          <div className='cont-load-main' style={{height:'50%'}}>
+                          <div className='txt-load-main' style={{animation: 'unset', color:'red'}}>
+                              Error al cargar datos de configuración!!!
+                          </div>
+                     
+                      </div>
+                      <div className='cont-load-main' style={{height:'50%'}}>
+                          <div className='txt-load-main' style={{animation: 'unset'}}>
+                              Cierre sesion y vuelva a intenar.
+                          </div>
+                     
+                      </div>
+                      <div className='cont-load-main' style={{justifyContent:'center'}}>
+                      <div className='sidebarCont '  style={{width: '20%',border:'2px solid red',borderRadius:'10px'}}onClick={onLogin} >
+                          <div className='imgSideCont'>
+                          <img src="/iconos/log-out-red.svg"/>
+                          </div>
+                          <div className='' style={{color:'aliceblue'}}>
+                              SALIR
+                          </div>
+                      </div>
+                     
+                      </div>
+                      
+                          </>
+                      }
+                      
+                  </div>
+            </>
+           }else{
+            if (pageSelected === "perfil") {
+              return <Perfil server={server}  dataGlobals={globals} setNameState={setNameState} />;
+          } else  if (pageSelected === "monitoreo"){
+              return <Monitoreo handleShowPopup={handleShowPopup} server={server} token={token} dataGlobals={globals.data.data}/>;
+          }else if (pageSelected === "panel-admin"){
+            return <Admin server={server} dataGlobals={globals.data.data} />;
+        }else if (pageSelected === "cis"){
+          return <Cis server={server} dataGlobals={globals.data.data} />;
+      }else if (pageSelected === "reportes"){
+        return <Reportes server={server} dataGlobals={globals.data.data} />;
+    }else if (pageSelected === "acciones"){
+      return <Acciones server={server} dataGlobals={globals.data.data} />;
+  }else if (pageSelected === "host-manage"){
+    return <Hosts server={server} dataGlobals={globals.data.data} />;
+  }
+           }
         }
     })()}
         <Popup infoPopup={infoPopup} isVisible={showPopup} setShowPopup={setShowPopup} setInfoPopup={setInfoPopup}></Popup>

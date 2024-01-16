@@ -5,12 +5,11 @@ import { useState,useEffect } from 'react'
 import LoadSimple from './LoadSimple'
 import Action from './Action'
 const NavBar =({login_state,setServer,statusLoginState,setStatusLoginState,msgCharge,dataGlobals,estados_list,server,nameState,estadoActivo,setEstadoActivo,estadoSelected,setEstadoSelected,dataPingEstado,object_state_sessions,set_object_state_sessions,statusChangeState,setStatusChangeState})=>{
-  console.log(dataGlobals)
-  console.log(estadoActivo)
+  
 //   console.log(estadoSelected)
   var object_state=''
     var [aux_user_cassia,set_aux_user_cassia]=useState({aux_user_cassia:'',aux_pass_cassia:''})
-console.log(aux_user_cassia)
+
 const [disabled,setDisabled]=useState(true)
     const handleChange=(e)=>{
         console.log(e.target.name)
@@ -91,11 +90,6 @@ const [disabled,setDisabled]=useState(true)
             <div className='spacing'>
 
             </div>
-            <div className='Title'>
-                <img src="logo_cassia.png"  style={{height: '50%'}} alt="Logo"/>
-                {/* <h1 className='textTitle'>CASSIA</h1> */}
-
-            </div>
             <div className='ContSelectState'>
                 {
                     (!statusChangeState && localStorage.getItem('aux_change_state')==1)?
@@ -106,6 +100,12 @@ const [disabled,setDisabled]=useState(true)
                     
                 }
             </div>
+            <div className='Title'>
+                <img src="logo_cassia.png"  style={{height: '50%'}} alt="Logo"/>
+                {/* <h1 className='textTitle'>CASSIA</h1> */}
+
+            </div>
+            
             {
                 (statusChangeState)?
                 <div className='contConection '>
@@ -117,7 +117,7 @@ const [disabled,setDisabled]=useState(true)
                         src='/iconos/close.png'
                         title='Agregar'
                         name='Agregar'
-                        onClick={()=>setStatusChangeState(false)}
+                        onClick={()=>{setStatusChangeState(false);setStatusLoginState(true)}}
                       />
                     }
                 </div>
@@ -146,7 +146,7 @@ const [disabled,setDisabled]=useState(true)
                 </div>
                 <div className='contSubmit'>
                 <Action origen='General' disabled={disabled} titulo={'Ingresar'} action={()=>{manual_login_state()}} />
-                <Action origen='Alert' disabled={false} titulo={'Cancelar'} action={()=>{setStatusLoginState(true)}} />
+                <Action origen='Alert' disabled={false} titulo={'Cancelar'} action={()=>{setStatusLoginState(true);setStatusChangeState(false)}} />
                 </div>
             </div>:''
             }

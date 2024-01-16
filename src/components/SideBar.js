@@ -23,7 +23,7 @@ const SideBar =({rolId,onLogin,pageSelected,setPageSelected,dataGlobals})=>{
     return(
         <div className="sidebar">
             {
-                (dataGlobals.loading)?'':
+                (dataGlobals.loading || dataGlobals.error)?'':
             
             <>
             <div className={'sidebarRow '+(pageSelected==="perfil"?'sideRowSelected':'')} >
