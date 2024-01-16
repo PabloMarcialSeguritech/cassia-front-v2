@@ -10,18 +10,20 @@ const SideBar =({rolId,onLogin,pageSelected,setPageSelected,dataGlobals})=>{
     var reportes=0
     var cis=0
     var acciones=0
+    var hosts=0
     if(dataGlobals.data.data!==undefined){
-        console.log(dataGlobals.data.data)
+        // console.log(dataGlobals.data.data)
         estado=dataGlobals.data.data.find(obj => obj.name === 'estado')
         reportes=dataGlobals.data.data.find(obj => obj.name === 'report_module')
         cis=dataGlobals.data.data.find(obj => obj.name === 'ci_module')
         acciones=dataGlobals.data.data.find(obj => obj.name === 'action_module')
+        hosts=0
     }
     
     return(
         <div className="sidebar">
             {
-                (dataGlobals.loading)?'':
+                (dataGlobals.loading || dataGlobals.error)?'':
             
             <>
             <div className={'sidebarRow '+(pageSelected==="perfil"?'sideRowSelected':'')} >
@@ -105,6 +107,21 @@ const SideBar =({rolId,onLogin,pageSelected,setPageSelected,dataGlobals})=>{
                         </div>
                         <div className='textSideCont ' name="acciones" >
                         ACCIONES
+                        </div>
+                    </div>
+                </div>:''
+            }
+            {
+                (hosts==1)?
+                <div className={'sidebarRow '+(pageSelected==="host-manage"?'sideRowSelected':'')}>
+                    <div className={'sidebarCont '+(pageSelected==="host-manage"?'sideSelected':'')} name="host-manage" onClick={handleSection}>
+                    
+                    <div className='imgSideCont' name="host-manage" >
+                    <img src={'/iconos/host-manage'+(pageSelected==="host-manage"?'-blanco.png':'.png')} name="host-manage" />
+                    
+                        </div>
+                        <div className='textSideCont ' name="host-manage" >
+                        HOSTS
                         </div>
                     </div>
                 </div>:''
