@@ -8,7 +8,6 @@ const Login = ({ onLogin,token,setToken,userData,setUserData,server}) => {
   const [error,setError]=useState(null);
 const [loginData,setLoginData]=useState({email:"",password:""})
 const [disabled,setDisabled]=useState(true)
-console.log(server)
 const [userVal,setUserVal]=useState(true)
 const [msgError,setMsgError]=useState('')
   const handleChange=(e)=>{
@@ -54,7 +53,7 @@ const [msgError,setMsgError]=useState('')
             },
             body: formData
           });
-          console.log(response)
+         
           if (response.ok) {
             
             const data = await response.json();
@@ -81,9 +80,7 @@ const [msgError,setMsgError]=useState('')
         }
       
   };
-  function prueba(){
-    console.log(loginData.email)
-  }
+  
   const {email,password}=loginData
     return (
         <div className='main-login'> 
