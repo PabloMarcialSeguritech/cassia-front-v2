@@ -4,6 +4,7 @@ import SideBar from '../components/SideBar'
 import Container from '../components/Container'
 import RightQuadrant from '../components/RightQuadrant'
 import SearchHost from '../components/SearchHost'
+import Notifications from '../components/Notifications'
 import LeftQuadrant from '../components/LeftQuadrant'
 import {  useEffect, useState } from 'react'
 import { useFetch } from '../hooks/useFetch'
@@ -1175,7 +1176,7 @@ useEffect(()=>{
         setInfoMarkerOpen(false);
       }
       const handleMarkerClick = (data) => {
-        //console.log(data)
+        console.log(data)
         setInfoMarker(data)
         openInfoMarker()
         // Realiza las acciones deseadas al hacer clic en el marcador
@@ -1241,8 +1242,8 @@ useEffect(()=>{
     return (
         <>
 
-
           <SearchHost mapAux={mapAux} setmapAux={setmapAux}  devices={devices} markersWOR={markersWOR}></SearchHost>
+          <Notifications server={server} handleShowPopup={handleShowPopup} mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} devices={devices}  ubiActual={ubiActual}/>
           <RightQuadrant capas={capas} setCapas={setCapas} metricaSelected={metricaSelected} setMetricaSelected={setMetricaSelected} ubiActual={ubiActual} setUbiActual={setUbiActual}  server={server} setRfid={setRfid} search_rfid={search_rfid} search_switches={search_switches} search_devices={search_devices} markersWOR={markersWOR}  search_downs={search_downs} downs={downs} search_problems={search_problems} token={token_item} ubicacion={ubicacion} markers={markers}  dataHosts={devices} setUbicacion={setUbicacion} />
 
           
