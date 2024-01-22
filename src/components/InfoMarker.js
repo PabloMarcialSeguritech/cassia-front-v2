@@ -27,7 +27,7 @@ const pingModalStyles = {
   },
 };
 const InfoMarker = ({isOpen,handleShowPopup,devices,mapAux,setmapAux, data,closeInfoMarker,server,ubiActual,search_problems }) => {
-  
+  console.log(data)
   const ubicacion_mix=devices.data.hosts.filter(obj => obj.latitude === data.end_lat )
   // console.log(ubicacion_mix)
   // const ubicacion_mix=devices.data.hosts.filter(obj => (obj.latitude === data.end_lat && obj.longitude === data.end_lon ))
