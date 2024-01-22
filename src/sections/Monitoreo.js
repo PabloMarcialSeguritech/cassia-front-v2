@@ -35,7 +35,9 @@ const Monitoreo=({token_item,dataGlobals,server,handleShowPopup})=>{
     const [latitudes,setLatitudes]=useState([])
     const [longitudes,setLongitudes]=useState([])
     const [locations,setLocations]=useState([])
+
     // console.log(ubicacion)
+
     const [markers,setMarkers]=useState([])
     const [markers1, setMarkers1] = useState([]);
 const [markers2, setMarkers2] = useState([]);
@@ -69,6 +71,7 @@ const [switchesDownMO, setSwitchesDownMO] = useState([]);
     const [rfidInterval,setRfidInterval]=useState(0)
     const [renderCapas,setRenderCapas]=useState({downs:false,markersWOR:false,markers:true,rfid:true,switches:true})
     // console.log(renderCapas)
+
    const [renderMap,setRenderMap]=useState(false)
    const allTrue = Object.values(renderCapas).every(value => value === true);
 // console.log(devices)
@@ -1242,6 +1245,7 @@ useEffect(()=>{
           <SearchHost mapAux={mapAux} setmapAux={setmapAux}  devices={devices} markersWOR={markersWOR}></SearchHost>
           <Notifications server={server} handleShowPopup={handleShowPopup} mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} devices={devices}  ubiActual={ubiActual}/>
           <RightQuadrant capas={capas} setCapas={setCapas} metricaSelected={metricaSelected} setMetricaSelected={setMetricaSelected} ubiActual={ubiActual} setUbiActual={setUbiActual}  server={server} setRfid={setRfid} search_rfid={search_rfid} search_switches={search_switches} search_devices={search_devices} markersWOR={markersWOR}  search_downs={search_downs} downs={downs} search_problems={search_problems} token={token_item} ubicacion={ubicacion} markers={markers}  dataHosts={devices} setUbicacion={setUbicacion} />
+
           
           {
             devices.loading ?<LoadData/>:
@@ -1266,8 +1270,10 @@ useEffect(()=>{
                 </Modal>
               </>
           }
-        
+
+
         </>
+
         
     )
 }
