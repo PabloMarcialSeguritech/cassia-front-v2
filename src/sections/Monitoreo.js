@@ -20,7 +20,7 @@ import data_switches from '../components/switches'
 import ShowLayers from '../components/ShowLayers'
 import { render } from '@testing-library/react'
 const Monitoreo=({token_item,dataGlobals,server,handleShowPopup})=>{
-  console.log(dataGlobals)
+  
   const [capas,setCapas]=useState({})
   const global_longitud=dataGlobals.find(obj => obj.name === 'state_longitude')
   const global_latitude=dataGlobals.find(obj => obj.name === 'state_latitude')

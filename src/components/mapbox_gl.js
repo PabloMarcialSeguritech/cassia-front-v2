@@ -35,13 +35,13 @@ function bitsToGigabits(bits) {
 const MapBox = ({capas,switchesFO,switchesMO,setCapas,actualizar_rfi,mapAux,setmapAux,search_rfid,global_longitud,global_latitude,global_zoom,devices,markers,markersWOR,lines,downs,towers,rfid,ubicacion,switches,handleMarkerClick}) => {
 
   
-  console.log("markers*****************************************************")
+  // console.log("markers*****************************************************")
   // console.log(downs)
   // console.log(switches)
   // console.log(switchesMO)
   // console.log(markers)
   // console.log(markersWOR)
-  console.log(global_latitude,global_longitud)
+  // console.log(global_latitude,global_longitud)
  
   let latitud_provicional=(ubicacion.groupid===0?global_latitude.value:ubicacion.latitud)
   let longitud_provicional=(ubicacion.groupid===0?global_longitud.value:ubicacion.longitud)
