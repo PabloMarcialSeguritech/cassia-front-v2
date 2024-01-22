@@ -29,6 +29,8 @@ const Notifications=(props)=>{
     console.log(dataNotiGeneral)
     console.log(requestInterval)
     function openInfoMarker() {
+      console.log("abre infomarker ....................")
+      console.log(infoMarker)
       setInfoMarkerOpen(true);
     }
   
@@ -144,8 +146,13 @@ const Notifications=(props)=>{
       //   "tooltip": true
       // }
       // setInfoMarker(data)
-      // openInfoMarker()
+     
     }
+    useEffect(()=>{
+      if(infoMarker.length!==0){
+        openInfoMarker()
+      }
+    },[infoMarker])
     const seeMore=()=>{
       const initial=(parseInt(requestInterval.initial)+parseInt(requestInterval.final))
       
