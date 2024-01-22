@@ -26,8 +26,6 @@ const Notifications=(props)=>{
     const [statusListNoti,setStatusListNoti]=useState(false)
     const [requestInterval,setRequestInterval]=useState({initial:0,final:20})
     const [dataNotiGeneral,setDataNotiGeneral]=useState([])
-    console.log(dataNotiGeneral)
-    console.log(requestInterval)
     function openInfoMarker() {
       console.log("abre infomarker ....................")
       console.log(infoMarker)
@@ -150,7 +148,7 @@ const Notifications=(props)=>{
     }
     useEffect(()=>{
       if(infoMarker.length!==0){
-        openInfoMarker()
+        // openInfoMarker()
       }
     },[infoMarker])
     const seeMore=()=>{
@@ -200,13 +198,13 @@ const Notifications=(props)=>{
                 <img   src={'/iconos/view'+((elemento.seen==1)?'_active':'')+'.png' } ></img>
                 </div>
                 <div className='RigthContentNotiInfo'>
-                    <div className='RowContentNotiInfo'>
-                        {formatearFecha(elemento.problem_date)}
+                    <div className='RowContentNotiInfo' style={{display:'flex',justifyContent:'space-between'}}>
+                        <p>{formatearFecha(elemento.problem_date)}</p>  <p>{elemento.state}</p>
                     </div>
-                    <div className='RowContentNotiInfo' style={{fontSize:'x-small'}}>
-                        {elemento.host.slice(0,30)+'...'}
+                    <div className='RowContentNotiInfo' style={{fontSize:'x-small',textAlign:'center',fontWeight:'bold'}}>
+                        {elemento.host}
                     </div>
-                    <div className='RowContentNotiInfo'>
+                    <div className='RowContentNotiInfo' style={{color:'red'}}>
                         {elemento.status}
                     </div>
                     <div className='RowContentNotiInfo'>
