@@ -10,7 +10,7 @@ function App() {
   const [userData,setUserData]=useState({})
   const [token,setToken] = useState(localStorage.getItem('access_token'));
   const [object_state_sessions,set_object_state_sessions]=useState({})
-  
+  console.log(Object.values(object_state_sessions))
   // const [server,setServer]=useState({ip:'10.60.20.250',port:8002})
   // const [server,setServer]=useState({ip:'172.16.4.249',port:8000})//EDOMEX
   const [server,setServer]=useState({ip:'172.18.200.14',port:8004})//Guanajuato
