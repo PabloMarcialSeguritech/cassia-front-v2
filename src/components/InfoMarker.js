@@ -26,10 +26,23 @@ const pingModalStyles = {
     padding:'20px'
   },
 };
-const InfoMarker = ({isOpen,handleShowPopup,devices,mapAux,setmapAux, data,closeInfoMarker,server,ubiActual,search_problems }) => {
+const InfoMarker = ({isOpen,source,handleShowPopup,devices,mapAux,setmapAux, data,closeInfoMarker,server,ubiActual,search_problems }) => {
   console.log(data)
-  const ubicacion_mix=devices.data.hosts.filter(obj => obj.latitude === data.end_lat )
-  // console.log(ubicacion_mix)
+  var ubicacion_mix;
+  if(source=='Monitoreo'){
+     ubicacion_mix=devices.data.hosts.filter(obj => obj.latitude === data.end_lat )
+  }else{
+     ubicacion_mix=[{
+        "hostid": data.hostidC,
+        "Host": data.name_hostC,
+        "latitude": data.end_lat,
+        "longitude": data.end_lon,
+        "ip": data.name_hostipC
+      
+     }]
+  }
+  
+  console.log(ubicacion_mix)
   // const ubicacion_mix=devices.data.hosts.filter(obj => (obj.latitude === data.end_lat && obj.longitude === data.end_lon ))
   let relation = devices.data.relations.find(obj => obj.hostidC === data.hostidC)
 
@@ -39,14 +52,14 @@ const InfoMarker = ({isOpen,handleShowPopup,devices,mapAux,setmapAux, data,close
   const [infoHostP,setInfoHostP]=useState([])
   const [hostId,setHostId]=useState(data.hostidC)
   const [hostIdP,setHostIdP]=useState(0)
-  const [listSelected,setListSelected]=useState(1)
+  const [listSelected,setListSelected]=useState((source=='Monitoreo')?1:2)
   const [hostSelected,setHostSelected]=useState(2)
   const [actionSelected,setActionSelected]=useState({})
   const[listActions,setListActions]=useState({data:[],loading:true,error:null});
   console.log("infomarkerP:"+data.name_hostipC)
   // const response_acciones=useFetch('zabbix/hosts/actions',data.name_hostipC,'','GET',server)
   console.log((listActions.loading)?'cargando acciones':listActions)
-  console.log(infoHostC.ip)
+  // console.log(infoHostC.ip)
     const hadleChangeList=(e)=>{
         setListSelected(e)
         
@@ -203,13 +216,13 @@ setListSelected(1)
                   <div className='hostInfoCell' style={{width:'18%'}}>
                     <div className='txtHostInfoCell'>
                       {/* {data.name_hostipC} */}
-                    {infoHostC.ip}
+                    {(source=='Monitoreo')?infoHostC.ip:data.name_hostipC}
                     </div>
                   </div>
                   <div className='hostInfoCell' style={{width:'10%'}}>
                     <div className='txtHostInfoCell'>
                       {/* {data.hostidC} */}
-                    {infoHostC.hostid}
+                    {(source=='Monitoreo')?infoHostC.hostid:data.hostidC}
                     </div>
                   </div>
                   <div className='hostInfoCell' style={{width:'10%'}}>
