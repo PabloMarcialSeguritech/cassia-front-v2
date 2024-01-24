@@ -73,7 +73,7 @@ const [disabled,setDisabled]=useState(true)
         console.log('manual_login_state' ,localStorage.getItem('aux_server_ip'))
         localStorage.setItem('aux_user_cassia',aux_user_cassia.aux_user_cassia)
         localStorage.setItem('aux_pass_cassia',aux_user_cassia.aux_pass_cassia)
-        setServer({ip:localStorage.getItem('aux_server_ip'),port:8000})
+        setServer({ip:localStorage.getItem('aux_server_ip'),port:server.port})
 
     }
     const accionar_estado=(e)=>{

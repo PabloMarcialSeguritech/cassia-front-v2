@@ -1240,7 +1240,7 @@ useEffect(()=>{
         <>
 
           <SearchHost mapAux={mapAux} setmapAux={setmapAux}  devices={devices} markersWOR={markersWOR}></SearchHost>
-          <Notifications server={server} handleShowPopup={handleShowPopup} mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} devices={devices}  ubiActual={ubiActual}/>
+          <Notifications dataGlobals={dataGlobals} server={server} handleShowPopup={handleShowPopup} mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} devices={devices}  ubiActual={ubiActual}/>
           <RightQuadrant capas={capas} setCapas={setCapas} metricaSelected={metricaSelected} setMetricaSelected={setMetricaSelected} ubiActual={ubiActual} setUbiActual={setUbiActual}  server={server} setRfid={setRfid} search_rfid={search_rfid} search_switches={search_switches} search_devices={search_devices} markersWOR={markersWOR}  search_downs={search_downs} downs={downs} search_problems={search_problems} token={token_item} ubicacion={ubicacion} markers={markers}  dataHosts={devices} setUbicacion={setUbicacion} />
           
           {
@@ -1262,7 +1262,7 @@ useEffect(()=>{
                   contentLabel="Example Modal2"
                   // shouldCloseOnOverlayClick={false}
                   >
-                    <InfoMarker handleShowPopup={handleShowPopup} mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} devices={devices} server={server} isOpen={infoMarkerOpen} data={infoMarker} closeInfoMarker={closeInfoMarker} ubiActual={ubiActual}></InfoMarker>
+                    <InfoMarker source={'Monitoreo'} handleShowPopup={handleShowPopup} mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} devices={devices} server={server} isOpen={infoMarkerOpen} data={infoMarker} closeInfoMarker={closeInfoMarker} ubiActual={ubiActual}></InfoMarker>
                 </Modal>
               </>
           }
