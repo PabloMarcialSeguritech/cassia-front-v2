@@ -178,7 +178,7 @@ const Main=({ onLogin,token,setToken,server,setServer,object_state_sessions,set_
 
           if (match) {
             const ipAddress = match[0];
-            setServer({ip:ipAddress,port:8000})
+            setServer({ip:ipAddress,port:server.port})
             
           } 
       // window.open(estadoSelected.url_front, '_blank');

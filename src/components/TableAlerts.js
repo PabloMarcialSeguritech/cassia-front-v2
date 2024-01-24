@@ -157,8 +157,8 @@ const selectOptionList=(element)=>{
                             {
                               (props.alertsIsOpen && props.modalIsOpen==false)?
                               <div className='imgCardTitleMin' style={{left:'96%'}}>
-                              <div className='imgContent'>
-                              <img  style={{top:'40%'}}src={"/iconos/minimizar.png"}  className="expandLogo" alt="Logo" onClick={()=>{ props.setAlertsIsOpen(false)}}/>
+                              <div className='imgContent' onClick={()=>{ props.setAlertsIsOpen(false)}}>
+                              <img  style={{top:'40%'}}src={"/iconos/minimizar.png"}  className="expandLogo" alt="Logo" />
                               </div>
                             </div>:''
                             }

@@ -24,8 +24,10 @@ const Notifications=(props)=>{
     const  [infoMarker, setInfoMarker]=useState([])
     const [countNoti,setCountNoti]=useState(0)
     const [statusListNoti,setStatusListNoti]=useState(false)
-    const [requestInterval,setRequestInterval]=useState({initial:0,final:20})
+    const [requestInterval,setRequestInterval]=useState({initial:0,final:50})
     const [dataNotiGeneral,setDataNotiGeneral]=useState([])
+    const state_id=props.dataGlobals.find(obj => obj.name === 'state_id')
+
     function openInfoMarker() {
       console.log("abre infomarker ....................")
       console.log(infoMarker)
@@ -123,7 +125,7 @@ const Notifications=(props)=>{
           setCountNoti(0)
             search_notifications_info()
         }else{
-          setRequestInterval({initial:0,final:20})
+          setRequestInterval({initial:0,final:50})
           setDataNotiGeneral([])
         }
         setStatusListNoti(!statusListNoti)
@@ -131,24 +133,29 @@ const Notifications=(props)=>{
 
     }
     const eventNoti=(elemento)=>{
-      //       console.log(elemento)
+            // console.log(elemento)
             
-      // const data={
-      //   "hostidC": parseInt(elemento.hostid),
-      //   "hostidP": "",
-      //   "end_lat": elemento.latitude,
-      //   "end_lon": elemento.longitude,
-      //   "name_hostC": elemento.host,
-      //   "name_hostipC": elemento.ip,
-      //   "color_alineacion": "#00ff70",
-      //   "tooltip": true
-      // }
-      // setInfoMarker(data)
+      const data={
+        "hostidC": parseInt(elemento.hostid),
+        "hostidP": "",
+        "end_lat": elemento.latitude,
+        "end_lon": elemento.longitude,
+        "name_hostC": elemento.host,
+        "name_hostipC": elemento.ip,
+        "color_alineacion": "#00ff70",
+        "tooltip": true
+      }
+      console.log(localStorage.getItem('aux_change_state'),elemento.state_id,state_id.value)
+      if(localStorage.getItem('aux_change_state')==1 || elemento.state_id==state_id.value){
+        closeInfoMarker()
+        setInfoMarker(data)
+      }
+      
      
     }
     useEffect(()=>{
       if(infoMarker.length!==0){
-        // openInfoMarker()
+        openInfoMarker()
       }
     },[infoMarker])
     const seeMore=()=>{
@@ -162,9 +169,7 @@ const Notifications=(props)=>{
       }
     },[requestInterval.initial])
 
-    const openHost=(element)=>{
-      
-    }
+    
     return(
         <>
         <div className='contNotiHost' onClick={()=>{activeNotiList()}}>
@@ -199,12 +204,12 @@ const Notifications=(props)=>{
                 </div>
                 <div className='RigthContentNotiInfo'>
                     <div className='RowContentNotiInfo' style={{display:'flex',justifyContent:'space-between'}}>
-                        <p>{formatearFecha(elemento.problem_date)}</p>  <p>{elemento.state}</p>
+                        <p>{formatearFecha(elemento.problem_date)}</p>  <p className={''+((elemento.state_id!=state_id.value)?'nonestate':'okstate')}>{elemento.state}</p>
                     </div>
                     <div className='RowContentNotiInfo' style={{fontSize:'x-small',textAlign:'center',fontWeight:'bold'}}>
                         {elemento.host}
                     </div>
-                    <div className='RowContentNotiInfo' style={{color:'red'}}>
+                    <div className='RowContentNotiInfo' style={{color:'red',fontWeight:'bold'}}>
                         {elemento.status}
                     </div>
                     <div className='RowContentNotiInfo'>
@@ -230,7 +235,7 @@ const Notifications=(props)=>{
                   contentLabel="Example Modal2"
                   // shouldCloseOnOverlayClick={false}
                   >
-                    <InfoMarker handleShowPopup={props.handleShowPopup} mapAux={props.mapAux} setmapAux={props.setmapAux} search_problems={props.earch_problems} devices={props.devices} server={props.server} isOpen={infoMarkerOpen} data={infoMarker} closeInfoMarker={closeInfoMarker} ubiActual={props.ubiActual}></InfoMarker>
+                    <InfoMarker source={'Notificaciones'} handleShowPopup={props.handleShowPopup} mapAux={props.mapAux} setmapAux={props.setmapAux} search_problems={props.earch_problems} devices={props.devices} server={props.server} isOpen={infoMarkerOpen} data={infoMarker} closeInfoMarker={closeInfoMarker} ubiActual={props.ubiActual}></InfoMarker>
                 </Modal>
         </>
         
