@@ -27,7 +27,7 @@ const pingModalStyles = {
   },
 };
 const InfoMarker = ({isOpen,source,handleShowPopup,devices,mapAux,setmapAux, data,closeInfoMarker,server,ubiActual,search_problems }) => {
-  console.log(data)
+  // console.log(data)
   var ubicacion_mix;
   if(source=='Monitoreo'){
      ubicacion_mix=devices.data.hosts.filter(obj => obj.latitude === data.end_lat )
@@ -42,7 +42,7 @@ const InfoMarker = ({isOpen,source,handleShowPopup,devices,mapAux,setmapAux, dat
      }]
   }
   
-  console.log(ubicacion_mix)
+  
   // const ubicacion_mix=devices.data.hosts.filter(obj => (obj.latitude === data.end_lat && obj.longitude === data.end_lon ))
   let relation = devices.data.relations.find(obj => obj.hostidC === data.hostidC)
 
@@ -56,22 +56,28 @@ const InfoMarker = ({isOpen,source,handleShowPopup,devices,mapAux,setmapAux, dat
   const [hostSelected,setHostSelected]=useState(2)
   const [actionSelected,setActionSelected]=useState({})
   const[listActions,setListActions]=useState({data:[],loading:true,error:null});
-  console.log("infomarkerP:"+data.name_hostipC)
+  // console.log("infomarkerP:"+data.name_hostipC)
   // const response_acciones=useFetch('zabbix/hosts/actions',data.name_hostipC,'','GET',server)
-  console.log((listActions.loading)?'cargando acciones':listActions)
+  // console.log((listActions.loading)?'cargando acciones':listActions)
   // console.log(infoHostC.ip)
     const hadleChangeList=(e)=>{
         setListSelected(e)
         
     }
 useEffect(()=>{
-  search_actions()
+  // console.log("useefect...........................")
+  if(infoHostC.ip!==undefined){
+    search_actions()
+  }
+  
 },[infoHostC.ip])
 useEffect(()=>{
-  search_actions()
+  localStorage.removeItem('data_info_marker')
+  // console.log("useefect2...........................")
+  // search_actions()
 },[])
     function search_actions(ip){
-      
+      console.log("search_actions")
       setListActions({data:[],loading:true,error:listActions.error})
         const fetchData = async () => {
           try {
@@ -84,10 +90,10 @@ useEffect(()=>{
                                   Authorization: `Bearer ${localStorage.getItem('access_token')}`,
                                 },
                               });
-                              console.log(response)
+                              // console.log(response)
             if (response.ok) {
               const response_data = await response.json();
-              console.log(response_data.data)
+              // console.log(response_data.data)
               setListActions({data:response_data.data,loading:false,error:listActions.error})
               // setSwitchList({data:data_switches,loading:false,error:'rfid_list.error'})
               
@@ -105,7 +111,7 @@ useEffect(()=>{
     }
   useEffect(() => {
     if (relation !== undefined) {
-      console.log("el aps es el ", relation.hostidP);
+      // console.log("el aps es el ", relation.hostidP);
       setHostIdP(relation.hostidP);
     }
   }, [relation]);
@@ -118,7 +124,7 @@ useEffect(()=>{
 
   useEffect(()=>{
     let hostidPa = devices.data.hosts.find(obj => obj.hostid === hostIdP)
-    console.log("relation P:",hostIdP)
+    // console.log("relation P:",hostIdP)
     setInfoHostP(hostidPa)
   },[hostIdP])
   
@@ -130,7 +136,7 @@ useEffect(()=>{
     setPingModalOpen(false);
   }
   const handlePingClick = (data) => {
-    console.log(data)
+    // console.log(data)
     setActionSelected(data)
     setStatusPing(true)
     openPingModal()

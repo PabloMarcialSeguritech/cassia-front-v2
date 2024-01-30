@@ -12,7 +12,7 @@ function App() {
   const [object_state_sessions,set_object_state_sessions]=useState({})
   
   // const [server,setServer]=useState({ip:'10.60.20.250',port:8002})
-  // const [server,setServer]=useState({ip:'172.16.4.249',port:8000})//EDOMEX
+  // const [server,setServer]=useState({ip:'172.16.4.249',port:8004})//EDOMEX
   const [server,setServer]=useState({ip:'172.18.200.14',port:8004})//Guanajuato
   // const [server,setServer]=useState({ip:'10.21.14.219',port:8002})
   // const [server,setServer]=useState({ip:'172.16.10.50',port:8000})
@@ -48,6 +48,7 @@ function App() {
       localStorage.removeItem('object_state_sessions');
       localStorage.removeItem('aux_server_ip')
   localStorage.removeItem('aux_server_port')
+  localStorage.removeItem('data_info_marker')
       setLoggedIn(false)
     }else{
       setUserData(e)
