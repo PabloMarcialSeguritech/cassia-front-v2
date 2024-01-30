@@ -37,6 +37,16 @@ const Notifications=(props)=>{
     function closeInfoMarker() {
       setInfoMarkerOpen(false);
     }
+    useEffect(()=>{
+      console.log("abrio notificaciones")
+      console.log(localStorage.getItem('data_info_marker'))
+      if(localStorage.getItem('data_info_marker')!==null){
+        var data_info_marker=JSON.parse(localStorage.getItem('data_info_marker'))
+        console.log(data_info_marker)
+        localStorage.removeItem('data_info_marker')
+        setInfoMarker(data_info_marker)
+      }
+    },[])
     // setTimeout(() => {
     //     search_notifications() 
     // }, 10000);
@@ -133,8 +143,10 @@ const Notifications=(props)=>{
 
     }
     const eventNoti=(elemento)=>{
-            // console.log(elemento)
-            
+      
+      var state=props.estados_list.data.data.find(obj => obj.name.toLowerCase() === elemento.state.toLowerCase())     
+      console.log(state)
+     
       const data={
         "hostidC": parseInt(elemento.hostid),
         "hostidP": "",
@@ -145,11 +157,15 @@ const Notifications=(props)=>{
         "color_alineacion": "#00ff70",
         "tooltip": true
       }
+      localStorage.setItem('data_info_marker',JSON.stringify(data))
+      
       console.log(localStorage.getItem('aux_change_state'),elemento.state_id,state_id.value)
-      if(localStorage.getItem('aux_change_state')==1 || elemento.state_id==state_id.value){
+      if(localStorage.getItem('aux_change_state')==1 && elemento.state_id!=state_id.value){
+        props.setEstadoSelected(state)
+      }else if(localStorage.getItem('aux_change_state')==1 || elemento.state_id==state_id.value){
         closeInfoMarker()
         setInfoMarker(data)
-      }
+      } 
       
      
     }
@@ -197,14 +213,14 @@ const Notifications=(props)=>{
             (statusListNoti)?<div className='contNotiHostList'>
             
             {dataNotiGeneral.map((elemento, indice) => (
-                <div className='contNotiInfo'>
+                <div className='contNotiInfo' key={indice}>
                 <div className={'compactNotiInfo '+((elemento.seen==0)?'noseen':'')} onClick={()=>{eventNoti(elemento)}}>
                 <div className='leftContentNotiInfo'>
                 <img   src={'/iconos/view'+((elemento.seen==1)?'_active':'')+'.png' } ></img>
                 </div>
                 <div className='RigthContentNotiInfo'>
                     <div className='RowContentNotiInfo' style={{display:'flex',justifyContent:'space-between'}}>
-                        <p>{formatearFecha(elemento.problem_date)}</p>  <p className={''+((elemento.state_id!=state_id.value)?'nonestate':'okstate')}>{elemento.state}</p>
+                        <p>{formatearFecha(elemento.problem_date)}</p>  <p className={''+((localStorage.getItem('aux_change_state')==1 ||elemento.state_id==state_id.value)?'okstate':'nonestate')}>{elemento.state}</p>
                     </div>
                     <div className='RowContentNotiInfo' style={{fontSize:'x-small',textAlign:'center',fontWeight:'bold'}}>
                         {elemento.host}
