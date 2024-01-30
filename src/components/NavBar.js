@@ -4,13 +4,14 @@ import { useFetch } from '../hooks/useFetch'
 import { useState,useEffect } from 'react'
 import LoadSimple from './LoadSimple'
 import Action from './Action'
-const NavBar =({login_state,setServer,statusLoginState,setStatusLoginState,msgCharge,dataGlobals,estados_list,server,nameState,estadoActivo,setEstadoActivo,estadoSelected,setEstadoSelected,dataPingEstado,object_state_sessions,set_object_state_sessions,statusChangeState,setStatusChangeState})=>{
+const NavBar =({login_state,setServer,statusLoginState,setStatusLoginState,msgCharge,loadGlobals,dataGlobals,estados_list,server,nameState,estadoActivo,setEstadoActivo,estadoSelected,setEstadoSelected,dataPingEstado,object_state_sessions,set_object_state_sessions,statusChangeState,setStatusChangeState})=>{
   
-//   console.log(estadoSelected)
+  console.log(loadGlobals,estadoActivo.id)
   var object_state=''
     var [aux_user_cassia,set_aux_user_cassia]=useState({aux_user_cassia:'',aux_pass_cassia:''})
 
 const [disabled,setDisabled]=useState(true)
+const [disabled2,setDisabled2]=useState(false)
     const handleChange=(e)=>{
         console.log(e.target.name)
         
@@ -73,13 +74,15 @@ const [disabled,setDisabled]=useState(true)
         console.log('manual_login_state' ,localStorage.getItem('aux_server_ip'))
         localStorage.setItem('aux_user_cassia',aux_user_cassia.aux_user_cassia)
         localStorage.setItem('aux_pass_cassia',aux_user_cassia.aux_pass_cassia)
+        setDisabled(true)
+        setDisabled2(true)
         setServer({ip:localStorage.getItem('aux_server_ip'),port:server.port})
 
     }
     const accionar_estado=(e)=>{
         
         const object_selected=estados_list.data.data.find(obj => obj.name === e.label)
-        // console.log(object_selected)
+        
         setEstadoSelected(object_selected)
     }
     return(
@@ -93,7 +96,7 @@ const [disabled,setDisabled]=useState(true)
             <div className='ContSelectState'>
                 {
                     (!statusChangeState && localStorage.getItem('aux_change_state')==1)?
-                    <SelectorAdmin opGeneral={false} txtOpGen={'TODOS'}  opt_de={estadoActivo.id} origen={'Admin'} data={estados_list.data.data} loading={estados_list.loading}  titulo='Estados' selectFunction={accionar_estado} index={1}></SelectorAdmin>:''
+                   ((loadGlobals)?'': <SelectorAdmin opGeneral={false} txtOpGen={'TODOS'}  opt_de={estadoActivo.id} origen={'Admin'} data={estados_list.data.data} loading={estados_list.loading}  titulo='Estados' selectFunction={accionar_estado} index={1}></SelectorAdmin>):''
                     // (dataPingEstado.data.available)?
                     // <SelectorAdmin opGeneral={false} txtOpGen={'TODOS'}  opt_de={estadoActivo.id} origen={'Admin'} data={estados_list.data.data} loading={estados_list.loading}  titulo='Estados' selectFunction={'accionar_estado'} index={1}></SelectorAdmin>:
                     // <>{dataPingEstado.error}</>
@@ -146,7 +149,7 @@ const [disabled,setDisabled]=useState(true)
                 </div>
                 <div className='contSubmit'>
                 <Action origen='General' disabled={disabled} titulo={'Ingresar'} action={()=>{manual_login_state()}} />
-                <Action origen='Alert' disabled={false} titulo={'Cancelar'} action={()=>{setStatusLoginState(true);setStatusChangeState(false)}} />
+                <Action origen='Alert' disabled={disabled2} titulo={'Cancelar'} action={()=>{setStatusLoginState(true);setStatusChangeState(false)}} />
                 </div>
             </div>:''
             }

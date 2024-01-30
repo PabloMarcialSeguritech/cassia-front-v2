@@ -107,7 +107,7 @@ const selectOptionList=(element)=>{
                                         element=="6"?'Down, ':'S'+element+', '
                                       ))}
                                   </div>
-                                  <hr class="vertical-line"></hr>
+                                  <hr className="vertical-line"></hr>
                                   <div className='selector-cont-depliegue ' >
                                   <img className='img-field-acciones' src={'/iconos/'+((openSelectList)?'up':'down')+'-arrow-select.png'} title='expand' alt='expand' name='expand'   />
                                   </div>
