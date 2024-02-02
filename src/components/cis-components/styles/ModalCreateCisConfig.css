@@ -100,3 +100,8 @@
   justify-content: center;
   align-items: center;
 }
+
+.Input_disabled{
+  background-color: #d4d4d4 !important;
+  border-radius: 10px !important;
+}
