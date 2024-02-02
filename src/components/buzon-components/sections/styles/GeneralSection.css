@@ -1,0 +1,132 @@
+.general-section-content{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+.row-info-general-section{
+    position: relative;
+    width: 100%;
+    height: 20%;
+    display: flex;
+    align-items: center;
+}
+.rigth-content-row-general-section{
+    position: relative;
+    width: 80%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.left-content-row-general-section{
+    position: relative;
+    width: 20%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.rigth-content-row-general-section input{
+    width: 100%;
+    font-size: 12px;
+    color: #636363;
+}
+.rigth-content-row-general-section button{
+    width: 15vh;
+    height: 3vh !important;
+    font-size: 12px;
+    color: #636363;
+
+}
+.rigth-content-row-general-section .compactAction{
+justify-content: right;
+}
+.rigth-content-row-general-section .icon{
+   fill: aliceblue;
+   fill: aliceblue;
+  z-index: 2;
+  left: 2rem;
+}
+.rigth-content-row-general-section .inputSearch{
+    width: 80%;
+    height: 80%;
+    left: 10%;
+    position: relative;
+    background-color: #003757;
+    color: aliceblue;
+}
+.txt-left-row-general-section{
+    color: #003757;
+}
+.cont-group-elements-general-section{
+    position: relative;
+    border: 1px solid #636363;
+    border-radius: 10px;
+    width: 95%;
+    height: 90%;
+}
+.top-cont-group-elements-general-section{
+    width: 100%;
+    height: 40%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+.bottom-cont-group-elements-general-section{
+    width: 100%;
+    height: 60%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    overflow-x: auto; 
+}
+.glob-info-element-general-section{
+    position: relative;
+    height: 70%;
+    min-width: 25%;
+    width: auto;
+    border-radius: 30px;
+    background-color: #e3e3e3;
+    margin: 2%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: small;
+    color: #636363;
+    
+}
+.close-globe-element{
+    position: absolute;
+    right: 4%;
+    width: 15px;
+    top:25%;
+    /* padding-left: 2%;
+    padding-right: 5%; */
+}
+.close-globe-element:hover{
+cursor: pointer;
+width: 16px;
+}
+.txt-globe-element{
+   width: 80%;
+}
+.textArea-elements-general-section{
+    width: 100%;
+    height: 100%;
+    border: none;
+    resize: none;
+    border-radius:10px;
+}
+.cell-row-info-general-section{
+    width: 50%;
+    height: 50%;
+    position: relative;
+    display: flex;
+}
+.rigth-content-row-general-section .menuSearchOption{
+    width: 70%;
+}
+.rigth-content-row-general-section .checkbox-cis{
+width: 50%;
+}

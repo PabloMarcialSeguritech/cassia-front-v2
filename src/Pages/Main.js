@@ -6,6 +6,7 @@ import Perfil from '../sections/Perfil'
 import Admin from '../sections/Admin'
 import Cis from '../sections/Cis'
 import Hosts from '../sections/Hosts'
+import Buzon from '../sections/Buzon'
 import Reportes from '../sections/Reportes'
 import Monitoreo from '../sections/Monitoreo'
 import Modal from 'react-modal';
@@ -433,6 +434,8 @@ const Main=({ onLogin,token,setToken,server,setServer,object_state_sessions,set_
       return <Acciones server={server} dataGlobals={globals.data.data} />;
   }else if (pageSelected === "host-manage"){
     return <Hosts server={server} dataGlobals={globals.data.data} />;
+  }else if (pageSelected === "buzon"){
+    return <Buzon server={server} dataGlobals={globals.data.data} />;
   }
            }
         }

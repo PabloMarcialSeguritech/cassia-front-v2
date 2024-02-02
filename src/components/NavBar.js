@@ -137,13 +137,13 @@ const [disabled2,setDisabled2]=useState(false)
                 </div>
                 <div className='contLoginForm'>
                     <div className='compactLoginForm'>
-                    <div class="form__group field">
-                    <input type="input" class="form__field" placeholder="Name" name='aux_user_cassia' onChange={handleChange} required=""/>
-                    <label for="name" class="form__label">Usuario</label>
+                    <div className="form__group field">
+                    <input type="input" className="form__field" placeholder="Name" name='aux_user_cassia' onChange={handleChange} required=""/>
+                    <label for="name" className="form__label">Usuario</label>
                 </div>
-                <div class="form__group field">
-                    <input type="password" class="form__field" placeholder="Name" name='aux_pass_cassia' onChange={handleChange} required=""/>
-                    <label for="name" class="form__label">Contraseña</label>
+                <div className="form__group field">
+                    <input type="password" className="form__field" placeholder="Name" name='aux_pass_cassia' onChange={handleChange} required=""/>
+                    <label for="name" className="form__label">Contraseña</label>
                 </div>
                     </div>
                 </div>
