@@ -1,4 +1,4 @@
-.main-panel-cis{
+.main-panel-Buzon{
     width: 100%;
     height: 100%;
     position: relative;
@@ -6,8 +6,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #fff;
 }
-.content-cis{
+.content-Buzon{
     position: relative;
     justify-content: center;
     display: block;
@@ -18,7 +19,7 @@ box-shadow: 0 0 5px 5px rgba(24, 94, 224, 0.15), 0 6px 12px 0 rgba(24, 94, 224, 
 border: 2px solid #003757;
   border-radius: 10px;
 }
-.cont-cis-search{
+.cont-Buzon-search{
 position: relative;
   height: 10%;
   width: 100%;
@@ -53,7 +54,7 @@ position: relative;
     height: 100%;
     width: 20%;
 }
-.cont-cis-table{
+.cont-Buzon-table{
     position: relative;
   height: 90%;
   width: 100%;
@@ -63,7 +64,7 @@ position: relative;
   justify-content: center;
   align-items: center;
 }
-.content-card-cis{
+.content-card-Buzon{
     position: relative;
     height: 100%;
     width: 100%;
@@ -74,7 +75,7 @@ position: relative;
 
 
   /****************************** tabla usuarios ******************************************/
-  .cont-table-cis{
+  .cont-table-Buzon{
     width: 98%;
     height: 99%;
     /* border: 1px solid #56575746; */
@@ -82,7 +83,7 @@ position: relative;
     display: block;
     position: relative;
   }
-  .head-table-cis{
+  .head-table-Buzon{
     width: 100%;
     position: relative;
     display: flex;
@@ -95,7 +96,7 @@ position: relative;
      border-radius: 5px 5px 0px 0px;
      font-size: 11px;
   }
-  .field-head-table-cis{
+  .field-head-table-Buzon{
     height: 100%;
     position: relative;
     display: flex;
@@ -104,7 +105,7 @@ position: relative;
     color: aliceblue;
     text-align: center;
   }
-  .field-head-table-cis.field-nombre,.field-head-table-cis.field-small{
+  .field-head-table-Buzon.field-nombre,.field-head-table-Buzon.field-small{
     border-right: 1px solid rgba(240, 248, 255, 0.473);
   }
 
@@ -121,7 +122,7 @@ position: relative;
     width: 7%;
     border-right: 1px solid rgba(240, 248, 255, 0.473);
   }
-  .body-table-cis{
+  .body-table-Buzon{
     width: 100%;
     position: relative;
     display:block;
@@ -132,20 +133,20 @@ position: relative;
      
     
   }
-  .row-table-cis{
+  .row-table-Buzon{
     position: relative;
     display: flex;
     width: 100%;
     height: 40px;
     color:#003757;
   }
-  .row-table-cis:nth-child(odd){
+  .row-table-Buzon:nth-child(odd){
     background-color: #f8f9fa;
   }
-  .row-table-cis:nth-child(even){
+  .row-table-Buzon:nth-child(even){
     background-color: #eeeeee;
   }
-  .field-body-table-cis {
+  .field-body-table-Buzon {
     position: relative;
     height: 100%;
     display: flex;
@@ -154,17 +155,17 @@ position: relative;
     font-size: 11px;
     text-align: center;
   }
-  .row-table-cis:hover{
+  .row-table-Buzon:hover{
     /* background-color: #00375771; */
     background-color: #004e7ba4;
     cursor: pointer;
     color: aliceblue !important;
   }
-  /* .field-body-table-cis.field-nombre,.field-body-table-cis.field-acciones{
+  /* .field-body-table-Buzon.field-nombre,.field-body-table-Buzon.field-acciones{
     border-right: 1px solid #0037573a;
   } */
 /****************************** tabla usuarios Config ******************************************/
-.cont-table-cis-config{
+.cont-table-Buzon-config{
   width: 98%;
   height: 99%;
   /* border: 1px solid #56575746; */
@@ -172,7 +173,7 @@ position: relative;
   display: block;
   position: relative;
 }
-.head-table-cis-config{
+.head-table-Buzon-config{
   width: 100%;
   position: relative;
   display: flex;
@@ -186,7 +187,7 @@ position: relative;
    font-size: 11px;
   
 }
-.field-head-table-cis-config{
+.field-head-table-Buzon-config{
   height: 100%;
   position: relative;
   display: flex;
@@ -195,7 +196,7 @@ position: relative;
   color: aliceblue;
   text-align: center;
 }
-.field-head-table-cis-config.field-nombre,.field-head-table-cis-config.field-small{
+.field-head-table-Buzon-config.field-nombre,.field-head-table-Buzon-config.field-small{
   border-right: 1px solid rgba(240, 248, 255, 0.473);
 }
 
@@ -212,7 +213,7 @@ position: relative;
   width: 7%;
   border-right: 1px solid rgba(240, 248, 255, 0.473);
 }
-.body-table-cis-config{
+.body-table-Buzon-config{
   width: 100%;
   position: relative;
   display:block;
@@ -223,20 +224,20 @@ position: relative;
    
   
 }
-.row-table-cis-config{
+.row-table-Buzon-config{
   position: relative;
   display: flex;
   width: 100%;
   height: 40px;
   color:#003757;
 }
-.row-table-cis-config:nth-child(odd){
+.row-table-Buzon-config:nth-child(odd){
   background-color: #f8f9fa;
 }
-.row-table-cis-config:nth-child(even){
+.row-table-Buzon-config:nth-child(even){
   background-color: #eeeeee;
 }
-.field-body-table-cis-config {
+.field-body-table-Buzon-config {
   position: relative;
   height: 100%;
   display: flex;
@@ -245,12 +246,12 @@ position: relative;
   font-size: 11px;
   text-align: center;
 }
-.row-table-cis-config:hover{
+.row-table-Buzon-config:hover{
   background-color: #003757d3;
   cursor: pointer;
   color: aliceblue !important;
 }
-/* .field-body-table-cis-config.field-nombre,.field-body-table-cis-config.field-acciones{
+/* .field-body-table-Buzon-config.field-nombre,.field-body-table-Buzon-config.field-acciones{
   border-right: 1px solid #0037573a;
 } */
   .cont-img-field-acciones{
@@ -282,7 +283,7 @@ position: relative;
     height: 100%;
     overflow: auto;
   }
-  .field-body-table-cis {
+  .field-body-table-Buzon {
     position: relative;
     height: 100%;
     display: flex;
@@ -291,20 +292,20 @@ position: relative;
     /* font-size: small; */
     
   }
-  .row-table-cis{
+  .row-table-Buzon{
     position: relative;
     display: flex;
     width: 100%;
     height: 40px;
     color:#003757;
   }
-  .row-table-cis:nth-child(odd){
+  .row-table-Buzon:nth-child(odd){
     background-color: #f8f9fa;
   }
-  .row-table-cis:nth-child(even){
+  .row-table-Buzon:nth-child(even){
     background-color: #eeeeee;
   }
-  .field-body-table-cis {
+  .field-body-table-Buzon {
     position: relative;
     height: 100%;
     display: flex;
@@ -313,7 +314,7 @@ position: relative;
     /* font-size: small; */
     
   }
-  .row-table-cis:hover{
+  .row-table-Buzon:hover{
     background-color: #003757d3;
     cursor: pointer;
     color: aliceblue !important;
@@ -357,52 +358,23 @@ position: relative;
     cursor: pointer;
   }
 
- .txtCisCancelada{
+ .txtBuzonCancelada{
   font-weight: bold;
   color:red
  }
- .txtCisRechazada{
-  font-weight: bold;
-  color:red
- }  
- .txtCisCerrada{
+ .txtBuzonCerrada{
   font-weight: bold;
   color:green
  }
- .txtCisIniciada{
+ .txtBuzonIniciada{
   font-weight: bold;
   color:#d9bb18
- }
- .txtCisIniciado{
-  font-weight: bold;
-  color:#d9bb18
- }
- .txtCisNo{
-  font-weight: bold;
-  color:#000000
- }
- .txtCisPendiente{
-  color:red
- }
- .Tooltip-coment{
-  position: absolute;
-  width: 130%;
-  /* min-width: 80%; */
-  height: 80%;
-  background-color: rgba(240, 248, 255, 0.793);
-  border: 1px solid grey;
-  border-radius: 10px;
-  /* top:-10px; */
-  color:rgb(68, 68, 68);
-  left: 110%;
-  z-index: 5;
-  display: none;
-  justify-content: center;
-  align-items: center;
  }
 
- .field-status:hover .Tooltip-coment{
-  display: flex;
+ .txtResults{
+  position: absolute;
+  left: 90%;
+  text-align: center;
+  font-size: small;
+  color: aliceblue;
  }
- 
- 
