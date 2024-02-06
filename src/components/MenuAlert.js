@@ -37,7 +37,7 @@ const customStyles = {
     },
   };
 const MenuAlert = ({ isOpen, onClose,props }) => {
-  
+
     const [exeptionOpen, setExeptionOpen] = useState(false);
     const [ackOpen, setAckOpen] = useState(false);
     const [ticketOpen, setTicketOpen] = useState(false);
@@ -106,7 +106,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
           }
         
         } catch (error) {
-            
+          setAddingException(false)
            console.log(error)
           
         }
@@ -295,7 +295,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                               <Action origen='General' disabled={true} titulo='excepcion' action={openExeption}/>
                           </div>
                           <div className='menuActionCell' style={{border: 'unset'}}>
-                              <Action origen='General' disabled={false} titulo='Ack...' action={openAck}/>
+                              <Action origen='General' disabled={(props.ubiActual.dispId===9)?true:false} titulo='Ack...' action={openAck}/>
                           </div>
                           <div className='menuActionCell' style={{border: 'unset'}}>
                               <Action origen='General' disabled={false} titulo='Flujo' action={openFlujo}/>

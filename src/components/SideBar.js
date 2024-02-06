@@ -13,13 +13,14 @@ const SideBar =({rolId,onLogin,pageSelected,setPageSelected,dataGlobals})=>{
     var hosts=0
     var buzon=0
     if(dataGlobals.data.data!==undefined){
-        // console.log(dataGlobals.data.data)
+        console.log(dataGlobals.data.data)
         estado=dataGlobals.data.data.find(obj => obj.name === 'estado')
         reportes=dataGlobals.data.data.find(obj => obj.name === 'report_module')
         cis=dataGlobals.data.data.find(obj => obj.name === 'ci_module')
         acciones=dataGlobals.data.data.find(obj => obj.name === 'action_module')
         hosts=0
-        buzon=1
+        buzon=dataGlobals.data.data.find(obj => obj.name === 'mail_module')
+        console.log(buzon)
     }
     
     return(
@@ -129,7 +130,7 @@ const SideBar =({rolId,onLogin,pageSelected,setPageSelected,dataGlobals})=>{
                 </div>:''
             }
             {
-                (buzon==1)?
+                (buzon.value==1)?
                 <div className={'sidebarRow '+(pageSelected==="buzon"?'sideRowSelected':'')}>
                     <div className={'sidebarCont '+(pageSelected==="buzon"?'sideSelected':'')} name="buzon" onClick={handleSection}>
                     
