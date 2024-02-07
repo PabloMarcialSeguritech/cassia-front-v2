@@ -356,7 +356,7 @@ return nuevaFechaISO
                                         }
                                         
                                     </div>
-                                    {/* <div className="user-box-cis">
+                                    <div className="user-box-cis">
                                     <input required name="auth_name"  type="text" value={auth_name} className ={(editActiveConfig)?'Input_disabled':''} disabled={editActiveConfig}
                                     onChange={handleChange} />
                                         <label className={'label-cis '+((editActiveConfig)?'active':'')}>Autoriza</label>
@@ -364,7 +364,7 @@ return nuevaFechaISO
                                             
                                         }
                                         
-                                    </div> */}
+                                    </div>
                                     <div className="user-box-cis">
                                         <input required name="created_at"  type="datetime-local" value={created_at} className ={(editActiveConfig)?'Input_disabled':''} disabled={editActiveConfig}
                                     onChange={handleChange} />

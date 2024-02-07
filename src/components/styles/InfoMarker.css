@@ -206,9 +206,10 @@ margin: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 80%;
+  width: 90%;
   height: 80%;
 }
+
 .lblInfoHost{
   position: absolute;
   z-index: 2;
@@ -216,6 +217,39 @@ margin: 0;
   top: 0;
   color: aliceblue;
   margin-left: 1%;
+}
+.menuActionDataIM {
+  display: flex;
+  flex-wrap: wrap;
+  /* max-width: 400px;  */
+  width: 95%;
+  overflow-y: auto; /* Activar el scroll vertical cuando sea necesario */
+  max-height: 95%;
+  height: 85%;
+}
+.menuActionCellIM .compactAction{
+  width: 90%;
+  height: 70%;
+  
+}
+.menuActionCellIM .menuActionOption{
+  height: 90%;
+}
+.oneCell{
+max-width: 150px;
+height: 50%;
+max-height: 50px;
+}
+.menuActionCellIM {
+  /* border: unset; */
+  border: 1px solid rgba(240, 248, 255, 0.105);
+  width: 25%;
+  box-sizing: border-box; /* Considerar el padding y borde en el ancho */
+  /* min-height: 50%; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50%;
 }
 /******************************estilos de radiocheck************************************/
 .checkHost {
