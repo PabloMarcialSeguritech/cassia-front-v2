@@ -77,6 +77,7 @@ const MapBox = ({capas,switchesFO,switchesMO,setCapas,actualizar_rfi,mapAux,setm
     mapRef.current  = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/giorocha/clkirdmmx00ox01qm7js2bdas',
+      // style:'mapbox://styles/mapbox/navigation-night-v1',
       // style:'mapbox://styles/giorocha/clklfh8h8011001qm5hah2vje',
       // style: 'mapbox://styles/mapbox/dark-v11',
       zoom: zoom_provicional,

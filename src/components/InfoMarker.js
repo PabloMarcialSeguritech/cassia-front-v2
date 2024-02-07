@@ -349,12 +349,12 @@ setListSelected(1)
                   
                   {listSelected === 1 ? (
                     <div className='contAcciones'>
-                    <div className='menuActionData' style={{display:'flex'}}>
+                    <div className='menuActionDataIM' style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
                       {
                         (listActions.loading)?<LoadSimple></LoadSimple>:
                         
                         listActions.data.actions.map((elemento, indice)=>(
-                          <div className='menuActionCell' style={{border: 'unset',width:'25%'}}>
+                          <div className={'menuActionCellIM '+((listActions.data.actions.length<4)?'oneCell':'')} style={{border: 'unset',width:'25%'}}>
                           <Action origen='General' disabled={false} titulo={elemento.name} action={()=>handlePingClick(elemento)}/>
                       </div>
                         ))

@@ -4,6 +4,7 @@ import { useFetch } from './hooks/useFetch'
 import Dashboard from './Pages/Dashboard';
 import Login from './Pages/Login';
 import Main from './Pages/Main'
+import ErrorBoundary from './ErrorBoundary';
 import { Route, Switch, Routes ,Link,Navigate } from 'react-router-dom';
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -13,7 +14,7 @@ function App() {
   
   // const [server,setServer]=useState({ip:'10.60.20.250',port:8002})
   // const [server,setServer]=useState({ip:'172.16.4.249',port:8004})//EDOMEX
-  const [server,setServer]=useState({ip:'172.18.200.14',port:8002})//Guanajuato
+  const [server,setServer]=useState({ip:'172.18.200.14',port:8004})//Guanajuato
   // const [server,setServer]=useState({ip:'10.21.14.219',port:8002})
   // const [server,setServer]=useState({ip:'172.16.10.50',port:8000})
    
@@ -61,8 +62,7 @@ function App() {
     
   };
   return (
-  //  <Dashboard></Dashboard>
-    // <Login></Login>
+    <ErrorBoundary>
     <Routes>
       <Route path="/" element={loggedIn ? <Navigate to="/main" /> : <Login onLogin={handleLogin} server={server} token={token} setToken={setToken} userData={userData} setUserData={setUserData}  />}>
         
@@ -71,6 +71,8 @@ function App() {
         
       </Route>
     </Routes>
+  </ErrorBoundary>
+    
   );
 }
 
