@@ -174,3 +174,12 @@
     pointer-events: none;
     opacity: 0.5; /* Puedes reducir la opacidad para indicar visualmente que está inactivo */
   }
+  .headerbtn:hover{
+    background-color: #95959538;
+    cursor: pointer;
+  }
+  .expandLogoD:hover{
+    height: 120%;
+    cursor: pointer;
+  }
+  

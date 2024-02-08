@@ -15,6 +15,7 @@ const ActionModal = ({isOpen,ip,handleShowPopup, data,actionSelected,statusPing,
     const [ejecuta,setEjecuta]=useState(false)
     // const dataPing=useFetch('zabbix/hosts/action',actionSelected.ip+'/'+actionSelected.action_id,'','POST',server)
     console.log(dataPing)
+    console.log(typeof(dataPing.data))
     const Ejecutar=()=>{
         setEjecuta(true)
         console.log("registra")
@@ -28,6 +29,7 @@ const ActionModal = ({isOpen,ip,handleShowPopup, data,actionSelected,statusPing,
           
             // console.log(localStorage.getItem('access_token'))
               const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/action/'+ip+'/'+actionSelected.action_id, {
+                // const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/actionz/'+ip+'/-1', {
                 method: method,  
                 headers: {
                     'Content-Type': 'application/json',
@@ -91,7 +93,7 @@ const ActionModal = ({isOpen,ip,handleShowPopup, data,actionSelected,statusPing,
                         <div className="dot" style={{height:'15px'}}></div>
                         <div className="dot" style={{height:'15px'}}></div>
                         <div className="dot" style={{height:'15px'}}></div>
-                    </section>:(dataPing.data.length>0)?
+                    </section>:(dataPing.data.length!=0)?
                     <p className={( dataPing.data.data.action==="true" )?'msgPing':'msgErrorPing '} >
                          {(dataPing.data.data.action==="true" )?'Acción "'+actionSelected.name+'" al dispositivo "'+ip+'" ejecutada correctamente':'Acción  "'+actionSelected.name+'" ejecutada sin exitó'}
                     </p>:<p className={'msgErrorPing '} >
