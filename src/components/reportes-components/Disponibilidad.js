@@ -386,7 +386,7 @@ function download_reporte_disponibilidad(){
             const url = window.URL.createObjectURL(response_data);
             const link = document.createElement('a');
             link.href = url;
-            link.setAttribute('download', 'archivo_descargable.xlsx'); // Cambia el nombre y la extensión del archivo
+            link.setAttribute('download', 'data_report.xlsx'); // Cambia el nombre y la extensión del archivo
             document.body.appendChild(link);
             link.click();
             link.parentNode.removeChild(link);
