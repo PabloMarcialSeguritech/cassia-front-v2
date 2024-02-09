@@ -46,7 +46,10 @@ const TableAlerts=(props)=>{
     
     
   }
-  
+  useEffect(()=>{
+    
+    setProblems(props.dataProblems.data)
+  },[props.dataProblems.data])
   useEffect(()=>{
     setOpenSelect(false)
   },[props.modalIsOpen])
