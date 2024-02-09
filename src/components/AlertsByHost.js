@@ -148,7 +148,11 @@ useEffect(()=>{
                   problems.map((elemento, indice)=>(
                     
 
-                    <RowProblem mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} key={indice} severity={elemento.severity} dataAgencies={dataAgencies} data={elemento} server={server}/>
+                    <RowProblem ubiActual={ubiActual}mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} key={indice} severity={elemento.severity} dataAgencies={dataAgencies} data={elemento} server={server}/>
+
+
+                   
+
 
                   )))
                   }
