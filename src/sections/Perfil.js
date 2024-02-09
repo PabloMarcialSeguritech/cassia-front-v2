@@ -45,7 +45,9 @@ const Perfil=({server,dataGlobals,setNameState})=>{
                 </div>
             </div>
             <div className='footer-version'>
+
                    Version 1.3
+
             </div>
         </div>
     )

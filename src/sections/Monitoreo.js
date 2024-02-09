@@ -35,7 +35,9 @@ const Monitoreo=({token_item,dataGlobals,server,handleShowPopup,estados_list,est
     const [latitudes,setLatitudes]=useState([])
     const [longitudes,setLongitudes]=useState([])
     const [locations,setLocations]=useState([])
+
     // console.log(ubicacion)
+
     const [markers,setMarkers]=useState([])
     const [markers1, setMarkers1] = useState([]);
 const [markers2, setMarkers2] = useState([]);
@@ -69,6 +71,7 @@ const [switchesDownMO, setSwitchesDownMO] = useState([]);
     const [rfidInterval,setRfidInterval]=useState(0)
     const [renderCapas,setRenderCapas]=useState({downs:false,markersWOR:false,markers:true,rfid:true,switches:true})
     // console.log(renderCapas)
+
    const [renderMap,setRenderMap]=useState(false)
    const allTrue = Object.values(renderCapas).every(value => value === true);
 // console.log(devices)
@@ -1242,11 +1245,13 @@ useEffect(()=>{
     return (
         <>
 
+
           {
             devices.loading ?'':
             <>
             <SearchHost mapAux={mapAux} setmapAux={setmapAux}  devices={devices} markersWOR={markersWOR}></SearchHost>
           <Notifications estadoSelected={estadoSelected} setEstadoSelected={setEstadoSelected} estados_list={estados_list} dataGlobals={dataGlobals} server={server} handleShowPopup={handleShowPopup} mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} devices={devices}  ubiActual={ubiActual}/>
+
           
             </>
           }
@@ -1274,8 +1279,10 @@ useEffect(()=>{
                 </Modal>
               </>
           }
-        
+
+
         </>
+
         
     )
 }

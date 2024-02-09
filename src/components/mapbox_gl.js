@@ -4,12 +4,15 @@ import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import './styles/MapBox.css'
 import towerImg from '../img/torre2_blanca.png';
+
+
 import serverImg from '../img/server_up_2.png';
 import serverImg0 from '../img/server_0.png';
 import serverImg1 from '../img/server_1.png';
 import serverImg2 from '../img/server_2.png';
 import serverImg3 from '../img/server_3.png';
 import serverImg4 from '../img/server_4.png';
+
 function calcularPuntoMedio(coordenadas1, coordenadas2) {
   // Extraer las coordenadas de los puntos
   const [x1, y1] = coordenadas1;
@@ -32,10 +35,15 @@ function bitsToGigabits(bits) {
   const gigabits = bits / 1e6; // 1e9 es equivalente a 1 billion (mil millones)
   return gigabits;
 }
+
 const MapBox = ({capas,switchesFO,switchesMO,setCapas,actualizar_rfi,mapAux,setmapAux,search_rfid,global_longitud,global_latitude,global_zoom,devices,markers,markersWOR,lines,downs,towers,rfid,ubicacion,switches,handleMarkerClick}) => {
 
+
+
   
+
   // console.log("markers*****************************************************")
+
   // console.log(downs)
   // console.log(switches)
   // console.log(switchesMO)
@@ -82,6 +90,7 @@ const MapBox = ({capas,switchesFO,switchesMO,setCapas,actualizar_rfi,mapAux,setm
     let Popup;
     const map = mapRef.current;
     setmapAux(map)
+
     
 
 
@@ -89,6 +98,8 @@ const MapBox = ({capas,switchesFO,switchesMO,setCapas,actualizar_rfi,mapAux,setm
       console.log("on load map")
        /************************************************************ CAPA Servers ************************************************************************ */
        
+
+
 if(ubicacion.dispId==10){
   map.loadImage(
     serverImg,
@@ -162,7 +173,9 @@ if(!idCapaExistente('host-markerWOR')){
   }));
 }
 
+
 // }
+
 map.on('mouseleave', 'host-markerWOR', (e) => {
   //  //console.log(e)
   // Popup.remove();
@@ -203,6 +216,7 @@ map.on('click', 'host-markerWOR', (e) => {
 });
        
      /************************************************************ CAPA LINEAS ************************************************************************ */
+
      if(lines.length!==0){
         const LineConect={
             id: 'line-conection',
@@ -237,6 +251,7 @@ map.on('click', 'host-markerWOR', (e) => {
             }));
           }
         }
+
     
          /************************************************************ CAPA LINEAS Switches ************************************************************************ */
         // if(switchesFO.length!==0 || switchesMO.length!==0){
@@ -753,6 +768,7 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
         
           //     animateDashArray.bind(this)(0);
              
+
           //    if(!idCapaExistente('switches-conection')){
           //      setCapas((prevCapas) => ({
           //        ...prevCapas,
@@ -760,6 +776,7 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
           //      }));
           //    }
           //  }
+
       /************************************************************ CAPA RFID ************************************************************************ */
       //console.log(downs)
       var rfidIval;
@@ -787,7 +804,9 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
       if(!idCapaExistente('host-rfid')){
         setCapas((prevCapas) => ({
           ...prevCapas,
+
           [Object.keys(prevCapas).length ]: { show: true, name: 'RFID',id:`host-rfid`,layer:rifdLayer,source:null ,nivel:3},
+
         }));
       }
         var popup;
@@ -829,8 +848,11 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
       }
       
      
+
+
        /************************************************************ CAPA Metricas ************************************************************************ */
       if(markers.length!==0){
+
         
        if(ubicacion.dispId===12){
  
@@ -1016,6 +1038,7 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
         
                 requestAnimationFrame(animateDashArray2);
               }
+
         
               animateDashArray2.bind(this)(0);
              
@@ -1028,6 +1051,16 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
              map.on('mouseleave', 'line-throughtput2', (e) => {
               
               const popups = document.querySelectorAll('.custom-popup');
+
+      
+              
+
+
+
+
+            
+
+            
             
             popups.forEach(popup => {
             
@@ -1431,10 +1464,12 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
     },
   }
    map.addLayer(downLayer);
+
   if(!idCapaExistente('host-down')){
     setCapas((prevCapas) => ({
       ...prevCapas,
       [Object.keys(prevCapas).length ]: { show: true, name: 'Downs',id:`host-down`,layer:downLayer,source:null ,nivel:5},
+
     }));
   }
   map.on('mouseleave', 'host-down', (e) => {
@@ -1479,7 +1514,9 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
           map.addImage('tower', image);
 
           // Add a data source containing one point feature.
+
           const towerSource={
+
             type: 'geojson',
             data: {
               type: 'FeatureCollection',
