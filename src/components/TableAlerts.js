@@ -103,32 +103,42 @@ const selectOptionList=(element)=>{
   
     return formattedDateTime;
   };
-  const orderBy=(attr)=>{
+ 
+  const orderBy = (attr) => {
+    if (dataList.length === 0) {
+        console.log('No hay datos para ordenar');
+        return;
+    }
+
     const sortedData = [...dataList].sort((a, b) => {
-      if(orderAsc){
-        setOrderAsc(false)
-        console.log('ASC')
-        if (formatDateTime(a[attr]) > formatDateTime(b[attr])) return 1; // Cambia el orden de retorno
-      if (formatDateTime(a[attr]) > formatDateTime(b[attr])) return -1; // Cambia el orden de retorno
-      }else{
-        setOrderAsc(true)
-        console.log("Desc")
-        if (formatDateTime(a[attr]) < formatDateTime(b[attr])) return 1; // Cambia el orden de retorno
-      if (formatDateTime(a[attr]) > formatDateTime(b[attr])) return -1; // Cambia el orden de retorno
-      }
-      
-      
-      return 0;
+        if (orderAsc) {
+          setOrderAsc(false)
+            if (formatDateTime(a[attr]) > formatDateTime(b[attr])) return 1;
+            if (formatDateTime(a[attr]) < formatDateTime(b[attr])) return -1;
+        } else {
+          setOrderAsc(true)
+            if (formatDateTime(a[attr]) < formatDateTime(b[attr])) return 1;
+            if (formatDateTime(a[attr]) > formatDateTime(b[attr])) return -1;
+        }
+        return 0;
     });
-    // console.log(sortedData);
-    // props.setSearchTerm(' ')
-    setProblems(sortedData)
-   }
-   
+
+    if (orderAsc) {
+        console.log('Ascendente', sortedData);
+    } else {
+        console.log('Descendente', sortedData);
+    }
+
+    // Actualizar estado o hacer lo que necesites con sortedData
+    setProblems(sortedData);
+};
+
     function exportData(){
-      
+      console.log('exportData')
       // setDataProblems({data:dataProblems.data,loading:true,error:dataProblems.error})
         const fetchData = async () => {
+          console.log('fetch')
+          console.log(+props.ubiActual)
           try {
             const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWFuLm1hcmNpYWwiLCJleHAiOjE2OTExNjg3ODZ9.LETk5Nu-2WXF571qMqTd__RxHGcyOHzg4GfAbiFejJY'; // Reemplaza con tu token de autenticación
             const devicefilter=props.ubiActual.dispId!==0?'?tech_host_type='+props.ubiActual.dispId:''
@@ -167,9 +177,10 @@ const selectOptionList=(element)=>{
           } catch (error) {
             // Manejo de errores
             // setDataProblems({data:dataProblems.data,loading:dataProblems.loading,error:error})
-            //console.error(error);
+            console.error(error);
           }
         };
+
         fetchData();
       
    }
