@@ -330,7 +330,7 @@ useEffect(()=>{
           if (response.ok) {
             const response_data = await response.json();
             setDataProblems({data:response_data.data,loading:false,error:dataProblems.error})
-            // //console.log(response_data)
+            console.log(response_data)
             
           } else {
             throw new Error('Error en la solicitud');
