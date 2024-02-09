@@ -363,7 +363,7 @@ setListSelected(1)
                     </div>
                   </div>
                 ) : listSelected === 2 ? (
-                    <AlertsByHost mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} hostId={hostSelected===1?hostIdP:hostId} server={server}></AlertsByHost>
+                    <AlertsByHost ubiActual={ubiActual} mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} hostId={hostSelected===1?hostIdP:hostId} server={server}></AlertsByHost>
                 ) : listSelected === 3 ? (
                   <HealthByHost hostId={hostSelected===1?hostIdP:hostId} server={server}></HealthByHost>
                 ) : listSelected === 9 ? (
