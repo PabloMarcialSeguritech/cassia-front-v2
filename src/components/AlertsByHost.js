@@ -6,7 +6,7 @@ import { useFetch } from '../hooks/useFetch'
 import RowProblem from './RowProblem'
 import LoadAlerts from './LoadAlerts'
 const AlertsByHost=({hostId,mapAux,ubiActual,setmapAux,server,search_problems})=>{
-    const alerts_list=useFetch('zabbix/hosts/detail/alerts',hostId,'','GET',server)
+    // const alerts_list=useFetch('zabbix/hosts/detail/alerts',hostId,'','GET',server)
     const dataAgencies=useFetch('zabbix/exception_agencies','','props.token','GET',server)
     const [orderAsc,setOrderAsc]=useState(true)
   const [problems,setProblems]=useState()
@@ -144,7 +144,7 @@ useEffect(()=>{
                 <div className='TableBody'>
                 {
                   
-                  dataProblems.loading?<LoadAlerts/>:(alerts_list.data.data.length===0?<div className='txtLoader'>Sin Resultados</div>:
+                  dataProblems.loading?<LoadAlerts/>:(problems.length===0?<div className='txtLoader'>Sin Resultados</div>:
                   problems.map((elemento, indice)=>(
                     
 

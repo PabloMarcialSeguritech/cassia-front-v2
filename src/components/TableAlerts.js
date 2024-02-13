@@ -323,7 +323,7 @@ const selectOptionList=(element)=>{
                 <div className='TableBody'>
                 {
                   
-                  props.dataProblems.loading?<LoadAlerts/>:(problems.length===0?<div className='txtLoader'>Sin Resultados</div>:
+                  props.dataProblems.loading?<LoadAlerts/>:(dataList.length===0?<div className='txtLoader'>Sin Resultados</div>:
                   dataList.map((elemento, indice)=>(
                     
                     <RowProblem  ubiActual={props.ubiActual} mapAux={props.mapAux} setmapAux={props.setmapAux} search_problems={props.search_problems} key={indice} severity={elemento.severity} dataAgencies={dataAgencies} data={elemento} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion} server={props.server} />
