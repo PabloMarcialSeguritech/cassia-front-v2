@@ -32,7 +32,7 @@ function bitsToGigabits(bits) {
   const gigabits = bits / 1e6; // 1e9 es equivalente a 1 billion (mil millones)
   return gigabits;
 }
-const MapBox = ({capas,switchesFO,switchesMO,setCapas,actualizar_rfi,mapAux,setmapAux,search_rfid,global_longitud,global_latitude,global_zoom,devices,markers,markersWOR,lines,downs,towers,rfid,ubicacion,switches,handleMarkerClick}) => {
+const MapBox = ({capas,switchesFO,switchesMO,setCapas,actualizar_rfi,actualizar_lpr,mapAux,setmapAux,search_rfid,global_longitud,global_latitude,global_zoom,devices,markers,markersWOR,lines,downs,towers,rfid,lpr,ubicacion,switches,handleMarkerClick}) => {
 
   
   // console.log("markers*****************************************************")
@@ -50,6 +50,7 @@ const MapBox = ({capas,switchesFO,switchesMO,setCapas,actualizar_rfi,mapAux,setm
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
   const [rfidInterval,setRfidInterval]=useState(0)
+  const [lprInterval,setLprInterval]=useState(0)
   const idCapaExistente = (id) => {
     return Object.values(capas).some(capa => capa.id === id);
   };
@@ -764,7 +765,7 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
       //console.log(downs)
       var rfidIval;
       if(rfid.length!==0){
-        console.log("add layer rfid")
+        // console.log("add layer rfid")
         const rifdLayer={
           id: 'host-rfid',
           type: 'circle',
@@ -808,10 +809,13 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
             closeOnClick: false
         })
             .setLngLat(coordinates)
-            .setHTML(`<div class='cont-rfid' style='border: 1px solid #ffffff;'>
+            // .setHTML(`<div class='cont-rfid' style='border: 1px solid #ffffff;'>
+            // <div class='titleRFID'><div class='txtTitleRfid'>Trafico</div><br></div>
+            // <div class='valRFID' style='background: ${severity_colors[severity]}'><div class='txtRfid'>${val}</div><br><br></div>
+            //     </div>`)
+                .setHTML(`<div class='cont-rfid' style='border: 1px solid #ffffff;'>
             <div class='titleRFID'><div class='txtTitleRfid'>Trafico</div><br></div>
-            <div class='valRFID' style='background: ${severity_colors[severity]}'><div class='txtRfid'>${val}</div><br><br></div>
-                
+            <div class='valRFID' style='background: ${severity_colors[severity]}'><div class='txtRfid' style='color: ${((severity!=0)?'black !important':'lime')}' >${val}</div><br><br></div>
                 </div>`)
                 .addTo(map);
         });
@@ -826,6 +830,77 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
       }else{
         console.log("******** no existe rfid *************",rfidInterval)
         clearInterval(rfidInterval);
+      }
+      
+      /************************************************************ CAPA LPR ************************************************************************ */
+      //console.log(downs)
+      var lprval;
+      if(lpr.length!==0){
+        // console.log("add layer lpr")
+        const lprLayer={
+          id: 'host-lpr',
+          type: 'circle',
+          source:  {
+            type: 'geojson',
+            data: {
+              type: 'FeatureCollection',
+              features: lpr
+            },
+          },
+          filter: ['!', ['has', 'point_count']],
+          paint: {
+            'circle-color': "#cacaca",
+            'circle-radius': 3,
+            'circle-stroke-width':1,
+            'circle-stroke-color': '#fff',
+          },
+        };
+        map.addLayer(lprLayer);
+      if(!idCapaExistente('host-lpr')){
+        setCapas((prevCapas) => ({
+          ...prevCapas,
+          [Object.keys(prevCapas).length ]: { show: true, name: 'LPR',id:`host-lpr`,layer:lprLayer,source:null ,nivel:3},
+        }));
+      }
+        var popup;
+        lpr.forEach((feature) => {
+          const coordinates = feature.geometry.coordinates.slice();
+          const val = feature.properties.lecturas; // Asegúrate de tener esta propiedad en tus datos
+          const severity = feature.properties.severidad; 
+          const severity_colors={
+            1:'#ffee00',
+            2:'#ee9d08',
+            3:'#ee5c08',
+            4:'#ff0808',
+            
+          }
+          popup = new mapboxgl.Popup({
+            className: 'custom-popup-lpr',
+            closeButton: false,
+            closeOnClick: false
+        })
+            .setLngLat(coordinates)
+            // .setHTML(`<div class='cont-rfid' style='border: 1px solid #ffffff;'>
+            // <div class='titleRFID'><div class='txtTitleRfid'>Trafico</div><br></div>
+            // <div class='valRFID' style='background: ${severity_colors[severity]}'><div class='txtRfid'>${val}</div><br><br></div>
+            //     </div>`)
+                .setHTML(`<div class='cont-lpr' style='border: 1px solid #ffffff;'>
+            <div class='titleLPR'><div class='txtTitleLpr'>Lecturas</div><br></div>
+            <div class='valLPR' style='background: ${severity_colors[severity]}'><div class='txtLpr' style='color: ${((severity!=0)?'black !important':'lime')}' >${val}</div><br><br></div>
+                </div>`)
+                .addTo(map);
+        });
+        lprval=setInterval(() => {
+          console.log("LprInterval ",lprval)
+          // console.log(map.getSource('host-rfid'))
+          setLprInterval(lprval)
+        actualizar_lpr(map,popup,lprval)
+       }, 10000);
+        
+        // console.log(rfidInterval)
+      }else{
+        console.log("******** no existe rfid *************",lprInterval)
+        clearInterval(lprInterval);
       }
       
      

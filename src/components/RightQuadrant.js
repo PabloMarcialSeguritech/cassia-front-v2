@@ -45,13 +45,16 @@ const RightQuadrant =(props)=>{
         props.search_problems()
         props.search_devices()
         props.search_downs()
-        if(props.ubicacion.dispId===9){
+        if(props.ubicacion.dispId===1){
+            props.search_lpr()
+        }if(props.ubicacion.dispId===9){
             props.search_rfid()
-        }if(props.ubicacion.dispId===12){
+        } if(props.ubicacion.dispId===12){
             console.log('switches')
             props.search_switches()
         }else{
             props.setRfid([])
+            props.setLpr([])
         }
         
     }

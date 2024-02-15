@@ -30,8 +30,9 @@ const InfoMarker = ({isOpen,source,handleShowPopup,devices,mapAux,setmapAux, dat
   // console.log(data)
   var ubicacion_mix;
   if(source=='Monitoreo'){
-     ubicacion_mix=devices.data.hosts.filter(obj => obj.latitude === data.end_lat )
-  }else{
+     ubicacion_mix=devices.data.hosts.filter(obj => (((obj.latitude.charAt(obj.latitude.length - 1)==0)?obj.latitude.slice(0, -1):obj.latitude) === ((data.end_lat.charAt(data.end_lat.length - 1)==0)?data.end_lat.slice(0, -1):data.end_lat )) && (((obj.longitude.charAt(obj.longitude.length - 1)==0)?obj.longitude.slice(0, -1):obj.longitude) === ((data.end_lon.charAt(data.end_lon.length - 1)==0)?data.end_lon.slice(0, -1):data.end_lon )))
+  // console.log(ubicacion_mix)
+    }else{
      ubicacion_mix=[{
         "hostid": data.hostidC,
         "Host": data.name_hostC,
@@ -77,13 +78,13 @@ useEffect(()=>{
   // search_actions()
 },[])
     function search_actions(ip){
-      console.log("search_actions")
+      // console.log("search_actions")
       setListActions({data:[],loading:true,error:listActions.error})
         const fetchData = async () => {
           try {
             // console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/layers/switches_connectivity')
         //  const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/layers/switches_connectivity/'+ubicacion.groupid, { 
-          console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/actions/'+infoHostC.ip) 
+          // console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/actions/'+infoHostC.ip) 
           const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/actions/'+infoHostC.ip, {                
                                 headers: {
                                   'Content-Type': 'application/json',

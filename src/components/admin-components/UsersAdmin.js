@@ -8,6 +8,8 @@ import Selector from '../Selector'
 import LoadAdding from '../LoadAdding'
 import LoadSimple from '../LoadSimple'
 import UserList from './UserList'
+import TableUsers from './TableUsers'
+import ConfigUser from './ConfigUser'
 const UsersAdmin=({server})=>{
     const [nivelForm,setNivelForm]=useState(1)
     const [userData,setUserData]=useState({name:"",mail:"",roles:"2"})
@@ -290,28 +292,9 @@ const Registrar=()=>{
                                     USUARIOS
                                 </div>
                             </div>
-                            <div className='content-card-users'>
-                                <div className='cont-table-users'>
-                                    <div className='head-table-users'>
-                                        <div className='field-head-table-users field-acciones'>
-                                            Acciones
-                                        </div>
-                                        <div className='field-head-table-users field-nombre'>
-                                            Nombre
-                                        </div>
-                                        <div className='field-head-table-users field-correo'>
-                                            Correo
-                                        </div>
-                                    </div>
-                                    <div className='body-table-users'>
-                                        {
-                                            ( registerIsValid)?<div className='cont-load-user-list'><LoadSimple></LoadSimple></div>:
-                                            <UserList server={server} handleChangEdit={handleChangEdit} setData={setData} setLoading={setLoading} setError={setError}></UserList>
-                                        
-                                          }
-                                        
-                                    </div>
-                                </div>
+                            <div className='content-card-users' style={{height: '90%' }}>
+                                <TableUsers registerIsValid={registerIsValid}  server={server} handleChangEdit={handleChangEdit} setData={setData} setLoading={setLoading} setError={setError}/>
+                                {/* <ConfigUser></ConfigUser> */}
                             </div>
                     </div>
                 </div>
