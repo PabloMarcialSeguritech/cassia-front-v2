@@ -15,6 +15,7 @@ const ActionModal = ({isOpen,ip,handleShowPopup, data,actionSelected,statusPing,
     const [ejecuta,setEjecuta]=useState(false)
     // const dataPing=useFetch('zabbix/hosts/action',actionSelected.ip+'/'+actionSelected.action_id,'','POST',server)
     console.log(dataPing)
+    console.log(typeof(dataPing.data))
     const Ejecutar=()=>{
         setEjecuta(true)
         console.log("registra")
@@ -28,6 +29,7 @@ const ActionModal = ({isOpen,ip,handleShowPopup, data,actionSelected,statusPing,
           
             // console.log(localStorage.getItem('access_token'))
               const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/action/'+ip+'/'+actionSelected.action_id, {
+                // const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/actionz/'+ip+'/-1', {
                 method: method,  
                 headers: {
                     'Content-Type': 'application/json',
@@ -39,7 +41,7 @@ const ActionModal = ({isOpen,ip,handleShowPopup, data,actionSelected,statusPing,
               if (response.ok) {
                 
                 const data1 = await response.json();
-                // setDataPing(data1)
+                setDataPing(data1)
                 // if(!isOpen){
                   handleShowPopup(((data1.success)?'Completado':data1.message),data1.data.action==="true"?'Acción "'+actionSelected.name+'" al dispositivo "'+ip+'" ejecutada correctamente':'Acción  "'+actionSelected.name+'" al dispositivo "'+ip+'" ejecutada sin exitó',((data1.success)?'':data1.recommendation), data1.success)
                 // }
@@ -47,10 +49,13 @@ const ActionModal = ({isOpen,ip,handleShowPopup, data,actionSelected,statusPing,
              
             
               } else {
+                setDataPing({data:dataPing.data.data.action=false,loading:false,error:null})
                 throw new Error('Error en la solicitud');
+                
               }
             } catch (error) {
-               
+              setDataPing({data:dataPing.data,loading:false,error:null})
+              handleShowPopup('Error!!!','Acción  "'+actionSelected.name+'" al dispositivo "'+ip+'" ejecutada sin exitó','Favor de reportar el error', false)
               console.error(error);
             }
           };
@@ -88,9 +93,11 @@ const ActionModal = ({isOpen,ip,handleShowPopup, data,actionSelected,statusPing,
                         <div className="dot" style={{height:'15px'}}></div>
                         <div className="dot" style={{height:'15px'}}></div>
                         <div className="dot" style={{height:'15px'}}></div>
-                    </section>:
-                    <p className={dataPing.data.data.action==="true"?'msgPing':'msgErrorPing '} >
-                         {dataPing.data.data.action==="true"?'Acción "'+actionSelected.name+'" al dispositivo "'+ip+'" ejecutada correctamente':'Acción  "'+actionSelected.name+'" ejecutada sin exitó'}
+                    </section>:(dataPing.data.length!=0)?
+                    <p className={( dataPing.data.data.action==="true" )?'msgPing':'msgErrorPing '} >
+                         {(dataPing.data.data.action==="true" )?'Acción "'+actionSelected.name+'" al dispositivo "'+ip+'" ejecutada correctamente':'Acción  "'+actionSelected.name+'" ejecutada sin exitó'}
+                    </p>:<p className={'msgErrorPing '} >
+                         {'Ocurrio un error y no pudo ejecutarce la accion!!!'}
                     </p>}
                        </>
                     }

@@ -28,13 +28,13 @@ const TableAlerts=(props)=>{
   // console.log(dataAgencies)
   
   const [openSelectList,setOpenSelect]=useState(false)
- 
-  
+  const [orderAsc,setOrderAsc]=useState(true)
+  const [problems,setProblems]=useState(props.dataProblems.data)
   const [flagSearch,setFlagsearch]=useState(false)
   // console.log(props.severityProblms)
   // console.log(props.optionsSelectList)
   function expandAlerts(){
-    console.log(typeof props.search_problems)
+    // console.log(typeof props.search_problems)
     if(!props.modalIsOpen){
       props.search_problems()
       if(props.alertsIsOpen){
@@ -46,7 +46,10 @@ const TableAlerts=(props)=>{
     
     
   }
-  
+  useEffect(()=>{
+    
+    setProblems(props.dataProblems.data)
+  },[props.dataProblems.data])
   useEffect(()=>{
     setOpenSelect(false)
   },[props.modalIsOpen])
@@ -86,9 +89,104 @@ const selectOptionList=(element)=>{
    
   }
 }
+ 
 
+  var dataList=(props.searchTerm==='')?problems:props.searchResults;
+  // var dataList=props.searchResults;
+  // console.log(dataList)
+  const formatDateTime = (dateTimeString) => {
+    // Dividir la cadena en fecha y hora
+    const [datePart, timePart] = dateTimeString.split(' ');
+  
+    // Dividir la parte de la fecha en día, mes y año
+    const [day, month, year] = datePart.split('/');
+  
+    // Reconstruir la cadena en el formato deseado
+    const formattedDateTime = `${year}/${month}/${day} ${timePart}`;
+  
+    return formattedDateTime;
+  };
+ 
+  const orderBy = (attr) => {
+    if (dataList.length === 0) {
+        console.log('No hay datos para ordenar');
+        return;
+    }
 
-  var dataList=(props.searchTerm==='')?props.dataProblems.data:props.searchResults;
+    const sortedData = [...dataList].sort((a, b) => {
+        if (orderAsc) {
+          setOrderAsc(false)
+            if (formatDateTime(a[attr]) > formatDateTime(b[attr])) return 1;
+            if (formatDateTime(a[attr]) < formatDateTime(b[attr])) return -1;
+        } else {
+          setOrderAsc(true)
+            if (formatDateTime(a[attr]) < formatDateTime(b[attr])) return 1;
+            if (formatDateTime(a[attr]) > formatDateTime(b[attr])) return -1;
+        }
+        return 0;
+    });
+
+    if (orderAsc) {
+        console.log('Ascendente', sortedData);
+    } else {
+        console.log('Descendente', sortedData);
+    }
+
+    // Actualizar estado o hacer lo que necesites con sortedData
+    setProblems(sortedData);
+};
+
+    function exportData(){
+      console.log('exportData')
+      // setDataProblems({data:dataProblems.data,loading:true,error:dataProblems.error})
+        const fetchData = async () => {
+          console.log('fetch')
+          console.log(+props.ubiActual)
+          try {
+            const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWFuLm1hcmNpYWwiLCJleHAiOjE2OTExNjg3ODZ9.LETk5Nu-2WXF571qMqTd__RxHGcyOHzg4GfAbiFejJY'; // Reemplaza con tu token de autenticación
+            const devicefilter=props.ubiActual.dispId!==0?'?tech_host_type='+props.ubiActual.dispId:''
+        const subtypefilter=props.ubiActual.templateId!==0?'subtype='+props.ubiActual.templateId:''
+        const severityfilter=props.severityProblms.length>0?'severities='+props.severityProblms.join(', '):''
+        let andAux=(devicefilter!=='' )?'&':'?'
+              andAux=(subtypefilter!=='')?andAux:''
+              
+        console.log('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/download/'+props.ubiActual.groupid+''+devicefilter+andAux+subtypefilter+((props.ubiActual.dispId==0 && props.ubiActual.templateId==0)?'?':'&')+severityfilter)
+            const response = await fetch('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/download/'+props.ubiActual.groupid+''+devicefilter+andAux+subtypefilter+((props.ubiActual.dispId==0 && props.ubiActual.templateId==0)?'?':'&')+severityfilter, {                 
+                                headers: {
+                                  'Content-Type': 'application/json',
+                                  Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+                                },
+                              });
+            if (response.ok) {
+              try {
+                const response_data = await response.blob();
+                // console.log(response_data)
+          
+                // Crear un enlace para descargar el archivo
+                const url = window.URL.createObjectURL(response_data);
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'data_problems.xlsx'); // Cambia el nombre y la extensión del archivo
+                document.body.appendChild(link);
+                link.click();
+                link.parentNode.removeChild(link);
+              } catch (error) {
+                console.error('Error al descargar el archivo', error);
+              }
+              
+            } else {
+              throw new Error('Error en la solicitud');
+            }
+          } catch (error) {
+            // Manejo de errores
+            // setDataProblems({data:dataProblems.data,loading:dataProblems.loading,error:error})
+            console.error(error);
+          }
+        };
+
+        fetchData();
+      
+   }
     return(
 <>
 <div className={props.alertsIsOpen?'menuAlertTitle' :'menuAlertTitleMin' } onClick={(!props.alertsIsOpen)?expandAlerts:()=>{}}>
@@ -97,7 +195,7 @@ const selectOptionList=(element)=>{
                         {props.modalIsOpen || props.alertsIsOpen?
                         <div className='cont-menu-eventos'>
                           <div className='cont-option-eventos'>
-                          <Search searchResults={props.searchResults} setSearchResults={props.setSearchResults} searchTerm={props.searchTerm} setSearchTerm={props.setSearchTerm}   dataObject={props.dataProblems.data} />
+                          <Search searchResults={props.searchResults} setSearchResults={props.setSearchResults} searchTerm={props.searchTerm} setSearchTerm={props.setSearchTerm}   dataObject={problems} />
                           </div>
                           <div className='cont-option-eventos'>
                               <>
@@ -107,7 +205,7 @@ const selectOptionList=(element)=>{
                                         element=="6"?'Down, ':'S'+element+', '
                                       ))}
                                   </div>
-                                  <hr class="vertical-line"></hr>
+                                  <hr className="vertical-line"></hr>
                                   <div className='selector-cont-depliegue ' >
                                   <img className='img-field-acciones' src={'/iconos/'+((openSelectList)?'up':'down')+'-arrow-select.png'} title='expand' alt='expand' name='expand'   />
                                   </div>
@@ -135,19 +233,23 @@ const selectOptionList=(element)=>{
                                 </div>
                               </div>:''
                               }
-                              
+                              <div className='imgCardTitleMin' style={{left:'110%'}}>
+                              <div className='imgContent' onClick={()=>{ exportData()}}>
+                              <img  style={{top:'15%',height:'100%'}}src={"/iconos/download-blanco.png"}  className="expandLogo expandLogoD" alt="Logo" />
+                              </div>
+                            </div>
                               </>
                           </div>
                         </div>:''
                 //         <div className='cont-search' style={{left:'0px',position:'absolute'}}>
                 //     {(!props.dataProblems.loading )?''
-                //     :<Search searchResults={searchResults} setSearchResults={setSearchResults} searchTerm={searchTerm} setSearchTerm={setSearchTerm}   dataObject={props.dataProblems.data} />
+                //     :<Search searchResults={searchResults} setSearchResults={setSearchResults} searchTerm={searchTerm} setSearchTerm={setSearchTerm}   dataObject={problems} />
                 //     }
                     
                 // </div>:''
                 }
                             <div className='textCardTitle'>
-                            EVENTOS ({props.dataProblems.data.length})
+                            EVENTOS ({problems.length})
                             </div>
                             <div className='imgCardTitleMin'>
                               <div className='imgContent'>
@@ -157,12 +259,12 @@ const selectOptionList=(element)=>{
                             {
                               (props.alertsIsOpen && props.modalIsOpen==false)?
                               <div className='imgCardTitleMin' style={{left:'96%'}}>
-                              <div className='imgContent'>
-                              <img  style={{top:'40%'}}src={"/iconos/minimizar.png"}  className="expandLogo" alt="Logo" onClick={()=>{ props.setAlertsIsOpen(false)}}/>
+                              <div className='imgContent' onClick={()=>{ props.setAlertsIsOpen(false)}}>
+                              <img  style={{top:'40%'}}src={"/iconos/minimizar.png"}  className="expandLogo" alt="Logo" />
                               </div>
                             </div>:''
                             }
-                            
+                             
                         </div>
                         
               </div>
@@ -205,24 +307,26 @@ const selectOptionList=(element)=>{
                         Tiempo activo
                     </div>
                   </div>
-                  <div className='headerCell'style={{width:'7%'}}>
+                  <div className='headerCell headerbtn'style={{width:'7%'}} onClick={()=>orderBy('Time')} >
                     <div className='txtHeaderCell'>
                         Fecha
                     </div>
+                    <img className='img-field-acciones' src={'/iconos/'+((!orderAsc)?'up':'down')+'-arrow-select.png'} title='expand' alt='expand' name='expand'   />
                   </div>
                   <div className='headerCell'style={{width:'7%'}}>
                     <div className='txtHeaderCell'>
                         Hora
                     </div>
+                    
                   </div>
                 </div>
                 <div className='TableBody'>
                 {
                   
-                  props.dataProblems.loading?<LoadAlerts/>:(props.dataProblems.data.length===0?<div className='txtLoader'>Sin Resultados</div>:
+                  props.dataProblems.loading?<LoadAlerts/>:(dataList.length===0?<div className='txtLoader'>Sin Resultados</div>:
                   dataList.map((elemento, indice)=>(
                     
-                    <RowProblem   mapAux={props.mapAux} setmapAux={props.setmapAux} search_problems={props.search_problems} key={indice} severity={elemento.severity} dataAgencies={dataAgencies} data={elemento} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion} server={props.server} />
+                    <RowProblem  ubiActual={props.ubiActual} mapAux={props.mapAux} setmapAux={props.setmapAux} search_problems={props.search_problems} key={indice} severity={elemento.severity} dataAgencies={dataAgencies} data={elemento} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion} server={props.server} />
                   )))
                   }
 

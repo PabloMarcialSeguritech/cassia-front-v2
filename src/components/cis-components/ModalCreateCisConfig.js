@@ -23,7 +23,7 @@ const ModalCreateCisConfig =({server,buscar_cis_history,ci_id,setRegisterIsValid
     const [disabled,setDisabled]=useState(true)
     const [host,sethost]=useState([])
     // const [cisDataConf,setCisDataConf]=useState({ip:(editActiveConfig)?dataCisConfig.ip:"",host_id:(editActiveConfig)?dataCisConfig.host_id:0,date:(editActiveConfig)?dataCisConfig.date:"",responsible_name:(editActiveConfig)?dataCisConfig.responsible_name:"",auth_name:(editActiveConfig)?dataCisConfig.auth_name:"",device_description:(editActiveConfig)?dataCisConfig.device_description:"",justification:(editActiveConfig)?dataCisConfig.justification:"",previous_state:(editActiveConfig)?dataCisConfig.previous_state:"",new_state:(editActiveConfig)?dataCisConfig.new_state:"",impact:(editActiveConfig)?dataCisConfig.impact:"",result:(editActiveConfig)?dataCisConfig.result:"",observations:(editActiveConfig)?dataCisConfig.observations:"",files:(editActiveConfig)?dataCisConfig.files:[],status:(editActiveConfig)?dataCisConfig.status:'Activo'})
-    const [cisDataConf,setCisDataConf]=useState({element_id:ci_id,change_type:(editActiveConfig)?dataCisConfig.change_type:"",description:(editActiveConfig)?dataCisConfig.description:"",justification:(editActiveConfig)?dataCisConfig.justification:"",hardware_no_serie:(editActiveConfig)?dataCisConfig.hardware_no_serie:"",hardware_brand:(editActiveConfig)?dataCisConfig.hardware_brand:"",hardware_model:(editActiveConfig)?dataCisConfig.hardware_model:"",software_version:(editActiveConfig)?dataCisConfig.software_version:"",responsible_name:(editActiveConfig)?dataCisConfig.responsible_name:"",auth_name:(editActiveConfig)?dataCisConfig.auth_name:"",created_at:(editActiveConfig)?dataCisConfig.created_at:obtenerFechaActualLocal(),closed_at:(editActiveConfig)?dataCisConfig.closed_at:null,status:(editActiveConfig)?dataCisConfig.status:'Iniciada'})
+    const [cisDataConf,setCisDataConf]=useState({element_id:ci_id,change_type:(editActiveConfig)?dataCisConfig.change_type:"",description:(editActiveConfig)?dataCisConfig.description:"",justification:(editActiveConfig)?dataCisConfig.justification:"",hardware_no_serie:(editActiveConfig)?dataCisConfig.hardware_no_serie:"",hardware_brand:(editActiveConfig)?dataCisConfig.hardware_brand:"",hardware_model:(editActiveConfig)?dataCisConfig.hardware_model:"",software_version:(editActiveConfig)?dataCisConfig.software_version:"",responsible_name:(editActiveConfig)?dataCisConfig.responsible_name:"",auth_name:(editActiveConfig)?dataCisConfig.auth_name:"",created_at:(editActiveConfig)?dataCisConfig.created_at:obtenerFechaActualLocal(),closed_at:(editActiveConfig)?dataCisConfig.closed_at:null,status:'Cancelada'})
     const [hostName,setHostName]=useState("") 
     console.log(cisDataConf)
     const dataStatus=[
@@ -38,10 +38,10 @@ const ModalCreateCisConfig =({server,buscar_cis_history,ci_id,setRegisterIsValid
           {
             "id": 3,
             "name": "Cancelada",
-          },
+          }
         
       ]
-      var defOp=1;
+      var defOp=4;
       function buscarIdPorNombre(nombre) {
         const status = dataStatus.find(item => item.name === nombre);
         return status ? status.id : null;
@@ -287,86 +287,86 @@ return nuevaFechaISO
                                     <div className="form-cis-box"> 
                                     
                                     <div className="user-box-cis">
-                                    <input required name="change_type"  type="text" value={change_type}
+                                    <input required name="change_type"   type="text" value={change_type}  className ={(editActiveConfig)?'Input_disabled':''} disabled={editActiveConfig}
                                     onChange={handleChange} />
-                                        <label className='label-cis'>Tipo de cambio</label>
+                                        <label className={'label-cis '+((editActiveConfig)?'active':'')}>Tipo de cambio</label>
                                         {/* {
                                             IpValid?'':<span className='form-msg-error'> Direccion ip no valida</span>
                                         } */}
                                         
                                     </div>
                                     <div className="user-box-cis">
-                                    <input required name="description"  type="text" value={description}
+                                    <input required name="description"  type="text" value={description} className ={(editActiveConfig)?'Input_disabled':''} disabled={editActiveConfig}
                                     onChange={handleChange}  />
-                                        <label className='label-cis  '>Descripción</label>
+                                        <label className={'label-cis '+((editActiveConfig)?'active':'')}>Descripción</label>
                                         
                                     </div>
                                     <div className="user-box-cis">
                                     
-                                        <input required name="justification"  type="text" value={justification}
+                                        <input required name="justification"  type="text" value={justification} className ={(editActiveConfig)?'Input_disabled':''} disabled={editActiveConfig}
                                     onChange={handleChange}  />
-                                        <label className='label-cis  '>Justificación</label>
+                                        <label className={'label-cis '+((editActiveConfig)?'active':'')}>Justificación</label>
                                         {
                                             // (name==="" || nombreIsValid)?'':<span className='form-msg-error'> Nombre no valido</span>
                                         }
                                         
                                     </div>
                                     <div className="user-box-cis">
-                                    <input required name="hardware_no_serie"  type="text" value={hardware_no_serie}
+                                    <input required name="hardware_no_serie"  type="text" value={hardware_no_serie} className ={(editActiveConfig)?'Input_disabled':''} disabled={editActiveConfig}
                                     onChange={handleChange} />
-                                        <label className='label-cis'>No. Serie</label>
+                                        <label className={'label-cis '+((editActiveConfig)?'active':'')}>No. Serie</label>
                                         {
                                             // (name==="" || nombreIsValid)?'':<span className='form-msg-error'> Nombre no valido</span>
                                         }
                                         
                                     </div>
                                     <div className="user-box-cis">
-                                    <input required name="hardware_brand"  type="text" value={hardware_brand}
+                                    <input required name="hardware_brand"  type="text" value={hardware_brand} className ={(editActiveConfig)?'Input_disabled':''} disabled={editActiveConfig}
                                     onChange={handleChange} />
-                                        <label className='label-cis'>Marca</label>
+                                        <label className={'label-cis '+((editActiveConfig)?'active':'')}>Marca</label>
                                         {
                                             // (name==="" || nombreIsValid)?'':<span className='form-msg-error'> Nombre no valido</span>
                                         }
                                         
                                     </div>
                                     <div className="user-box-cis">
-                                    <input required name="hardware_model"  type="text" value={hardware_model}
+                                    <input required name="hardware_model"  type="text" value={hardware_model} className ={(editActiveConfig)?'Input_disabled':''} disabled={editActiveConfig}
                                     onChange={handleChange} />
-                                        <label className='label-cis'>Modelo</label>
+                                        <label className={'label-cis '+((editActiveConfig)?'active':'')}>Modelo</label>
                                         {
                                             // (name==="" || nombreIsValid)?'':<span className='form-msg-error'> Nombre no valido</span>
                                         }
                                         
                                     </div>
                                     <div className="user-box-cis">
-                                    <input required name="software_version"  type="text" value={software_version}
+                                    <input required name="software_version"  type="text" value={software_version}  className ={(editActiveConfig)?'Input_disabled':''} disabled={editActiveConfig}
                                     onChange={handleChange} />
-                                        <label className='label-cis'>Versión</label>
+                                        <label className={'label-cis '+((editActiveConfig)?'active':'')}>Versión</label>
                                         {
                                             // (name==="" || nombreIsValid)?'':<span className='form-msg-error'> Nombre no valido</span>
                                         }
                                         
                                     </div>
                                     <div className="user-box-cis">
-                                    <input required name="responsible_name"  type="text" value={responsible_name}
+                                    <input required name="responsible_name"  type="text" value={responsible_name} className ={(editActiveConfig)?'Input_disabled':''} disabled={editActiveConfig}
                                     onChange={handleChange} />
-                                        <label className='label-cis'>Responsable</label>
+                                        <label className={'label-cis '+((editActiveConfig)?'active':'')}>Responsable</label>
                                         {
                                             // (name==="" || nombreIsValid)?'':<span className='form-msg-error'> Nombre no valido</span>
                                         }
                                         
                                     </div>
                                     <div className="user-box-cis">
-                                    <input required name="auth_name"  type="text" value={auth_name}
+                                    <input required name="auth_name"  type="text" value={auth_name} className ={(editActiveConfig)?'Input_disabled':''} disabled={editActiveConfig}
                                     onChange={handleChange} />
-                                        <label className='label-cis'>Autoriza</label>
+                                        <label className={'label-cis '+((editActiveConfig)?'active':'')}>Autoriza</label>
                                         {
-                                            // (name==="" || nombreIsValid)?'':<span className='form-msg-error'> Nombre no valido</span>
+                                            
                                         }
                                         
                                     </div>
                                     <div className="user-box-cis">
-                                        <input required name="created_at"  type="datetime-local" value={created_at}
+                                        <input required name="created_at"  type="datetime-local" value={created_at} className ={(editActiveConfig)?'Input_disabled':''} disabled={editActiveConfig}
                                     onChange={handleChange} />
                                         <label className='label-cis active' >Fecha de inicio</label>
                                         {
@@ -374,25 +374,19 @@ return nuevaFechaISO
                                         }
                                         
                                     </div>
-                                    <div className="user-box-cis">
-                                     <input required name="closed_at"  type="datetime-local" value={closed_at}
+                                    {(editActiveConfig)?<div className="user-box-cis">
+                                     <input required name="closed_at"  type="datetime-local" value={closed_at} 
                                     onChange={handleChange} />
                                         <label className='label-cis active'>Fecha fin</label>
-                                        {
-                                            // (name==="" || nombreIsValid)?'':<span className='form-msg-error'> Nombre no valido</span>
-                                        }
                                         
-                                    </div>
-                                    <div className="user-box-cis">
-                                    {/* <input required name="status"  type="text" value={status}
-                                    onChange={handleChange} /> */}
+                                        
+                                    </div>:''}
+                                    {(editActiveConfig)?<div className="user-box-cis">
                                     <SelectorAdmin opGeneral={false} txtOpGen={'TODOS'}  opt_de={''+defOp}origen={'Admin'} data={dataStatus} loading={false}  titulo='statusConf' selectFunction={changeOption} index={0}></SelectorAdmin>
                                         <label className='label-cis'>Status</label>
-                                        {
-                                            // (name==="" || nombreIsValid)?'':<span className='form-msg-error'> Nombre no valido</span>
-                                        }
                                         
-                                    </div>
+                                        
+                                    </div>:''}
                                     
                                     <div className="user-box-cis">
                                         {

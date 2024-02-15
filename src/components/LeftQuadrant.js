@@ -157,7 +157,7 @@ const LeftQuadrant =(props)=>{
             </div>
           <div className={`columnLeft ${alertsIsOpen ? 'columnAlert' : 'columnAlertMin'}`}>
             <div className='card' style={{width:'95%'}}>
-              <TableAlerts searchTerm={searchTerm} setSearchTerm={setSearchTerm} searchResults={searchResults} setSearchResults={setSearchResults} optionsSelectList={optionsSelectList} setOptionsSelectList={setOptionsSelectList} severityProblms={props.severityProblms} setSeverityProblms={props.setSeverityProblms} mapAux={props.mapAux} setmapAux={props.setmapAux} server={props.server} action={openModal} modalIsOpen={false}  alertsIsOpen={alertsIsOpen} setAlertsIsOpen={setAlertsIsOpen} dataProblems={props.dataProblems} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion} search_problems={props.search_problems}></TableAlerts>
+              <TableAlerts ubiActual={props.ubiActual} searchTerm={searchTerm} setSearchTerm={setSearchTerm} searchResults={searchResults} setSearchResults={setSearchResults} optionsSelectList={optionsSelectList} setOptionsSelectList={setOptionsSelectList} severityProblms={props.severityProblms} setSeverityProblms={props.setSeverityProblms} mapAux={props.mapAux} setmapAux={props.setmapAux} server={props.server} action={openModal} modalIsOpen={false}  alertsIsOpen={alertsIsOpen} setAlertsIsOpen={setAlertsIsOpen} dataProblems={props.dataProblems} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion} search_problems={props.search_problems}></TableAlerts>
             
             </div>
           </div>
@@ -169,7 +169,7 @@ const LeftQuadrant =(props)=>{
         style={customStyles}
         contentLabel="Example Modal"
       >
-        <TableAlerts searchTerm={searchTerm} setSearchTerm={setSearchTerm} searchResults={searchResults} setSearchResults={setSearchResults}  optionsSelectList={optionsSelectList} setOptionsSelectList={setOptionsSelectList} severityProblms={props.severityProblms} setSeverityProblms={props.setSeverityProblms} mapAux={props.mapAux} setmapAux={props.setmapAux} server={props.server} action={closeModal}  modalIsOpen={true} alertsIsOpen={alertsIsOpen} setAlertsIsOpen={setAlertsIsOpen} dataProblems={props.dataProblems} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion}  search_problems={props.search_problems}></TableAlerts>
+        <TableAlerts ubiActual={props.ubiActual} searchTerm={searchTerm} setSearchTerm={setSearchTerm} searchResults={searchResults} setSearchResults={setSearchResults}  optionsSelectList={optionsSelectList} setOptionsSelectList={setOptionsSelectList} severityProblms={props.severityProblms} setSeverityProblms={props.setSeverityProblms} mapAux={props.mapAux} setmapAux={props.setmapAux} server={props.server} action={closeModal}  modalIsOpen={true} alertsIsOpen={alertsIsOpen} setAlertsIsOpen={setAlertsIsOpen} dataProblems={props.dataProblems} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion}  search_problems={props.search_problems}></TableAlerts>
       </Modal>
 
       </>

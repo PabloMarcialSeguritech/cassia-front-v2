@@ -4,6 +4,7 @@ import SideBar from '../components/SideBar'
 import Container from '../components/Container'
 import RightQuadrant from '../components/RightQuadrant'
 import SearchHost from '../components/SearchHost'
+import Notifications from '../components/Notifications'
 import LeftQuadrant from '../components/LeftQuadrant'
 import {  useEffect, useState } from 'react'
 import { useFetch } from '../hooks/useFetch'
@@ -18,8 +19,8 @@ import arcos_list from '../components/arcos'
 import data_switches from '../components/switches'
 import ShowLayers from '../components/ShowLayers'
 import { render } from '@testing-library/react'
-const Monitoreo=({token_item,dataGlobals,server,handleShowPopup})=>{
-  console.log(dataGlobals)
+const Monitoreo=({token_item,dataGlobals,server,handleShowPopup,estados_list,estadoSelected,setEstadoSelected})=>{
+  
   const [capas,setCapas]=useState({})
   const global_longitud=dataGlobals.find(obj => obj.name === 'state_longitude')
   const global_latitude=dataGlobals.find(obj => obj.name === 'state_latitude')
@@ -329,7 +330,7 @@ useEffect(()=>{
           if (response.ok) {
             const response_data = await response.json();
             setDataProblems({data:response_data.data,loading:false,error:dataProblems.error})
-            // //console.log(response_data)
+            console.log(response_data)
             
           } else {
             throw new Error('Error en la solicitud');
@@ -1174,8 +1175,11 @@ useEffect(()=>{
       function closeInfoMarker() {
         setInfoMarkerOpen(false);
       }
+      useEffect(()=>{
+        console.log("se inicia el monitoreo")
+      },[])
       const handleMarkerClick = (data) => {
-        //console.log(data)
+        console.log(data)
         setInfoMarker(data)
         openInfoMarker()
         // Realiza las acciones deseadas al hacer clic en el marcador
@@ -1242,10 +1246,16 @@ useEffect(()=>{
         <>
 
 
-          <SearchHost mapAux={mapAux} setmapAux={setmapAux}  devices={devices} markersWOR={markersWOR}></SearchHost>
-          <RightQuadrant capas={capas} setCapas={setCapas} metricaSelected={metricaSelected} setMetricaSelected={setMetricaSelected} ubiActual={ubiActual} setUbiActual={setUbiActual}  server={server} setRfid={setRfid} search_rfid={search_rfid} search_switches={search_switches} search_devices={search_devices} markersWOR={markersWOR}  search_downs={search_downs} downs={downs} search_problems={search_problems} token={token_item} ubicacion={ubicacion} markers={markers}  dataHosts={devices} setUbicacion={setUbicacion} />
+          {
+            devices.loading ?'':
+            <>
+            <SearchHost mapAux={mapAux} setmapAux={setmapAux}  devices={devices} markersWOR={markersWOR}></SearchHost>
+          <Notifications estadoSelected={estadoSelected} setEstadoSelected={setEstadoSelected} estados_list={estados_list} dataGlobals={dataGlobals} server={server} handleShowPopup={handleShowPopup} mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} devices={devices}  ubiActual={ubiActual}/>
 
           
+            </>
+          }
+          <RightQuadrant capas={capas} setCapas={setCapas} metricaSelected={metricaSelected} setMetricaSelected={setMetricaSelected} ubiActual={ubiActual} setUbiActual={setUbiActual}  server={server} setRfid={setRfid} search_rfid={search_rfid} search_switches={search_switches} search_devices={search_devices} markersWOR={markersWOR}  search_downs={search_downs} downs={downs} search_problems={search_problems} token={token_item} ubicacion={ubicacion} markers={markers}  dataHosts={devices} setUbicacion={setUbicacion} />
           {
             devices.loading ?<LoadData/>:
               <>
@@ -1254,7 +1264,7 @@ useEffect(()=>{
                   allTrue?<MapBox capas={capas} setCapas={setCapas} mapAux={mapAux} setmapAux={setmapAux} search_rfid={search_rfid}actualizar_rfi={actualizar_rfi} global_latitude={global_latitude} global_longitud={global_longitud} global_zoom={global_zoom} devices={devices} markers={markers} markersWOR={markersWOR} lines={lines} downs={downs}towers={towers} rfid={rfid} ubicacion={ubicacion} switches={switches} switchesFO={switchesFO} switchesMO={switchesMO} handleMarkerClick={handleMarkerClick}/>:''
                 }
                 
-                <LeftQuadrant mapAux={mapAux} setmapAux={setmapAux} server={server} zoom={zoom} setZoom={setZoom}   markersWOR={markersWOR} markers={markers} token ={token_item} setLatitudes={setLatitudes} setLongitudes={setLongitudes} setLocations={setLocations}
+                <LeftQuadrant ubiActual={ubiActual} mapAux={mapAux} setmapAux={setmapAux} server={server} zoom={zoom} setZoom={setZoom}   markersWOR={markersWOR} markers={markers} token ={token_item} setLatitudes={setLatitudes} setLongitudes={setLongitudes} setLocations={setLocations}
                   longitudes={longitudes} locations={locations} search_problems={search_problems}
                   ubicacion={ubicacion} dataHosts={devices} setUbicacion={setUbicacion} dataProblems={dataProblems} setDataProblems={setDataProblems} severityProblms={severityProblms} setSeverityProblms={setSeverityProblms}/>
                 <Modal
@@ -1265,7 +1275,7 @@ useEffect(()=>{
                   contentLabel="Example Modal2"
                   // shouldCloseOnOverlayClick={false}
                   >
-                    <InfoMarker handleShowPopup={handleShowPopup} mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} devices={devices} server={server} isOpen={infoMarkerOpen} data={infoMarker} closeInfoMarker={closeInfoMarker} ubiActual={ubiActual}></InfoMarker>
+                    <InfoMarker source={'Monitoreo'} handleShowPopup={handleShowPopup} mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} devices={devices} server={server} isOpen={infoMarkerOpen} data={infoMarker} closeInfoMarker={closeInfoMarker} ubiActual={ubiActual}></InfoMarker>
                 </Modal>
               </>
           }

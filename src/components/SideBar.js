@@ -11,13 +11,16 @@ const SideBar =({rolId,onLogin,pageSelected,setPageSelected,dataGlobals})=>{
     var cis=0
     var acciones=0
     var hosts=0
+    var buzon=0
     if(dataGlobals.data.data!==undefined){
-        // console.log(dataGlobals.data.data)
+        console.log(dataGlobals.data.data)
         estado=dataGlobals.data.data.find(obj => obj.name === 'estado')
         reportes=dataGlobals.data.data.find(obj => obj.name === 'report_module')
         cis=dataGlobals.data.data.find(obj => obj.name === 'ci_module')
         acciones=dataGlobals.data.data.find(obj => obj.name === 'action_module')
         hosts=0
+        buzon=dataGlobals.data.data.find(obj => obj.name === 'mail_module')
+        console.log(buzon)
     }
     
     return(
@@ -122,6 +125,21 @@ const SideBar =({rolId,onLogin,pageSelected,setPageSelected,dataGlobals})=>{
                         </div>
                         <div className='textSideCont ' name="host-manage" >
                         HOSTS
+                        </div>
+                    </div>
+                </div>:''
+            }
+            {
+                (buzon.value==1)?
+                <div className={'sidebarRow '+(pageSelected==="buzon"?'sideRowSelected':'')}>
+                    <div className={'sidebarCont '+(pageSelected==="buzon"?'sideSelected':'')} name="buzon" onClick={handleSection}>
+                    
+                    <div className='imgSideCont' name="buzon" >
+                    <img src={'/iconos/buzon'+(pageSelected==="buzon"?'-blanco.png':'.png')} name="buzon" />
+                    
+                        </div>
+                        <div className='textSideCont ' name="buzon" >
+                        BUZÓN
                         </div>
                     </div>
                 </div>:''

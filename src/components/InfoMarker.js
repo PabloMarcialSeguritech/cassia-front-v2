@@ -26,10 +26,23 @@ const pingModalStyles = {
     padding:'20px'
   },
 };
-const InfoMarker = ({isOpen,handleShowPopup,devices,mapAux,setmapAux, data,closeInfoMarker,server,ubiActual,search_problems }) => {
+const InfoMarker = ({isOpen,source,handleShowPopup,devices,mapAux,setmapAux, data,closeInfoMarker,server,ubiActual,search_problems }) => {
+  // console.log(data)
+  var ubicacion_mix;
+  if(source=='Monitoreo'){
+     ubicacion_mix=devices.data.hosts.filter(obj => obj.latitude === data.end_lat )
+  }else{
+     ubicacion_mix=[{
+        "hostid": data.hostidC,
+        "Host": data.name_hostC,
+        "latitude": data.end_lat,
+        "longitude": data.end_lon,
+        "ip": data.name_hostipC
+      
+     }]
+  }
   
-  const ubicacion_mix=devices.data.hosts.filter(obj => obj.latitude === data.end_lat )
-  // console.log(ubicacion_mix)
+  
   // const ubicacion_mix=devices.data.hosts.filter(obj => (obj.latitude === data.end_lat && obj.longitude === data.end_lon ))
   let relation = devices.data.relations.find(obj => obj.hostidC === data.hostidC)
 
@@ -39,26 +52,32 @@ const InfoMarker = ({isOpen,handleShowPopup,devices,mapAux,setmapAux, data,close
   const [infoHostP,setInfoHostP]=useState([])
   const [hostId,setHostId]=useState(data.hostidC)
   const [hostIdP,setHostIdP]=useState(0)
-  const [listSelected,setListSelected]=useState(1)
+  const [listSelected,setListSelected]=useState((source=='Monitoreo')?1:2)
   const [hostSelected,setHostSelected]=useState(2)
   const [actionSelected,setActionSelected]=useState({})
   const[listActions,setListActions]=useState({data:[],loading:true,error:null});
-  console.log("infomarkerP:"+data.name_hostipC)
+  // console.log("infomarkerP:"+data.name_hostipC)
   // const response_acciones=useFetch('zabbix/hosts/actions',data.name_hostipC,'','GET',server)
-  console.log((listActions.loading)?'cargando acciones':listActions)
-  console.log(infoHostC.ip)
+  // console.log((listActions.loading)?'cargando acciones':listActions)
+  // console.log(infoHostC.ip)
     const hadleChangeList=(e)=>{
         setListSelected(e)
         
     }
 useEffect(()=>{
-  search_actions()
+  // console.log("useefect...........................")
+  if(infoHostC.ip!==undefined){
+    search_actions()
+  }
+  
 },[infoHostC.ip])
 useEffect(()=>{
-  search_actions()
+  localStorage.removeItem('data_info_marker')
+  // console.log("useefect2...........................")
+  // search_actions()
 },[])
     function search_actions(ip){
-      
+      console.log("search_actions")
       setListActions({data:[],loading:true,error:listActions.error})
         const fetchData = async () => {
           try {
@@ -71,10 +90,10 @@ useEffect(()=>{
                                   Authorization: `Bearer ${localStorage.getItem('access_token')}`,
                                 },
                               });
-                              console.log(response)
+                              // console.log(response)
             if (response.ok) {
               const response_data = await response.json();
-              console.log(response_data.data)
+              // console.log(response_data.data)
               setListActions({data:response_data.data,loading:false,error:listActions.error})
               // setSwitchList({data:data_switches,loading:false,error:'rfid_list.error'})
               
@@ -92,7 +111,7 @@ useEffect(()=>{
     }
   useEffect(() => {
     if (relation !== undefined) {
-      console.log("el aps es el ", relation.hostidP);
+      // console.log("el aps es el ", relation.hostidP);
       setHostIdP(relation.hostidP);
     }
   }, [relation]);
@@ -105,7 +124,7 @@ useEffect(()=>{
 
   useEffect(()=>{
     let hostidPa = devices.data.hosts.find(obj => obj.hostid === hostIdP)
-    console.log("relation P:",hostIdP)
+    // console.log("relation P:",hostIdP)
     setInfoHostP(hostidPa)
   },[hostIdP])
   
@@ -117,7 +136,7 @@ useEffect(()=>{
     setPingModalOpen(false);
   }
   const handlePingClick = (data) => {
-    console.log(data)
+    // console.log(data)
     setActionSelected(data)
     setStatusPing(true)
     openPingModal()
@@ -203,13 +222,13 @@ setListSelected(1)
                   <div className='hostInfoCell' style={{width:'18%'}}>
                     <div className='txtHostInfoCell'>
                       {/* {data.name_hostipC} */}
-                    {infoHostC.ip}
+                    {(source=='Monitoreo')?infoHostC.ip:data.name_hostipC}
                     </div>
                   </div>
                   <div className='hostInfoCell' style={{width:'10%'}}>
                     <div className='txtHostInfoCell'>
                       {/* {data.hostidC} */}
-                    {infoHostC.hostid}
+                    {(source=='Monitoreo')?infoHostC.hostid:data.hostidC}
                     </div>
                   </div>
                   <div className='hostInfoCell' style={{width:'10%'}}>
@@ -330,12 +349,12 @@ setListSelected(1)
                   
                   {listSelected === 1 ? (
                     <div className='contAcciones'>
-                    <div className='menuActionData' style={{display:'flex'}}>
+                    <div className='menuActionDataIM' style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
                       {
                         (listActions.loading)?<LoadSimple></LoadSimple>:
                         
                         listActions.data.actions.map((elemento, indice)=>(
-                          <div className='menuActionCell' style={{border: 'unset',width:'25%'}}>
+                          <div className={'menuActionCellIM '+((listActions.data.actions.length<4)?'oneCell':'')} style={{border: 'unset',width:'25%'}}>
                           <Action origen='General' disabled={false} titulo={elemento.name} action={()=>handlePingClick(elemento)}/>
                       </div>
                         ))
@@ -344,7 +363,7 @@ setListSelected(1)
                     </div>
                   </div>
                 ) : listSelected === 2 ? (
-                    <AlertsByHost mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} hostId={hostSelected===1?hostIdP:hostId} server={server}></AlertsByHost>
+                    <AlertsByHost ubiActual={ubiActual} mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} hostId={hostSelected===1?hostIdP:hostId} server={server}></AlertsByHost>
                 ) : listSelected === 3 ? (
                   <HealthByHost hostId={hostSelected===1?hostIdP:hostId} server={server}></HealthByHost>
                 ) : listSelected === 9 ? (

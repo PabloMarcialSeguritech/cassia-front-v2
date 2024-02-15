@@ -9,12 +9,12 @@ const SwitchCassia = ({ accion,elemento,active}) => {
    
   
   return (
-    <label class="switch-cassia">
+    <label className="switch-cassia">
                     <input defaultChecked={active} type="checkbox" onClick={accionarSwitch}/>
-                    <div class="slider-switch-cassia"></div>
-                    <div class="slider-card-switch-cassia">
-                      <div class="slider-card-face-switch-cassia slider-card-front-switch-cassia"></div>
-                      <div class="slider-card-face-switch-cassia slider-card-back-switch-cassia"></div>
+                    <div className="slider-switch-cassia"></div>
+                    <div className="slider-card-switch-cassia">
+                      <div className="slider-card-face-switch-cassia slider-card-front-switch-cassia"></div>
+                      <div className="slider-card-face-switch-cassia slider-card-back-switch-cassia"></div>
                       
                     </div>
     </label>

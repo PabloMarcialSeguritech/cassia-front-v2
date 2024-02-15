@@ -6,6 +6,7 @@ import Perfil from '../sections/Perfil'
 import Admin from '../sections/Admin'
 import Cis from '../sections/Cis'
 import Hosts from '../sections/Hosts'
+import Buzon from '../sections/Buzon'
 import Reportes from '../sections/Reportes'
 import Monitoreo from '../sections/Monitoreo'
 import Modal from 'react-modal';
@@ -178,7 +179,7 @@ const Main=({ onLogin,token,setToken,server,setServer,object_state_sessions,set_
 
           if (match) {
             const ipAddress = match[0];
-            setServer({ip:ipAddress,port:8000})
+            setServer({ip:ipAddress,port:server.port})
             
           } 
       // window.open(estadoSelected.url_front, '_blank');
@@ -211,8 +212,10 @@ const Main=({ onLogin,token,setToken,server,setServer,object_state_sessions,set_
     port_url=8000//localStorage.getItem('aux_server_port')
     user_log=localStorage.getItem('aux_user_cassia')
     pass_log=localStorage.getItem('aux_pass_cassia')
-    formData.append("username", 'pruebagio@seguritech.com');
-    formData.append("password", '12345678');
+    formData.append("username", user_log);
+    formData.append("password", pass_log);
+    // formData.append("username", 'pruebagio@seguritech.com');
+    // formData.append("password", '12345678');
     // setServer({ip:localStorage.getItem('aux_server_ip'),port:8000})
   }
   formData.append("grant_type", "");
@@ -221,7 +224,7 @@ const Main=({ onLogin,token,setToken,server,setServer,object_state_sessions,set_
   formData.append("client_secret", "");
   localStorage.removeItem('aux_server_ip')
   localStorage.removeItem('aux_server_ip')
-  
+  console.log(formData)
   try {
     console.log('http://'+server.ip+':'+server.port+'/api/v1/auth/login')
     const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/auth/login', {
@@ -343,7 +346,7 @@ const Main=({ onLogin,token,setToken,server,setServer,object_state_sessions,set_
 
       </div> */}
       <>
-      <NavBar setServer={setServer} login_state ={login_state} setStatusLoginState={setStatusLoginState} statusLoginState={statusLoginState} dataGlobals={globals.data.data} msgCharge={msgCharge} statusChangeState={statusChangeState} setStatusChangeState={setStatusChangeState} server={server}  object_state_sessions={object_state_sessions} set_object_state_sessions={set_object_state_sessions} estadoActivo={estadoActivo} setEstadoActivo={setEstadoActivo} estados_list={estados_list} nameState={nameState} estadoSelected={estadoSelected} setEstadoSelected={setEstadoSelected} dataPingEstado={dataPingEstado}/>
+      <NavBar setServer={setServer} login_state ={login_state} setStatusLoginState={setStatusLoginState} statusLoginState={statusLoginState} dataGlobals={globals.data.data} loadGlobals={globals.loading} msgCharge={msgCharge} statusChangeState={statusChangeState} setStatusChangeState={setStatusChangeState} server={server}  object_state_sessions={object_state_sessions} set_object_state_sessions={set_object_state_sessions} estadoActivo={estadoActivo} setEstadoActivo={setEstadoActivo} estados_list={estados_list} nameState={nameState} estadoSelected={estadoSelected} setEstadoSelected={setEstadoSelected} dataPingEstado={dataPingEstado}/>
       <SideBar dataGlobals={globals} rolId={rol_id} onLogin={onLogin} pageSelected={pageSelected} setPageSelected={setPageSelected}/>
       <Container>
       {(() => {
@@ -420,7 +423,7 @@ const Main=({ onLogin,token,setToken,server,setServer,object_state_sessions,set_
             if (pageSelected === "perfil") {
               return <Perfil server={server}  dataGlobals={globals} setNameState={setNameState} />;
           } else  if (pageSelected === "monitoreo"){
-              return <Monitoreo handleShowPopup={handleShowPopup} server={server} token={token} dataGlobals={globals.data.data}/>;
+              return <Monitoreo estados_list={estados_list} handleShowPopup={handleShowPopup} server={server} token={token} dataGlobals={globals.data.data} estadoSelected={estadoSelected} setEstadoSelected={setEstadoSelected}/>;
           }else if (pageSelected === "panel-admin"){
             return <Admin server={server} dataGlobals={globals.data.data} />;
         }else if (pageSelected === "cis"){
@@ -431,6 +434,8 @@ const Main=({ onLogin,token,setToken,server,setServer,object_state_sessions,set_
       return <Acciones server={server} dataGlobals={globals.data.data} />;
   }else if (pageSelected === "host-manage"){
     return <Hosts server={server} dataGlobals={globals.data.data} />;
+  }else if (pageSelected === "buzon"){
+    return <Buzon server={server} dataGlobals={globals.data.data} />;
   }
            }
         }
