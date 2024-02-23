@@ -78,11 +78,11 @@ const [switchesDownMO, setSwitchesDownMO] = useState([]);
 // //console.log(devices)
 useEffect(()=>{
   if (allTrue) {
-    //console.log('Todos los atributos están en true');
+    console.log('Todos los atributos están en true');
     // setRenderMap(true)
   } else {
-    //console.log('Al menos uno de los atributos está en false');
-    //console.log(renderCapas)
+    console.log('Al menos uno de los atributos está en false');
+    console.log(renderCapas)
   }
 },[renderCapas])
 useEffect(()=>{
@@ -269,7 +269,7 @@ useEffect(()=>{
                   end_lon: host.longitude.replace(",", "."),
                   name_hostC:host.name,
                   name_hostipC:host.ip,
-                  
+                  origen:host.origen
                 },
                 geometry: {
                   type: 'Point',

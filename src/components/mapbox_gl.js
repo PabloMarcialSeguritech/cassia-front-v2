@@ -1440,7 +1440,64 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
           0,
           Math.PI * 2
         );
-        context.fillStyle = 'rgba(255, 100, 100, 1)';
+        context.fillStyle = 'rgba(255, 30, 30, 1)';
+        context.strokeStyle = 'white';
+        context.lineWidth = 2 + 4 * (1 - t);
+        context.fill();
+        context.stroke();
+
+        this.data = context.getImageData(
+          0,
+          0,
+          this.width,
+          this.height
+        ).data;
+
+        map.triggerRepaint();
+
+        return true;
+      }
+    };
+
+    const staticDot = {
+      width: size,
+      height: size,
+      data: new Uint8Array(size * size * 4),
+      onAdd: function () {
+        const canvas = document.createElement('canvas');
+        canvas.width = this.width;
+        canvas.height = this.height;
+        this.context = canvas.getContext('2d');
+      },
+      render: function () {
+        const duration = 1000;
+        const t = (performance.now() % duration) / duration;
+
+        const radius = (size / 2) * 0.3;
+        const outerRadius = (size / 2) * 0.7 * t + radius;
+        const context = this.context;
+
+        // context.clearRect(0, 0, this.width, this.height);
+        // context.beginPath();
+        // context.arc(
+        //   this.width / 2,
+        //   this.height / 2,
+        //   outerRadius,
+        //   0,
+        //   Math.PI * 2
+        // );
+        // context.fillStyle = `rgba(0, 0, 200, ${1 - t})`;
+        // context.fill();
+
+        context.beginPath();
+        context.arc(
+          this.width / 2,
+          this.height / 2,
+          radius,
+          0,
+          Math.PI * 2
+        );
+        context.fillStyle = 'rgba(255, 110, 110, 1)';
         context.strokeStyle = 'white';
         context.lineWidth = 2 + 4 * (1 - t);
         context.fill();
@@ -1462,7 +1519,7 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
 
       
       map.addImage('pulsing-dot', pulsingDot, { pixelRatio: 2 });
-
+      map.addImage('static-dot', staticDot, { pixelRatio: 3 });
   // map.addSource('dot-point', {
   //   'type': 'geojson',
   //   'data': {
@@ -1500,11 +1557,19 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
     },
     filter: ['!', ['has', 'point_count']],
     layout: {
-      'icon-image': 'pulsing-dot',
+      // 'icon-image': 'static-dot',
+      'icon-image': [
+        'match',
+        ['get', 'origen'],
+        1, 'pulsing-dot', // Si el valor de 'origen' es 1, usa 'static-dot-1' como imagen
+        0, 'static-dot', // Si el valor de 'origen' es 0, usa 'static-dot-0' como imagen
+        'static-dot-default' // Valor por defecto si no coincide con ninguno de los anteriores
+      ],
       'icon-size': 0.5,
-      'icon-allow-overlap': true, // Permite la superposición del icono
+      'icon-allow-overlap': true, 
     },
   }
+  
    map.addLayer(downLayer);
   if(!idCapaExistente('host-down')){
     setCapas((prevCapas) => ({

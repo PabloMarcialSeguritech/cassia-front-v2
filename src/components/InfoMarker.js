@@ -12,6 +12,7 @@ import HealthByHost from './HealthByHost';
 import CarrilesArco from './CarrilesArco';
 import { useFetch } from '../hooks/useFetch';
 import LoadSimple from './LoadSimple';
+import ConsolaHost from './ConsolaHost';
 const pingModalStyles = {
   content: {
     top: '50%',
@@ -46,7 +47,7 @@ const InfoMarker = ({isOpen,source,handleShowPopup,devices,mapAux,setmapAux, dat
   
   // const ubicacion_mix=devices.data.hosts.filter(obj => (obj.latitude === data.end_lat && obj.longitude === data.end_lon ))
   let relation = devices.data.relations.find(obj => obj.hostidC === data.hostidC)
-
+  const [consoleActive,setConsoleActive]=useState(false)
   const [pingModalOpen, setPingModalOpen] =useState(false);
   const [statusPing, setStatusPing] =useState(false);
   const [infoHostC,setInfoHostC]=useState([])
@@ -157,10 +158,16 @@ useEffect(()=>{
 setHostSelected(e)
 setListSelected(1)
   }
+  const actionConsole=()=>{
+    setConsoleActive(!consoleActive)
+  }
     return (
       <>
         <div className='mainInfoMarker'>
-            <div className='contInfoMarker'>
+          {
+            (consoleActive)?<ConsolaHost ip={infoHostC.ip} actionConsole={actionConsole} hostId={hostSelected===1?hostIdP:hostId}/>:
+
+          <div className='contInfoMarker'>
                 <div className='titleInfoMarker'>
                   <div className='txtTitleInfoMarker'>Informacion general de dispositivo</div>
                 </div>
@@ -351,6 +358,9 @@ setListSelected(1)
                   {listSelected === 1 ? (
                     <div className='contAcciones'>
                     <div className='menuActionDataIM' style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
+                    <div className={'menuActionCellIM oneCell '} style={{border: 'unset',width:'25%'}}>
+                          <Action origen='General' disabled={false} titulo={'Consola'} action={()=>actionConsole()}/>
+                      </div>
                       {
                         (listActions.loading)?<LoadSimple></LoadSimple>:
                         
@@ -376,7 +386,7 @@ setListSelected(1)
                   </div>
                   </div>
                 </div>
-            </div>
+            </div>}
         </div>
         <Modal
           isOpen={pingModalOpen}
