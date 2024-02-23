@@ -85,6 +85,10 @@ const popups = document.querySelectorAll('.custom-popup-findHost');
     const horaDada = '12:30:20';
     return(
       <>
+      {
+      (props.data.tipo==1 || (props.data.tipo==0 & props.filtraOrigen==false))?
+      // (true)?
+      
         <div className={'rowProblem '/*+props.data.Estatus*/} style={{background:menuAlertOpen?'#82829160':'#43434d60'}} onClick={menuAlertOpen?closeMenuAlert:openMenuAlert}>
         <span className="rowProblem-hover"> </span>
                   <div className='problemCell ' style={{width:'6%'}}>
@@ -116,7 +120,7 @@ const popups = document.querySelectorAll('.custom-popup-findHost');
                   </div>
                   <div className='problemCell' style={{width:'5%'}}>
                     <div className='txtProblemCell'>
-                    {props.data.Ack}
+                    {props.data.tipo}
                     </div>
                   </div>
                   <div className='problemCell' style={{width:'15%'}}>
@@ -142,7 +146,8 @@ const popups = document.querySelectorAll('.custom-popup-findHost');
                     </div>
                   </div>
                   
-      </div>
+      </div>:''}
+    
       <MenuAlert ubiActual={props.ubiActual} search_problems={props.search_problems} server={props.server} ackMessage={ackMessage} setAckMessage={setAckMessage}isOpen={menuAlertOpen} props={props} onClose={closeMenuAlert} />
       
       </>

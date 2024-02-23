@@ -93,7 +93,7 @@ const selectOptionList=(element)=>{
 
   var dataList=(props.searchTerm==='')?problems:props.searchResults;
   // var dataList=props.searchResults;
-  // console.log(dataList)
+  console.log(dataList)
   const formatDateTime = (dateTimeString) => {
     // Dividir la cadena en fecha y hora
     const [datePart, timePart] = dateTimeString.split(' ');
@@ -187,6 +187,19 @@ const selectOptionList=(element)=>{
         fetchData();
       
    }
+   const [filtraOrigen,setFiltraOrigen]=useState(false)
+   function search_severitys(){
+    console.log(props.severityProblms)
+    if(props.severityProblms.length===1 && props.severityProblms[0]==7){
+        console.log("filtra")
+        setFiltraOrigen(true)
+        setOpenSelect(false);props.setSearchTerm("")
+    }else{
+      setFiltraOrigen(false)
+      props.search_problems();setFlagsearch(false);setOpenSelect(false);props.setSearchTerm("")
+    }
+   
+   }
     return(
 <>
 <div className={props.alertsIsOpen?'menuAlertTitle' :'menuAlertTitleMin' } onClick={(!props.alertsIsOpen)?expandAlerts:()=>{}}>
@@ -202,7 +215,7 @@ const selectOptionList=(element)=>{
                               <div className='selector-multiple'  onClick={openSelector} >
                                   <div className='selector-cont-text'>
                                       {(props.severityProblms=="")?'Severidades...':props.severityProblms.map((element,index)=>(
-                                        element=="6"?'Down, ':'S'+element+', '
+                                        element=="6"?'Down, ':(element=="7"?'Down Origen, ':'S'+element+', ')
                                       ))}
                                   </div>
                                   <hr className="vertical-line"></hr>
@@ -216,7 +229,7 @@ const selectOptionList=(element)=>{
                                   {
                                       props.optionsSelectList.map((element,index)=>(
                                         <>
-                                    <div className={'row-option-select-list '+(((props.severityProblms=="6" && props.optionsSelectList[index].value!="6") || (props.severityProblms!="" && props.severityProblms!="6" && props.optionsSelectList[index].value=="6"))?'option_bloqueado':'')} >
+                                    <div className={'row-option-select-list '+((((props.severityProblms=="6" && props.optionsSelectList[index].value!="6") || (props.severityProblms!="" && props.severityProblms!="6" && props.optionsSelectList[index].value=="6")) || ((props.severityProblms=="7" && props.optionsSelectList[index].value!="7") || (props.severityProblms!="" && props.severityProblms!="7" && props.optionsSelectList[index].value=="7")))?'option_bloqueado':'')} >
                                         <input   defaultChecked={props.optionsSelectList[index].status} onClick={()=>selectOptionList(element)} value={props.optionsSelectList[index].value} name="r" type="checkbox" id={`checkboxList-${index}`}  />
                                         <label htmlFor={`checkboxList-${index}`}>{props.optionsSelectList[index].label}</label>
                                         </div>
@@ -229,7 +242,7 @@ const selectOptionList=(element)=>{
                               {
                                 flagSearch?<div className='imgCardTitleMin'>
                                 <div className='imgContent'>
-                                <img src={"/iconos/search_select.png"}  className="expandLogo" alt="Logo" onClick={()=>{props.search_problems();setFlagsearch(false);setOpenSelect(false);props.setSearchTerm("")}}/>
+                                <img src={"/iconos/search_select.png"}  className="expandLogo" alt="Logo" onClick={()=>{search_severitys()}}/>
                                 </div>
                               </div>:''
                               }
@@ -294,7 +307,8 @@ const selectOptionList=(element)=>{
                   </div>
                   <div className='headerCell' style={{width:'5%'}}>
                     <div className='txtHeaderCell'>
-                        Ack
+                        {/* Ack */}
+                        DDO
                     </div>
                   </div>
                   <div className='headerCell' style={{width:'15%'}}>
@@ -326,8 +340,9 @@ const selectOptionList=(element)=>{
                   props.dataProblems.loading?<LoadAlerts/>:(dataList.length===0?<div className='txtLoader'>Sin Resultados</div>:
                   dataList.map((elemento, indice)=>(
                     
-                    <RowProblem  ubiActual={props.ubiActual} mapAux={props.mapAux} setmapAux={props.setmapAux} search_problems={props.search_problems} key={indice} severity={elemento.severity} dataAgencies={dataAgencies} data={elemento} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion} server={props.server} />
-                  )))
+                    <RowProblem filtraOrigen={filtraOrigen} ubiActual={props.ubiActual} mapAux={props.mapAux} setmapAux={props.setmapAux} search_problems={props.search_problems} key={indice} severity={elemento.severity} dataAgencies={dataAgencies} data={elemento} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion} server={props.server} />
+                    
+                    )))
                   }
 
                   {
