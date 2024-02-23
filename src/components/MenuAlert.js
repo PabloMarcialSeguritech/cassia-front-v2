@@ -219,7 +219,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
           <>
           <div className="expandInfo">
             <div className="contExpandInfo">
-              <div className='rowExpand' style={{width: '75%'}}>
+              <div className='rowExpand' style={{width: '65%'}}>
                 <div className='infoCont'>
                     <div className='headContent'>
                       <div className='rowHeadExpand'>
@@ -279,7 +279,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                     </div>
                 </div>
               </div>
-              <div className='rowExpand' style={{width: '25%'}}>
+              <div className='rowExpand' style={{width: '35%'}}>
                 <div className='rowcontActions'>
                   <div className='menuActiontitle' style={{width: "100%"}}>
                     <div className='actionsTitle'>
@@ -291,18 +291,21 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                     <hr className='lineTitle'></hr>
                   </div>
                   <div className='menuActionData'>
-                          <div className='menuActionCell' style={{border: 'unset'}}>
+                          <div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
+                              <Action origen='General' disabled={true} titulo='Analisis' action={openExeption}/>
+                          </div>
+                          <div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
                               <Action origen='General' disabled={true} titulo='excepcion' action={openExeption}/>
                           </div>
-                          <div className='menuActionCell' style={{border: 'unset'}}>
+                          <div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
                               <Action origen='General' disabled={(props.ubiActual.dispId===9)?true:false} titulo='Ack...' action={openAck}/>
                           </div>
-                          <div className='menuActionCell' style={{border: 'unset'}}>
+                          <div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
 
                               <Action origen='General' disabled={false} titulo='Flujo' action={openFlujo}/>
 
                           </div>
-                          <div className='menuActionCell' style={{border: 'unset'}}>
+                          <div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
                               <Action origen='General' disabled={false} titulo='Link ticket' action ={openTicket}/>
                           </div>
                       </div>
