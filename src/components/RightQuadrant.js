@@ -6,17 +6,17 @@ import {fetchData} from '../hooks/fetchData'
 import { useFetch } from '../hooks/useFetch'
 import { Suspense, useEffect, useState } from 'react'
 
-
 const RightQuadrant =(props)=>{
-    // console.log("rigcuadrant")
-    // console.log()
+    console.log("rigcuadrant")
+    // console.log(servidores_id)
     // console.log(props.token)
     const dataLocations=useFetch('zabbix/groups/municipios','',props.token,'GET',props.server)
     const [dataTec,setDataTec]=useState({data:[],loading:true,error:null})
     const [dataDisp,setDataDisp]=useState({data:[],loading:true,error:null})
     
 
-//    console.log(dataDisp.data)
+   console.log(dataTec.data)
+
 //    console.log(props.ubiActual.templateId)
    const metrica=dataDisp.data.find(obj => obj.template_id === props.ubiActual.templateId)
 //    console.log(metrica)
@@ -94,7 +94,7 @@ const RightQuadrant =(props)=>{
                 const response_data = await response.json();
                 setDataTec({data:response_data.data,loading:false,error:dataTec.error})
                
-                // //console.log(response_data)
+                // console.log(response_data)
                 
               } else {
                 throw new Error('Error en la solicitud');
