@@ -14,7 +14,8 @@
 .contConsolaHost .contConsolText{
     width: 98%;
     height: 95%;
-    overflow-x: auto;
+    /* overflow-x: auto; */
+    overflow-x: hidden;
 }
 .contConsolText{
     scroll-behavior: auto;
@@ -222,4 +223,7 @@ cursor: unset;
   .contConsolTitle .img-back-users:hover{
     height: 85%;
     cursor: pointer;
+  }
+  .contConsolText .xterm-viewport{
+background-color: transparent !important;
   }
