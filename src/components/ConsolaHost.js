@@ -1,11 +1,18 @@
+import 'xterm/css/xterm.css';
 import './styles/ConsolaHost.css'
 import React, { useEffect, useRef, useState } from 'react';
 import LoadSimple from './LoadSimple';
+import { Terminal } from 'xterm';
+
 
 
 const ConsolaHost =(props)=>{
     const ws = useRef(null);
     const consola = useRef(null);
+
+    const terminalRef = useRef(null);
+    const commandBufferRef = useRef('');
+
     // console.log(consola.current)
     const [conectionActive,setConectionActive]=useState(false) 
     const [msgConection,setMsgConection]=useState('Estableciendo conexíon. . .')
@@ -19,6 +26,15 @@ console.log(lineas)
         return lineas;
     };
     useEffect(() => {
+        const xterm = new Terminal({
+            cursorBlink: true,
+            theme: {
+              background: '#1e1e1e',
+              foreground: '#ffffff',
+            },
+          });
+      
+      xterm.open(terminalRef.current);
         // ws.current = new WebSocket('ws://localhost:8000/ws');
         ws.current = new WebSocket('ws://172.18.200.14:8002/api/v1/zabbix/hosts/ws_terminal');
         // ws.onopen = function(event) {
@@ -27,35 +43,54 @@ console.log(lineas)
         // };
         ws.current.onopen = function(event) {
             console.log("Conexión WebSocket abierta.");
-            const messageDiv = document.createElement('div');
-            messageDiv.textContent = msgConection;
-            messageDiv.className='startDiv'
-            consola.current.appendChild(messageDiv);
+            //const messageDiv = document.createElement('div');
+            //messageDiv.textContent = msgConection;
+            //messageDiv.className='startDiv'
+            //consola.current.appendChild(messageDiv);
             // consola.log('hosttarget:'+props.ip)
-            // ws.current.send('hosttarget:172.16.115.253'); // Solicitar información inicial del sistema
+            // ws.current.send('hosttarget:172.19.16.24'); // Solicitar información inicial del sistema
             ws.current.send('hosttarget:'+props.ip);
+            xterm.writeln('Conexión WebSocket abierta.');
         };
         
         ws.current.onmessage = function(event) {
             console.log("Mensaje entrante: ", event.data);
-            console.log('conect active',conectionActive)
+            console.log('conect active',conectionActive);
+            xterm.write(event.data);
            
             
             // Separar la respuesta usando los identificadores
-            const parts = event.data.split('<part>');
-            console.log(parts)
-            const userHost = parts[1].split('user@host:')[1].trim();
-            const message = parts[2].split('message:')[1].trim();
+            //const parts = event.data.split('<part>');
+            //console.log(parts)
+            //const userHost = parts[1].split('user@host:')[1].trim();
+            //const message = parts[2].split('message:')[1].trim();
             // Agregar el mensaje y el prompt a la consola
-            console.log(userHost)
-            appendMessageAndPrompt(userHost, message);
+            //console.log(userHost)
+            //appendMessageAndPrompt(userHost, message);
         };
 
         ws.current.onclose = function(event) {
             console.log("Conexión WebSocket cerrada:", event);
-            
+            xterm.writeln('Conexión WebSocket cerrada.');
             props.actionConsole()
         };
+
+        xterm.onData((data) => {
+            if (data === '\r') {
+                ws.current.send(commandBufferRef.current);
+                commandBufferRef.current = '';
+                xterm.write('\r\n');
+            } else if (data === '\x7f') { // Carácter de retroceso
+                if (commandBufferRef.current.length > 0) {
+                    commandBufferRef.current = commandBufferRef.current.slice(0, -1); // Eliminar el último carácter
+                    xterm.write('\b \b'); // Retroceder y borrar el carácter en la interfaz
+                }
+            } else {
+                commandBufferRef.current += data;
+                xterm.write(data);
+            }
+        });
+        
 
         return () => {
             // const commandContainer = document.createElement('span');
@@ -132,14 +167,17 @@ console.log(lineas)
         consola.current.scrollTop = consola.current.scrollHeight;
     }
     function closeSSH(){
-        const commandContainer = document.createElement('span');
-                commandContainer.textContent = `Cerrando Conexíon...`;
-                commandContainer.classList.add('cancelDiv');
-                consola.current.innerHTML = '';
-            consola.current.append(commandContainer);
+        // const commandContainer = document.createElement('span');
+        //         commandContainer.textContent = `Cerrando Conexíon...`;
+        //         commandContainer.classList.add('cancelDiv');
+        //         consola.current.innerHTML = '';
+        //     consola.current.append(commandContainer);
             ws.current.close();
     }
     return(
+        // <>
+        // <div id="terminal" ref={terminalRef}></div>
+        // </>
         <>
         <div className='contConsolTitle' >
         
@@ -158,7 +196,7 @@ console.log(lineas)
         <div className='contConsolaHost'>
         
                 
-            <div className='contConsolText' ref={consola}>
+            <div className='contConsolText'  id="terminal" ref={terminalRef}>
                 
             </div>
 

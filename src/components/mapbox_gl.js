@@ -10,6 +10,7 @@ import serverImg1 from '../img/server_1.png';
 import serverImg2 from '../img/server_2.png';
 import serverImg3 from '../img/server_3.png';
 import serverImg4 from '../img/server_4.png';
+import servidores_id from './generales/GroupsId';
 function calcularPuntoMedio(coordenadas1, coordenadas2) {
   // Extraer las coordenadas de los puntos
   const [x1, y1] = coordenadas1;
@@ -90,7 +91,7 @@ const MapBox = ({capas,switchesFO,switchesMO,setCapas,actualizar_rfi,actualizar_
       console.log("on load map")
        /************************************************************ CAPA Servers ************************************************************************ */
        
-if(ubicacion.dispId==10){
+if(servidores_id[ubicacion.dispId]!==undefined){
   map.loadImage(
     serverImg,
     (error, image) => {
@@ -118,6 +119,7 @@ if(ubicacion.dispId==10){
           'icon-image': 'server', // reference the image
           'icon-size': 0.06,
           'icon-anchor': 'bottom', 
+          // 'icon-allow-overlap': true, 
         },
       }
       
@@ -1639,14 +1641,15 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
               'icon-anchor': 'bottom', 
             },
           }
-          if(ubicacion.dispId!=10){
+          // if(ubicacion.dispId!=10){
+            if(servidores_id[ubicacion.dispId]===undefined){
             map.addSource('tower-marker',towerSource );
             map.addLayer(towerLayer);
           }
           if(!idCapaExistente('tower-marker')){
             setCapas((prevCapas) => ({
               ...prevCapas,
-              [Object.keys(prevCapas).length ]: { show: (ubicacion.dispId!=10)?true:false, name: 'Torres',id:`tower-marker`,layer:towerLayer,source:towerSource ,nivel:5},
+              [Object.keys(prevCapas).length ]: { show: (servidores_id[ubicacion.dispId]===undefined)?true:false, name: 'Torres',id:`tower-marker`,layer:towerLayer,source:towerSource ,nivel:5},
             }));
           }
           map.on('mouseleave', 'tower-marker', (e) => {

@@ -6,6 +6,7 @@ import Selector from './Selector'
 import InputForm from './InputForm';
 import LoadAdding from './LoadAdding';
 import FlujoModal from './modals-monitoreo/FlujoModal';
+import AnalisisModal from './modals-monitoreo/AnalisisModal';
 const customStyles = {
     content: {
       top: '50%',
@@ -36,12 +37,29 @@ const customStyles = {
       border:'unset'
     },
   };
+  const customStylesAnalisis = {
+    content: {
+      top: '50%',
+      left: '50%',
+      background: 'transparent',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+      width:'50%',
+      height:'80%',
+      padding:'20px',
+      border:'unset'
+    },
+  };
+
 const MenuAlert = ({ isOpen, onClose,props }) => {
 
     const [exeptionOpen, setExeptionOpen] = useState(false);
     const [ackOpen, setAckOpen] = useState(false);
     const [ticketOpen, setTicketOpen] = useState(false);
     const [flujoOpen, setFlujoOpen] = useState(false);
+    const [AnalisisOpen, setAnalisisOpen] = useState(false);
     const [addingException, setAddingException] = useState(false);
     const [addingTicket, setAddingTicket] = useState(false);
     const [validaBtn, setValidaBtn] = useState(true);
@@ -196,6 +214,12 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
     function closeFlujo() {
       setFlujoOpen(false)
     }
+    const openAnalisis=()=>{
+      setAnalisisOpen(true)
+    }
+    function closeAnalisis() {
+      setAnalisisOpen(false)
+    }
     const handleChangeDate=(e)=>{
       // //console.log(e.target)
       const {name,value}=e.target
@@ -292,7 +316,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                   </div>
                   <div className='menuActionData'>
                           <div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
-                              <Action origen='General' disabled={true} titulo='Analisis' action={openExeption}/>
+                              <Action origen='General' disabled={false} titulo='Analisis' action={openAnalisis}/>
                           </div>
                           <div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
                               <Action origen='General' disabled={true} titulo='excepcion' action={openExeption}/>
@@ -482,6 +506,16 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
           // shouldCloseOnOverlayClick={true}
             >
                 <FlujoModal eventId={props.data.eventid} props={props}></FlujoModal>
+            </Modal>
+            <Modal
+          isOpen={AnalisisOpen}
+          // onAfterOpen={afterOpenExeption}
+          onRequestClose={closeAnalisis}
+          style={customStylesAnalisis}
+          contentLabel="Example Modal"
+          // shouldCloseOnOverlayClick={true}
+            >
+                <AnalisisModal eventId={props.data.eventid} props={props}></AnalisisModal>
             </Modal>
         </>
         )}

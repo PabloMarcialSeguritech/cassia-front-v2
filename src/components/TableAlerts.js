@@ -90,10 +90,15 @@ const selectOptionList=(element)=>{
   }
 }
  
-
+  const [countList,setCountList]=useState(0)
   var dataList=(props.searchTerm==='')?problems:props.searchResults;
   // var dataList=props.searchResults;
   console.log(dataList)
+  const contOrigen = dataList.filter(elemento => elemento.tipo === 1).length;
+  // console.log(contadorTipo1)
+  useEffect(()=>{
+    setCountList(dataList.length)
+  },[dataList])
   const formatDateTime = (dateTimeString) => {
     // Dividir la cadena en fecha y hora
     const [datePart, timePart] = dateTimeString.split(' ');
@@ -262,7 +267,7 @@ const selectOptionList=(element)=>{
                 // </div>:''
                 }
                             <div className='textCardTitle'>
-                            EVENTOS ({problems.length})
+                            EVENTOS ({(filtraOrigen)?contOrigen:dataList.length })
                             </div>
                             <div className='imgCardTitleMin'>
                               <div className='imgContent'>
@@ -340,7 +345,7 @@ const selectOptionList=(element)=>{
                   props.dataProblems.loading?<LoadAlerts/>:(dataList.length===0?<div className='txtLoader'>Sin Resultados</div>:
                   dataList.map((elemento, indice)=>(
                     
-                    <RowProblem filtraOrigen={filtraOrigen} ubiActual={props.ubiActual} mapAux={props.mapAux} setmapAux={props.setmapAux} search_problems={props.search_problems} key={indice} severity={elemento.severity} dataAgencies={dataAgencies} data={elemento} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion} server={props.server} />
+                    <RowProblem setCountList={setCountList} filtraOrigen={filtraOrigen} ubiActual={props.ubiActual} mapAux={props.mapAux} setmapAux={props.setmapAux} search_problems={props.search_problems} key={indice} severity={elemento.severity} dataAgencies={dataAgencies} data={elemento} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion} server={props.server} />
                     
                     )))
                   }

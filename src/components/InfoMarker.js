@@ -13,6 +13,7 @@ import CarrilesArco from './CarrilesArco';
 import { useFetch } from '../hooks/useFetch';
 import LoadSimple from './LoadSimple';
 import ConsolaHost from './ConsolaHost';
+import servidores_id from './generales/GroupsId';
 const pingModalStyles = {
   content: {
     top: '50%',
@@ -61,7 +62,8 @@ const InfoMarker = ({isOpen,source,handleShowPopup,devices,mapAux,setmapAux, dat
   // console.log("infomarkerP:"+data.name_hostipC)
   // const response_acciones=useFetch('zabbix/hosts/actions',data.name_hostipC,'','GET',server)
   // console.log((listActions.loading)?'cargando acciones':listActions)
-  // console.log(infoHostC.ip)
+  console.log(ubiActual.dispId)
+  console.log(servidores_id[12])
     const hadleChangeList=(e)=>{
         setListSelected(e)
         
@@ -165,11 +167,11 @@ setListSelected(1)
       <>
         <div className='mainInfoMarker'>
           {
-            (consoleActive)?<ConsolaHost ip={infoHostC.ip} actionConsole={actionConsole} hostId={hostSelected===1?hostIdP:hostId}/>:
+            (consoleActive)?<ConsolaHost server={server} ip={infoHostC.ip} actionConsole={actionConsole} hostId={hostSelected===1?hostIdP:hostId}/>:
 
           <div className='contInfoMarker'>
                 <div className='titleInfoMarker'>
-                  <div className='txtTitleInfoMarker'>Informacion general de dispositivo</div>
+                  <div className='txtTitleInfoMarker'>Informacion general de dispositivo  </div>
                 </div>
                 <div className='bodyInfoMarker'>
                   <div className='contHost'>
@@ -358,9 +360,9 @@ setListSelected(1)
                   {listSelected === 1 ? (
                     <div className='contAcciones'>
                     <div className='menuActionDataIM' style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
-                    <div className={'menuActionCellIM oneCell '} style={{border: 'unset',width:'25%'}}>
+                    {(servidores_id[ubiActual.dispId]!==undefined)?<div className={'menuActionCellIM oneCell '} style={{border: 'unset',width:'25%'}}>
                           <Action origen='General' disabled={false} titulo={'Consola'} action={()=>actionConsole()}/>
-                      </div>
+                      </div>:''}
                       {
                         (listActions.loading)?<LoadSimple></LoadSimple>:
                         
