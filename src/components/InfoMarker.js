@@ -59,7 +59,7 @@ const InfoMarker = ({isOpen,source,handleShowPopup,devices,mapAux,setmapAux, dat
   const [hostSelected,setHostSelected]=useState(2)
   const [actionSelected,setActionSelected]=useState({})
   const[listActions,setListActions]=useState({data:[],loading:true,error:null});
-  // console.log("infomarkerP:"+data.name_hostipC)
+  console.log(infoHostC)
   // const response_acciones=useFetch('zabbix/hosts/actions',data.name_hostipC,'','GET',server)
   // console.log((listActions.loading)?'cargando acciones':listActions)
   console.log(ubiActual.dispId)
