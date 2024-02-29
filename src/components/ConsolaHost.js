@@ -75,22 +75,62 @@ console.log(lineas)
             props.actionConsole()
         };
 
+        // xterm.onData((data) => {
+        //     if (data === '\r') {
+        //         ws.current.send(commandBufferRef.current);
+        //         commandBufferRef.current = '';
+        //         xterm.write('\r\n');
+        //     } else if (data === '\x7f') { // Carácter de retroceso
+        //         if (commandBufferRef.current.length > 0) {
+        //             commandBufferRef.current = commandBufferRef.current.slice(0, -1); // Eliminar el último carácter
+        //             xterm.write('\b \b'); // Retroceder y borrar el carácter en la interfaz
+        //         }
+        //     } else {
+        //         commandBufferRef.current += data;
+        //         xterm.write(data);
+        //     }
+        // });
         xterm.onData((data) => {
-            if (data === '\r') {
-                ws.current.send(commandBufferRef.current);
-                commandBufferRef.current = '';
-                xterm.write('\r\n');
-            } else if (data === '\x7f') { // Carácter de retroceso
-                if (commandBufferRef.current.length > 0) {
-                    commandBufferRef.current = commandBufferRef.current.slice(0, -1); // Eliminar el último carácter
-                    xterm.write('\b \b'); // Retroceder y borrar el carácter en la interfaz
+            // Intercepta Ctrl+C
+                if (data === '\x03') {
+                    ws.current.send('\x03');
+                  commandBufferRef.current = ''; // Optionally clear command buffer
+                  xterm.write('^C\r\n');
+                  console.log("command buffer:acumulado: ", commandBufferRef.current)
+                } else if (data === '\r') {
+                  // Enter key
+                  console.log("comando enviado: ", commandBufferRef.current)
+                  ws.current.send(commandBufferRef.current);
+                  commandBufferRef.current = '';
+                  xterm.write('\r\n');
+                } else if (data === 'OA') {
+                  // Flecha arriba
+                  // Enviar alguna operación o comando de tu backend para manejar esto
+                  console.log("fa detectada")
+                  ws.current.send('OA');
+                  commandBufferRef.current = '';
+                  xterm.write('\r\n');
+                  console.log("command buffer:acumulado: ", commandBufferRef.current)
+                } else if (data === 'OB') {
+                  // Flecha abajo
+                  // Enviar alguna operación o comando de tu backend para manejar esto
+                  ws.current.send('OB');
+                  xterm.write('\r\n');
+                  commandBufferRef.current = '';
+                  console.log("command buffer:acumulado: ", commandBufferRef.current)
+                }else if(data === '[A'){
+                  commandBufferRef.current = '';
+                } 
+                else if(data === '[B'){
+                  commandBufferRef.current = '';
+                } 
+                else 
+                {
+                  commandBufferRef.current += data;
+                  xterm.write(data); // Eco local del carácter ingresado
+                  console.log("command buffer:acumulado: ", commandBufferRef.current)
                 }
-            } else {
-                commandBufferRef.current += data;
-                xterm.write(data);
-            }
-        });
-        
+              });
 
         return () => {
             // const commandContainer = document.createElement('span');
