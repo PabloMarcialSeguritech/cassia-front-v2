@@ -313,7 +313,7 @@ const selectOptionList=(element)=>{
                   <div className='headerCell' style={{width:'5%'}}>
                     <div className='txtHeaderCell'>
                         {/* Ack */}
-                        DDO
+                        ODD
                     </div>
                   </div>
                   <div className='headerCell' style={{width:'15%'}}>
