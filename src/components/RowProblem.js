@@ -4,7 +4,7 @@ import mapboxgl from 'mapbox-gl';
 import MenuAlert from './MenuAlert';
 
 const RowProblem=(props)=>{
-  // console.log(props)
+  console.log(props)
   // const [infoShow,setInfoShow]=useState({severity:0,host:"",problem:"",ip:"",ack:"",ack_message:"",time:""})
   const [menuAlertOpen, setMenuAlertOpen] = useState(false);
   const [color, setColor] = useState('#43434d');
