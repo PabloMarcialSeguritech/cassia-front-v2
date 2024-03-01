@@ -869,6 +869,7 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
           const coordinates = feature.geometry.coordinates.slice();
           const val = feature.properties.lecturas; // Asegúrate de tener esta propiedad en tus datos
           const severity = feature.properties.severidad; 
+          const activo=feature.properties.activo;
           const severity_colors={
             1:'#ffee00',
             2:'#ee9d08',
@@ -888,7 +889,7 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
             //     </div>`)
                 .setHTML(`<div class='cont-lpr' style='border: 1px solid #ffffff;'>
             <div class='titleLPR'><div class='txtTitleLpr'>Lecturas</div><br></div>
-            <div class='valLPR' style='background: ${severity_colors[severity]}'><div class='txtLpr' style='color: ${((severity!=0)?'black !important':'lime')}' >${val}</div><br><br></div>
+            <div class='valLPR' style='background: ${(activo==1)?severity_colors[severity]:'rgba(20, 20, 20, 0.904)'}'><div class='txtLpr' style='color: ${((severity!=0)?'black !important':'lime')}' >${(activo==1)?val:''}</div><br><br></div>
                 </div>`)
                 .addTo(map);
         });

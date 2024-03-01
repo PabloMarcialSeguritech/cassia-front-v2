@@ -335,7 +335,7 @@ useEffect(()=>{
     /****************************************************************** */
     function objeto_lpr(lpr_list){
       // //console.log("objeto rfid")
-      // //console.log(rfid_list)
+      console.log(lpr_list)
       setLpr([])
       lpr_list.map((host, index, array)=>
           {
@@ -348,7 +348,8 @@ useEffect(()=>{
                   latitude: host.latitude,
                   longitude: host.longitude,
                   lecturas:host.Lecturas,
-                  severidad:host.max_severity
+                  severidad:host.max_severity,
+                  activo:host.activo
                 },
                 geometry: {
                   type: 'Point',
@@ -1182,6 +1183,7 @@ useEffect(()=>{
                   name_hostipC:host.ip,
                   color_alineacion:colorSG,
                   tooltip:tooltip,
+                  device_id:host.device_id
                 },
                 geometry: {
                   type: 'Point',
@@ -1365,6 +1367,7 @@ useEffect(()=>{
         // //console.log(coordinates)
         const val = feature.properties.lecturas; // Asegúrate de tener esta propiedad en tus datos
         const severity = feature.properties.severidad; 
+        const activo=feature.properties.activo;
           const severity_colors={
             1:'#ffee00',
             2:'#ee9d08',
@@ -1379,7 +1382,7 @@ useEffect(()=>{
           .setLngLat(coordinates)
           .setHTML(`<div class='cont-lpr' style='border: 1px solid #ffffff;'>
             <div class='titleLPR'><div class='txtTitleLpr'>Lecturas</div><br></div>
-            <div class='valLPR' style='background: ${severity_colors[severity]}'><div class='txtLpr' style='color: ${((severity!=0)?'black !important':'lime')}' >${val}</div><br><br></div>
+            <div class='valLPR' style='background: ${(activo==1)?severity_colors[severity]:'rgba(20, 20, 20, 0.904)'}'><div class='txtLpr' style='color: ${((severity!=0)?'black !important':'lime')}' >${(activo==1)?val:''}</div><br><br></div>
                 </div>`)
                 .addTo(lprData.map);
         });
