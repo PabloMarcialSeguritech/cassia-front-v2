@@ -63,7 +63,7 @@ const InfoMarker = ({isOpen,source,handleShowPopup,devices,mapAux,setmapAux, dat
   // const response_acciones=useFetch('zabbix/hosts/actions',data.name_hostipC,'','GET',server)
   // console.log((listActions.loading)?'cargando acciones':listActions)
   console.log(ubiActual.dispId)
-  console.log(servidores_id[12])
+  // console.log(servidores_id[12])
     const hadleChangeList=(e)=>{
         setListSelected(e)
         
@@ -360,7 +360,7 @@ setListSelected(1)
                   {listSelected === 1 ? (
                     <div className='contAcciones'>
                     <div className='menuActionDataIM' style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
-                    {(servidores_id[ubiActual.dispId]!==undefined)?<div className={'menuActionCellIM oneCell '} style={{border: 'unset',width:'25%'}}>
+                    {(servidores_id[infoHostC.device_id]!==undefined)?<div className={'menuActionCellIM oneCell '} style={{border: 'unset',width:'25%'}}>
                           <Action origen='General' disabled={false} titulo={'Consola'} action={()=>actionConsole()}/>
                       </div>:''}
                       {
