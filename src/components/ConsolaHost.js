@@ -17,7 +17,17 @@ const ConsolaHost =(props)=>{
     const [conectionActive,setConectionActive]=useState(false) 
     const [msgConection,setMsgConection]=useState('Estableciendo conexíon. . .')
     console.log(conectionActive)
+    const contenedorRef = useRef(null);
 
+    // useEffect(() => {
+    //   scrollAbajo();
+    // }, []);
+  
+    // function scrollAbajo() {
+    //   if (terminalRef.current) {
+    //     terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
+    //   }
+    // }
     const formatearTexto = (objeto) => {
         if (!objeto) return '';
         // Dividir el texto en líneas
@@ -123,7 +133,13 @@ console.log(lineas)
                 } 
                 else if(data === '[B'){
                   commandBufferRef.current = '';
-                } 
+                } else if (data === '\x7f') { // Carácter de retroceso
+                        if (commandBufferRef.current.length > 0) {
+                            commandBufferRef.current = commandBufferRef.current.slice(0, -1); // Eliminar el último carácter
+                            xterm.write('\b \b'); // Retroceder y borrar el carácter en la interfaz
+                        }
+                    }
+                    
                 else 
                 {
                   commandBufferRef.current += data;
