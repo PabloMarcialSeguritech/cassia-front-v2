@@ -42,8 +42,9 @@ const ActionModal = ({isOpen,ip,handleShowPopup, data,actionSelected,statusPing,
                 
                 const data1 = await response.json();
                 setDataPing(data1)
+                console.log(data1)
                 // if(!isOpen){
-                  handleShowPopup(((data1.success)?'Completado':data1.message),data1.data.action==="true"?'Acción "'+actionSelected.name+'" al dispositivo "'+ip+'" ejecutada correctamente':'Acción  "'+actionSelected.name+'" al dispositivo "'+ip+'" ejecutada sin exitó',((data1.success)?'':data1.recommendation), data1.success)
+                  handleShowPopup(((data1.success)?'Completado':data1.message),data1.data.action==="true"?'Acción "'+actionSelected.name+'" al dispositivo "'+ip+'" ejecutada correctamente':'Acción  "'+actionSelected.name+'" al dispositivo "'+ip+'" ejecutada sin exitó',((data1.success)?'':data1.recommendation), data1.data.action==="true"?true:false)
                 // }
                 setDataPing({data:data1,loading:false,error:null})
              
@@ -81,10 +82,12 @@ const ActionModal = ({isOpen,ip,handleShowPopup, data,actionSelected,statusPing,
 
                     {
                         (ejecuta==false)?<p className={'msgErrorPing '} >
+                        {/* (false)?<p className={'msgErrorPing '} > */}
                         {'Desea ejecutar la accion "'+actionSelected.name+'" ?'}
                    </p>:
                        <>
                        { dataPing.loading===true?<section className="dots-container">
+                       {/* { true?<section className="dots-container"> */}
                         <div className="dot" style={{height:'15px'}}></div>
                         <div className="dot" style={{height:'15px'}}></div>
                         <div className="dot" style={{height:'15px'}}></div>

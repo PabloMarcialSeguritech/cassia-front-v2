@@ -361,7 +361,7 @@ setListSelected(1)
                     <div className='contAcciones'>
                     <div className='menuActionDataIM' style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
                     {(servidores_id[infoHostC.device_id]!==undefined)?<div className={'menuActionCellIM oneCell '} style={{border: 'unset',width:'25%'}}>
-                          <Action origen='General' disabled={false} titulo={'Consola'} action={()=>actionConsole()}/>
+                          <Action origen='General' disabled={true} titulo={'Consola'} action={()=>actionConsole()}/>
                       </div>:''}
                       {
                         (listActions.loading)?<LoadSimple></LoadSimple>:

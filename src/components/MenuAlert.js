@@ -316,7 +316,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                   </div>
                   <div className='menuActionData'>
                           <div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
-                              <Action origen='General' disabled={false} titulo='Diagnostico' action={openAnalisis}/>
+                              <Action origen='General' disabled={true} titulo='Diagnostico' action={openAnalisis}/>
                           </div>
                           <div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
                               <Action origen='General' disabled={true} titulo='excepcion' action={openExeption}/>
