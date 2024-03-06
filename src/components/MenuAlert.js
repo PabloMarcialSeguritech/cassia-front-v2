@@ -7,6 +7,7 @@ import InputForm from './InputForm';
 import LoadAdding from './LoadAdding';
 import FlujoModal from './modals-monitoreo/FlujoModal';
 import AnalisisModal from './modals-monitoreo/AnalisisModal';
+import {permisos_codigo_id} from './generales/GroupsId'
 const customStyles = {
     content: {
       top: '50%',
@@ -316,22 +317,26 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                   </div>
                   <div className='menuActionData'>
                           <div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
-                              <Action origen='General' disabled={false} titulo='Diagnostico' action={openAnalisis}/>
+                              <Action origen='General' disabled={true} titulo='Diagnostico' action={openAnalisis}/>
                           </div>
                           <div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
                               <Action origen='General' disabled={true} titulo='excepcion' action={openExeption}/>
                           </div>
-                          <div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
+                          {(props.userPermissions.some(objeto => objeto.permission_id === permisos_codigo_id['acknownledge']))?<div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
                               <Action origen='General' disabled={(props.ubiActual.dispId===9)?true:false} titulo='Ack...' action={openAck}/>
-                          </div>
+                          </div>:''}
                           <div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
 
                               <Action origen='General' disabled={false} titulo='Flujo' action={openFlujo}/>
 
                           </div>
-                          <div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
+                          {
+                            (props.userPermissions.some(objeto => objeto.permission_id === permisos_codigo_id['link_ticket']))?
+                            <div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
                               <Action origen='General' disabled={false} titulo='Link ticket' action ={openTicket}/>
-                          </div>
+                          </div>:''
+                          }
+                          
                       </div>
                 </div>
               </div>

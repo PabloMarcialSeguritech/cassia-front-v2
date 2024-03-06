@@ -97,7 +97,7 @@ const AnalisisModal = ({ eventId ,props}) => {
                     <div className='contTableAnalisis'>
                     <div className='contInfoHostAnalisis'>
                     <div className='contRowTableAnalisis' style={{background:'transparent',color:'aliceblue',fontSize:'large',fontWeight:'bold'}}>
-                     Datos del host diagnoticado
+                     Datos del host diagnosticado
                             </div>
                     <div className='contRowTableAnalisis' style={{background:'transparent',color:'aliceblue',fontSize:'small'}}>
                     <p style={{fontWeight:'Bold',color:'#e8044f'}}>Host:</p> {props.data.Host}  <p style={{color:'lime',fontSize:'large'}}>&nbsp;&nbsp;{(props.data.tipo==1)?'ODD':''}</p>

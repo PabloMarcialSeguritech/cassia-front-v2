@@ -319,7 +319,8 @@ border-radius:10px ;
     justify-content: center;
     align-items: center;
     width: 80%;
-    height: 100%;
+    height: 95%;
+    overflow: auto;
   }
   .compact-option-permission{
     position: relative;
@@ -368,4 +369,14 @@ border-radius:10px ;
     user-select: none;
     display: flex;
     align-items: center;
+    width: 80%;
+    height: 100%;
+  }
+  .cyberpunk-checkbox-label:hover{
+    background-color: #e6eef9;
+  }
+
+  .cont-table-roles{
+    width: 200%;
+    height: 100%;
   }
