@@ -32,9 +32,59 @@ const verificateUserModalStyles = {
     },
   };
 const Main=({ onLogin,token,setToken,server,setServer,object_state_sessions,set_object_state_sessions })=>{
-   
+   console.log(JSON.parse(localStorage.getItem('user_session')))
     const [pageSelected,setPageSelected]=useState("perfil")
     const [rol_id,setRolID]=useState("")
+    const [userPermissions,setUserPermissions]=useState([])
+  //   const [userPermissions,setUserPermissions]=useState([
+  //     {
+  //     "permission_id": 3,
+  //     "module_name": "reportes",
+  //     "name": "reportes"
+  //   },{
+  //     "permission_id": 4,
+  //     "module_name": "cis",
+  //     "name": "cis"
+  //   },{
+  //     "permission_id": 5,
+  //     "module_name": "acciones",
+  //     "name": "acciones"
+  //   },
+  //   {
+  //     "permission_id": 6,
+  //     "module_name": "buzon",
+  //     "name": "buzon"
+  //   },{
+  //     "permission_id": 7,
+  //     "module_name": "admin",
+  //     "name": "admin"
+  //   },{
+  //     "permission_id": 8,
+  //     "module_name": "monitoreo",
+  //     "name": "monitoreo"
+  //   },
+  //   ,{
+  //     "permission_id": 11,
+  //     "module_name": "acknownledge",
+  //     "name": "monitoreo"
+  //   },{
+  //     "permission_id": 16,
+  //     "module_name": "link ticket",
+  //     "name": "monitoreo"
+  //   },{
+  //     "permission_id": 9,
+  //     "module_name": "consola",
+  //     "name": "monitoreo"
+  //   },{
+  //     "permission_id": 10,
+  //     "module_name": "acciones host",
+  //     "name": "monitoreo"
+  //   },{
+  //     "permission_id": 12,
+  //     "module_name": "servidores genetec",
+  //     "name": "monitoreo"
+  //   }
+  // ])
     const [verificateUserModalOpen, setVerificateUserModalOpen] =useState(false);
     const [nameState,setNameState]=useState("")
     const [estadoActivo,setEstadoActivo]=useState({})
@@ -281,7 +331,7 @@ const Main=({ onLogin,token,setToken,server,setServer,object_state_sessions,set_
     const currentDate = new Date();
 
     
-    
+    setUserPermissions(userSession.permissions)
         setRolID(userSession.roles[0].rol_id)
         if (userSession.verified_at=== null) {
           setVerificateUserModalOpen(true)
@@ -347,7 +397,7 @@ const Main=({ onLogin,token,setToken,server,setServer,object_state_sessions,set_
       </div> */}
       <>
       <NavBar setServer={setServer} login_state ={login_state} setStatusLoginState={setStatusLoginState} statusLoginState={statusLoginState} dataGlobals={globals.data.data} loadGlobals={globals.loading} msgCharge={msgCharge} statusChangeState={statusChangeState} setStatusChangeState={setStatusChangeState} server={server}  object_state_sessions={object_state_sessions} set_object_state_sessions={set_object_state_sessions} estadoActivo={estadoActivo} setEstadoActivo={setEstadoActivo} estados_list={estados_list} nameState={nameState} estadoSelected={estadoSelected} setEstadoSelected={setEstadoSelected} dataPingEstado={dataPingEstado}/>
-      <SideBar dataGlobals={globals} rolId={rol_id} onLogin={onLogin} pageSelected={pageSelected} setPageSelected={setPageSelected}/>
+      <SideBar dataGlobals={globals} userPermissions={userPermissions} rolId={rol_id} onLogin={onLogin} pageSelected={pageSelected} setPageSelected={setPageSelected}/>
       <Container>
       {(() => {
         if(globals.loading){
@@ -421,21 +471,21 @@ const Main=({ onLogin,token,setToken,server,setServer,object_state_sessions,set_
             </>
            }else{
             if (pageSelected === "perfil") {
-              return <Perfil server={server}  dataGlobals={globals} setNameState={setNameState} />;
+              return <Perfil server={server} userPermissions={userPermissions} dataGlobals={globals} setNameState={setNameState} />;
           } else  if (pageSelected === "monitoreo"){
-              return <Monitoreo estados_list={estados_list} handleShowPopup={handleShowPopup} server={server} token={token} dataGlobals={globals.data.data} estadoSelected={estadoSelected} setEstadoSelected={setEstadoSelected}/>;
+              return <Monitoreo estados_list={estados_list}  userPermissions={userPermissions} handleShowPopup={handleShowPopup} server={server} token={token} dataGlobals={globals.data.data} estadoSelected={estadoSelected} setEstadoSelected={setEstadoSelected}/>;
           }else if (pageSelected === "panel-admin"){
-            return <Admin server={server} dataGlobals={globals.data.data} />;
+            return <Admin server={server}  userPermissions={userPermissions} dataGlobals={globals.data.data} />;
         }else if (pageSelected === "cis"){
-          return <Cis server={server} dataGlobals={globals.data.data} />;
+          return <Cis server={server} userPermissions={userPermissions} dataGlobals={globals.data.data} />;
       }else if (pageSelected === "reportes"){
-        return <Reportes server={server} dataGlobals={globals.data.data} />;
+        return <Reportes server={server} userPermissions={userPermissions} dataGlobals={globals.data.data} />;
     }else if (pageSelected === "acciones"){
-      return <Acciones server={server} dataGlobals={globals.data.data} />;
+      return <Acciones server={server} userPermissions={userPermissions} dataGlobals={globals.data.data} />;
   }else if (pageSelected === "host-manage"){
-    return <Hosts server={server} dataGlobals={globals.data.data} />;
+    return <Hosts server={server} userPermissions={userPermissions} dataGlobals={globals.data.data} />;
   }else if (pageSelected === "buzon"){
-    return <Buzon server={server} dataGlobals={globals.data.data} />;
+    return <Buzon server={server} userPermissions={userPermissions} dataGlobals={globals.data.data} />;
   }
            }
         }

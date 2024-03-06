@@ -13,7 +13,7 @@ import CarrilesArco from './CarrilesArco';
 import { useFetch } from '../hooks/useFetch';
 import LoadSimple from './LoadSimple';
 import ConsolaHost from './ConsolaHost';
-import servidores_id from './generales/GroupsId';
+import {servidores_id,permisos_codigo_id} from './generales/GroupsId';
 const pingModalStyles = {
   content: {
     top: '50%',
@@ -28,7 +28,7 @@ const pingModalStyles = {
     padding:'20px'
   },
 };
-const InfoMarker = ({isOpen,source,handleShowPopup,devices,mapAux,setmapAux, data,closeInfoMarker,server,ubiActual,search_problems }) => {
+const InfoMarker = ({isOpen,userPermissions,source,handleShowPopup,devices,mapAux,setmapAux, data,closeInfoMarker,server,ubiActual,search_problems }) => {
   // console.log(data)
   var ubicacion_mix;
   if(source=='Monitoreo'){
@@ -360,23 +360,24 @@ setListSelected(1)
                   {listSelected === 1 ? (
                     <div className='contAcciones'>
                     <div className='menuActionDataIM' style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
-                    {(servidores_id[infoHostC.device_id]!==undefined)?<div className={'menuActionCellIM oneCell '} style={{border: 'unset',width:'25%'}}>
+                    {(servidores_id[infoHostC.device_id]!==undefined && userPermissions.some(objeto => objeto.permission_id === permisos_codigo_id['consola']))?<div className={'menuActionCellIM oneCell '} style={{border: 'unset',width:'25%'}}>
                           <Action origen='General' disabled={false} titulo={'Consola'} action={()=>actionConsole()}/>
                       </div>:''}
                       {
-                        (listActions.loading)?<LoadSimple></LoadSimple>:
+                        (userPermissions.some(objeto => objeto.permission_id === permisos_codigo_id['acciones_host']))?
+                        ((listActions.loading)?<LoadSimple></LoadSimple>:
                         
                         listActions.data.actions.map((elemento, indice)=>(
                           <div className={'menuActionCellIM '+((listActions.data.actions.length<4)?'oneCell':'')} style={{border: 'unset',width:'25%'}}>
                           <Action origen='General' disabled={false} titulo={elemento.name} action={()=>handlePingClick(elemento)}/>
                       </div>
-                        ))
+                        ))):''
                       }
                         
                     </div>
                   </div>
                 ) : listSelected === 2 ? (
-                    <AlertsByHost ubiActual={ubiActual} mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} hostId={hostSelected===1?hostIdP:hostId} server={server}></AlertsByHost>
+                    <AlertsByHost userPermissions={userPermissions}  ubiActual={ubiActual} mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} hostId={hostSelected===1?hostIdP:hostId} server={server}></AlertsByHost>
                 ) : listSelected === 3 ? (
                   <HealthByHost hostId={hostSelected===1?hostIdP:hostId} server={server}></HealthByHost>
                 ) : listSelected === 9 ? (
