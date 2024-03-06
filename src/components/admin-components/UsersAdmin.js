@@ -10,9 +10,10 @@ import LoadSimple from '../LoadSimple'
 import UserList from './UserList'
 import TableUsers from './TableUsers'
 import ConfigUser from './ConfigUser'
+import {roles}  from '../generales/GroupsId';
 const UsersAdmin=({server})=>{
     const [nivelForm,setNivelForm]=useState(1)
-    const [userData,setUserData]=useState({name:"",mail:"",roles:"2"})
+    const [userData,setUserData]=useState({name:"",mail:"",roles:"1"})
     const [disabled,setDisabled]=useState(true)
     const [correoIsValid, setCorreoIsValid] = useState(true);
     const [nombreIsValid, setNombreIsValid] = useState(true);
@@ -24,7 +25,7 @@ const UsersAdmin=({server})=>{
     const [userId,setUserId]=useState(0)
     const [rol, setRol] = useState(2);
     console.log(userData)
-
+    const dataRoles=useFetch('cassia/users/roles','',localStorage.getItem('access_token'),'GET',server)
     const [checkboxes, setCheckboxes] = useState({
         checkbox1: false,
         checkbox2: false,
@@ -249,18 +250,24 @@ const Registrar=()=>{
                                                         <div className='txt-box-text'>Rol: </div>
                                                     </div>
                                                     <div className='box-options'>
+                                                    { (dataRoles.loading)?<LoadSimple></LoadSimple>:
                                                     
-                                                        <input type="radio" id="radio-1" name="tabs-roles" defaultChecked={rol === 2}   />
-                                                    
-                                                    
-                                                    <label className="option-role" htmlFor="radio-1" onClick={()=>addRoles(2)}>Basico</label>
-                                                    
+                                                dataRoles.data.data.map((element,index)=>(
+                                                    <>
+                                                    <div className='contOptionRol'>
+                                                        <input type="radio" id={"radio-"+index} name="tabs-roles" defaultChecked={element.rol_id === 1}   />
+                                                        <label className="option-role" htmlFor={"radio-"+index} onClick={()=>addRoles(element.rol_id)}>{element.name}</label>
+                                                        </div>
+                                                    </>
+                                                ))}
+                                                        {/* <div className='contOptionRol'>
                                                         <input type="radio" id="radio-2" name="tabs-roles" defaultChecked={rol===1}/>
                                                      
-                                                    <label className="option-role" htmlFor="radio-2"   onClick={()=>addRoles(1)}>Administrador</label>
-                                                    {/* <input type="radio" id="radio-3" name="tabs-roles"/>
-                                                    <label className="option-role" htmlFor="radio-3">Rol2</label> */}
-                                                    <span className="glider"></span>
+                                                     <label className="option-role" htmlFor="radio-2"   onClick={()=>addRoles(1)}>Administrador</label>
+                                                     
+                                                        </div> */}
+                                                        
+                                                    {/* <span className="glider"></span> */}
                                                     </div>
                                                 </div>
                                             </div>

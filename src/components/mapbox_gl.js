@@ -10,7 +10,7 @@ import serverImg1 from '../img/server_1.png';
 import serverImg2 from '../img/server_2.png';
 import serverImg3 from '../img/server_3.png';
 import serverImg4 from '../img/server_4.png';
-import servidores_id from './generales/GroupsId';
+import {servidores_id} from './generales/GroupsId';
 function calcularPuntoMedio(coordenadas1, coordenadas2) {
   // Extraer las coordenadas de los puntos
   const [x1, y1] = coordenadas1;

@@ -19,7 +19,7 @@ import arcos_list from '../components/arcos'
 import data_switches from '../components/switches'
 import ShowLayers from '../components/ShowLayers'
 import { render } from '@testing-library/react'
-const Monitoreo=({token_item,dataGlobals,server,handleShowPopup,estados_list,estadoSelected,setEstadoSelected})=>{
+const Monitoreo=({token_item,userPermissions,dataGlobals,server,handleShowPopup,estados_list,estadoSelected,setEstadoSelected})=>{
   
   const [capas,setCapas]=useState({})
   const global_longitud=dataGlobals.find(obj => obj.name === 'state_longitude')
@@ -1402,7 +1402,7 @@ useEffect(()=>{
           
             </>
           }
-          <RightQuadrant capas={capas} setCapas={setCapas} metricaSelected={metricaSelected} setMetricaSelected={setMetricaSelected} ubiActual={ubiActual} setUbiActual={setUbiActual}  server={server} setRfid={setRfid} search_rfid={search_rfid} setLpr={setLpr} search_lpr={search_lpr} search_switches={search_switches} search_devices={search_devices} markersWOR={markersWOR}  search_downs={search_downs} downs={downs} search_problems={search_problems} token={token_item} ubicacion={ubicacion} markers={markers}  dataHosts={devices} setUbicacion={setUbicacion} />
+          <RightQuadrant userPermissions={userPermissions} capas={capas} setCapas={setCapas} metricaSelected={metricaSelected} setMetricaSelected={setMetricaSelected} ubiActual={ubiActual} setUbiActual={setUbiActual}  server={server} setRfid={setRfid} search_rfid={search_rfid} setLpr={setLpr} search_lpr={search_lpr} search_switches={search_switches} search_devices={search_devices} markersWOR={markersWOR}  search_downs={search_downs} downs={downs} search_problems={search_problems} token={token_item} ubicacion={ubicacion} markers={markers}  dataHosts={devices} setUbicacion={setUbicacion} />
           {
             devices.loading ?<LoadData/>:
               <>
@@ -1411,7 +1411,7 @@ useEffect(()=>{
                   allTrue?<MapBox capas={capas} setCapas={setCapas} mapAux={mapAux} setmapAux={setmapAux} search_rfid={search_rfid} search_lpr={search_lpr} actualizar_lpr={actualizar_lpr} actualizar_rfi={actualizar_rfi} global_latitude={global_latitude} global_longitud={global_longitud} global_zoom={global_zoom} devices={devices} markers={markers} markersWOR={markersWOR} lines={lines} downs={downs}towers={towers} rfid={rfid} lpr={lpr} ubicacion={ubicacion} switches={switches} switchesFO={switchesFO} switchesMO={switchesMO} handleMarkerClick={handleMarkerClick}/>:''
                 }
                 
-                <LeftQuadrant ubiActual={ubiActual} mapAux={mapAux} setmapAux={setmapAux} server={server} zoom={zoom} setZoom={setZoom}   markersWOR={markersWOR} markers={markers} token ={token_item} setLatitudes={setLatitudes} setLongitudes={setLongitudes} setLocations={setLocations}
+                <LeftQuadrant userPermissions={userPermissions} ubiActual={ubiActual} mapAux={mapAux} setmapAux={setmapAux} server={server} zoom={zoom} setZoom={setZoom}   markersWOR={markersWOR} markers={markers} token ={token_item} setLatitudes={setLatitudes} setLongitudes={setLongitudes} setLocations={setLocations}
                   longitudes={longitudes} locations={locations} search_problems={search_problems}
                   ubicacion={ubicacion} dataHosts={devices} setUbicacion={setUbicacion} dataProblems={dataProblems} setDataProblems={setDataProblems} severityProblms={severityProblms} setSeverityProblms={setSeverityProblms}/>
                 <Modal
@@ -1422,7 +1422,7 @@ useEffect(()=>{
                   contentLabel="Example Modal2"
                   // shouldCloseOnOverlayClick={false}
                   >
-                    <InfoMarker source={'Monitoreo'} handleShowPopup={handleShowPopup} mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} devices={devices} server={server} isOpen={infoMarkerOpen} data={infoMarker} closeInfoMarker={closeInfoMarker} ubiActual={ubiActual}></InfoMarker>
+                    <InfoMarker userPermissions={userPermissions} source={'Monitoreo'} handleShowPopup={handleShowPopup} mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} devices={devices} server={server} isOpen={infoMarkerOpen} data={infoMarker} closeInfoMarker={closeInfoMarker} ubiActual={ubiActual}></InfoMarker>
                 </Modal>
               </>
           }
