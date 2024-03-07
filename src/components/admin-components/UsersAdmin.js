@@ -25,7 +25,47 @@ const UsersAdmin=({server})=>{
     const [userId,setUserId]=useState(0)
     const [rol, setRol] = useState(2);
     console.log(userData)
-    const dataRoles=useFetch('cassia/users/roles','',localStorage.getItem('access_token'),'GET',server)
+    const [dataRoles,setDataRoles]=useState({data:[],loading:true,error:''})
+    // const dataRoles=useFetch('cassia/users/roles','',localStorage.getItem('access_token'),'GET',server)
+    const getRoles=()=>{
+        console.log('solicita permisos')
+        setDataRoles({data:dataRoles.data,loading:true,error:''})
+          const fetchDataPost = async () => {
+            
+         try {
+            console.log('http://'+server.ip+':'+server.port+'/api/v1/cassia/users/roles')
+            console.log(JSON.stringify(userData))
+            console.log(localStorage.getItem('access_token'))
+              const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/cassia/users/roles', {
+                method: 'GET',  
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+                },
+              });
+             console.log(response)
+              if (response.ok) {
+                
+                const data1 = await response.json();
+               
+                setDataRoles({data:data1,loading:false,error:''})
+               
+              } else {
+                throw new Error('Error en la solicitud');
+              }
+            } catch (error) {
+                setDataRoles({data:dataRoles.data,loading:false,error:''})
+              console.error(error);
+            }
+          };
+      
+          fetchDataPost();
+          
+    
+    }
+    useEffect(()=>{
+        getRoles()
+    },[])
     const [checkboxes, setCheckboxes] = useState({
         checkbox1: false,
         checkbox2: false,
@@ -79,7 +119,7 @@ const UsersAdmin=({server})=>{
     if(data.length!==0){
         if(data.success===true ){
             setRegisterIsValid(true) 
-            setUserData({name:"",mail:"",roles:"2"})
+            setUserData({name:"",mail:"",roles:"1"})
             
         }
     }
@@ -98,7 +138,7 @@ const UsersAdmin=({server})=>{
         nivelForm===1?setNivelForm(2):setNivelForm(1)
   }
   const Regresar=()=>{
-    setUserData({name:"",mail:"",roles:"2"})
+    setUserData({name:"",mail:"",roles:"1"})
     setEditActive(false)
     setLoading(false)
   }
@@ -109,6 +149,7 @@ const UsersAdmin=({server})=>{
     const rolIds = user.roles.map(obj => obj.rol_id).join(',')
     console.log(rolIds)
     setEditActive(true)
+    getRoles()
     setUserData({name:user.name,mail:user.mail,roles:""+rolIds})
     setUserId(user.user_id)
     setRol(rolIds)
@@ -148,11 +189,13 @@ const Registrar=()=>{
             // Manejo de la respuesta
             setData(data1)
             // console.log(data1);
+            Regresar()
+            getRoles()
           } else {
             throw new Error('Error en la solicitud');
           }
         } catch (error) {
-            setUserData({name:"",mail:"",roles:"2"})
+            setUserData({name:"",mail:"",roles:"1"})
     
     setLoading(false)
           // Manejo de errores
@@ -255,7 +298,7 @@ const Registrar=()=>{
                                                 dataRoles.data.data.map((element,index)=>(
                                                     <>
                                                     <div className='contOptionRol'>
-                                                        <input type="radio" id={"radio-"+index} name="tabs-roles" defaultChecked={element.rol_id === 1}   />
+                                                        <input type="radio" id={"radio-"+index} name="tabs-roles" defaultChecked={(element.rol_id == userData.roles)}   />
                                                         <label className="option-role" htmlFor={"radio-"+index} onClick={()=>addRoles(element.rol_id)}>{element.name}</label>
                                                         </div>
                                                     </>

@@ -114,7 +114,7 @@ const RolesAdmin=({server})=>{
   }
   const getRoles=()=>{
     console.log('solicita permisos')
-    setDataRoles({data:dataPermisos.data,loading:true,error:''})
+    setDataRoles({data:dataRoles.data,loading:true,error:''})
       const fetchDataPost = async () => {
         
      try {
@@ -139,7 +139,7 @@ const RolesAdmin=({server})=>{
             throw new Error('Error en la solicitud');
           }
         } catch (error) {
-            setDataRoles({data:dataPermisos.data,loading:false,error:''})
+            setDataRoles({data:dataRoles.data,loading:false,error:''})
           console.error(error);
         }
       };
