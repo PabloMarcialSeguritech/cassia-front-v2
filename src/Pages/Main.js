@@ -31,11 +31,50 @@ const verificateUserModalStyles = {
       padding:'20px'
     },
   };
-const Main=({ onLogin,token,setToken,server,setServer,object_state_sessions,set_object_state_sessions })=>{
+const Main=({ onLogin,setMsgErrorLogin,token,setToken,server,setServer,object_state_sessions,set_object_state_sessions })=>{
    console.log(JSON.parse(localStorage.getItem('user_session')))
     const [pageSelected,setPageSelected]=useState("perfil")
     const [rol_id,setRolID]=useState("")
+    const [dataPermisos,setDataPermisos]=useState({data:[],loading:true,error:''})
     const [userPermissions,setUserPermissions]=useState([])
+
+    const getPermisos=(rol_id)=>{
+      console.log('solicita permisos')
+      setDataPermisos({data:dataPermisos.data,loading:true,error:''})
+        const fetchDataPost = async () => {
+          
+       try {
+          console.log('http://'+server.ip+':'+server.port+'/api/v1/cassia/users/roles/'+rol_id)
+          // console.log(JSON.stringify(userData))
+          console.log(localStorage.getItem('access_token'))
+            const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/cassia/users/roles/'+rol_id, {
+              method: 'GET',  
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+              },
+            });
+           console.log(response)
+            if (response.ok) {
+              
+              const data1 = await response.json();
+            //  console.log(data1.data.permissions)
+             setUserPermissions(data1.data.permissions)
+              setDataPermisos({data:data1,loading:false,error:''})
+             
+            } else {
+              throw new Error('Error en la solicitud');
+            }
+          } catch (error) {
+              setDataPermisos({data:dataPermisos.data,loading:false,error:''})
+            console.error(error);
+          }
+        };
+    
+        fetchDataPost();
+        
+  
+}
   //   const [userPermissions,setUserPermissions]=useState([
   //     {
   //     "permission_id": 3,
@@ -331,7 +370,8 @@ const Main=({ onLogin,token,setToken,server,setServer,object_state_sessions,set_
     const currentDate = new Date();
 
     
-    setUserPermissions(userSession.permissions)
+    // setUserPermissions(userSession.permissions)
+    getPermisos(userSession.roles[0].rol_id)
         setRolID(userSession.roles[0].rol_id)
         if (userSession.verified_at=== null) {
           setVerificateUserModalOpen(true)
@@ -343,8 +383,12 @@ const Main=({ onLogin,token,setToken,server,setServer,object_state_sessions,set_
           }
         }
       } catch (error) {
+        
         console.log(error)
         onLogin(false)
+        localStorage.setItem('MsgErrorLogin','Su usuario cuenta con errores o esta incompleto, favor de reportar con su administrador')
+        localStorage.setItem('ErrorLogin',true)
+        setMsgErrorLogin('Su usuario cuenta con errores o esta incompleto, favor de reportar con su administrador')
       }
       
     },[])
