@@ -10,9 +10,10 @@ import LoadSimple from '../LoadSimple'
 import UserList from './UserList'
 import TableUsers from './TableUsers'
 import ConfigUser from './ConfigUser'
+import {roles}  from '../generales/GroupsId';
 const UsersAdmin=({server})=>{
     const [nivelForm,setNivelForm]=useState(1)
-    const [userData,setUserData]=useState({name:"",mail:"",roles:"2"})
+    const [userData,setUserData]=useState({name:"",mail:"",roles:"1"})
     const [disabled,setDisabled]=useState(true)
     const [correoIsValid, setCorreoIsValid] = useState(true);
     const [nombreIsValid, setNombreIsValid] = useState(true);
@@ -24,7 +25,47 @@ const UsersAdmin=({server})=>{
     const [userId,setUserId]=useState(0)
     const [rol, setRol] = useState(2);
     console.log(userData)
-
+    const [dataRoles,setDataRoles]=useState({data:[],loading:true,error:''})
+    // const dataRoles=useFetch('cassia/users/roles','',localStorage.getItem('access_token'),'GET',server)
+    const getRoles=()=>{
+        console.log('solicita permisos')
+        setDataRoles({data:dataRoles.data,loading:true,error:''})
+          const fetchDataPost = async () => {
+            
+         try {
+            console.log('http://'+server.ip+':'+server.port+'/api/v1/cassia/users/roles')
+            console.log(JSON.stringify(userData))
+            console.log(localStorage.getItem('access_token'))
+              const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/cassia/users/roles', {
+                method: 'GET',  
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+                },
+              });
+             console.log(response)
+              if (response.ok) {
+                
+                const data1 = await response.json();
+               
+                setDataRoles({data:data1,loading:false,error:''})
+               
+              } else {
+                throw new Error('Error en la solicitud');
+              }
+            } catch (error) {
+                setDataRoles({data:dataRoles.data,loading:false,error:''})
+              console.error(error);
+            }
+          };
+      
+          fetchDataPost();
+          
+    
+    }
+    useEffect(()=>{
+        getRoles()
+    },[])
     const [checkboxes, setCheckboxes] = useState({
         checkbox1: false,
         checkbox2: false,
@@ -78,7 +119,7 @@ const UsersAdmin=({server})=>{
     if(data.length!==0){
         if(data.success===true ){
             setRegisterIsValid(true) 
-            setUserData({name:"",mail:"",roles:"2"})
+            setUserData({name:"",mail:"",roles:"1"})
             
         }
     }
@@ -97,7 +138,7 @@ const UsersAdmin=({server})=>{
         nivelForm===1?setNivelForm(2):setNivelForm(1)
   }
   const Regresar=()=>{
-    setUserData({name:"",mail:"",roles:"2"})
+    setUserData({name:"",mail:"",roles:"1"})
     setEditActive(false)
     setLoading(false)
   }
@@ -108,6 +149,7 @@ const UsersAdmin=({server})=>{
     const rolIds = user.roles.map(obj => obj.rol_id).join(',')
     console.log(rolIds)
     setEditActive(true)
+    getRoles()
     setUserData({name:user.name,mail:user.mail,roles:""+rolIds})
     setUserId(user.user_id)
     setRol(rolIds)
@@ -147,11 +189,13 @@ const Registrar=()=>{
             // Manejo de la respuesta
             setData(data1)
             // console.log(data1);
+            Regresar()
+            getRoles()
           } else {
             throw new Error('Error en la solicitud');
           }
         } catch (error) {
-            setUserData({name:"",mail:"",roles:"2"})
+            setUserData({name:"",mail:"",roles:"1"})
     
     setLoading(false)
           // Manejo de errores
@@ -249,18 +293,24 @@ const Registrar=()=>{
                                                         <div className='txt-box-text'>Rol: </div>
                                                     </div>
                                                     <div className='box-options'>
+                                                    { (dataRoles.loading)?<LoadSimple></LoadSimple>:
                                                     
-                                                        <input type="radio" id="radio-1" name="tabs-roles" defaultChecked={rol === 2}   />
-                                                    
-                                                    
-                                                    <label className="option-role" htmlFor="radio-1" onClick={()=>addRoles(2)}>Basico</label>
-                                                    
+                                                dataRoles.data.data.map((element,index)=>(
+                                                    <>
+                                                    <div className='contOptionRol'>
+                                                        <input type="radio" id={"radio-"+index} name="tabs-roles" defaultChecked={(element.rol_id == userData.roles)}   />
+                                                        <label className="option-role" htmlFor={"radio-"+index} onClick={()=>addRoles(element.rol_id)}>{element.name}</label>
+                                                        </div>
+                                                    </>
+                                                ))}
+                                                        {/* <div className='contOptionRol'>
                                                         <input type="radio" id="radio-2" name="tabs-roles" defaultChecked={rol===1}/>
                                                      
-                                                    <label className="option-role" htmlFor="radio-2"   onClick={()=>addRoles(1)}>Administrador</label>
-                                                    {/* <input type="radio" id="radio-3" name="tabs-roles"/>
-                                                    <label className="option-role" htmlFor="radio-3">Rol2</label> */}
-                                                    <span className="glider"></span>
+                                                     <label className="option-role" htmlFor="radio-2"   onClick={()=>addRoles(1)}>Administrador</label>
+                                                     
+                                                        </div> */}
+                                                        
+                                                    {/* <span className="glider"></span> */}
                                                     </div>
                                                 </div>
                                             </div>

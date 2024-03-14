@@ -93,7 +93,7 @@ const selectOptionList=(element)=>{
   const [countList,setCountList]=useState(0)
   var dataList=(props.searchTerm==='')?problems:props.searchResults;
   // var dataList=props.searchResults;
-  console.log(dataList)
+  // console.log(dataList)
   const contOrigen = dataList.filter(elemento => elemento.tipo === 1).length;
   // console.log(contadorTipo1)
   useEffect(()=>{
@@ -192,7 +192,7 @@ const selectOptionList=(element)=>{
         fetchData();
       
    }
-   const [filtraOrigen,setFiltraOrigen]=useState(false)
+   const [filtraOrigen,setFiltraOrigen]=useState((props.ubiActual.dispId==-1)?true:false)
    function search_severitys(){
     console.log(props.severityProblms)
     if(props.severityProblms.length===1 && props.severityProblms[0]==7){
@@ -219,9 +219,12 @@ const selectOptionList=(element)=>{
                               <>
                               <div className='selector-multiple'  onClick={openSelector} >
                                   <div className='selector-cont-text'>
-                                      {(props.severityProblms=="")?'Severidades...':props.severityProblms.map((element,index)=>(
+                                      {
+                                      
+                                      (props.severityProblms=="")?'Severidades...':props.severityProblms.map((element,index)=>(
                                         element=="6"?'Down, ':(element=="7"?'Down Origen, ':'S'+element+', ')
-                                      ))}
+                                      ))
+                                      }
                                   </div>
                                   <hr className="vertical-line"></hr>
                                   <div className='selector-cont-depliegue ' >
@@ -231,7 +234,12 @@ const selectOptionList=(element)=>{
                               </div>
                               {(openSelectList)?
                                 <div className='select-multiple-list' >
-                                  {
+                                  {(props.ubiActual.dispId==-1)?
+                                  <div className={'row-option-select-list option_bloqueado'} >
+                                  <input   defaultChecked={true} onClick={()=>selectOptionList(7)} value={7} name="r" type="checkbox" id={`checkboxList-${7}`}  />
+                                  <label htmlFor={`checkboxList-${0}`}>{props.optionsSelectList[1].label}</label>
+                                  </div>
+                                  :
                                       props.optionsSelectList.map((element,index)=>(
                                         <>
                                     <div className={'row-option-select-list '+((((props.severityProblms=="6" && props.optionsSelectList[index].value!="6") || (props.severityProblms!="" && props.severityProblms!="6" && props.optionsSelectList[index].value=="6")) || ((props.severityProblms=="7" && props.optionsSelectList[index].value!="7") || (props.severityProblms!="" && props.severityProblms!="7" && props.optionsSelectList[index].value=="7")))?'option_bloqueado':'')} >
@@ -345,7 +353,7 @@ const selectOptionList=(element)=>{
                   props.dataProblems.loading?<LoadAlerts/>:(dataList.length===0?<div className='txtLoader'>Sin Resultados</div>:
                   dataList.map((elemento, indice)=>(
                     
-                    <RowProblem setCountList={setCountList} filtraOrigen={filtraOrigen} ubiActual={props.ubiActual} mapAux={props.mapAux} setmapAux={props.setmapAux} search_problems={props.search_problems} key={indice} severity={elemento.severity} dataAgencies={dataAgencies} data={elemento} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion} server={props.server} />
+                    <RowProblem userPermissions={props.userPermissions} setCountList={setCountList} filtraOrigen={filtraOrigen} ubiActual={props.ubiActual} mapAux={props.mapAux} setmapAux={props.setmapAux} search_problems={props.search_problems} key={indice} severity={elemento.severity} dataAgencies={dataAgencies} data={elemento} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion} server={props.server} />
                     
                     )))
                   }

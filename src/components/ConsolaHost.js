@@ -46,7 +46,7 @@ console.log(lineas)
       
       xterm.open(terminalRef.current);
         // ws.current = new WebSocket('ws://localhost:8000/ws');
-        ws.current = new WebSocket('ws://172.18.200.14:8002/api/v1/zabbix/hosts/ws_terminal');
+        ws.current = new WebSocket('ws://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/hosts/ws_terminal');
         // ws.onopen = function(event) {
         //     console.log("Conexión WebSocket abierta.");
         //     ws.send('hosttarget:172.16.115.253'); // Solicitar información inicial del sistema

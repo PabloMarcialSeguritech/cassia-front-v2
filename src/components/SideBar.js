@@ -1,7 +1,11 @@
 import { useState } from 'react'
 import './styles/SideBar.css'
-const SideBar =({rolId,onLogin,pageSelected,setPageSelected,dataGlobals})=>{
-
+import {permisos_codigo_id} from '../components/generales/GroupsId'
+const SideBar =({userPermissions,rolId,onLogin,pageSelected,setPageSelected,dataGlobals})=>{
+    console.log(userPermissions)
+    // console.log(permisos_codigo_id)
+    // const existePermiso = userPermissions.some(objeto => objeto.permission_id === permisos_codigo_id['cis']);
+    // console.log(existePermiso);
     const handleSection=(e)=>{
        
         setPageSelected(e.target.attributes.name.value)
@@ -39,6 +43,7 @@ const SideBar =({rolId,onLogin,pageSelected,setPageSelected,dataGlobals})=>{
                     </div>
                 </div>
             </div>
+{(userPermissions.some(objeto => objeto.permission_id === permisos_codigo_id['monitor']))?
             <div className={'sidebarRow '+(pageSelected==="monitoreo"?'sideRowSelected':'')}>
                 <div className={'sidebarCont '+(pageSelected==="monitoreo"?'sideSelected':'')} name="monitoreo" onClick={handleSection}>
                 
@@ -50,9 +55,10 @@ const SideBar =({rolId,onLogin,pageSelected,setPageSelected,dataGlobals})=>{
                         MONITOREO
                     </div>
                 </div>
-            </div>
+            </div>:''
+            }
             {
-                (rolId===1)?
+                (userPermissions.some(objeto => objeto.permission_id === permisos_codigo_id['admin']))?
             
              <div className={'sidebarRow '+(pageSelected==="panel-admin"?'sideRowSelected':'')}>
                 <div className={'sidebarCont '+(pageSelected==="panel-admin"?'sideSelected':'')} name="panel-admin" onClick={handleSection}>
@@ -70,7 +76,7 @@ const SideBar =({rolId,onLogin,pageSelected,setPageSelected,dataGlobals})=>{
             ''
             }
             {
-                (cis.value==1)?
+                (cis.value==1 && userPermissions.some(objeto => objeto.permission_id === permisos_codigo_id['cis']))?
                 <div className={'sidebarRow '+(pageSelected==="cis"?'sideRowSelected':'')}>
                     <div className={'sidebarCont '+(pageSelected==="cis"?'sideSelected':'')} name="cis" onClick={handleSection}>
                     
@@ -85,7 +91,7 @@ const SideBar =({rolId,onLogin,pageSelected,setPageSelected,dataGlobals})=>{
                 </div>:''
             }
             {
-                (reportes.value==1)?
+                (reportes.value==1 && userPermissions.some(objeto => objeto.permission_id === permisos_codigo_id['reportes']))?
                 <div className={'sidebarRow '+(pageSelected==="reportes"?'sideRowSelected':'')}>
                     <div className={'sidebarCont '+(pageSelected==="reportes"?'sideSelected':'')} name="cireportess" onClick={handleSection}>
                     
@@ -100,7 +106,7 @@ const SideBar =({rolId,onLogin,pageSelected,setPageSelected,dataGlobals})=>{
                 </div>:''
             }
             {
-                (acciones.value==1)?
+                (acciones.value==1 && userPermissions.some(objeto => objeto.permission_id === permisos_codigo_id['acciones']))?
                 <div className={'sidebarRow '+(pageSelected==="acciones"?'sideRowSelected':'')}>
                     <div className={'sidebarCont '+(pageSelected==="acciones"?'sideSelected':'')} name="acciones" onClick={handleSection}>
                     
@@ -130,7 +136,7 @@ const SideBar =({rolId,onLogin,pageSelected,setPageSelected,dataGlobals})=>{
                 </div>:''
             }
             {
-                (buzon.value==1)?
+                (buzon.value==1 && userPermissions.some(objeto => objeto.permission_id === permisos_codigo_id['buzon']))?
                 <div className={'sidebarRow '+(pageSelected==="buzon"?'sideRowSelected':'')}>
                     <div className={'sidebarCont '+(pageSelected==="buzon"?'sideSelected':'')} name="buzon" onClick={handleSection}>
                     

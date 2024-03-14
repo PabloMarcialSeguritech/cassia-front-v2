@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react'
 import Select from 'react-select'
 import data_ubi from './ubicaciones'
 import { useFetch } from '../hooks/useFetch'
-const Selector=({opGeneral,txtOpGen,opt_de,titulo,data,loading,props,origen})=>{
+import {permisos_codigo_id,servidores_id} from './generales/GroupsId'
+const Selector=({opGeneral,txtOpGen,opt_de,titulo,data,loading,props,origen,userPermissions})=>{
     // console.log(titulo)
     // // console.log(opt_de)
     // console.log(data)
@@ -43,11 +44,23 @@ const Selector=({opGeneral,txtOpGen,opt_de,titulo,data,loading,props,origen})=>{
         
         cont_i++
         let op;
+        // if(titulo=='Tecnología'){
+        //     console.log(datas)
+        //     console.log(servidores_id[datas.id])
+        // }
+        
         switch(titulo){
             case 'Municipio': op={ filter:titulo,value: datas.groupid === undefined?0:datas.groupid , label: datas.name ,id:datas.id};
                                 break;
-            case 'Tecnología': op={ filter:titulo,value: datas.dispId=== undefined?0:datas.dispId, label: datas.name ,id:datas.id};
-                                break; 
+            case 'Tecnología':
+                op = {
+                  filter: titulo,
+                  value: datas.dispId === undefined ? 0 : datas.dispId,
+                  label: datas.name,
+                  id: datas.id
+                };
+              
+              break;
             case 'Métrica': op={ filter:titulo,value: datas.template_id=== undefined?0:datas.template_id, label:datas.nickname,id:datas.id};
                                 break;  
             case 'Agencia': op={ filter:titulo,value: datas.exception_agency_id=== undefined?0:datas.exception_agency_id, label: datas.name ,id:datas.id};
@@ -59,7 +72,7 @@ const Selector=({opGeneral,txtOpGen,opt_de,titulo,data,loading,props,origen})=>{
         return op                           // <option key={datas.uuid}> {datas.name} </option>
 })
 // console.log(options[opcion_default].label)
-//console.log(options)
+// console.log(options)
 //console.log(opt_de)
     
     

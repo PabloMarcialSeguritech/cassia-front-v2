@@ -13,7 +13,7 @@ import serverImg2 from '../img/server_2.png';
 import serverImg3 from '../img/server_3.png';
 import serverImg4 from '../img/server_4.png';
 
-import servidores_id from './generales/GroupsId';
+import {servidores_id} from './generales/GroupsId';
 
 function calcularPuntoMedio(coordenadas1, coordenadas2) {
   // Extraer las coordenadas de los puntos
@@ -45,9 +45,9 @@ const MapBox = ({capas,switchesFO,switchesMO,setCapas,actualizar_rfi,actualizar_
 
   
 
-  // console.log("markers*****************************************************")
+  console.log("markers*****************************************************")
+  // console.log(towers)
 
-  // console.log(downs)
   // console.log(switches)
   // console.log(switchesMO)
   // console.log(markers)
@@ -151,7 +151,7 @@ if(servidores_id[ubicacion.dispId]!==undefined){
   );
 }
      /************************************************************ CAPA MWOR ************************************************************************ */
-  const markerWOR ={
+     if(markersWOR.length!==0){const markerWOR ={
     id: 'host-markerWOR',
     type: 'circle',
     source:  {
@@ -219,7 +219,7 @@ map.on('mouseenter', 'host-markerWOR', (e) => {
 map.on('click', 'host-markerWOR', (e) => {
   handleMarkerClick(e.features[0].properties)
 });
-       
+       }
      /************************************************************ CAPA LINEAS ************************************************************************ */
 
      if(lines.length!==0){
@@ -1436,8 +1436,8 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
           
      }
       /************************************************************ CAPA DOWNS ************************************************************************ */
-      console.log("downs map")
-      console.log(downs)
+      // console.log("downs map")
+      // console.log(downs)
       const size = 200;
 
     const pulsingDot = {
@@ -1535,7 +1535,8 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
           0,
           Math.PI * 2
         );
-        context.fillStyle = 'rgba(255, 110, 110, 1)';
+        // context.fillStyle = 'rgba(255, 110, 110, 1)';
+        context.fillStyle = 'rgba(255, 50, 50, 1)';
         context.strokeStyle = 'white';
         context.lineWidth = 2 + 4 * (1 - t);
         context.fill();
@@ -1599,7 +1600,7 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
       'icon-image': [
         'match',
         ['get', 'origen'],
-        1, 'pulsing-dot', // Si el valor de 'origen' es 1, usa 'static-dot-1' como imagen
+        1, 'static-dot', //'pulsing-dot'
         0, 'static-dot', // Si el valor de 'origen' es 0, usa 'static-dot-0' como imagen
         'static-dot-default' // Valor por defecto si no coincide con ninguno de los anteriores
       ],
@@ -1712,7 +1713,7 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
           })
               .setLngLat(coordinates)
               .setHTML(`<div class='cont-pop' style='border: 1px solid #ffffff;'>
-              <div>${e.features[0].properties.Name.slice(0, 25)}...</div><br>
+              <div>${e.features[0].properties.Name}</div><br>
               </div>`)
               .addTo(map);
           });
@@ -1726,7 +1727,7 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
    
     
     return () => map.remove();
-  }, [markers]);
+  }, [downs]);
  
   
   return <div id="map" style={{ position: 'absolute', top: 0, bottom: 0, width: '100%' }} />;

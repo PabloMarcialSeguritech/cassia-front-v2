@@ -13,7 +13,7 @@ import CarrilesArco from './CarrilesArco';
 import { useFetch } from '../hooks/useFetch';
 import LoadSimple from './LoadSimple';
 import ConsolaHost from './ConsolaHost';
-import servidores_id from './generales/GroupsId';
+import {servidores_id,permisos_codigo_id} from './generales/GroupsId';
 const pingModalStyles = {
   content: {
     top: '50%',
@@ -28,11 +28,16 @@ const pingModalStyles = {
     padding:'20px'
   },
 };
-const InfoMarker = ({isOpen,source,handleShowPopup,devices,mapAux,setmapAux, data,closeInfoMarker,server,ubiActual,search_problems }) => {
-  // console.log(data)
+const InfoMarker = ({isOpen,downs_list,userPermissions,source,handleShowPopup,devices,mapAux,setmapAux, data,closeInfoMarker,server,ubiActual,search_problems }) => {
+  console.log(downs_list)
   var ubicacion_mix;
   if(source=='Monitoreo'){
-     ubicacion_mix=devices.data.hosts.filter(obj => (((obj.latitude.charAt(obj.latitude.length - 1)==0)?obj.latitude.slice(0, -1):obj.latitude) === ((data.end_lat.charAt(data.end_lat.length - 1)==0)?data.end_lat.slice(0, -1):data.end_lat )) && (((obj.longitude.charAt(obj.longitude.length - 1)==0)?obj.longitude.slice(0, -1):obj.longitude) === ((data.end_lon.charAt(data.end_lon.length - 1)==0)?data.end_lon.slice(0, -1):data.end_lon )))
+    if(ubiActual.dispId!=-1){
+      ubicacion_mix=devices.data.hosts.filter(obj => (((obj.latitude.charAt(obj.latitude.length - 1)==0)?obj.latitude.slice(0, -1):obj.latitude) === ((data.end_lat.charAt(data.end_lat.length - 1)==0)?data.end_lat.slice(0, -1):data.end_lat )) && (((obj.longitude.charAt(obj.longitude.length - 1)==0)?obj.longitude.slice(0, -1):obj.longitude) === ((data.end_lon.charAt(data.end_lon.length - 1)==0)?data.end_lon.slice(0, -1):data.end_lon )))
+    }else{
+      ubicacion_mix=downs_list.data.downs.filter(obj => (((obj.latitude.charAt(obj.latitude.length - 1)==0)?obj.latitude.slice(0, -1):obj.latitude) === ((data.end_lat.charAt(data.end_lat.length - 1)==0)?data.end_lat.slice(0, -1):data.end_lat )) && (((obj.longitude.charAt(obj.longitude.length - 1)==0)?obj.longitude.slice(0, -1):obj.longitude) === ((data.end_lon.charAt(data.end_lon.length - 1)==0)?data.end_lon.slice(0, -1):data.end_lon )))
+    }
+     
   // console.log(ubicacion_mix)
     }else{
      ubicacion_mix=[{
@@ -47,7 +52,7 @@ const InfoMarker = ({isOpen,source,handleShowPopup,devices,mapAux,setmapAux, dat
   
   
   // const ubicacion_mix=devices.data.hosts.filter(obj => (obj.latitude === data.end_lat && obj.longitude === data.end_lon ))
-  let relation = devices.data.relations.find(obj => obj.hostidC === data.hostidC)
+  let relation =(ubiActual.dispId==-1)?undefined:devices.data.relations.find(obj => obj.hostidC === data.hostidC)
   const [consoleActive,setConsoleActive]=useState(false)
   const [pingModalOpen, setPingModalOpen] =useState(false);
   const [statusPing, setStatusPing] =useState(false);
@@ -127,9 +132,10 @@ useEffect(()=>{
   },[hostId])
 
   useEffect(()=>{
-    let hostidPa = devices.data.hosts.find(obj => obj.hostid === hostIdP)
+    if(ubiActual.dispId!==-1){
+      let hostidPa = devices.data.hosts.find(obj => obj.hostid === hostIdP)
     // console.log("relation P:",hostIdP)
-    setInfoHostP(hostidPa)
+    setInfoHostP(hostidPa)}
   },[hostIdP])
   
   function openPingModal() {
@@ -360,23 +366,24 @@ setListSelected(1)
                   {listSelected === 1 ? (
                     <div className='contAcciones'>
                     <div className='menuActionDataIM' style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
-                    {(servidores_id[infoHostC.device_id]!==undefined)?<div className={'menuActionCellIM oneCell '} style={{border: 'unset',width:'25%'}}>
-                          <Action origen='General' disabled={true} titulo={'Consola'} action={()=>actionConsole()}/>
+                    {(servidores_id[infoHostC.device_id]!==undefined && userPermissions.some(objeto => objeto.permission_id === permisos_codigo_id['consola']))?<div className={'menuActionCellIM oneCell '} style={{border: 'unset',width:'25%'}}>
+                          <Action origen='General' disabled={false} titulo={'Consola'} action={()=>actionConsole()}/>
                       </div>:''}
                       {
-                        (listActions.loading)?<LoadSimple></LoadSimple>:
+                        (userPermissions.some(objeto => objeto.permission_id === permisos_codigo_id['acciones_host']))?
+                        ((listActions.loading)?<LoadSimple></LoadSimple>:
                         
                         listActions.data.actions.map((elemento, indice)=>(
                           <div className={'menuActionCellIM '+((listActions.data.actions.length<4)?'oneCell':'')} style={{border: 'unset',width:'25%'}}>
                           <Action origen='General' disabled={false} titulo={elemento.name} action={()=>handlePingClick(elemento)}/>
                       </div>
-                        ))
+                        ))):''
                       }
                         
                     </div>
                   </div>
                 ) : listSelected === 2 ? (
-                    <AlertsByHost ubiActual={ubiActual} mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} hostId={hostSelected===1?hostIdP:hostId} server={server}></AlertsByHost>
+                    <AlertsByHost userPermissions={userPermissions}  ubiActual={ubiActual} mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} hostId={hostSelected===1?hostIdP:hostId} server={server}></AlertsByHost>
                 ) : listSelected === 3 ? (
                   <HealthByHost hostId={hostSelected===1?hostIdP:hostId} server={server}></HealthByHost>
                 ) : listSelected === 9 ? (

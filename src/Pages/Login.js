@@ -2,14 +2,14 @@ import React,{useEffect, useState} from 'react';
 import '../components/styles/Login.css'
 import Action from '../components/Action'
 import LoadSimple from '../components/LoadSimple';
-const Login = ({ onLogin,token,setToken,userData,setUserData,server}) => {
+const Login = ({ onLogin,msgErrorLogin,setMsgErrorLogin,token,setToken,userData,setUserData,server}) => {
   const [data,setData]=useState([]);
   const [loading,setLoading]=useState(false);
   const [error,setError]=useState(null);
 const [loginData,setLoginData]=useState({email:"",password:""})
 const [disabled,setDisabled]=useState(true)
 const [userVal,setUserVal]=useState(true)
-const [msgError,setMsgError]=useState('')
+
   const handleChange=(e)=>{
     
     const {name,value}=e.target
@@ -22,7 +22,15 @@ const [msgError,setMsgError]=useState('')
     })
     
   }
-
+useEffect(()=>{
+  // setMsgErrorLogin('hola')
+  if(localStorage.getItem('ErrorLogin')=="true"){
+    setUserVal(false)
+    setMsgErrorLogin(localStorage.getItem('MsgErrorLogin'))
+    localStorage.setItem('MsgErrorLogin','')
+      localStorage.setItem('ErrorLogin',false)
+  }
+},[])
   useEffect(()=>{
     
         if(loginData.email==="" || loginData.password===""){
@@ -34,7 +42,9 @@ const [msgError,setMsgError]=useState('')
   
    
   const handleSubmit = async (e) => {
-    
+    setUserVal(true)
+    localStorage.setItem('MsgErrorLogin','')
+    localStorage.setItem('ErrorLogin',false)
     setLoading(true)
         const formData = new URLSearchParams();
         formData.append("username", loginData.email);
@@ -53,7 +63,7 @@ const [msgError,setMsgError]=useState('')
             },
             body: formData
           });
-         
+         console.log(response)
           if (response.ok) {
             
             const data = await response.json();
@@ -65,15 +75,21 @@ const [msgError,setMsgError]=useState('')
             onLogin(data);
             
           } else {
-            setMsgError('Correo o Contraseña incorrectos, favor de intentar de nuevo.')
+            console.log('primer paso')
+            setMsgErrorLogin('Correo o Contraseña incorrectos, favor de intentar de nuevo.')
             setUserVal(false)
+            localStorage.setItem('ErrorLogin',true)
             throw new Error('Error en la solicitud');
           }
         
         } catch (error) {
+          console.log('2d paso')
           setLoading(false)
             setError(error)
-            setMsgError('Error de conexion con el server')
+            if(localStorage.getItem('ErrorLogin')=="false"){
+              setMsgErrorLogin('Error de conexion con el server')
+            }
+            
             setUserVal(false)
            console.log(error)
           
@@ -142,8 +158,8 @@ const [msgError,setMsgError]=useState('')
       <div className='MessageErrorCont'>
         {
           userVal===false?<div className='MessageError'>
-          <div className='txtMessageError'>
-          {msgError}
+          <div className='txtMessageError' style={{textAlign:'center'}}>
+          {msgErrorLogin}
           </div>
       </div>:''
         }

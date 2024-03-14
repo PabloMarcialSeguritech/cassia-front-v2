@@ -7,6 +7,7 @@ import InputForm from './InputForm';
 import LoadAdding from './LoadAdding';
 import FlujoModal from './modals-monitoreo/FlujoModal';
 import AnalisisModal from './modals-monitoreo/AnalisisModal';
+import {permisos_codigo_id} from './generales/GroupsId'
 const customStyles = {
     content: {
       top: '50%',
@@ -17,7 +18,7 @@ const customStyles = {
       marginRight: '-50%',
       transform: 'translate(-50%, -50%)',
       width:'30%',
-      height:'50%',
+      height:'60%',
       padding:'20px',
       border:'unset'
     },
@@ -275,7 +276,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                     <div className='detailContent'>
                       <div className='rowDetailExpand'>
                         <div className='textRowDetailExpand'> 
-                          {props.data.Host}
+                          {props.data.Host }
                         </div>
                       </div>
                       <div className='rowDetailExpand'>
@@ -321,17 +322,21 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                           <div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
                               <Action origen='General' disabled={true} titulo='excepcion' action={openExeption}/>
                           </div>
-                          <div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
-                              <Action origen='General' disabled={(props.ubiActual.dispId===9)?true:false} titulo='Ack...' action={openAck}/>
-                          </div>
+                          {(props.userPermissions.some(objeto => objeto.permission_id === permisos_codigo_id['acknownledge']))?<div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
+                              <Action origen='General' disabled={(props.ubiActual.dispId===9 ||props.ubiActual.dispId===1 || props.data.alert_type!="" )?true:false} titulo='Ack...' action={openAck}/>
+                          </div>:''}
                           <div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
 
                               <Action origen='General' disabled={false} titulo='Flujo' action={openFlujo}/>
 
                           </div>
-                          <div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
+                          {
+                            (props.userPermissions.some(objeto => objeto.permission_id === permisos_codigo_id['link_ticket']))?
+                            <div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
                               <Action origen='General' disabled={false} titulo='Link ticket' action ={openTicket}/>
-                          </div>
+                          </div>:''
+                          }
+                          
                       </div>
                 </div>
               </div>
@@ -410,7 +415,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                             <InputForm   titulo='Event ID' text={props.data.eventid} disabled={true} ></InputForm>
                             </div>
                             
-                            <div className='formColumn' style={{height:'90px'}}>
+                            <div className='formColumn' style={{height:'40%'}}>
                             <div className='menuSearchOption'>
             <div className='compactInputForm'>
                 <label htmlFor='InputForm' className='labelInputForm'>Notas:</label>
@@ -440,7 +445,8 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
 
                             </div>
 
-                            <div className='formColumn' style={{height:'50px'}}>
+                            <div className='formColumn' >
+
                             <Action origen='General' titulo='GUARDAR' action={addAck} disabled={validaBtn}/>
 
                             <Action origen='Alert' titulo='CANCELAR' action={closeAck} disabled={false} />

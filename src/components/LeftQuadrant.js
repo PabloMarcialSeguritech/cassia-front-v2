@@ -60,8 +60,8 @@ const LeftQuadrant =(props)=>{
   }
   const [optionsSelectList, setOptionsSelectList] = useState([
     // { value: '7', label: 'Down Origen', status: true },
-    { value: '6', label: 'Down', status: true },
-    { value: '7', label: 'Down Origen', status: false },
+    { value: '6', label: 'Down', status: true},
+    // { value: '7', label: 'Down Origen', status: true},
     { value: '5', label: 'Severidad 5', status: false },
     { value: '4', label: 'Severidad 4', status: false },
     { value: '3', label: 'Severidad 3', status: false },
@@ -111,7 +111,8 @@ const LeftQuadrant =(props)=>{
     }
   },[props.dataHosts.data])
   useEffect(()=>{
-    props.setSeverityProblms(["6"])
+    props.setSeverityProblms([((props.ubiActual.dispId==-1)?"7":"6")])
+    // props.setSeverityProblms(["6"])
   },[])
     return(
       <>
@@ -159,7 +160,7 @@ const LeftQuadrant =(props)=>{
             </div>
           <div className={`columnLeft ${alertsIsOpen ? 'columnAlert' : 'columnAlertMin'}`}>
             <div className='card' style={{width:'95%'}}>
-              <TableAlerts ubiActual={props.ubiActual} searchTerm={searchTerm} setSearchTerm={setSearchTerm} searchResults={searchResults} setSearchResults={setSearchResults} optionsSelectList={optionsSelectList} setOptionsSelectList={setOptionsSelectList} severityProblms={props.severityProblms} setSeverityProblms={props.setSeverityProblms} mapAux={props.mapAux} setmapAux={props.setmapAux} server={props.server} action={openModal} modalIsOpen={false}  alertsIsOpen={alertsIsOpen} setAlertsIsOpen={setAlertsIsOpen} dataProblems={props.dataProblems} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion} search_problems={props.search_problems}></TableAlerts>
+              <TableAlerts userPermissions={props.userPermissions} ubiActual={props.ubiActual} searchTerm={searchTerm} setSearchTerm={setSearchTerm} searchResults={searchResults} setSearchResults={setSearchResults} optionsSelectList={optionsSelectList} setOptionsSelectList={setOptionsSelectList} severityProblms={props.severityProblms} setSeverityProblms={props.setSeverityProblms} mapAux={props.mapAux} setmapAux={props.setmapAux} server={props.server} action={openModal} modalIsOpen={false}  alertsIsOpen={alertsIsOpen} setAlertsIsOpen={setAlertsIsOpen} dataProblems={props.dataProblems} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion} search_problems={props.search_problems}></TableAlerts>
             
             </div>
           </div>
@@ -171,7 +172,7 @@ const LeftQuadrant =(props)=>{
         style={customStyles}
         contentLabel="Example Modal"
       >
-        <TableAlerts ubiActual={props.ubiActual} searchTerm={searchTerm} setSearchTerm={setSearchTerm} searchResults={searchResults} setSearchResults={setSearchResults}  optionsSelectList={optionsSelectList} setOptionsSelectList={setOptionsSelectList} severityProblms={props.severityProblms} setSeverityProblms={props.setSeverityProblms} mapAux={props.mapAux} setmapAux={props.setmapAux} server={props.server} action={closeModal}  modalIsOpen={true} alertsIsOpen={alertsIsOpen} setAlertsIsOpen={setAlertsIsOpen} dataProblems={props.dataProblems} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion}  search_problems={props.search_problems}></TableAlerts>
+        <TableAlerts userPermissions={props.userPermissions} ubiActual={props.ubiActual} searchTerm={searchTerm} setSearchTerm={setSearchTerm} searchResults={searchResults} setSearchResults={setSearchResults}  optionsSelectList={optionsSelectList} setOptionsSelectList={setOptionsSelectList} severityProblms={props.severityProblms} setSeverityProblms={props.setSeverityProblms} mapAux={props.mapAux} setmapAux={props.setmapAux} server={props.server} action={closeModal}  modalIsOpen={true} alertsIsOpen={alertsIsOpen} setAlertsIsOpen={setAlertsIsOpen} dataProblems={props.dataProblems} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion}  search_problems={props.search_problems}></TableAlerts>
       </Modal>
 
       </>

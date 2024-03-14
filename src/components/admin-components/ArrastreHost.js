@@ -1,6 +1,6 @@
 
 import { useState,useEffect } from 'react'
-import './styles/ArrastreHost.css'
+// import './styles/ArrastreHost.css'
 import Action from '../Action'
 import { useFetch } from '../../hooks/useFetch'
 import Selector from '../Selector'

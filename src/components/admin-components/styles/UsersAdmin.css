@@ -218,8 +218,33 @@ background-color: #e6eef934;
     display: flex;
     width: 70%;
     height: 100%;
+    counter-reset: radios-counter;
+    align-items: center;
+    max-height: 200px; /* Definir la altura máxima del contenedor */
+  overflow-y: auto;
+}
+.contOptionRol{
+  position: relative;
+  height: 100%;
+  width: 30%;
+  /* background-color: red; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+/* .box-options input[type="radio"] {
+  counter-increment: radios-counter;
+  display: none;
+}
+
+:root {
+  --numero-maximo-radios: 0;
+}
+
+.box-options {
+  --numero-maximo-radios: counter(radios-counter);
+} */
 .box-text{
     position: relative;
     display: flex;
@@ -283,6 +308,9 @@ background-color: #e6eef934;
   
   .container-tabs-roles input[type="radio"]:checked + label {
     color: aliceblue;
+    background-color: #003757;
+    height: 50%;
+    
   }
   
   .container-tabs-roles input[type="radio"]:checked + label > .notification {
@@ -290,8 +318,14 @@ background-color: #e6eef934;
     color: #fff;
     margin: 0px;
   }
-  
-  .container-tabs-roles input[id="radio-1"]:checked ~ .glider {
+ 
+
+/* @for $i from 1 through --numero-maximo-radios {
+  .container-tabs-roles input[id="radio-#{$i}"]:checked ~ .glider {
+    transform: translateX(#{($i - 1) * $anchoPaso});
+  }
+} */
+  /* .container-tabs-roles input[id="radio-1"]:checked ~ .glider {
     transform: translateX(0);
   }
   
@@ -301,7 +335,7 @@ background-color: #e6eef934;
   
   .container-tabs-roles input[id="radio-3"]:checked ~ .glider {
     transform: translateX(200%);
-  }
+  } */
   .container-tabs-roles{
     position: absolute;
   width: 96%;
@@ -314,7 +348,7 @@ background-color: #e6eef934;
     position: absolute;
     display: flex;
     height: 25px;
-    width: 100px;
+    width: 60px;
     background-color: #003757de;
     z-index: 1;
     border-radius: 99px;
@@ -373,7 +407,7 @@ height: 10%;
     justify-content: center;
     align-items: center;
     width: 80%;
-    height: 100%;
+    height: 95%;
   }
   .compact-option-permission{
     position: relative;
@@ -442,11 +476,22 @@ height: 10%;
   /****************************** tabla usuarios ******************************************/
   .cont-table-users{
     width: 95%;
+    min-width: 95%;
     height: 95%;
     /* border: 1px solid #56575746; */
     border-radius: 5px;
     display: block;
     position: relative;
+  }
+  .cont-table-users-main{
+    width: 95%;
+    min-width: 95%;
+    height: 95%;
+    /* border: 1px solid #56575746; */
+    border-radius: 5px;
+    display: block;
+    position: relative;
+    overflow: auto;
   }
   .head-table-users{
     width: 100%;
