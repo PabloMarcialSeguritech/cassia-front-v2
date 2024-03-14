@@ -19,10 +19,10 @@ const Admin=({server,dataGlobals})=>{
                     </div>
                 </div>
                 <div className='menu-admin'>
-                     <ol className='compact-menu-list' >
+                     <ol className='compact-menu-list' style={{justifyContent:'start'}}>
                         <li className={listSelected===1?'list-selected':''} onClick={() =>hadleChangeList(1)}>Usuarios</li>
-                        {/* <li className={listSelected===2?'list-selected':''} onClick={() =>hadleChangeList(2)}>Roles</li>
-                        <li className={listSelected===3?'list-selected':''} onClick={() =>hadleChangeList(3)}>Arrastre Hosts</li>
+                        <li className={listSelected===2?'list-selected':''} onClick={() =>hadleChangeList(2)}>Roles</li>
+                        {/* <li className={listSelected===3?'list-selected':''} onClick={() =>hadleChangeList(3)}>Arrastre Hosts</li>
                         <li className={listSelected===4?'list-selected':''} onClick={() =>hadleChangeList(4)}>Herramienta 3</li> */}
                     </ol>
                 </div>

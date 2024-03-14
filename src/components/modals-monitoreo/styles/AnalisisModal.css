@@ -1,0 +1,123 @@
+.contAnalisisModal{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+.contAnalisisload{
+    width:100%;
+    height:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center
+}
+.bodyContAnalisisModal  .contAnalisisload  .loadSimple circle{
+    stroke: hsl(215.3, 36.2%, 90.8%);
+}
+
+.headContAnalisisModal
+{
+    position: relative;
+    width: 100%;
+    height: 8%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: aliceblue;
+    font-size: larger;
+    color: #092a52;
+    font-weight: bolder;
+    z-index:1;
+}
+.bodyContAnalisisModal{
+    position: relative;
+  width: 100%;
+  height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
+  padding-top: 10px;
+  /* padding-bottom: 10px */
+}
+.bodyContAnalisisModal .loadSimple circle{
+    stroke: hsl(0, 0%, 74%) !important;
+}
+
+.contTableAnalisis{
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    width: 99%;
+    height: 99%;
+    display: block;
+    /* background-color: aliceblue; */
+}
+.contInfoHostAnalisis{
+    position: relative;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    height: 20%;
+    width: 100%;
+    overflow-y: auto;
+}
+.contBodyTableAnalisis{
+    position: relative;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    height: 75%;
+    width: 100%;
+    overflow-y: auto;
+}
+.contHeadTableAnalisis{
+position: relative;
+display: flex;
+justify-content: center;
+align-items: center;
+height: 5%;
+width: 100%;
+background-color: #6b0042;
+}
+.contCellHeadTableAnalisis{
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    /* background: aliceblue; */
+    width: 25%;
+    color: aliceblue;
+    border: 1px solid rgba(240, 248, 255, 0.685);
+    border-top: unset;
+}
+.contRowTableAnalisis{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 25px;
+    background-color: rgba(240, 248, 255, 0.233);
+    border-bottom: rgba(160, 160, 160, 0.342) 1px solid;
+    color: aliceblue;
+}
+.controwCellTableanalisis{
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    font-size: x-small;
+    /* background: aliceblue; */
+    /* width: 25%; */
+    /* color: aliceblue; */
+    /* border: 1px solid rgba(178, 178, 179, 0.459); */
+    border-top: unset;
+}
+
+.contRowTableAnalisis:nth-child(odd){
+    background-color: rgba(240, 248, 255, 0.144);
+  }
+  .contRowTableAnalisis:nth-child(even){
+    background-color: rgba(122, 122, 122, 0.062);
+  }

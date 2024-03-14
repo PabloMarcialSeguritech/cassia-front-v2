@@ -11,19 +11,20 @@ function App() {
   const [userData,setUserData]=useState({})
   const [token,setToken] = useState(localStorage.getItem('access_token'));
   const [object_state_sessions,set_object_state_sessions]=useState({})
-  
+  const [msgErrorLogin,setMsgErrorLogin]=useState('')
   // const [server,setServer]=useState({ip:'10.60.20.250',port:8002})
   // const [server,setServer]=useState({ip:'172.16.4.249',port:8004})//EDOMEX
   const [server,setServer]=useState({ip:'172.18.200.14',port:8004})//Guanajuato
-  // const [server,setServer]=useState({ip:'10.21.14.219',port:8002})
+  // const [server,setServer]=useState({ip:'10.12.1.61',port:8000})//Zacatecas
   // const [server,setServer]=useState({ip:'172.16.10.50',port:8000})
    
-  
+  console.log('app')
   useEffect(()=>{
     
     // set_object_state_sessions(JSON.parse(localStorage.getItem('object_state_sessions')))
     localStorage.setItem('main_server_ip',server.ip );
     localStorage.setItem('main_server_port',server.port);
+   
     // console.log('reinicio la pagina')
     if(token===null){
          console.log("es null")
@@ -48,6 +49,8 @@ function App() {
       localStorage.removeItem('main_access_token');
       localStorage.removeItem('object_state_sessions');
       localStorage.removeItem('aux_server_ip')
+      localStorage.removeItem('MsgErrorLogin')
+      localStorage.removeItem('ErrorLogin')
   localStorage.removeItem('aux_server_port')
   localStorage.removeItem('data_info_marker')
       setLoggedIn(false)
@@ -64,10 +67,10 @@ function App() {
   return (
     <ErrorBoundary>
     <Routes>
-      <Route path="/" element={loggedIn ? <Navigate to="/main" /> : <Login onLogin={handleLogin} server={server} token={token} setToken={setToken} userData={userData} setUserData={setUserData}  />}>
+      <Route path="/" element={loggedIn ? <Navigate to="/main" /> : <Login onLogin={handleLogin} msgErrorLogin={msgErrorLogin} setMsgErrorLogin={setMsgErrorLogin} server={server} token={token} setToken={setToken} userData={userData} setUserData={setUserData}  />}>
         
       </Route>
-      <Route path="/main" element={loggedIn ? <Main object_state_sessions={object_state_sessions} set_object_state_sessions={set_object_state_sessions} setServer={setServer} onLogin={handleLogin} token={token}  server={server} setToken={setToken} userData={userData} setUserData={setUserData}/> : <Navigate to="/" />}>
+      <Route path="/main" element={loggedIn ? <Main  setMsgErrorLogin={setMsgErrorLogin} object_state_sessions={object_state_sessions} set_object_state_sessions={set_object_state_sessions} setServer={setServer} onLogin={handleLogin} token={token}  server={server} setToken={setToken} userData={userData} setUserData={setUserData}/> : <Navigate to="/" />}>
         
       </Route>
     </Routes>

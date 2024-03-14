@@ -1,3 +1,7 @@
+@font-face {
+  font-family: 'Digital-7';
+  src: url('../fonts/Digital7Italic.ttf') format('truetype');
+}
 .custom-popup {
     background-color: transparent;
     /* border: 1px solid #ccc; */
@@ -45,25 +49,27 @@
   height: 100%;
   position: relative;
   /* padding: 3px; */
- background-color: rgba(228, 228, 228, 0.774) !important; 
+ /* background-color: rgba(228, 228, 228, 0.774) !important;  */
+ background-color: rgba(20, 20, 20, 0.904) !important; 
 
-  top: 5%;
+  top: 2%;
+  min-width: 40px;
  width: auto;
  height: auto;
  padding: unset !important;
- border-radius: 0px 0px 20px 20px;
+ border-radius: 0px 0px 10px 10px;
 }
 .cont-rfid {
   font-weight: bold;
-  border-radius: 0px 0px 20px 20px;
+  border-radius: 0px 0px 10px 10px;
   position: relative;
   /* padding: 3px; */
   display: block;
   justify-content: center;
-  height: 40px !important;
+  height: 30px !important;
 }
 .titleRFID{
-  background-color: rgb(9, 34, 102);
+  background-color: aliceblue;
   position: relative;
   display: flex;
   justify-content: center;
@@ -74,18 +80,23 @@
 .txtTitleRfid{
 font-size: x-small;
 margin: 2%;
+color: rgb(26, 25, 25);
 }
+
 .valRFID{
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 70%;
-  border-radius: 0px 0px 20px 20px;
+  border-radius: 0px 0px 10px 10px;
+  font-family: 'Digital-7', sans-serif;
+  
 }
 .txtRfid{
   /* color: rgb(17, 26, 51) !important; */
-  color:rgb(46, 46, 46) !important ;
+  /* color:rgb(46, 46, 46) !important ; */
+  color:limegreen !important ;
   font-size: medium;
   font-weight: bold;
  text-align: center !important;
@@ -95,6 +106,85 @@ margin: 2%;
  justify-content: center;
  align-items: center;
 }
+/***************************LPR*********************************/
+.custom-popup-lpr {
+  font-weight: bold;
+  width: auto !important;
+  height: 7% !important;;
+  position: relative;
+  padding: 3px;
+
+}
+.custom-popup-lpr .mapboxgl-popup-content {
+  
+  width: 100%;
+  height: 100%;
+  position: relative;
+  /* padding: 3px; */
+ /* background-color: rgba(228, 228, 228, 0.774) !important;  */
+ background-color: rgba(158, 157, 157, 0.781) !important; 
+
+  top: 2%;
+  min-width: 50px;
+ width: auto;
+ height: auto;
+ padding: unset !important;
+ border-radius: 20px 20px 20px 20px;
+}
+.cont-lpr {
+  font-weight: bold;
+  border-radius: 20px 20px 20px 20px;
+  position: relative;
+  /* padding: 3px; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px !important;
+}
+.titleLPR{
+  display: none;
+  background-color: aliceblue;
+  position: relative;
+  /* display: flex; */
+  justify-content: center;
+  align-items: center;
+  border-radius: 0px 0px 0px 0px;
+  height: 30%;
+}
+.txtTitleLpr{
+  
+font-size: x-small;
+margin: 2%;
+color: rgb(26, 25, 25);
+}
+
+.valLPR{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80%;
+  width: 80%;
+  border-radius: 20px 20px 20px 20px;
+  font-family: 'Digital-7', sans-serif;
+  background-color: rgba(20, 20, 20, 0.904);
+}
+.txtLpr{
+  /* color: rgb(17, 26, 51) !important; */
+  /* color:rgb(46, 46, 46) !important ; */
+  color:limegreen !important ;
+  font-size: medium;
+  font-weight: bold;
+ text-align: center !important;
+ width: auto;
+ height: 100%;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+}
+
+
+
 
 .pulsing-dot-element {
   top: 50%;

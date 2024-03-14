@@ -5,13 +5,13 @@ import data_ubi from './ubicaciones'
 import { useFetch } from '../hooks/useFetch'
 import RowProblem from './RowProblem'
 import LoadAlerts from './LoadAlerts'
-const AlertsByHost=({hostId,mapAux,ubiActual,setmapAux,server,search_problems})=>{
+const AlertsByHost=({hostId,userPermissions ,mapAux,ubiActual,setmapAux,server,search_problems})=>{
     // const alerts_list=useFetch('zabbix/hosts/detail/alerts',hostId,'','GET',server)
     const dataAgencies=useFetch('zabbix/exception_agencies','','props.token','GET',server)
     const [orderAsc,setOrderAsc]=useState(true)
   const [problems,setProblems]=useState()
   const [dataProblems,setDataProblems]=useState({data:[],loading:true,error:null})
-    // console.log(alerts_list)
+    console.log(problems)
 useEffect(()=>{
   search_problems()
 },[])
@@ -33,7 +33,7 @@ useEffect(()=>{
               const response_data = await response.json();
               setProblems(response_data.data)
               setDataProblems({data:response_data.data,loading:false,error:dataProblems.error})
-              // console.log(response_data)
+              console.log(response_data)
               
             } else {
               throw new Error('Error en la solicitud');
@@ -115,7 +115,7 @@ useEffect(()=>{
                   </div>
                   <div className='headerCell' style={{width:'5%'}}>
                     <div className='txtHeaderCell'>
-                        Ack
+                        ODD
                     </div>
                   </div>
                   <div className='headerCell' style={{width:'15%'}}>
@@ -148,11 +148,7 @@ useEffect(()=>{
                   problems.map((elemento, indice)=>(
                     
 
-                    <RowProblem ubiActual={ubiActual}mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} key={indice} severity={elemento.severity} dataAgencies={dataAgencies} data={elemento} server={server}/>
-
-
-                   
-
+                    <RowProblem filtraOrigen={false} userPermissions={userPermissions}  ubiActual={ubiActual}mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} key={indice} severity={elemento.severity} dataAgencies={dataAgencies} data={elemento} server={server}/>
 
                   )))
                   }

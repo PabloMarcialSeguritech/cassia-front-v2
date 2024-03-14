@@ -6,6 +6,8 @@ import Selector from './Selector'
 import InputForm from './InputForm';
 import LoadAdding from './LoadAdding';
 import FlujoModal from './modals-monitoreo/FlujoModal';
+import AnalisisModal from './modals-monitoreo/AnalisisModal';
+import {permisos_codigo_id} from './generales/GroupsId'
 const customStyles = {
     content: {
       top: '50%',
@@ -16,7 +18,7 @@ const customStyles = {
       marginRight: '-50%',
       transform: 'translate(-50%, -50%)',
       width:'30%',
-      height:'50%',
+      height:'60%',
       padding:'20px',
       border:'unset'
     },
@@ -36,12 +38,29 @@ const customStyles = {
       border:'unset'
     },
   };
+  const customStylesAnalisis = {
+    content: {
+      top: '50%',
+      left: '50%',
+      background: 'transparent',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+      width:'50%',
+      height:'80%',
+      padding:'20px',
+      border:'unset'
+    },
+  };
+
 const MenuAlert = ({ isOpen, onClose,props }) => {
 
     const [exeptionOpen, setExeptionOpen] = useState(false);
     const [ackOpen, setAckOpen] = useState(false);
     const [ticketOpen, setTicketOpen] = useState(false);
     const [flujoOpen, setFlujoOpen] = useState(false);
+    const [AnalisisOpen, setAnalisisOpen] = useState(false);
     const [addingException, setAddingException] = useState(false);
     const [addingTicket, setAddingTicket] = useState(false);
     const [validaBtn, setValidaBtn] = useState(true);
@@ -196,6 +215,12 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
     function closeFlujo() {
       setFlujoOpen(false)
     }
+    const openAnalisis=()=>{
+      setAnalisisOpen(true)
+    }
+    function closeAnalisis() {
+      setAnalisisOpen(false)
+    }
     const handleChangeDate=(e)=>{
       // //console.log(e.target)
       const {name,value}=e.target
@@ -219,7 +244,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
           <>
           <div className="expandInfo">
             <div className="contExpandInfo">
-              <div className='rowExpand' style={{width: '75%'}}>
+              <div className='rowExpand' style={{width: '65%'}}>
                 <div className='infoCont'>
                     <div className='headContent'>
                       <div className='rowHeadExpand'>
@@ -251,7 +276,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                     <div className='detailContent'>
                       <div className='rowDetailExpand'>
                         <div className='textRowDetailExpand'> 
-                          {props.data.Host}
+                          {props.data.Host }
                         </div>
                       </div>
                       <div className='rowDetailExpand'>
@@ -279,7 +304,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                     </div>
                 </div>
               </div>
-              <div className='rowExpand' style={{width: '25%'}}>
+              <div className='rowExpand' style={{width: '35%'}}>
                 <div className='rowcontActions'>
                   <div className='menuActiontitle' style={{width: "100%"}}>
                     <div className='actionsTitle'>
@@ -291,20 +316,27 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                     <hr className='lineTitle'></hr>
                   </div>
                   <div className='menuActionData'>
-                          <div className='menuActionCell' style={{border: 'unset'}}>
+                          <div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
+                              <Action origen='General' disabled={true} titulo='Diagnostico' action={openAnalisis}/>
+                          </div>
+                          <div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
                               <Action origen='General' disabled={true} titulo='excepcion' action={openExeption}/>
                           </div>
-                          <div className='menuActionCell' style={{border: 'unset'}}>
-                              <Action origen='General' disabled={(props.ubiActual.dispId===9)?true:false} titulo='Ack...' action={openAck}/>
-                          </div>
-                          <div className='menuActionCell' style={{border: 'unset'}}>
+                          {(props.userPermissions.some(objeto => objeto.permission_id === permisos_codigo_id['acknownledge']))?<div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
+                              <Action origen='General' disabled={(props.ubiActual.dispId===9 ||props.ubiActual.dispId===1 || props.data.alert_type!="" )?true:false} titulo='Ack...' action={openAck}/>
+                          </div>:''}
+                          <div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
 
                               <Action origen='General' disabled={false} titulo='Flujo' action={openFlujo}/>
 
                           </div>
-                          <div className='menuActionCell' style={{border: 'unset'}}>
+                          {
+                            (props.userPermissions.some(objeto => objeto.permission_id === permisos_codigo_id['link_ticket']))?
+                            <div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
                               <Action origen='General' disabled={false} titulo='Link ticket' action ={openTicket}/>
-                          </div>
+                          </div>:''
+                          }
+                          
                       </div>
                 </div>
               </div>
@@ -383,7 +415,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                             <InputForm   titulo='Event ID' text={props.data.eventid} disabled={true} ></InputForm>
                             </div>
                             
-                            <div className='formColumn' style={{height:'90px'}}>
+                            <div className='formColumn' style={{height:'40%'}}>
                             <div className='menuSearchOption'>
             <div className='compactInputForm'>
                 <label htmlFor='InputForm' className='labelInputForm'>Notas:</label>
@@ -413,7 +445,8 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
 
                             </div>
 
-                            <div className='formColumn' style={{height:'50px'}}>
+                            <div className='formColumn' >
+
                             <Action origen='General' titulo='GUARDAR' action={addAck} disabled={validaBtn}/>
 
                             <Action origen='Alert' titulo='CANCELAR' action={closeAck} disabled={false} />
@@ -488,6 +521,16 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
           // shouldCloseOnOverlayClick={true}
             >
                 <FlujoModal eventId={props.data.eventid} props={props}></FlujoModal>
+            </Modal>
+            <Modal
+          isOpen={AnalisisOpen}
+          // onAfterOpen={afterOpenExeption}
+          onRequestClose={closeAnalisis}
+          style={customStylesAnalisis}
+          contentLabel="Example Modal"
+          // shouldCloseOnOverlayClick={true}
+            >
+                <AnalisisModal eventId={props.data.eventid} props={props}></AnalisisModal>
             </Modal>
         </>
         )}
