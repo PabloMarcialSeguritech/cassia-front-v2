@@ -108,6 +108,7 @@ const popups = document.querySelectorAll('.custom-popup-findHost');
                   </div>
                   <div className='problemCell' style={{width:'15%'}}>
                     <div className='txtProblemCell'>
+                      {/* Diagnosta:<br/> */}
                       {props.data.Problem.length > 25 ? `${props.data.Problem.slice(0, 25)}...` : props.data.Problem}
                     
                     </div>

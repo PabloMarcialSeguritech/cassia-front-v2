@@ -18,7 +18,7 @@ const customStyles = {
       marginRight: '-50%',
       transform: 'translate(-50%, -50%)',
       width:'30%',
-      height:'50%',
+      height:'60%',
       padding:'20px',
       border:'unset'
     },
@@ -276,7 +276,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                     <div className='detailContent'>
                       <div className='rowDetailExpand'>
                         <div className='textRowDetailExpand'> 
-                          {props.data.Host}
+                          {props.data.Host }
                         </div>
                       </div>
                       <div className='rowDetailExpand'>
@@ -317,13 +317,13 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                   </div>
                   <div className='menuActionData'>
                           <div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
-                              <Action origen='General' disabled={false} titulo='Diagnostico' action={openAnalisis}/>
+                              <Action origen='General' disabled={true} titulo='Diagnostico' action={openAnalisis}/>
                           </div>
                           <div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
                               <Action origen='General' disabled={true} titulo='excepcion' action={openExeption}/>
                           </div>
                           {(props.userPermissions.some(objeto => objeto.permission_id === permisos_codigo_id['acknownledge']))?<div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
-                              <Action origen='General' disabled={(props.ubiActual.dispId===9)?true:false} titulo='Ack...' action={openAck}/>
+                              <Action origen='General' disabled={(props.ubiActual.dispId===9 ||props.ubiActual.dispId===1 || props.data.alert_type!="" )?true:false} titulo='Ack...' action={openAck}/>
                           </div>:''}
                           <div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
                               <Action origen='General' disabled={false} titulo='Flujo' action={openFlujo}/>
@@ -410,7 +410,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                             <InputForm   titulo='Event ID' text={props.data.eventid} disabled={true} ></InputForm>
                             </div>
                             
-                            <div className='formColumn' style={{height:'90px'}}>
+                            <div className='formColumn' style={{height:'40%'}}>
                             <div className='menuSearchOption'>
             <div className='compactInputForm'>
                 <label htmlFor='InputForm' className='labelInputForm'>Notas:</label>
@@ -437,7 +437,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                               </>:''
                             }
                             </div>
-                            <div className='formColumn' style={{height:'50px'}}>
+                            <div className='formColumn' >
                             <Action origen='General' titulo='GUARDAR' action={addAck} disabled={validaBtn}/>
                             <Action origen='Alert' titulo='CANCELAR' action={closeAck} disabled={false} />
                             </div>
