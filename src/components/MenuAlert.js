@@ -89,16 +89,17 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
     }
     const addAck=async(e)=>{
       setAddingException(true)
-      //console.log(textAreaValue,props.data.eventid)
+      console.log(props.data)
       // //console.log("element_id:"+cisSelected.element_id+" | ci-relation:"+cisRelation)
         
         const formData = new URLSearchParams();
         formData.append("message", textAreaValue);
         formData.append("close", closeEvent);
-        console.log('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/acknowledge/'+props.data.eventid)
+        formData.append("is_zabbix_event",( (props.data.alert_type=="")?true:false));
+        console.log('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/acknowledge_/'+props.data.eventid)
       
         try {
-          const response = await fetch('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/acknowledge/'+props.data.eventid, {
+          const response = await fetch('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/acknowledge_/'+props.data.eventid, {
             method: "POST",
             headers: {
               "Accept": "application/json",
@@ -323,7 +324,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                               <Action origen='General' disabled={true} titulo='excepcion' action={openExeption}/>
                           </div>
                           {(props.userPermissions.some(objeto => objeto.permission_id === permisos_codigo_id['acknownledge']))?<div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
-                              <Action origen='General' disabled={(props.ubiActual.dispId===9 ||props.ubiActual.dispId===1 || props.data.alert_type!="" )?true:false} titulo='Ack...' action={openAck}/>
+                              <Action origen='General' disabled={(  props.data.alert_type!="" )?true:false} titulo='Ack...' action={openAck}/>
                           </div>:''}
                           <div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
                               <Action origen='General' disabled={false} titulo='Flujo' action={openFlujo}/>
