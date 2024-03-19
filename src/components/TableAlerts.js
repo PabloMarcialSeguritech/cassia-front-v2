@@ -93,8 +93,9 @@ const selectOptionList=(element)=>{
   const [countList,setCountList]=useState(0)
   var dataList=(props.searchTerm==='')?problems:props.searchResults;
   // var dataList=props.searchResults;
-  // console.log(dataList)
+  console.log(dataList)
   const contOrigen = dataList.filter(elemento => elemento.tipo === 1).length;
+  const contZabbix = dataList.filter(elemento => elemento.alert_type === "").length;
   // console.log(contadorTipo1)
   useEffect(()=>{
     setCountList(dataList.length)
@@ -275,7 +276,7 @@ const selectOptionList=(element)=>{
                 // </div>:''
                 }
                             <div className='textCardTitle'>
-                            EVENTOS ({(filtraOrigen)?contOrigen:dataList.length })
+                            EVENTOS ({(filtraOrigen)?contOrigen:contZabbix })
                             </div>
                             <div className='imgCardTitleMin'>
                               <div className='imgContent'>
