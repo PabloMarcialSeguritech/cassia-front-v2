@@ -5,18 +5,20 @@ import Action from './Action'
 import {fetchData} from '../hooks/fetchData'
 import { useFetch } from '../hooks/useFetch'
 import { Suspense, useEffect, useState } from 'react'
-
-
+import {permisos_codigo_id,servidores_id} from './generales/GroupsId'
 const RightQuadrant =(props)=>{
-    // console.log("rigcuadrant")
-    // console.log()
+    console.log("rigcuadrant")
+    // console.log(servidores_id)
     // console.log(props.token)
     const dataLocations=useFetch('zabbix/groups/municipios','',props.token,'GET',props.server)
     const [dataTec,setDataTec]=useState({data:[],loading:true,error:null})
+    const [dataTecFiltrado,setDataTecFiltrado]=useState({})
     const [dataDisp,setDataDisp]=useState({data:[],loading:true,error:null})
-    
 
-//    console.log(dataDisp.data)
+    console.log(dataTecFiltrado)
+
+   console.log(dataTec.data)
+
 //    console.log(props.ubiActual.templateId)
    const metrica=dataDisp.data.find(obj => obj.template_id === props.ubiActual.templateId)
 //    console.log(metrica)
@@ -47,13 +49,16 @@ const RightQuadrant =(props)=>{
         props.search_problems()
         props.search_devices()
         props.search_downs()
-        if(props.ubicacion.dispId===9){
+        if(props.ubicacion.dispId===1){
+            props.search_lpr()
+        }if(props.ubicacion.dispId===9){
             props.search_rfid()
-        }if(props.ubicacion.dispId===12){
+        } if(props.ubicacion.dispId===12){
             console.log('switches')
             props.search_switches()
         }else{
             props.setRfid([])
+            props.setLpr([])
         }
         
     }
@@ -62,6 +67,14 @@ const RightQuadrant =(props)=>{
 
         search_tecnologias()
     },[props.ubicacion.groupid])
+    function filtrarPorPermiso(objeto, servidores_id, userPermissions) {
+        return objeto.filter(item => {
+          const dispId = item.dispId;
+          return (servidores_id[dispId] === undefined || 
+                  (servidores_id[dispId] !== undefined && 
+                   userPermissions.some(objeto => objeto.permission_id === permisos_codigo_id['servidores_'+dispId])));
+        });
+      }
     useEffect(()=>{
         if(dataTec.data.length!==0){
        
@@ -73,7 +86,9 @@ const RightQuadrant =(props)=>{
         }else{
             props.setUbicacion({latitud:props.ubicacion.latitud,longitud:props.ubicacion.longitud,groupid:props.ubicacion.groupid,dispId:11,templateId:props.ubicacion.templateId})
         }
+        setDataTecFiltrado(filtrarPorPermiso(dataTec.data, servidores_id,props.userPermissions))
     }
+
     },[dataTec])
     function search_tecnologias(){
         
@@ -91,7 +106,7 @@ const RightQuadrant =(props)=>{
                 const response_data = await response.json();
                 setDataTec({data:response_data.data,loading:false,error:dataTec.error})
                
-                // //console.log(response_data)
+                // console.log(response_data)
                 
               } else {
                 throw new Error('Error en la solicitud');
@@ -167,12 +182,12 @@ const RightQuadrant =(props)=>{
                     <div className='menuSearchData' >
                     <div className='menuSearchColumn'>
                         
-                        <Selector opGeneral={true} txtOpGen={'TODOS'}  opt_de={'0'} origen={'mapa'} data={dataLocations.data.data} loading={dataLocations.loading}  titulo='Municipio' props={props}></Selector>
+                        <Selector  opGeneral={true} txtOpGen={'TODOS'}  opt_de={'0'} origen={'mapa'} data={dataLocations.data.data} loading={dataLocations.loading}  titulo='Municipio' props={props}></Selector>
                     </div>
                     <div className='menuSearchColumn'>
                         {/* <Selector data={dataSubtype.data.data} loading={dataSubtype.loading}  titulo='Tecnologia'></Selector> */}
                         {(!dataTec.loading)?
-                          <Selector  opGeneral={true} txtOpGen={'TODAS'} opt_de={'11'} origen={'mapa'}  data={dataTec.data} loading={dataTec.loading}  titulo='Tecnología' props={props}></Selector>
+                          <Selector userPermissions={props.userPermissions} opGeneral={true} txtOpGen={'TODAS'} opt_de={'11'} origen={'mapa'}  data={dataTecFiltrado} loading={dataTec.loading}  titulo='Tecnología' props={props}></Selector>
                         :<p className='loadSelect'>cargando...</p>
                     }
                         {/* <Selector  opGeneral={false} txtOpGen={''} opt_de={'11'} origen={'mapa'}  data={dataTec.data} loading={dataTec.loading}  titulo='Tecnología' props={props}></Selector> */}

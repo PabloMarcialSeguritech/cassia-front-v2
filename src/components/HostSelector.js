@@ -4,9 +4,9 @@ import Select from 'react-select'
 import data_ubi from './ubicaciones'
 import { useFetch } from '../hooks/useFetch'
 const HostSelector=({search_actions,setListSelected,setHostId,opGeneral,txtOpGen,opt_de,titulo,data,loading,origen})=>{
-    console.log(titulo)
+    // console.log(titulo)
     // console.log(opt_de)
-    console.log(data)
+    // console.log(data)
     const customStyles = {
         // Estilos para el contenedor del react-select
         control: (provided, state) => ({

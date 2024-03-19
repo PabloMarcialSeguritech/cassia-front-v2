@@ -37,7 +37,7 @@
   }
   .headContent{
     
-    width: 10%;
+    width:15%;
     height: 100%;
     position: relative;
     display: inline;
@@ -62,7 +62,7 @@ text-align: center;
 
 }
 .detailContent{
-  width: 90%;
+  width: 85%;
   height: 100%;
   position: relative;
   display: inline;
@@ -148,4 +148,8 @@ background: #3b3b3ba3;
 }
 .input-column label{
   color: aliceblue;
+}
+.contEventsActions .compactAction{
+  width: 95%;
+  height: 60%;
 }

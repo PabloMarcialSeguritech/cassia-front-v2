@@ -13,6 +13,8 @@ import serverImg2 from '../img/server_2.png';
 import serverImg3 from '../img/server_3.png';
 import serverImg4 from '../img/server_4.png';
 
+import {servidores_id} from './generales/GroupsId';
+
 function calcularPuntoMedio(coordenadas1, coordenadas2) {
   // Extraer las coordenadas de los puntos
   const [x1, y1] = coordenadas1;
@@ -36,7 +38,8 @@ function bitsToGigabits(bits) {
   return gigabits;
 }
 
-const MapBox = ({capas,switchesFO,switchesMO,setCapas,actualizar_rfi,mapAux,setmapAux,search_rfid,global_longitud,global_latitude,global_zoom,devices,markers,markersWOR,lines,downs,towers,rfid,ubicacion,switches,handleMarkerClick}) => {
+const MapBox = ({capas,switchesFO,switchesMO,setCapas,actualizar_rfi,actualizar_lpr,mapAux,setmapAux,search_rfid,global_longitud,global_latitude,global_zoom,devices,markers,markersWOR,lines,downs,towers,rfid,lpr,ubicacion,switches,handleMarkerClick}) => {
+
 
 
 
@@ -58,6 +61,7 @@ const MapBox = ({capas,switchesFO,switchesMO,setCapas,actualizar_rfi,mapAux,setm
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
   const [rfidInterval,setRfidInterval]=useState(0)
+  const [lprInterval,setLprInterval]=useState(0)
   const idCapaExistente = (id) => {
     return Object.values(capas).some(capa => capa.id === id);
   };
@@ -99,8 +103,8 @@ const MapBox = ({capas,switchesFO,switchesMO,setCapas,actualizar_rfi,mapAux,setm
        /************************************************************ CAPA Servers ************************************************************************ */
        
 
+if(servidores_id[ubicacion.dispId]!==undefined){
 
-if(ubicacion.dispId==10){
   map.loadImage(
     serverImg,
     (error, image) => {
@@ -128,6 +132,7 @@ if(ubicacion.dispId==10){
           'icon-image': 'server', // reference the image
           'icon-size': 0.06,
           'icon-anchor': 'bottom', 
+          // 'icon-allow-overlap': true, 
         },
       }
       
@@ -781,7 +786,7 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
       //console.log(downs)
       var rfidIval;
       if(rfid.length!==0){
-        console.log("add layer rfid")
+        // console.log("add layer rfid")
         const rifdLayer={
           id: 'host-rfid',
           type: 'circle',
@@ -827,10 +832,13 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
             closeOnClick: false
         })
             .setLngLat(coordinates)
-            .setHTML(`<div class='cont-rfid' style='border: 1px solid #ffffff;'>
+            // .setHTML(`<div class='cont-rfid' style='border: 1px solid #ffffff;'>
+            // <div class='titleRFID'><div class='txtTitleRfid'>Trafico</div><br></div>
+            // <div class='valRFID' style='background: ${severity_colors[severity]}'><div class='txtRfid'>${val}</div><br><br></div>
+            //     </div>`)
+                .setHTML(`<div class='cont-rfid' style='border: 1px solid #ffffff;'>
             <div class='titleRFID'><div class='txtTitleRfid'>Trafico</div><br></div>
-            <div class='valRFID' style='background: ${severity_colors[severity]}'><div class='txtRfid'>${val}</div><br><br></div>
-                
+            <div class='valRFID' style='background: ${severity_colors[severity]}'><div class='txtRfid' style='color: ${((severity!=0)?'black !important':'lime')}' >${val}</div><br><br></div>
                 </div>`)
                 .addTo(map);
         });
@@ -845,6 +853,78 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
       }else{
         console.log("******** no existe rfid *************",rfidInterval)
         clearInterval(rfidInterval);
+      }
+      
+      /************************************************************ CAPA LPR ************************************************************************ */
+      //console.log(downs)
+      var lprval;
+      if(lpr.length!==0){
+        // console.log("add layer lpr")
+        const lprLayer={
+          id: 'host-lpr',
+          type: 'circle',
+          source:  {
+            type: 'geojson',
+            data: {
+              type: 'FeatureCollection',
+              features: lpr
+            },
+          },
+          filter: ['!', ['has', 'point_count']],
+          paint: {
+            'circle-color': "#cacaca",
+            'circle-radius': 3,
+            'circle-stroke-width':1,
+            'circle-stroke-color': '#fff',
+          },
+        };
+        map.addLayer(lprLayer);
+      if(!idCapaExistente('host-lpr')){
+        setCapas((prevCapas) => ({
+          ...prevCapas,
+          [Object.keys(prevCapas).length ]: { show: true, name: 'LPR',id:`host-lpr`,layer:lprLayer,source:null ,nivel:3},
+        }));
+      }
+        var popup;
+        lpr.forEach((feature) => {
+          const coordinates = feature.geometry.coordinates.slice();
+          const val = feature.properties.lecturas; // Asegúrate de tener esta propiedad en tus datos
+          const severity = feature.properties.severidad; 
+          const activo=feature.properties.activo;
+          const severity_colors={
+            1:'#ffee00',
+            2:'#ee9d08',
+            3:'#ee5c08',
+            4:'#ff0808',
+            
+          }
+          popup = new mapboxgl.Popup({
+            className: 'custom-popup-lpr',
+            closeButton: false,
+            closeOnClick: false
+        })
+            .setLngLat(coordinates)
+            // .setHTML(`<div class='cont-rfid' style='border: 1px solid #ffffff;'>
+            // <div class='titleRFID'><div class='txtTitleRfid'>Trafico</div><br></div>
+            // <div class='valRFID' style='background: ${severity_colors[severity]}'><div class='txtRfid'>${val}</div><br><br></div>
+            //     </div>`)
+                .setHTML(`<div class='cont-lpr' style='border: 1px solid #ffffff;'>
+            <div class='titleLPR'><div class='txtTitleLpr'>Lecturas</div><br></div>
+            <div class='valLPR' style='background: ${(activo==1)?severity_colors[severity]:'rgba(20, 20, 20, 0.904)'}'><div class='txtLpr' style='color: ${((severity!=0)?'black !important':'lime')}' >${(activo==1)?val:''}</div><br><br></div>
+                </div>`)
+                .addTo(map);
+        });
+        lprval=setInterval(() => {
+          console.log("LprInterval ",lprval)
+          // console.log(map.getSource('host-rfid'))
+          setLprInterval(lprval)
+        actualizar_lpr(map,popup,lprval)
+       }, 10000);
+        
+        // console.log(rfidInterval)
+      }else{
+        console.log("******** no existe rfid *************",lprInterval)
+        clearInterval(lprInterval);
       }
       
      
@@ -1398,7 +1478,64 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
           0,
           Math.PI * 2
         );
-        context.fillStyle = 'rgba(255, 100, 100, 1)';
+        context.fillStyle = 'rgba(255, 30, 30, 1)';
+        context.strokeStyle = 'white';
+        context.lineWidth = 2 + 4 * (1 - t);
+        context.fill();
+        context.stroke();
+
+        this.data = context.getImageData(
+          0,
+          0,
+          this.width,
+          this.height
+        ).data;
+
+        map.triggerRepaint();
+
+        return true;
+      }
+    };
+
+    const staticDot = {
+      width: size,
+      height: size,
+      data: new Uint8Array(size * size * 4),
+      onAdd: function () {
+        const canvas = document.createElement('canvas');
+        canvas.width = this.width;
+        canvas.height = this.height;
+        this.context = canvas.getContext('2d');
+      },
+      render: function () {
+        const duration = 1000;
+        const t = (performance.now() % duration) / duration;
+
+        const radius = (size / 2) * 0.3;
+        const outerRadius = (size / 2) * 0.7 * t + radius;
+        const context = this.context;
+
+        // context.clearRect(0, 0, this.width, this.height);
+        // context.beginPath();
+        // context.arc(
+        //   this.width / 2,
+        //   this.height / 2,
+        //   outerRadius,
+        //   0,
+        //   Math.PI * 2
+        // );
+        // context.fillStyle = `rgba(0, 0, 200, ${1 - t})`;
+        // context.fill();
+
+        context.beginPath();
+        context.arc(
+          this.width / 2,
+          this.height / 2,
+          radius,
+          0,
+          Math.PI * 2
+        );
+        context.fillStyle = 'rgba(255, 110, 110, 1)';
         context.strokeStyle = 'white';
         context.lineWidth = 2 + 4 * (1 - t);
         context.fill();
@@ -1420,7 +1557,7 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
 
       
       map.addImage('pulsing-dot', pulsingDot, { pixelRatio: 2 });
-
+      map.addImage('static-dot', staticDot, { pixelRatio: 3 });
   // map.addSource('dot-point', {
   //   'type': 'geojson',
   //   'data': {
@@ -1458,11 +1595,19 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
     },
     filter: ['!', ['has', 'point_count']],
     layout: {
-      'icon-image': 'pulsing-dot',
+      // 'icon-image': 'static-dot',
+      'icon-image': [
+        'match',
+        ['get', 'origen'],
+        1, 'pulsing-dot', // Si el valor de 'origen' es 1, usa 'static-dot-1' como imagen
+        0, 'static-dot', // Si el valor de 'origen' es 0, usa 'static-dot-0' como imagen
+        'static-dot-default' // Valor por defecto si no coincide con ninguno de los anteriores
+      ],
       'icon-size': 0.5,
-      'icon-allow-overlap': true, // Permite la superposición del icono
+      'icon-allow-overlap': true, 
     },
   }
+  
    map.addLayer(downLayer);
 
   if(!idCapaExistente('host-down')){
@@ -1536,14 +1681,15 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
               'icon-anchor': 'bottom', 
             },
           }
-          if(ubicacion.dispId!=10){
+          // if(ubicacion.dispId!=10){
+            if(servidores_id[ubicacion.dispId]===undefined){
             map.addSource('tower-marker',towerSource );
             map.addLayer(towerLayer);
           }
           if(!idCapaExistente('tower-marker')){
             setCapas((prevCapas) => ({
               ...prevCapas,
-              [Object.keys(prevCapas).length ]: { show: (ubicacion.dispId!=10)?true:false, name: 'Torres',id:`tower-marker`,layer:towerLayer,source:towerSource ,nivel:5},
+              [Object.keys(prevCapas).length ]: { show: (servidores_id[ubicacion.dispId]===undefined)?true:false, name: 'Torres',id:`tower-marker`,layer:towerLayer,source:towerSource ,nivel:5},
             }));
           }
           map.on('mouseleave', 'tower-marker', (e) => {
