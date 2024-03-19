@@ -86,7 +86,7 @@ const popups = document.querySelectorAll('.custom-popup-findHost');
     return(
       <>
       {
-      (props.data.alert_type=="" && props.data.Estatus=="PROBLEM" &&  (props.data.tipo==1 || (props.data.tipo==0 & props.filtraOrigen==false)))?
+      ( props.data.alert_type!='diagnosta' && props.data.Estatus!="RESOLVED" && (props.data.tipo==1 || (props.data.tipo==0 & props.filtraOrigen==false)))?
       // (true)?
       
         <div className={'rowProblem '/*+props.data.Estatus*/} style={{background:menuAlertOpen?'#82829160':'#43434d60'}} onClick={menuAlertOpen?closeMenuAlert:openMenuAlert}>

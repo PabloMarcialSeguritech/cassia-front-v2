@@ -42,11 +42,11 @@ const Monitoreo=({token_item,userPermissions,dataGlobals,server,handleShowPopup,
 
     const [markers,setMarkers]=useState([])
     const [markers1, setMarkers1] = useState([]);
-const [markers2, setMarkers2] = useState([]);
-const [switchesFO, setSwitchesFO] = useState([]);
-const [switchesMO, setSwitchesMO] = useState([]);
-const [switchesDownFO, setSwitchesDownFO] = useState([]);
-const [switchesDownMO, setSwitchesDownMO] = useState([]);
+    const [markers2, setMarkers2] = useState([]);
+    const [switchesFO, setSwitchesFO] = useState([]);
+    const [switchesMO, setSwitchesMO] = useState([]);
+    const [switchesDownFO, setSwitchesDownFO] = useState([]);
+    const [switchesDownMO, setSwitchesDownMO] = useState([]);
 // //console.log(switchesFO,switchesFO,markers)
     const [markersWOR,setMarkersWOR]=useState([])
     const [lines,setLines]=useState([])
