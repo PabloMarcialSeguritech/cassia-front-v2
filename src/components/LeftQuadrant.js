@@ -61,7 +61,7 @@ const LeftQuadrant =(props)=>{
   const [optionsSelectList, setOptionsSelectList] = useState([
     // { value: '7', label: 'Down Origen', status: true },
     { value: '6', label: 'Down', status: true},
-    // { value: '7', label: 'Down Origen', status: true},
+    // { value: '7', label: 'Down Origen', status: false},
     { value: '5', label: 'Severidad 5', status: false },
     { value: '4', label: 'Severidad 4', status: false },
     { value: '3', label: 'Severidad 3', status: false },

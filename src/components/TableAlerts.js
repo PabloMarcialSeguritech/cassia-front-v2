@@ -95,7 +95,7 @@ const selectOptionList=(element)=>{
   // var dataList=props.searchResults;
   console.log(dataList)
   const contOrigen = dataList.filter(elemento => elemento.tipo === 1).length;
-  const contZabbix = dataList.filter(elemento => elemento.alert_type === "").length;
+  const contZabbix = dataList.filter(elemento => (elemento.alert_type !== "diagnosta" && elemento.Estatus!="RESOLVED")).length;
   // console.log(contadorTipo1)
   useEffect(()=>{
     setCountList(dataList.length)
