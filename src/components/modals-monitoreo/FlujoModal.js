@@ -7,7 +7,7 @@ const FlujoModal = ({ eventId ,props}) => {
     const token_item=localStorage.getItem('access_token')
    const [dataFlujo,setDataFlujo]=useState({data:[],loading:true,error:null})
    console.log(dataFlujo.data.history)
-//    console.log(props)
+   console.log(props)
 //    eventId=34990088
 
     useEffect(()=>{
@@ -19,8 +19,8 @@ const FlujoModal = ({ eventId ,props}) => {
           const fetchData = async () => {
             console.log('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/acknowledge/'+eventId)
             try {
-              console.log('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/acknowledge/'+eventId)
-           const response = await fetch('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/acknowledge/'+eventId, {                 
+              console.log('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/acknowledge/'+eventId+'?is_cassia_event='+((props.data.alert_type=="")?0:1))
+           const response = await fetch('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/acknowledge/'+eventId+'?is_cassia_event='+((props.data.alert_type=="")?0:1), {                 
                                   headers: {
                                     'Content-Type': 'application/json',
                                     Authorization: `Bearer ${token_item}`,
