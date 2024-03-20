@@ -324,7 +324,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                               <Action origen='General' disabled={true} titulo='excepcion' action={openExeption}/>
                           </div>
                           {(props.userPermissions.some(objeto => objeto.permission_id === permisos_codigo_id['acknownledge']))?<div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
-                              <Action origen='General' disabled={(  props.data.alert_type!="" )?true:false} titulo='Ack...' action={openAck}/>
+                              <Action origen='General' disabled={(  props.data.alert_type=="diagnosta" )?true:false} titulo='Ack...' action={openAck}/>
                           </div>:''}
                           <div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
 
