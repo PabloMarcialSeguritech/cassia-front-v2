@@ -95,6 +95,7 @@ const selectOptionList=(element)=>{
   // var dataList=props.searchResults;
   console.log(dataList)
   const contOrigen = dataList.filter(elemento => elemento.tipo === 1).length;
+  const contZabbix = dataList.filter(elemento => ( elemento.Estatus!="RESOLVED")).length;
   // console.log(contadorTipo1)
   useEffect(()=>{
     setCountList(dataList.length)
@@ -192,7 +193,7 @@ const selectOptionList=(element)=>{
         fetchData();
       
    }
-   const [filtraOrigen,setFiltraOrigen]=useState(false)
+   const [filtraOrigen,setFiltraOrigen]=useState((props.ubiActual.dispId==-1)?true:false)
    function search_severitys(){
     console.log(props.severityProblms)
     if(props.severityProblms.length===1 && props.severityProblms[0]==7){
@@ -219,9 +220,12 @@ const selectOptionList=(element)=>{
                               <>
                               <div className='selector-multiple'  onClick={openSelector} >
                                   <div className='selector-cont-text'>
-                                      {(props.severityProblms=="")?'Severidades...':props.severityProblms.map((element,index)=>(
+                                      {
+                                      
+                                      (props.severityProblms=="")?'Severidades...':props.severityProblms.map((element,index)=>(
                                         element=="6"?'Down, ':(element=="7"?'Down Origen, ':'S'+element+', ')
-                                      ))}
+                                      ))
+                                      }
                                   </div>
                                   <hr className="vertical-line"></hr>
                                   <div className='selector-cont-depliegue ' >
@@ -231,7 +235,12 @@ const selectOptionList=(element)=>{
                               </div>
                               {(openSelectList)?
                                 <div className='select-multiple-list' >
-                                  {
+                                  {(props.ubiActual.dispId==-1)?
+                                  <div className={'row-option-select-list option_bloqueado'} >
+                                  <input   defaultChecked={true} onClick={()=>selectOptionList(7)} value={7} name="r" type="checkbox" id={`checkboxList-${7}`}  />
+                                  <label htmlFor={`checkboxList-${0}`}>{props.optionsSelectList[1].label}</label>
+                                  </div>
+                                  :
                                       props.optionsSelectList.map((element,index)=>(
                                         <>
                                     <div className={'row-option-select-list '+((((props.severityProblms=="6" && props.optionsSelectList[index].value!="6") || (props.severityProblms!="" && props.severityProblms!="6" && props.optionsSelectList[index].value=="6")) || ((props.severityProblms=="7" && props.optionsSelectList[index].value!="7") || (props.severityProblms!="" && props.severityProblms!="7" && props.optionsSelectList[index].value=="7")))?'option_bloqueado':'')} >
@@ -267,7 +276,7 @@ const selectOptionList=(element)=>{
                 // </div>:''
                 }
                             <div className='textCardTitle'>
-                            EVENTOS ({(filtraOrigen)?contOrigen:dataList.length })
+                            EVENTOS ({(filtraOrigen)?contOrigen:contZabbix })
                             </div>
                             <div className='imgCardTitleMin'>
                               <div className='imgContent'>
@@ -310,20 +319,26 @@ const selectOptionList=(element)=>{
                         Estatus
                     </div>
                   </div>
-                  <div className='headerCell' style={{width:'5%'}}>
+                  <div className='headerCell' style={{width:'4%'}}>
                     <div className='txtHeaderCell'>
                         {/* Ack */}
                         ODD
                     </div>
                   </div>
-                  <div className='headerCell' style={{width:'15%'}}>
+                  <div className='headerCell' style={{width:'4%'}}>
+                    <div className='txtHeaderCell'>
+                        {/* Ack */}
+                        ODT
+                    </div>
+                  </div>
+                  <div className='headerCell' style={{width:'12%'}}>
                     <div className='txtHeaderCell'>
                         Last Ack Message
                     </div>
                   </div>
                   <div className='headerCell'style={{width:'12%'}}>
                     <div className='txtHeaderCell'>
-                        Tiempo activo
+                        Tiempo evento
                     </div>
                   </div>
                   <div className='headerCell headerbtn'style={{width:'7%'}} onClick={()=>orderBy('Time')} >

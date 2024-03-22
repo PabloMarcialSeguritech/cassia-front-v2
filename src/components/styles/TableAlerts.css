@@ -58,6 +58,9 @@
     background-color: #1c2950;
     border: #959595 1px solid;
     border-radius: 10px;
+    max-height: 650%;
+  overflow: auto;
+
 }
 .row-option-select-list{
     position: relative;
