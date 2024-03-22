@@ -49,10 +49,16 @@ letter-spacing: 1px;
     border-color: #ee0808;
     color: #ee0808;
 }
+.inpDOWND{
+    border-color: rgb(240, 0, 191);
+    color: rgb(240, 0, 191);
+}
 .lblDOWN{
     color:  #ee0808;
 }
-
+.lblDOWND{
+    color:  rgb(240, 0, 191);
+}
 .inpDOWN4{
     border-color: #ee5c08;
     color: #ee5c08;

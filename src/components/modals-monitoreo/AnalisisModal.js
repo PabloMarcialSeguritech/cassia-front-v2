@@ -3,6 +3,7 @@ import './styles/AnalisisModal.css'
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import LoadSimple from '../LoadSimple'
+import LoadAlerts from '../LoadAlerts';
 const AnalisisModal = ({ eventId ,props}) => {
     const token_item=localStorage.getItem('access_token')
    const [dataAnalisis,setDataAnalisis]=useState({data:[],loading:true,error:null})
@@ -91,7 +92,7 @@ const AnalisisModal = ({ eventId ,props}) => {
             
             <div className='bodyContAnalisisModal'  id='bodyContAnalisisModal'>
             {
-                (dataAnalisis.loading)?<div className='contflujoload'><LoadSimple/></div>:
+                (dataAnalisis.loading)?<div className='contflujoload'><LoadAlerts/></div>:
                 <>
                 
                     <div className='contTableAnalisis'>

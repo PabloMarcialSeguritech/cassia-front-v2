@@ -18,7 +18,7 @@ const customStyles = {
       marginRight: '-50%',
       transform: 'translate(-50%, -50%)',
       width:'30%',
-      height:'50%',
+      height:'60%',
       padding:'20px',
       border:'unset'
     },
@@ -89,16 +89,17 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
     }
     const addAck=async(e)=>{
       setAddingException(true)
-      //console.log(textAreaValue,props.data.eventid)
+      console.log(props.data)
       // //console.log("element_id:"+cisSelected.element_id+" | ci-relation:"+cisRelation)
         
         const formData = new URLSearchParams();
         formData.append("message", textAreaValue);
         formData.append("close", closeEvent);
-        console.log('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/acknowledge/'+props.data.eventid)
+        formData.append("is_zabbix_event",( (props.data.alert_type=="")?true:false));
+        console.log('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/acknowledge_/'+props.data.eventid)
       
         try {
-          const response = await fetch('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/acknowledge/'+props.data.eventid, {
+          const response = await fetch('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/acknowledge_/'+props.data.eventid, {
             method: "POST",
             headers: {
               "Accept": "application/json",
@@ -276,7 +277,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                     <div className='detailContent'>
                       <div className='rowDetailExpand'>
                         <div className='textRowDetailExpand'> 
-                          {props.data.Host}
+                          {props.data.Host }
                         </div>
                       </div>
                       <div className='rowDetailExpand'>
@@ -323,7 +324,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                               <Action origen='General' disabled={true} titulo='excepcion' action={openExeption}/>
                           </div>
                           {(props.userPermissions.some(objeto => objeto.permission_id === permisos_codigo_id['acknownledge']))?<div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
-                              <Action origen='General' disabled={(props.ubiActual.dispId===9)?true:false} titulo='Ack...' action={openAck}/>
+                              <Action origen='General' disabled={(  props.data.alert_type=="diagnosta" )?true:false} titulo='Ack...' action={openAck}/>
                           </div>:''}
                           <div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
 
@@ -415,7 +416,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                             <InputForm   titulo='Event ID' text={props.data.eventid} disabled={true} ></InputForm>
                             </div>
                             
-                            <div className='formColumn' style={{height:'90px'}}>
+                            <div className='formColumn' style={{height:'40%'}}>
                             <div className='menuSearchOption'>
             <div className='compactInputForm'>
                 <label htmlFor='InputForm' className='labelInputForm'>Notas:</label>
@@ -445,7 +446,8 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
 
                             </div>
 
-                            <div className='formColumn' style={{height:'50px'}}>
+                            <div className='formColumn' >
+
                             <Action origen='General' titulo='GUARDAR' action={addAck} disabled={validaBtn}/>
 
                             <Action origen='Alert' titulo='CANCELAR' action={closeAck} disabled={false} />

@@ -7,7 +7,7 @@ import {permisos_codigo_id,servidores_id} from './generales/GroupsId'
 const Selector=({opGeneral,txtOpGen,opt_de,titulo,data,loading,props,origen,userPermissions})=>{
     // console.log(titulo)
     // // console.log(opt_de)
-    console.log(data)
+    // console.log(data)
     const customStyles = {
         // Estilos para el contenedor del react-select
         control: (provided, state) => ({
@@ -72,7 +72,7 @@ const Selector=({opGeneral,txtOpGen,opt_de,titulo,data,loading,props,origen,user
         return op                           // <option key={datas.uuid}> {datas.name} </option>
 })
 // console.log(options[opcion_default].label)
-console.log(options)
+// console.log(options)
 //console.log(opt_de)
     
     

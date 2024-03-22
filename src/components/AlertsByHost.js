@@ -113,19 +113,24 @@ useEffect(()=>{
                         Estatus
                     </div>
                   </div>
-                  <div className='headerCell' style={{width:'5%'}}>
+                  <div className='headerCell' style={{width:'4%'}}>
                     <div className='txtHeaderCell'>
                         ODD
                     </div>
                   </div>
-                  <div className='headerCell' style={{width:'15%'}}>
+                  <div className='headerCell' style={{width:'4%'}}>
+                    <div className='txtHeaderCell'>
+                    ODT
+                    </div>
+                  </div>
+                  <div className='headerCell' style={{width:'12%'}}>
                     <div className='txtHeaderCell'>
                         Ack_message
                     </div>
                   </div>
                   <div className='headerCell'style={{width:'12%'}}>
                     <div className='txtHeaderCell'>
-                        Tiempo Activo
+                        Tiempo evento
                     </div>
                   </div>
                   <div className='headerCell headerbtn'style={{width:'7%'}} onClick={()=>orderBy('Time')} >
