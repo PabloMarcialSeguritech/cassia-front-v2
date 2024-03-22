@@ -7,8 +7,8 @@ import { useFetch } from '../hooks/useFetch'
 import { Suspense, useEffect, useState } from 'react'
 import {permisos_codigo_id,servidores_id} from './generales/GroupsId'
 const RightQuadrant =(props)=>{
-    const dispId_default=11
-    console.log("rigcuadrant")
+    const dispId_default=-1
+
     // console.log(servidores_id)
     // console.log(props.token)
     const dataLocations=useFetch('zabbix/groups/municipios','',props.token,'GET',props.server)
@@ -29,7 +29,7 @@ const RightQuadrant =(props)=>{
     let s2= undefined
     let s1=undefined
     const token_item=localStorage.getItem('access_token')
-    // console.log(props.dataHosts.data)
+    console.log(props.dataHosts.data)
     if(props.dataHosts.data.length!=0){
      s4= props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 4)
      s3= props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 3)
@@ -83,8 +83,8 @@ const RightQuadrant =(props)=>{
         }else{
             props.setUbicacion({latitud:props.ubicacion.latitud,longitud:props.ubicacion.longitud,groupid:props.ubicacion.groupid,dispId:dispId_default,templateId:props.ubicacion.templateId})
         }
-        setDataTecFiltrado(filtrarPorPermiso(dataTec.data, servidores_id,props.userPermissions))
-        // setDataTecFiltrado([...[{ dispId: -1, name: "ODD", id: -1 }],...filtrarPorPermiso(dataTec.data, servidores_id,props.userPermissions)])
+        // setDataTecFiltrado(filtrarPorPermiso(dataTec.data, servidores_id,props.userPermissions))
+        setDataTecFiltrado([...[{ dispId: -1, name: "ODD", id: -1 }],...filtrarPorPermiso(dataTec.data, servidores_id,props.userPermissions)])
     }
 
     },[dataTec])
@@ -205,7 +205,7 @@ const RightQuadrant =(props)=>{
                     </div>
                 </div>
             </div>
-            <div className='column' style={{width:'30%',justifyContent: 'space-around'}}>
+            <div className='column' style={{width:'40%',justifyContent: 'space-around'}}>
                 <div className='card menuInfo' style={{background:'rgba(94, 99, 115, 0.62)'}}>
                     <div className='menuInfotitle'>
                         <div className='cardTitle'>
@@ -221,8 +221,12 @@ const RightQuadrant =(props)=>{
                         </div>
                         <div className='dataContent'  style={{borderRadius:' 0px 0px 10px 0px'}}>
                             {/* <InfoStatus titulo={'DOWN'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?'...':(props.dataHosts.data.host_availables[0].Down==""?0:props.dataHosts.data.host_availables[0].Down)}/> */}
-                            <InfoStatus titulo={'DOWN'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?props.downs.length:props.dataHosts.data.global_host_availables[0].Down}/>
+                            <InfoStatus titulo={'ODD'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?((props.ubiActual.dispId==-1)?props.downs.length:'...'):props.dataHosts.data.global_host_availables[0].Downs_origen}/>
                         </div>
+                        {(props.ubiActual.dispId!==-1)?<div className='dataContent'  style={{borderRadius:' 0px 0px 10px 0px'}}>
+                            {/* <InfoStatus titulo={'DOWN'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?'...':(props.dataHosts.data.host_availables[0].Down==""?0:props.dataHosts.data.host_availables[0].Down)}/> */}
+                            <InfoStatus titulo={'ODT'} tipo={'DOWND'} size='max' value={props.markersWOR.length==0?props.downs.length:props.dataHosts.data.global_host_availables[0].Downs_dependientes}/>
+                        </div>:''}
                     </div>
                 </div>
                 {
@@ -243,9 +247,13 @@ const RightQuadrant =(props)=>{
                             {/* <InfoStatus titulo={'UP'} tipo={'UP'}  size='max' value={props.markersWOR.length==0?'...':(props.markersWOR.length)}/> */}
                         </div>
                         <div className='dataContent'  style={{borderRadius:' 0px 0px 10px 0px'}}>
-                            <InfoStatus titulo={'DOWN'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?'...':(props.dataHosts.data.host_availables[0].Down==""?0:props.dataHosts.data.host_availables[0].Down)}/>
+                            <InfoStatus titulo={'ODD'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?((props.ubiActual.dispId==-1)?props.downs.length:'...'):(props.dataHosts.data.host_availables[0].Downs_origen==""?0:props.dataHosts.data.host_availables[0].Downs_origen)}/>
                             {/* <InfoStatus titulo={'DOWN'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?'...':props.downs.length}/> */}
                         </div>
+                        {(props.ubiActual.dispId!==-1)?<div className='dataContent'  style={{borderRadius:' 0px 0px 10px 0px'}}>
+                            <InfoStatus titulo={'DDD'} tipo={'DOWND'} size='max' value={props.markersWOR.length==0?'...':(props.dataHosts.data.host_availables[0].Downs_origen==""?0:props.dataHosts.data.host_availables[0].Downs_dependientes)}/>
+                            {/* <InfoStatus titulo={'DOWN'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?'...':props.downs.length}/> */}
+                        </div>:''}
                     </div>
                 </div>
                 :''

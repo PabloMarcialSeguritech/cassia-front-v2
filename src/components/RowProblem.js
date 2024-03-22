@@ -86,7 +86,7 @@ const popups = document.querySelectorAll('.custom-popup-findHost');
     return(
       <>
       {
-      ( props.data.alert_type!='diagnosta' && props.data.Estatus!="RESOLVED" && (props.data.tipo==1 || (props.data.tipo==0 & props.filtraOrigen==false)))?
+      (  props.data.Estatus!="RESOLVED" && (props.data.tipo==1 || (props.data.tipo==0 & props.filtraOrigen==false)))?
       // (true)?
       
         <div className={'rowProblem '/*+props.data.Estatus*/} style={{background:menuAlertOpen?'#82829160':'#43434d60'}} onClick={menuAlertOpen?closeMenuAlert:openMenuAlert}>
@@ -116,15 +116,20 @@ const popups = document.querySelectorAll('.custom-popup-findHost');
                   <div className='problemCell' style={{width:'10%'}}>
                     <div className='txtProblemCell'>
                     {/* {props.data.ip} */}
-                    {props.data.Estatus+props.data.alert_type}
+                    {props.data.Estatus}
                     </div>
                   </div>
-                  <div className='problemCell' style={{width:'5%'}}>
+                  <div className='problemCell' style={{width:'4%'}}>
                     <div className='txtProblemCell'>
                     {props.data.tipo}
                     </div>
                   </div>
-                  <div className='problemCell' style={{width:'15%'}}>
+                  <div className='problemCell' style={{width:'4%'}}>
+                    <div className='txtProblemCell' style={{fontWeight:'bold'}}>
+                    {props.data.dependents}
+                    </div>
+                  </div>
+                  <div className='problemCell' style={{width:'12%'}}>
                     <div className='txtProblemCell'>
                     {props.data.Ack_message.length > 20 ? `${props.data.Ack_message.slice(0, 20)}...` : props.data.Ack_message}
                        {/* {props.data.Ack_message} */}

@@ -20,7 +20,7 @@ import data_switches from '../components/switches'
 import ShowLayers from '../components/ShowLayers'
 import { render } from '@testing-library/react'
 const Monitoreo=({token_item,userPermissions,dataGlobals,server,handleShowPopup,estados_list,estadoSelected,setEstadoSelected})=>{
-  const dispId_default=11
+  const dispId_default=-1
   const [capas,setCapas]=useState({})
   const global_longitud=dataGlobals.find(obj => obj.name === 'state_longitude')
   const global_latitude=dataGlobals.find(obj => obj.name === 'state_latitude')
@@ -59,7 +59,7 @@ const Monitoreo=({token_item,userPermissions,dataGlobals,server,handleShowPopup,
     const [loading,setLoading]=useState(true);
     const [error,setError]=useState(null);
     const [devices,setDevices]=useState({data:[],loading:true,error:null});
-    // //console.log(devices)
+    console.log(devices)
     const [dataProblems,setDataProblems]=useState({data:[],loading:true,error:null})
     // const downs_list=useFetch('zabbix/layers/downs',0,token_item,'GET')
     const[downs_list,setDownsList]=useState({data:[],loading:true,error:null});
@@ -265,10 +265,20 @@ useEffect(()=>{
      /****************************************************************** */
      function objeto_downs(downs_list){
       // //console.log(devices)
+      let flag_ubicacion=false
       downs_list.map((host, index, array)=>
           {
+            
+            if (ubicacion.dispId==-1 && !flag_ubicacion) {
+              if(host.length!==0 && host.latitude.replace(",", ".")>=-90 && host.latitude.replace(",", ".")<=90){
+                setUbicacion({latitud:host.latitude,longitud:host.longitude,groupid:ubicacion.groupid,dispId:ubicacion.dispId,templateId:ubicacion.templateId})
+                // //console.log(host);
+                flag_ubicacion=true
+              }
+            }
             if(host.length!==0 && host.latitude.replace(",", ".")>=-90 && host.latitude.replace(",", ".")<=90 ){
               // //console.log(host.hostid)
+              
               // const hostidC = devices.data.hosts.find(obj => obj.hostid === host.hostid)
               // //console.log(hostidC)
               // //console.log(hostidC.hostidC)
@@ -427,7 +437,7 @@ useEffect(()=>{
     
     
     useEffect(()=>{
-      search_devices()
+      // search_devices()
       search_downs()
       // search_rfid()
     },[])
@@ -1424,7 +1434,7 @@ useEffect(()=>{
           {
             loaderMap ?'':
             <>
-            <SearchHost mapAux={mapAux} setmapAux={setmapAux}  devices={devices} markersWOR={markersWOR}></SearchHost>
+            <SearchHost mapAux={mapAux} setmapAux={setmapAux} ubiActual={ubiActual} downs_list={downs_list} devices={devices} markersWOR={markersWOR}></SearchHost>
           <Notifications estadoSelected={estadoSelected} setEstadoSelected={setEstadoSelected} estados_list={estados_list} dataGlobals={dataGlobals} server={server} handleShowPopup={handleShowPopup} mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} devices={devices}  ubiActual={ubiActual}/>
           
             </>

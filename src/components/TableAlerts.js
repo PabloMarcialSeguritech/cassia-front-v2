@@ -95,7 +95,7 @@ const selectOptionList=(element)=>{
   // var dataList=props.searchResults;
   console.log(dataList)
   const contOrigen = dataList.filter(elemento => elemento.tipo === 1).length;
-  const contZabbix = dataList.filter(elemento => (elemento.alert_type !== "diagnosta" && elemento.Estatus!="RESOLVED")).length;
+  const contZabbix = dataList.filter(elemento => ( elemento.Estatus!="RESOLVED")).length;
   // console.log(contadorTipo1)
   useEffect(()=>{
     setCountList(dataList.length)
@@ -319,20 +319,26 @@ const selectOptionList=(element)=>{
                         Estatus
                     </div>
                   </div>
-                  <div className='headerCell' style={{width:'5%'}}>
+                  <div className='headerCell' style={{width:'4%'}}>
                     <div className='txtHeaderCell'>
                         {/* Ack */}
                         ODD
                     </div>
                   </div>
-                  <div className='headerCell' style={{width:'15%'}}>
+                  <div className='headerCell' style={{width:'4%'}}>
+                    <div className='txtHeaderCell'>
+                        {/* Ack */}
+                        ODT
+                    </div>
+                  </div>
+                  <div className='headerCell' style={{width:'12%'}}>
                     <div className='txtHeaderCell'>
                         Last Ack Message
                     </div>
                   </div>
                   <div className='headerCell'style={{width:'12%'}}>
                     <div className='txtHeaderCell'>
-                        Tiempo activo
+                        Tiempo evento
                     </div>
                   </div>
                   <div className='headerCell headerbtn'style={{width:'7%'}} onClick={()=>orderBy('Time')} >

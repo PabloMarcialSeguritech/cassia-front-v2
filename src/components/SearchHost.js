@@ -10,6 +10,7 @@ import mapboxgl from 'mapbox-gl';
 
 const SearchHost =(props)=>{
     // console.log(props.devices.data.hosts)
+    console.log(props.downs_list)
     const [resultList,setResultList]=useState([])
     const [inputIp,setInputIP]=useState("")
     const [chekedSearch,setChekedSearch]=useState(true)
@@ -73,16 +74,19 @@ const popups = document.querySelectorAll('.custom-popup-findHost');
         // console.log(value)
         setInputIP(value)
         validateIp(value)
-        const filteredResults = props.devices.data.hosts.filter((item) => {
-            // Convierte todos los valores a cadenas para realizar una búsqueda sin distinción entre mayúsculas y minúsculas
-            return Object.entries(item).some(([key, value]) => {
-              if (key === 'ip' || key=== 'Host') {
-                return String(value).toLowerCase().includes(term.toLowerCase());
-              }
-              return false; // Si no es el atributo 'ip', retorna falso para continuar buscando en otros atributos
-            });
+        if(props.ubiActual.dispId==-1){
+          
+        }
+        const hostArray=(props.ubiActual.dispId==-1)?props.downs_list.data.downs:props.devices.data.hosts
+        const filteredResults = hostArray.filter((item) => {
+          // Convierte todos los valores a cadenas para realizar una búsqueda sin distinción entre mayúsculas y minúsculas
+          return Object.entries(item).some(([key, value]) => {
+            if (key === 'ip' || key=== 'Host' || key=== 'name') {
+              return String(value).toLowerCase().includes(term.toLowerCase());
+            }
+            return false; // Si no es el atributo 'ip', retorna falso para continuar buscando en otros atributos
           });
-        //   console.log(filteredResults)
+        });
           setResultList(filteredResults)
           
       }
@@ -117,7 +121,7 @@ const popups = document.querySelectorAll('.custom-popup-findHost');
                             <div className='row-searchHost-list' id={index} onClick={()=>handleSelected(element)}>
                                 <div className='cont-row-searchHost-txt'>
                                     <div className='ip-row-searchHost' >{element.ip+" / "}</div>
-                                    <div> &nbsp; {element.Host}</div>
+                                    <div> &nbsp; {(props.ubiActual.dispId==-1)?element.name:element.Host}</div>
                                     {(element.latitude.replace(",", ".")<-90 || element.latitude.replace(",", ".")>90)?
                                     <div style={{color:'red'}}> &nbsp; coordenadas erroneas</div>:''
                                     }

@@ -71,9 +71,8 @@ const MapBox = ({capas,switchesFO,switchesMO,setCapas,actualizar_rfi,actualizar_
     mapRef.current  = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/giorocha/clkirdmmx00ox01qm7js2bdas',
-      // style:'mapbox://styles/mapbox/navigation-night-v1',
-      // style:'mapbox://styles/giorocha/clklfh8h8011001qm5hah2vje',
-      // style: 'mapbox://styles/mapbox/dark-v11',
+      // style:'mapbox://styles/giorocha/clu0fbjhb005001pd5r0bafzc',///white mode
+      
       zoom: zoom_provicional,
       center:[longitud_provicional,latitud_provicional]
 //       center: [-73.9709, 40.6712], // starting position [lng, lat]
@@ -150,10 +149,11 @@ if(servidores_id[ubicacion.dispId]!==undefined){
     },
     filter: ['!', ['has', 'point_count']],
     paint: {
+      // 'circle-color': "#58c322",//"#00ff70",
       'circle-color': "#00ff70",
-      'circle-radius': 3,
+      'circle-radius': 3,//3
       'circle-stroke-width':1,
-      'circle-stroke-color': '#d1d1d1',
+      'circle-stroke-color':'#d1d1d1',
     }
     ,
   }
@@ -222,7 +222,8 @@ map.on('click', 'host-markerWOR', (e) => {
               'line-color':[
                 'match',
                 ['get', 'severity'], 
-                0, '#62a0bd', 
+                // 0,'#36cefd',// day mode
+                0,'#62a0bd',
                 1, '#ffee00', 
                 2, '#ee9d08', 
                 3, '#ee5c08', 
@@ -1501,7 +1502,7 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
           Math.PI * 2
         );
         // context.fillStyle = 'rgba(255, 110, 110, 1)';
-        context.fillStyle = 'rgba(255, 50, 50, 1)';
+        context.fillStyle = 'rgb(240, 0, 191)';
         context.strokeStyle = 'white';
         context.lineWidth = 2 + 4 * (1 - t);
         context.fill();
@@ -1565,7 +1566,7 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
       'icon-image': [
         'match',
         ['get', 'origen'],
-        1, 'static-dot', //'pulsing-dot'
+        1, 'pulsing-dot', //'pulsing-dot'
         0, 'static-dot', // Si el valor de 'origen' es 0, usa 'static-dot-0' como imagen
         'static-dot-default' // Valor por defecto si no coincide con ninguno de los anteriores
       ],
