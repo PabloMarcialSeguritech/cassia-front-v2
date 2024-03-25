@@ -303,16 +303,17 @@ const selectOptionList=(element)=>{
                         Severidad
                     </div>
                   </div>
+                  <div className='headerCell' style={{width:'19%'}}>
+                    <div className='txtHeaderCell'>
+                        Incidencia
+                    </div>
+                  </div>
                   <div className='headerCell' style={{width:'26%'}}>
                     <div className='txtHeaderCell' >
                         Host
                     </div>
                   </div>
-                  <div className='headerCell' style={{width:'15%'}}>
-                    <div className='txtHeaderCell'>
-                        Incidencia
-                    </div>
-                  </div>
+                  
                   <div className='headerCell' style={{width:'10%'}}>
                     <div className='txtHeaderCell'>
                         {/* IP */}
@@ -328,7 +329,7 @@ const selectOptionList=(element)=>{
                   <div className='headerCell' style={{width:'4%'}}>
                     <div className='txtHeaderCell'>
                         {/* Ack */}
-                        ODT
+                        DDT
                     </div>
                   </div>
                   <div className='headerCell' style={{width:'12%'}}>
@@ -336,18 +337,18 @@ const selectOptionList=(element)=>{
                         Last Ack Message
                     </div>
                   </div>
-                  <div className='headerCell'style={{width:'12%'}}>
+                  <div className='headerCell'style={{width:'10%'}}>
                     <div className='txtHeaderCell'>
                         Tiempo evento
                     </div>
                   </div>
-                  <div className='headerCell headerbtn'style={{width:'7%'}} onClick={()=>orderBy('Time')} >
+                  <div className='headerCell headerbtn'style={{width:'6%'}} onClick={()=>orderBy('Time')} >
                     <div className='txtHeaderCell'>
                         Fecha
                     </div>
                     <img className='img-field-acciones' src={'/iconos/'+((!orderAsc)?'up':'down')+'-arrow-select.png'} title='expand' alt='expand' name='expand'   />
                   </div>
-                  <div className='headerCell'style={{width:'7%'}}>
+                  <div className='headerCell'style={{width:'6%'}}>
                     <div className='txtHeaderCell'>
                         Hora
                     </div>
