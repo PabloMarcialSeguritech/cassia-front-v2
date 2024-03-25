@@ -120,7 +120,7 @@ useEffect(()=>{
                   </div>
                   <div className='headerCell' style={{width:'4%'}}>
                     <div className='txtHeaderCell'>
-                    ODT
+                    DDT
                     </div>
                   </div>
                   <div className='headerCell' style={{width:'12%'}}>
