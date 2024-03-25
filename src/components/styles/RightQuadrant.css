@@ -147,3 +147,45 @@ display: block;
     font-size: larger;
     color: aliceblue;
 }
+/********************************************************************/
+.tooltiptab {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+  }
+  
+  .tooltiptab .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: rgba(240, 248, 255, 0.684);
+    color: #1b315f;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    border: 2px solid #354058;
+    font-size: small;
+    font-weight: bold;
+  }
+  
+  .tooltiptab .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+  }
+  
+  .tooltiptab:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+  }
