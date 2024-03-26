@@ -19,7 +19,8 @@ const RightQuadrant =(props)=>{
 //     console.log(dataTecFiltrado)
 //    console.log(dataTec.data)
 
-//    console.log(props.ubiActual.templateId)
+   console.log(props.downs_list)
+
    const metrica=dataDisp.data.find(obj => obj.template_id === props.ubiActual.templateId)
 //    console.log(metrica)
 
@@ -226,12 +227,12 @@ const RightQuadrant =(props)=>{
                         <div className='dataContent tooltiptab'  style={{borderRadius:' 0px 0px 10px 0px'}}>
                         <span class="tooltiptext">Dispositivos totales afectados</span>
                             {/* <InfoStatus titulo={'DOWN'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?'...':(props.dataHosts.data.host_availables[0].Down==""?0:props.dataHosts.data.host_availables[0].Down)}/> */}
-                            <InfoStatus titulo={'DOWNS'} tipo={'DOWND'} size='max' value={props.markersWOR.length==0?props.downs.length:props.dataHosts.data.global_host_availables[0].Down}/>
+                            <InfoStatus titulo={'DOWNS'} tipo={'DOWND'} size='max' value={props.markersWOR.length==0?((props.downs_list.data.length==0)?'...':props.downs_list.data.global_count.downs_totales):props.dataHosts.data.global_host_availables[0].Down}/>
                         </div>
                         <div className='dataContent tooltiptab'  style={{borderRadius:' 0px 0px 10px 0px'}}>
                         <span class="tooltiptext">Origin Device Down</span>
                             {/* <InfoStatus titulo={'DOWN'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?'...':(props.dataHosts.data.host_availables[0].Down==""?0:props.dataHosts.data.host_availables[0].Down)}/> */}
-                            <InfoStatus titulo={'ODD'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?((props.ubiActual.dispId==-1)?props.downs.length:'...'):props.dataHosts.data.global_host_availables[0].Downs_origen}/>
+                            <InfoStatus titulo={'ODD'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?((props.ubiActual.dispId==-1)?((props.downs_list.data.length==0)?'...':props.downs_list.data.global_count.downs_origen):'...'):props.dataHosts.data.global_host_availables[0].Downs_origen}/>
                         </div>
                         
                     </div>
@@ -254,11 +255,11 @@ const RightQuadrant =(props)=>{
                             {/* <InfoStatus titulo={'UP'} tipo={'UP'}  size='max' value={props.markersWOR.length==0?'...':(props.markersWOR.length)}/> */}
                         </div>
                         {<div className='dataContent'  style={{borderRadius:' 0px 0px 10px 0px'}}>
-                            <InfoStatus titulo={'DOWNS'} tipo={'DOWND'} size='max' value={props.markersWOR.length==0?'...':(props.dataHosts.data.host_availables[0].Down==""?0:props.dataHosts.data.host_availables[0].Down)}/>
+                            <InfoStatus titulo={'DOWNS'} tipo={'DOWND'} size='max' value={props.markersWOR.length==0?((props.downs_list.data.length==0)?'...':props.downs_list.data.filter_count.downs_totales):(props.dataHosts.data.host_availables[0].Down==""?0:props.dataHosts.data.host_availables[0].Down)}/>
                             {/* <InfoStatus titulo={'DOWN'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?'...':props.downs.length}/> */}
                         </div>}
                         <div className='dataContent'  style={{borderRadius:' 0px 0px 10px 0px'}}>
-                            <InfoStatus titulo={'ODD'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?((props.ubiActual.dispId==-1)?props.downs.length:'...'):(props.dataHosts.data.host_availables[0].Downs_origen==""?0:props.dataHosts.data.host_availables[0].Downs_origen)}/>
+                            <InfoStatus titulo={'ODD'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?((props.ubiActual.dispId==-1)?((props.downs_list.data.length==0)?'...':props.downs_list.data.filter_count.downs_origen):'...'):(props.dataHosts.data.host_availables[0].Downs_origen==""?0:props.dataHosts.data.host_availables[0].Downs_origen)}/>
                             {/* <InfoStatus titulo={'DOWN'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?'...':props.downs.length}/> */}
                         </div>
                         
