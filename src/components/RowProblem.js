@@ -87,6 +87,7 @@ const popups = document.querySelectorAll('.custom-popup-findHost');
       <>
       {
       (  props.data.Estatus!="RESOLVED" && (props.data.tipo==1 || (props.data.tipo==0 & props.filtraOrigen==false)))?
+      // (  props.data.Estatus!="RESOLVED" && (props.data.severity==6 && props.data.tipo==1 ) || (props.data.severity!==6 ) )?
       // (true)?
       
         <div className={'rowProblem '/*+props.data.Estatus*/} style={{background:menuAlertOpen?'#82829160':'#43434d60'}} onClick={menuAlertOpen?closeMenuAlert:openMenuAlert}>
@@ -102,7 +103,7 @@ const popups = document.querySelectorAll('.custom-popup-findHost');
                   <div className='problemCell' style={{width:'19%'}}>
                     <div className='txtProblemCell'>
                       {/* Diagnosta:<br/> */}
-                      {props.data.Problem.length > 25 ? `${props.data.Problem.slice(0, 25)}...` : ((props.data.Problem=="Unavailable by ICMP ping" && props.data.alert_type=="diagnosta")?"CASSIA detecto DESCONEXIÓN en:":props.data.Problem )}
+                      {props.data.Problem.length > 25 ? `${props.data.Problem.slice(0, 25)}...` : ((props.data.Problem=="Unavailable by ICMP ping" )?"CASSIA detecto DESCONEXIÓN en:":props.data.Problem )}
                     
                     </div>
                   </div>
