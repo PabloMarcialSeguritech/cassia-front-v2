@@ -80,15 +80,77 @@ align-items: center;
     font-size: medium;
 }
 /**********************Animation*****************************/
-.dots-container {
+.dots-container-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.dots-action {
+  height: 10px;
+    width: 20px;
+    margin-right: 20px;
+    border-radius: 50%;
+    background-color: #bbfcb3;
+ 
+  animation: pulse-action 1.5s infinite ease-in-out;
+ 
+}
+
+.dots-action:last-child {
+  margin-right: 0;
+}
+
+.dots-action:nth-child(1) {
+  animation-delay: -0.3s;
+}
+
+.dots-action:nth-child(2) {
+  animation-delay: -0.1s;
+}
+
+.dots-action:nth-child(3) {
+  animation-delay: 0.1s;
+}
+
+@keyframes pulse-action {
+  0% {
+    transform: scale(0.8);
+    background-color: #b3fcb3;
+    box-shadow: 0 0 0 0 rgba(184, 252, 178, 0.7);
+  }
+  25% {
+      transform: scale(0.8);
+      background-color: #96d39e;
+      box-shadow: 0 0 0 0 rgba(152, 201, 142, 0.7);
+    }
+  50% {
+    transform: scale(1.2);
+    background-color: #6cfb67;
+    box-shadow: 0 0 0 10px rgba(178, 212, 252, 0);
+  }
+  75% {
+      transform: scale(0.8);
+      background-color: #96d39e;
+      box-shadow: 0 0 0 0 rgba(152, 201, 142, 0.7);
+    }
+  100% {
+    transform: scale(0.8);
+    background-color: #b3fcbd;
+    box-shadow: 0 0 0 0 rgba(190, 252, 178, 0.7);
+  }
+}
+/* .dots-container {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100%;
     width: 100%;
-  }
+  } */
   
-  .dot {
+  /* .dot {
     height: 10px;
     width: 20px;
     margin-right: 20px;
@@ -111,9 +173,9 @@ align-items: center;
   
   .dot:nth-child(3) {
     animation-delay: 0.1s;
-  }
+  } */
   
-  @keyframes pulse {
+  /* @keyframes pulse {
     0% {
       transform: scale(0.8);
       background-color: #b3fcb3;
@@ -139,7 +201,7 @@ align-items: center;
       background-color: #b3fcbd;
       box-shadow: 0 0 0 0 rgba(190, 252, 178, 0.7);
     }
-  }
+  } */
 
   /***************************/
   .loading-wave {

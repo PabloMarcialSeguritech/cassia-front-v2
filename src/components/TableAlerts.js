@@ -193,7 +193,8 @@ const selectOptionList=(element)=>{
         fetchData();
       
    }
-   const [filtraOrigen,setFiltraOrigen]=useState((props.ubiActual.dispId==-1)?true:false)
+  //  const [filtraOrigen,setFiltraOrigen]=useState((props.ubiActual.dispId==-1)?true:false)
+   const [filtraOrigen,setFiltraOrigen]=useState((props.severityProblms[0]==6)?true:false)
    function search_severitys(){
     console.log(props.severityProblms)
     if(props.severityProblms.length===1 && props.severityProblms[0]==7){
@@ -223,7 +224,7 @@ const selectOptionList=(element)=>{
                                       {
                                       
                                       (props.severityProblms=="")?'Severidades...':props.severityProblms.map((element,index)=>(
-                                        element=="6"?'Down, ':(element=="7"?'Down Origen, ':'S'+element+', ')
+                                        element=="6"?'Down Origen, ':(element=="7"?'Down Origen, ':'S'+element+', ')
                                       ))
                                       }
                                   </div>
@@ -326,7 +327,7 @@ const selectOptionList=(element)=>{
                         ODD
                     </div>
                   </div>
-                  <div className='headerCell' style={{width:'4%'}}>
+                  <div className='headerCell' style={{width:'4%'}} >
                     <div className='txtHeaderCell'>
                         {/* Ack */}
                         DDT
