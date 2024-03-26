@@ -97,7 +97,9 @@ align-items: center;
 .contTopInfoFlujo{
     position: relative;
     width: 100%;
+
     height: 20%;
+
     display: flex;
     justify-content: center;
 }
@@ -131,9 +133,11 @@ align-items: center;
     justify-content: center;
     align-items: center;
     /* background-color: green; */
+
     color: rgb(51, 51, 51);
     font-size: small;
     font-weight: bold;
+
 }
 .txtStatusFlujo.FINALIZADO{
     background-color: green;
@@ -150,7 +154,9 @@ align-items: center;
 .contBotInfoFlujo{
     position: relative;
     width: 100%;
+
     height: 80%;
+
     display: flex;
     justify-content: center;
 }
@@ -184,7 +190,9 @@ align-items: center;
 .contMsgFlujo{
     position: relative;
     width: 100%;
+
     height: 80%;
+
     display: flex;
     /* justify-content: right; */
     align-items: center;
@@ -194,6 +202,8 @@ align-items: center;
     justify-content: right;
 }
 
+
+
 .contMsgFlujo.impar{
     justify-content: left;
 }
@@ -201,7 +211,9 @@ align-items: center;
 
     position: relative;
     width: 100%;
+
     height: 20%;
+
     display: flex;
     
     align-items: center;
