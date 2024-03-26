@@ -218,20 +218,22 @@ const RightQuadrant =(props)=>{
                         </div>
                     </div>
                     <div className='menuInfoData' >
-                        <div className='dataContent' style={{borderRadius:' 0px 0px 0px 10px'}}>
+                        <div className='dataContent tooltiptab' style={{borderRadius:' 0px 0px 0px 10px'}}>
+                        <span class="tooltiptext">Dispositivos totales en servicio</span>
                             {/* <InfoStatus titulo={'UP'} tipo={'UP'}  size='max'value={props.markersWOR.length==0?'...':(props.dataHosts.data.host_availables[0].UP==""?0:props.dataHosts.data.host_availables[0].UP)}/> */}
                             <InfoStatus titulo={'UP'} tipo={'UP'}  size='max' value={props.markersWOR.length==0?'...':(props.dataHosts.data.global_host_availables[0].UP)}/>
+                        </div>
+                        <div className='dataContent tooltiptab'  style={{borderRadius:' 0px 0px 10px 0px'}}>
+                        <span class="tooltiptext">Dispositivos totales afectados</span>
+                            {/* <InfoStatus titulo={'DOWN'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?'...':(props.dataHosts.data.host_availables[0].Down==""?0:props.dataHosts.data.host_availables[0].Down)}/> */}
+                            <InfoStatus titulo={'DOWNS'} tipo={'DOWND'} size='max' value={props.markersWOR.length==0?props.downs.length:props.dataHosts.data.global_host_availables[0].Down}/>
                         </div>
                         <div className='dataContent tooltiptab'  style={{borderRadius:' 0px 0px 10px 0px'}}>
                         <span class="tooltiptext">Origin Device Down</span>
                             {/* <InfoStatus titulo={'DOWN'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?'...':(props.dataHosts.data.host_availables[0].Down==""?0:props.dataHosts.data.host_availables[0].Down)}/> */}
                             <InfoStatus titulo={'ODD'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?((props.ubiActual.dispId==-1)?props.downs.length:'...'):props.dataHosts.data.global_host_availables[0].Downs_origen}/>
                         </div>
-                        {(props.ubiActual.dispId!==-1)?<div className='dataContent tooltiptab'  style={{borderRadius:' 0px 0px 10px 0px'}}>
-                        <span class="tooltiptext">Device Down Tree</span>
-                            {/* <InfoStatus titulo={'DOWN'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?'...':(props.dataHosts.data.host_availables[0].Down==""?0:props.dataHosts.data.host_availables[0].Down)}/> */}
-                            <InfoStatus titulo={'DDT'} tipo={'DOWND'} size='max' value={props.markersWOR.length==0?props.downs.length:props.dataHosts.data.global_host_availables[0].Downs_dependientes}/>
-                        </div>:''}
+                        
                     </div>
                 </div>
                 {
@@ -251,14 +253,15 @@ const RightQuadrant =(props)=>{
                             <InfoStatus titulo={'UP'} tipo={'UP'}  size='max'value={props.markersWOR.length==0?'...':(props.dataHosts.data.host_availables[0].UP==""?0:props.dataHosts.data.host_availables[0].UP)}/>
                             {/* <InfoStatus titulo={'UP'} tipo={'UP'}  size='max' value={props.markersWOR.length==0?'...':(props.markersWOR.length)}/> */}
                         </div>
+                        {<div className='dataContent'  style={{borderRadius:' 0px 0px 10px 0px'}}>
+                            <InfoStatus titulo={'DOWNS'} tipo={'DOWND'} size='max' value={props.markersWOR.length==0?'...':(props.dataHosts.data.host_availables[0].Down==""?0:props.dataHosts.data.host_availables[0].Down)}/>
+                            {/* <InfoStatus titulo={'DOWN'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?'...':props.downs.length}/> */}
+                        </div>}
                         <div className='dataContent'  style={{borderRadius:' 0px 0px 10px 0px'}}>
                             <InfoStatus titulo={'ODD'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?((props.ubiActual.dispId==-1)?props.downs.length:'...'):(props.dataHosts.data.host_availables[0].Downs_origen==""?0:props.dataHosts.data.host_availables[0].Downs_origen)}/>
                             {/* <InfoStatus titulo={'DOWN'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?'...':props.downs.length}/> */}
                         </div>
-                        {(props.ubiActual.dispId!==-1)?<div className='dataContent'  style={{borderRadius:' 0px 0px 10px 0px'}}>
-                            <InfoStatus titulo={'DDD'} tipo={'DOWND'} size='max' value={props.markersWOR.length==0?'...':(props.dataHosts.data.host_availables[0].Downs_origen==""?0:props.dataHosts.data.host_availables[0].Downs_dependientes)}/>
-                            {/* <InfoStatus titulo={'DOWN'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?'...':props.downs.length}/> */}
-                        </div>:''}
+                        
                     </div>
                 </div>
                 :''

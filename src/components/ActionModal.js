@@ -86,16 +86,16 @@ const ActionModal = ({isOpen,ip,handleShowPopup, data,actionSelected,statusPing,
                         {'Desea ejecutar la accion "'+actionSelected.name+'" ?'}
                    </p>:
                        <>
-                       { dataPing.loading===true?<section className="dots-container">
+                       { dataPing.loading===true?<section className="dots-container-action">
                        {/* { true?<section className="dots-container"> */}
-                        <div className="dot" style={{height:'15px'}}></div>
-                        <div className="dot" style={{height:'15px'}}></div>
-                        <div className="dot" style={{height:'15px'}}></div>
-                        <div className="dot" style={{height:'15px'}}></div>
-                        <div className="dot" style={{height:'15px'}}></div>
-                        <div className="dot" style={{height:'15px'}}></div>
-                        <div className="dot" style={{height:'15px'}}></div>
-                        <div className="dot" style={{height:'15px'}}></div>
+                        <div className="dots-action" style={{height:'15px'}}></div>
+                        <div className="dots-action" style={{height:'15px'}}></div>
+                        <div className="dots-action" style={{height:'15px'}}></div>
+                        <div className="dots-action" style={{height:'15px'}}></div>
+                        <div className="dots-action" style={{height:'15px'}}></div>
+                        <div className="dots-action" style={{height:'15px'}}></div>
+                        <div className="dots-action" style={{height:'15px'}}></div>
+                        <div className="dots-action" style={{height:'15px'}}></div>
                     </section>:(dataPing.data.length!=0)?
                     <p className={( dataPing.data.data.action==="true" )?'msgPing':'msgErrorPing '} >
                          {(dataPing.data.data.action==="true" )?'Acción "'+actionSelected.name+'" al dispositivo "'+ip+'" ejecutada correctamente':'Acción  "'+actionSelected.name+'" ejecutada sin exitó'}

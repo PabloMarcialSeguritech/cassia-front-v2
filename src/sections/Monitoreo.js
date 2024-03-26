@@ -31,7 +31,7 @@ const Monitoreo=({token_item,userPermissions,dataGlobals,server,handleShowPopup,
     const [ubicacion,setUbicacion]=useState({latitud:global_latitude.value,longitud:global_longitud.value,groupid:0,dispId:dispId_default,templateId:0})
     const [ubiActual,setUbiActual]=useState({municipio:'TODOS',groupid:0,dispId:dispId_default,templateId:0})
     // const [severityProblms,setSeverityProblms]=useState(["6"])
-    const [severityProblms,setSeverityProblms]=useState([((ubiActual.dispId==-1)?"7":"6")])
+    const [severityProblms,setSeverityProblms]=useState([((ubiActual.dispId==-1)?"6":"6")])
     const [metricaSelected,setMetricaSelected]=useState("")
     const [zoom,setZoom]=useState(11)
     const [latitudes,setLatitudes]=useState([])
