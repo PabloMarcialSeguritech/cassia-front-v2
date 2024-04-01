@@ -93,7 +93,9 @@ const selectOptionList=(element)=>{
   const [countList,setCountList]=useState(0)
   var dataList=(props.searchTerm==='')?problems:props.searchResults;
   // var dataList=props.searchResults;
+  console.log("datalist desde table alert *********************************************************")
   console.log(dataList)
+  console.log(dataList.length)
   const contOrigen = dataList.filter(elemento => elemento.tipo === 1).length;
   const contZabbix = dataList.filter(elemento => ( elemento.Estatus!="RESOLVED")).length;
   // console.log(contadorTipo1)
@@ -197,15 +199,18 @@ const selectOptionList=(element)=>{
    const [filtraOrigen,setFiltraOrigen]=useState((props.severityProblms[0]==6)?true:false)
    function search_severitys(){
     console.log(props.severityProblms)
-    if(props.severityProblms.length===1 && props.severityProblms[0]==7){
-        console.log("filtra")
+    if(props.severityProblms.length===1 && props.severityProblms[0]==6){
+      // props.search_problems()
+      //   console.log("filtra")
         setFiltraOrigen(true)
-        setOpenSelect(false);props.setSearchTerm("")
+        // setOpenSelect(false);
+        // props.setSearchTerm("")
     }else{
       setFiltraOrigen(false)
-      props.search_problems();setFlagsearch(false);setOpenSelect(false);props.setSearchTerm("")
+      // props.search_problems();setFlagsearch(false);setOpenSelect(false);props.setSearchTerm("")
     }
-   
+    
+    props.search_problems();setFlagsearch(false);setOpenSelect(false);props.setSearchTerm("")
    }
     return(
 <>
@@ -238,8 +243,8 @@ const selectOptionList=(element)=>{
                                 <div className='select-multiple-list' >
                                   {(props.ubiActual.dispId==-1)?
                                   <div className={'row-option-select-list option_bloqueado'} >
-                                  <input   defaultChecked={true} onClick={()=>selectOptionList(7)} value={7} name="r" type="checkbox" id={`checkboxList-${7}`}  />
-                                  <label htmlFor={`checkboxList-${0}`}>{props.optionsSelectList[1].label}</label>
+                                  <input   defaultChecked={true} onClick={()=>selectOptionList(6)} value={6} name="r" type="checkbox" id={`checkboxList-${6}`}  />
+                                  <label htmlFor={`checkboxList-${0}`}>{props.optionsSelectList[0].label}</label>
                                   </div>
                                   :
                                       props.optionsSelectList.map((element,index)=>(
