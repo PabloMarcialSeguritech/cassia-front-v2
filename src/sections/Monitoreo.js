@@ -396,7 +396,7 @@ useEffect(()=>{
     
     function search_problems(){
       
-    setDataProblems({data:dataProblems.data,loading:true,error:dataProblems.error})
+    setDataProblems({data:dataProblems.data,loading:true,error:""})
       const fetchData = async () => {
         try {
           const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWFuLm1hcmNpYWwiLCJleHAiOjE2OTExNjg3ODZ9.LETk5Nu-2WXF571qMqTd__RxHGcyOHzg4GfAbiFejJY'; // Reemplaza con tu token de autenticación
@@ -416,7 +416,7 @@ useEffect(()=>{
           if (response.ok) {
             const response_data = await response.json();
             console.log(response_data)
-            setDataProblems({data:response_data.data,loading:false,error:dataProblems.error})
+            setDataProblems({data:response_data.data,loading:false,error:""})
             
             
           } else {
@@ -424,7 +424,7 @@ useEffect(()=>{
           }
         } catch (error) {
           // Manejo de errores
-          setDataProblems({data:dataProblems.data,loading:dataProblems.loading,error:error})
+          setDataProblems({data:[],loading:dataProblems.loading,error:error})
           //console.error(error);
         }
       };
