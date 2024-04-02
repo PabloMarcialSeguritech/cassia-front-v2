@@ -411,7 +411,8 @@ useEffect(()=>{
             andAux=(subtypefilter!=='')?andAux:''
             
       console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/problems/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter+(((ubicacion.dispId==0 && ubicacion.templateId==0) || ubicacion.dispId==-1)?'?':'&')+severityfilter)
-          const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/problems/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter+(((ubicacion.dispId==0 && ubicacion.templateId==0) || ubicacion.dispId==-1)?'?':'&')+severityfilter, {                 
+          // const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/problems/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter+(((ubicacion.dispId==0 && ubicacion.templateId==0) || ubicacion.dispId==-1)?'?':'&')+severityfilter, {     
+          const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/problems/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter+(((ubicacion.dispId==0 && ubicacion.templateId==0) || ubicacion.dispId==-1)?'?':'&')+severityfilter, {             
                               headers: {
                                 'Content-Type': 'application/json',
                                 Authorization: `Bearer ${token_item}`,
@@ -420,6 +421,7 @@ useEffect(()=>{
           if (response.ok) {
             const response_data = await response.json();
             console.log(response_data)
+            console.log("#########################################################3")
             setDataProblems({data:response_data.data,loading:false,error:""})
             
             

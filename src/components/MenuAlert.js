@@ -71,7 +71,18 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
     const [clock, setClock] = useState('');
     const [ResponseDetail,setResponseDetail]=useState('')
     const [dataTicket,setDataticket]=useState({event_id:props.data.eventid,tracker_id:'',clock:''})
-//console.log(closeEvent)
+    const [agenciaId, setAgenciaId] = useState(2);
+    const [excepcion, setExcepcion] = useState('');
+    const [cerrandoEvento, setCerrandoEvento] = useState(false);
+    console.log(agenciaId)
+    const [currentDateTime, setCurrentDateTime] = useState(getCurrentDateTimeString());
+
+  function getCurrentDateTimeString() {
+    const now = new Date();
+    // Formato de fecha y hora para datetime-local: 'YYYY-MM-DDTHH:MM'
+    return now.toISOString().slice(0, 16);
+  }
+// console.log(props.dataAgencies.data.data[0].exception_agency_id)
     const handleTextAreaChange = (event) => {
       if(event.target.value.length === 0){
           setValidaBtn(true)
@@ -81,12 +92,62 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
       
       setTextAreaValue(event.target.value);
     };
-    const addException=()=>{
-      //console.log("exepcio" )
-      //console.log(props)
-      setAddingException(true)
+    // const addException=()=>{
+    //   //console.log("exepcio" )
+    //   //console.log(props)
+    //   setAddingException(true)
       
+    // }}
+    // console.log(props.data)
+    const addException=async(e)=>{
+      console.log('ejecuta la excepcion')
+      setAddingException(true)
+      // console.log(props.data)
+      // //console.log("element_id:"+cisSelected.element_id+" | ci-relation:"+cisRelation)
+        
+        var exceptData={
+          "exception_agency_id": agenciaId,
+          "description":excepcion,
+          "hostid": props.data.hostid,
+          "created_at": currentDateTime
+        }
+        console.log(exceptData)
+        console.log('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/exceptions')
+      
+        try {
+          const response = await fetch('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/exceptions', {
+            method: "POST",
+            headers: {
+              "Accept": "application/json",
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+            },
+            body: JSON.stringify(exceptData),
+          });
+          console.log(response)
+          if (response.ok) {
+            
+            const data = await response.json();
+            //console.log(data)
+            setCloseEvent(false)
+            setExeptionOpen(false);
+            // setAddingException(false)
+            props.search_problems()
+          } else {
+            const data = await response.json();
+            console.log(data.detail)
+            setCloseEvent(false)
+            setResponseDetail(data.detail)
+            throw new Error('Error en la solicitud');
+          }
+        
+        } catch (error) {
+          setAddingException(false)
+           console.log(error)
+          
+        }
     }
+
     const addAck=async(e)=>{
       setAddingException(true)
       console.log(props.data)
@@ -184,7 +245,53 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
       // references are now sync'd and can be accessed.
       // subtitle.style.color = '#f00';
     }
-  
+  const cerrarExeption=async(e)=>{
+    console.log('ejecuta la excepcion')
+    setCerrandoEvento(true)
+    // console.log(props.data)
+    // //console.log("element_id:"+cisSelected.element_id+" | ci-relation:"+cisRelation)
+      
+      var exceptData={
+        
+        "closed_at": currentDateTime
+      }
+      console.log(exceptData)
+      console.log('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/exceptions/close'+props.data.exception_id)
+    
+      try {
+        const response = await fetch('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/exceptions/close/'+props.data.exception_id, {
+          method: "POST",
+          headers: {
+            "Accept": "application/json",
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+          },
+          body: JSON.stringify(exceptData),
+        });
+        console.log(response)
+        if (response.ok) {
+          
+          const data = await response.json();
+          //console.log(data)
+          // setCloseEvent(false)
+          // setExeptionOpen(false);
+          // setAddingException(false)
+          setCerrandoEvento(false)
+          props.search_problems()
+        } else {
+          const data = await response.json();
+          console.log(data.detail)
+          setCloseEvent(false)
+          setResponseDetail(data.detail)
+          throw new Error('Error en la solicitud');
+        }
+      
+      } catch (error) {
+        setAddingException(false)
+         console.log(error)
+        
+      }
+  }
     function closeExeption() {
       setExeptionOpen(false);
       // setAddingException(false)
@@ -238,6 +345,10 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
     },[clock,traker])
     function isEmpty(value) {
       return value === null || value === undefined || value === '';
+    }
+
+    const handleChangeException=()=>{
+
     }
     return (
       <>
@@ -297,8 +408,8 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                         </div>
                       </div>
                       <div className='rowDetailExpand'>
-                        <div className='textRowDetailExpand'> 
-                          {/* {props.data.Ack_message} */}
+                        <div className='textRowDetailExpand' style={{color:'orange'}}> 
+                          {props.data.exception_message}
                           {/* {props.data.latitude},{props.data.longitude} */}
                         </div>
                       </div>
@@ -320,9 +431,16 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                           <div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
                               <Action origen='General' disabled={false} titulo='Diagnostico' action={openAnalisis}/>
                           </div>
-                          <div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
-                              <Action origen='General' disabled={true} titulo='excepcion' action={openExeption}/>
-                          </div>
+                          {
+                            (props.data.exception_id==null)?<div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
+                            <Action origen='General' disabled={false} titulo='excepcion' action={openExeption}/>
+                        </div>:(cerrandoEvento)?<div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
+                        cerrando evento
+                    </div>:
+                        <div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
+                        <Action origen='General' disabled={false} titulo='cerrar excep.' action={cerrarExeption}/>
+                    </div>
+                          }
                           {(props.userPermissions.some(objeto => objeto.permission_id === permisos_codigo_id['acknownledge']))?<div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
                               <Action origen='General' disabled={(  props.data.alert_type=="diagnosta" )?true:false} titulo='Ack...' action={openAck}/>
                           </div>:''}
@@ -356,7 +474,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                 <div className='exceptCont card'>
                 <div className='menuActiontitle' style={{width: "100%"}}>
                 <div className='cardTitle cardTitleAlert' style={{background:'aliceblue'}} >
-                            <div className='textCardTitle' tyle={{color:'#003757',fontsize:'medium'}}>
+                            <div className='textCardTitle' style={{color:'#003757',fontsize:'medium'}}>
                             CREAR EXCEPCION:
                             </div>
                         </div>
@@ -369,14 +487,23 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                             <InputForm   titulo='Event ID' text={props.data.eventid} disabled={true} ></InputForm>
                             </div>
                             <div className='formColumn'>
-                            <Selector opGeneral={false}   txtOpGen={''}origen={'mapa'} data={props.dataAgencies.data.data} loading={props.dataAgencies.loading}  titulo='Agencia' props={props}></Selector>
+                            <Selector opGeneral={false}  onChangeSelect={setAgenciaId} txtOpGen={''}origen={'mapa'} data={props.dataAgencies.data.data} loading={props.dataAgencies.loading}  titulo='Agencia' props={props}></Selector>
                             </div>
                             <div className='formColumn'>
-                            <InputForm data={[]} loading={false} text='' setValidaBtn={setValidaBtn} titulo='Notas' disabled={false}></InputForm>
+                            <InputForm data={[]} loading={false} text='' setText={setExcepcion} setValidaBtn={setValidaBtn} titulo='Notas' onClick disabled={false}></InputForm>
                             </div>
-                            <div className='formColumn'>
-                            {/* <InputForm data={[]} loading={false} text='' titulo='Notas' disabled={false}></InputForm> */}
+                            <div className='formColumn' style={{justifyContent:'center',alignItems:'center'}}>
+                            <div className='compactInputForm' style={{paddingTop:'5%'}}>
+                <label htmlFor='InputForm' className='labelInputForm'>Fecha:</label>
+                
+                <input required name="fecha_ini" className='InputForm' style={{height:'70%',position:'relative',top:'15%'}} text={clock}  setText={setClock}  type="datetime-local" 
+                          value={currentDateTime} 
+                          onChange={(e) => setCurrentDateTime(e.target.value)}  />
+                {/* <textarea id="nota" name="nota" className="InputForm" rows="4" cols="25" style={{resize: 'none'}} onChange={handleTextAreaChange}></textarea> */}
+                
+            </div>
                             </div>
+                            
                             <div className='formColumn' style={{height:'50px'}}>
                             <Action origen='General' titulo='EJECUTAR' action={addException} disabled={validaBtn}/>
                             <Action origen='Alert' titulo='CANCELAR' action={closeExeption} disabled={false} />
