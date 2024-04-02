@@ -46,9 +46,9 @@ console.log(props.dataProblems.data)
 console.log(props.dataProblems.data.filter(elemento => elemento.tipo === 1))
 console.log( props.dataProblems.data.filter(elemento => elemento.tipo === 1).length)
 function eliminarPorAtributo(objeto, atributo, valor) {
-  // console.log(objeto[0])
+  console.log(objeto)
   for (var i = 0; i < objeto.length; i++) {
-    // console.log(i)
+    console.log(objeto[i])
       if (objeto[i][atributo] === valor) {
           delete objeto[i];
       }
@@ -133,7 +133,8 @@ function eliminarPorAtributo(objeto, atributo, valor) {
       console.log("dataproblems contiene datos ",props.dataProblems.data.length)
 
       if(props.ubiActual.dispId==-1){
-        eliminarPorAtributo(props.dataProblems.data, 'tipo', 0)
+        console.log(props.dataProblems.data)
+        // eliminarPorAtributo(props.dataProblems.data, 'tipo', 0)
       }
       if(severityActive.status){
         setS5( props.dataProblems.data.filter(elemento =>( elemento.severity === 5 && elemento.tipo===1)).length)

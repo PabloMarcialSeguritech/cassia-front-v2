@@ -25,7 +25,7 @@ const customStyles = {
 const TableAlerts=(props)=>{
   // console.log(props)
   const dataAgencies=useFetch('zabbix/exception_agencies','',props.token,'GET',props.server)
-  // console.log(dataAgencies)
+  console.log(dataAgencies)
   
   const [openSelectList,setOpenSelect]=useState(false)
   const [orderAsc,setOrderAsc]=useState(true)

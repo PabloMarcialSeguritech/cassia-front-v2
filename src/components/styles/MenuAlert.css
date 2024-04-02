@@ -153,3 +153,11 @@ background: #3b3b3ba3;
   width: 95%;
   height: 60%;
 }
+
+.dateExcepcion{
+  width: 70%;
+  height: 30%;
+  background: transparent;
+  color: aliceblue;
+  border-radius: 10px;
+}
