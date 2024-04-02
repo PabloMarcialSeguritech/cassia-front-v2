@@ -93,17 +93,18 @@ const popups = document.querySelectorAll('.custom-popup-findHost');
         <div className={'rowProblem '/*+props.data.Estatus*/} style={{background:menuAlertOpen?'#82829160':'#43434d60'}} onClick={menuAlertOpen?closeMenuAlert:openMenuAlert}>
         <span className="rowProblem-hover"> </span>
                   <div className='problemCell ' style={{width:'6%'}}>
-                    {/* <div className='txtProblemCell' >
-                        {props.severity}
-                    </div> */}
-                    {/* <div className={'sphere s'+props.data.severity}></div> */}
-                    <img  src={'/iconos/alerts'+props.data.severity+'.svg'} className={' s'+props.data.severity} alt="Logo"></img>
+                    
+                    {
+                      (props.data.exception_id==null)?<img  src={'/iconos/alerts'+props.data.severity+'.svg'} className={' s'+props.data.severity} alt="Logo"></img>:
+                      <div style={{border:'1px solid white', fontSize:'x-small', fontWeight:'bold',borderRadius:'50%',width:(props.data.exception_agency_id==2)?'50px':'30px',height:'30px',background:(props.data.exception_agency_id==2)?'blue':'green',display:'flex',justifyContent:'center',alignItems:'center' }}>{props.data.agency_name}</div>
+                    }
+                    
                     <p className='txtSeverity'>{'S-'+props.data.severity}</p>
                   </div>
                   <div className='problemCell' style={{width:'19%'}}>
                     <div className='txtProblemCell'>
                       {/* Diagnosta:<br/> */}
-                      {props.data.Problem.length > 25 ? `${props.data.Problem.slice(0, 25)}...` : ((props.data.Problem=="Unavailable by ICMP ping" )?"CASSIA detecto DESCONEXIÓN en:":props.data.Problem )}
+                      {props.data.Problem.length > 25 ? `${props.data.Problem.slice(0, 25)}...` : ((props.data.Problem.includes("Unavailable by ICMP ping") )?"CASSIA detecto DESCONEXIÓN en:":props.data.Problem )}
                     
                     </div>
                   </div>
