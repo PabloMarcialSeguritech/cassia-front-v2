@@ -118,9 +118,40 @@
   justify-content: center;
   align-items: center;
 }
+/*por host*/
+
+.cont-hostid-menu{
+  position: relative;
+  height: 100% !important;
+  width: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color:#003757;
+
+  font-weight: bold;
+}
+.cont-host-menu
+{
+  position: relative;
+  height: 100% !important;
+  width: 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.cont-ip-menu{
+  position: relative;
+  height: 100% !important;
+  width: 15%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/**/
 .cont-action-menu{
   position: relative;
-  height: 100px;
+  height: 100%;
   width: 5%;
   display: flex;
   justify-content: center;
@@ -136,10 +167,10 @@
 }
 .img-field-delete-graf {
   position: relative;
-  height: 30%;
+  height: 70%;
 }
-.img-field-delete-graf:hover{
-  height: 35%;
+.cont-img-field-delete-graf:hover{
+  height: 110%;
   cursor: pointer;
 }
 

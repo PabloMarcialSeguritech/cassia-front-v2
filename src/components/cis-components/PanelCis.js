@@ -161,8 +161,8 @@ const PanelCis=({server})=>{
         const subtypefilter=''
         let andAux=(devicefilter!=='' )?'&':'?'
               andAux=(subtypefilter!=='')?andAux:''
-        // console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter)
-              const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/'+'0'+''+devicefilter+andAux+subtypefilter, {                 
+        console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/0')
+              const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/0', {                 
                                 headers: {
                                   'Content-Type': 'application/json',
                                   Authorization: `Bearer ${localStorage.getItem('access_token')}`,
@@ -172,7 +172,7 @@ const PanelCis=({server})=>{
             if (response.ok) {
               const response_data = await response.json();
               setDevices({data:response_data.data,loading:false,error:devices.error})
-              // console.log(response_data)
+              console.log(response_data)
              
             } else {
               throw new Error('Error en la solicitud');

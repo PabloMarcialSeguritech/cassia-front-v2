@@ -633,3 +633,51 @@ border: 1px; */
 .title-tooltip{
   color: #505050;
 }
+/* *********************************************************** */
+.contSearchHostReporte{
+  position: relative;
+  height: 100%;
+  width: 30%;
+  z-index: 2;
+  display: block;
+  padding-left: 3%;
+}
+.mainbox-searchHostReporte {
+  box-sizing: border-box;
+  position: relative;
+  width: 230px;
+  height: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: center;
+  border-radius: 160px;
+  background-color: #03040b66;
+  transition: all 0.3s ease;
+  box-shadow: 3px 3px 10px rgba(67, 67, 67, 0.4);
+  border: 1px solid #f0f8ff3d;
+}
+.row-searchHost-listReporte {
+  background-color: #0e182dcc;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 30px;
+  color: #088eee;
+}
+.row-searchHost-listReporte:hover {
+  background-color: aliceblue;
+  cursor: pointer;
+}
+.cont-list-selectoresHost {
+  position: relative;
+  height: 85%;
+  width: 100%;
+  display: block;
+  justify-content: center;
+  align-items: center;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+}
