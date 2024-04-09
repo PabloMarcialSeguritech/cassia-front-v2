@@ -25,7 +25,7 @@ const customStyles = {
 const TableAlerts=(props)=>{
   // console.log(props)
   const dataAgencies=useFetch('zabbix/exception_agencies','',props.token,'GET',props.server)
-  console.log(dataAgencies)
+  // console.log(dataAgencies)
   
   const [openSelectList,setOpenSelect]=useState(false)
   const [orderAsc,setOrderAsc]=useState(true)
@@ -65,7 +65,7 @@ const selectOptionList=(element)=>{
   if (props.severityProblms.includes(element.value)) {
     // Si existe, eliminarlo
     const newArray = props.severityProblms.filter(value => value !== element.value);
-    console.log(newArray); // Output: [1, 3]
+    // console.log(newArray); // Output: [1, 3]
     props.setSeverityProblms(newArray)
   }else{
     props.setSeverityProblms([...props.severityProblms, ...element.value])
@@ -93,9 +93,9 @@ const selectOptionList=(element)=>{
   const [countList,setCountList]=useState(0)
   var dataList=(props.searchTerm==='')?problems:props.searchResults;
   // var dataList=props.searchResults;
-  console.log("datalist desde table alert *********************************************************")
-  console.log(dataList)
-  console.log(dataList.length)
+  // console.log("datalist desde table alert *********************************************************")
+  // console.log(dataList)
+  // console.log(dataList.length)
   const contOrigen = dataList.filter(elemento => elemento.tipo === 1).length;
   const contZabbix = dataList.filter(elemento => ( elemento.Estatus!="RESOLVED")).length;
   // console.log(contadorTipo1)
@@ -145,11 +145,11 @@ const selectOptionList=(element)=>{
 };
 
     function exportData(){
-      console.log('exportData')
+      // console.log('exportData')
       // setDataProblems({data:dataProblems.data,loading:true,error:dataProblems.error})
         const fetchData = async () => {
-          console.log('fetch')
-          console.log(+props.ubiActual)
+          // console.log('fetch')
+          // console.log(+props.ubiActual)
           try {
             const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWFuLm1hcmNpYWwiLCJleHAiOjE2OTExNjg3ODZ9.LETk5Nu-2WXF571qMqTd__RxHGcyOHzg4GfAbiFejJY'; // Reemplaza con tu token de autenticación
             const devicefilter=props.ubiActual.dispId!==0?'?tech_host_type='+props.ubiActual.dispId:''
@@ -198,7 +198,7 @@ const selectOptionList=(element)=>{
   //  const [filtraOrigen,setFiltraOrigen]=useState((props.ubiActual.dispId==-1)?true:false)
    const [filtraOrigen,setFiltraOrigen]=useState((props.severityProblms[0]==6)?true:false)
    function search_severitys(){
-    console.log(props.severityProblms)
+    // console.log(props.severityProblms)
     if(props.severityProblms.length===1 && props.severityProblms[0]==6){
       // props.search_problems()
       //   console.log("filtra")

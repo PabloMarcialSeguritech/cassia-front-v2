@@ -2,6 +2,7 @@
 import { useState,useEffect,useRef } from 'react'
 import './styles/disponibilidad.css'
 import Action from '../Action'
+import SearchHost from '../SearchHost'
 import { useFetch } from '../../hooks/useFetch'
 import { useFetchPost } from '../../hooks/useFetchPost'
 import SelectorAdmin from '../SelectorAdmin'
@@ -12,6 +13,7 @@ import Modal from 'react-modal';
 import { LineChart, Line,Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import MenuSearch from './MenuSearch'
 import ModalAddMultiGraph from './ModalAddMultiGraph'
+import Search from '../generales/Search'
 // import UserList from './UserList'
 const AddMultiGraphModalStyles = {
   content: {
@@ -135,11 +137,17 @@ const Disponibilidad=({server})=>{
     const [flagTodos,setFlagTodos]=useState(true)
     const [flagGeneral,setFlagGeneral]=useState(false)
     const [periodoSeleccionado, setPeriodoSeleccionado] = useState(null);
-    // console.log(opcionesTxtArrayFijo)
+    const [devices,setDevices]=useState({data:[],loading:true,error:null});
+    const [arrayHost,setArrayHost]=useState([])
+    const [viewArrayHost,setViewArrayHost]=useState(true)
+    const [reportbyHost,setReportByHost]=useState(false)
+    const [databyHost,setDataByHost]=useState([])
+    console.log(arrayHost)
+    console.log(dataInfo)
     // console.log(opcionesTxtArray)
     // console.log(opcionesArray.municipio[0])
     // console.log("total.metr ",totalLienas)
-    // console.log('flag general',flagGeneral)
+    console.log('flag general',viewArrayHost)
     // console.log('flag todos',flagTodos)
 
 
@@ -284,14 +292,22 @@ const formatDate=(date)=>{
     //   
     
     };
-// console.log(dataInfo.data)
+ 
 useEffect(()=>{
   // setSeriesKeys(countArray[elementos.length]) 
   search_reporte_disponibilidad()
+  search_devices()
 },[])
 const Buscar=()=>{
   
   search_reporte_disponibilidad()
+}
+const accionar_reporte=()=>{
+    if(reportbyHost){
+      search_reporte_host()
+    }else{
+      search_reporte_disponibilidad()
+    }
 }
 function search_reporte_disponibilidad(){
  opcionesTxtArrayFijo.municipio=[...opcionesTxtArray.municipio]
@@ -332,9 +348,10 @@ function search_reporte_disponibilidad(){
                           // console.log(response)
         if (response.ok) {
           const response_data = await response.json();
-          // console.log(response_data.data)
+          console.log(response_data.data)
          
           setTotalLineas(1)
+          setDataByHost([])
           // setSeriesKeys(countArray[totalLienas]) 
           // setDataInfo({data:response_data.data,loading:false,error:dataInfo.error})
           setDataInfo({data:response_data.data,loading:false,error:dataInfo.error})
@@ -347,6 +364,101 @@ function search_reporte_disponibilidad(){
         // Manejo de errores
         setDataInfo({data:dataInfo.data,loading:dataInfo.loading,error:error})
         //console.error(error);
+      }
+    };
+    fetchData();
+}
+
+function search_reporte_host(hostID){
+
+   let baseURL
+   
+     baseURL = 'http://'+server.ip+':'+server.port+'/api/v1/cassia/reports/availability/devices/multiple';
+  
+  const hostParam =arrayHost.map(objeto => `device_ids=${objeto.hostid}`).join('&');
+  //  const url=`${baseURL}?${municipioParam}&${tecParam}&${marcaParam}&${modeloParam}&init_date=${opciones.fecha_ini}&end_date=${opciones.fecha_fin}`
+  const url=`${baseURL}?${hostParam}&init_date=${opciones.fecha_ini}&end_date=${opciones.fecha_fin}` 
+  console.log(url)  
+   // console.log('http://'+server.ip+':'+server.port+'/api/v1/cassia/reports/availability?municipality_id='+opciones.municipio+'&tech_id='+opciones.tecnologia+'&brand_id='+opciones.marca+'&model_id='+opciones.modelo+'&init_date='+opciones.fecha_ini+'&end_date='+opciones.fecha_fin)
+   setDataInfo({data:dataInfo.data,loading:true,error:dataInfo.error})
+     const fetchData = async () => {
+       try {
+         const response = await fetch(url,{
+      headers: {
+                               'Content-Type': 'application/json',
+                               Authorization: `Bearer ${token_item}`,
+                             },
+                           });
+                           // console.log(response)
+         if (response.ok) {
+           const response_data = await response.json();
+           console.log(response_data.data)
+           setDataByHost(response_data.data)
+           setTotalLineas(1)
+           // setSeriesKeys(countArray[totalLienas]) 
+           // setDataInfo({data:response_data.data,loading:false,error:dataInfo.error})
+           setDataInfo({data:response_data.data,loading:false,error:dataInfo.error})
+           // console.log(dataInfo)
+           // setOpcionesTxtArrayFijo([...opcionesTxtArray])
+         } else {
+           throw new Error('Error en la solicitud');
+         }
+       } catch (error) {
+         // Manejo de errores
+         setDataInfo({data:dataInfo.data,loading:dataInfo.loading,error:error})
+         //console.error(error);
+       }
+     };
+     fetchData();
+ }
+ function download_reporte_host(){
+  let baseURL
+  // setSeriesKeys(countArray[elementos.length])
+  // if(elementos.length==1){
+  //   baseURL = 'http://'+server.ip+':'+server.port+'/api/v1/cassia/reports/availability';
+  // }else{
+    baseURL = 'http://'+server.ip+':'+server.port+'/api/v1/cassia/reports/availability/devices/multiple/download';
+  // }
+  
+
+  const hostParam =arrayHost.map(objeto => `device_ids=${objeto.hostid}`).join('&');
+  const url=`${baseURL}?${hostParam}&init_date=${opciones.fecha_ini}&end_date=${opciones.fecha_fin}`
+  // console.log(url)  
+  // console.log('http://'+server.ip+':'+server.port+'/api/v1/cassia/reports/availability?municipality_id='+opciones.municipio+'&tech_id='+opciones.tecnologia+'&brand_id='+opciones.marca+'&model_id='+opciones.modelo+'&init_date='+opciones.fecha_ini+'&end_date='+opciones.fecha_fin)
+  // setDataInfo({data:dataInfo.data,loading:true,error:dataInfo.error})
+    const fetchData = async () => {
+      try {
+    //  const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/cassia/reports/availability?municipality_id='+opciones.municipio+'&tech_id='+opciones.tecnologia+'&brand_id='+opciones.marca+'&model_id='+opciones.modelo+'&init_date='+opciones.fecha_ini+'&end_date='+opciones.fecha_fin, {     
+      const response = await fetch(url,{
+        // const response = await fetch('http://172.18.200.14:8002/api/v1/cassia/reports/availability/multiple?municipality_id=0&tech_id=11&brand_id=0&model_id=0&init_date=2023-10-01T00:00&end_date=2023-10-16T03:41', {
+      // const response = await fetch('http://172.18.200.14:8002/api/v1/cassia/reports/availability/multiple?municipality_id=81&municipality_id=68&tech_id=11&tech_id=9&brand_id=0&brand_id=0&model_id=0&model_id=0&init_date=2023-09-15%2012%3A15%3A00&end_date=2023-09-15%2022%3A16%3A00', {          
+    headers: {
+                              'Content-Type': 'application/json',
+                              Authorization: `Bearer ${token_item}`,
+                            },
+                          });
+                          console.log(response)
+        if (response.ok) {
+          try {
+            const response_data = await response.blob();
+            // console.log(response_data)
+      
+            // Crear un enlace para descargar el archivo
+            const url = window.URL.createObjectURL(response_data);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'data_report.xlsx'); // Cambia el nombre y la extensión del archivo
+            document.body.appendChild(link);
+            link.click();
+            link.parentNode.removeChild(link);
+          } catch (error) {
+            console.error('Error al descargar el archivo', error);
+          }
+      
+        } else {
+          throw new Error('Error en la solicitud');
+        }
+      } catch (error) {
       }
     };
     fetchData();
@@ -405,6 +517,13 @@ function download_reporte_disponibilidad(){
       }
     };
     fetchData();
+}
+const download=()=>{
+  if(reportbyHost){
+    download_reporte_host()
+  }else{
+    download_reporte_disponibilidad()
+  }
 }
       const handleChangeOption=(index)=>{
         console.log("indice seleccionado "+index)
@@ -502,8 +621,32 @@ function download_reporte_disponibilidad(){
         setDisabled(true)
     }
   };
-
-
+useEffect(()=>{
+ setViewArrayHost(true)
+ console.log('cambio array host ')
+ console.log(arrayHost.map(objeto => objeto.hostid))
+ const hostParam =arrayHost.map(objeto => `model_id=${objeto.hostid}`).join('&');
+ console.log(hostParam)
+},[arrayHost])
+  const eliminarElementoHost = (indice) => {
+    setViewArrayHost(false)
+    console.log('elimina la posicion '+indice)
+    // if(indice===0){
+    //   setArrayHost(arrayHost.shift())
+    // }else{
+    //   setArrayHost(arrayHost.splice(indice,1))
+    // }
+    const nuevoArreglo = [...arrayHost];
+    // Usar splice para eliminar el objeto en la posición "indice"
+    nuevoArreglo.splice(indice, 1);
+    // Actualizar el estado con la nueva copia del arreglo
+    setArrayHost(nuevoArreglo);
+   
+  //  setArrayHost(...arrayHost.splice(indice,1))
+  
+  //  setViewArrayHost(true)
+  
+  };
   const eliminarElemento = (indice) => {
     const nuevosElementos = elementos.filter((elemento, index) => index !== indice);
     const nuevosElementosTR = elementosToRender.filter((elemento, index) => index !== indice);
@@ -561,12 +704,126 @@ function download_reporte_disponibilidad(){
             }
         })
   }
+
+  const [flagSearch,setFlagSearch]=useState(true)
+  const [resultList,setResultList]=useState([])
+    const [inputIp,setInputIP]=useState("")
+    const [chekedSearch,setChekedSearch]=useState(true)
+    const closeFindHost=()=>{
+      const popups = document.querySelectorAll('.custom-popup-findHost');
+    
+    popups.forEach(popup => {
+  //    console.log(popups)
+    popup.remove();
+    });
+    setResultList([])
+    setInputIP("")
+  }
+
+  const handleChangeSeacrhHost=(e)=>{
+        
+    const term = e.target.value;
+    const {name,value}=e.target
+    // console.log(value)
+    setInputIP(value)
+    validateIp(value)
+  
+    const hostArray=devices.data.hosts
+    const filteredResults = hostArray.filter((item) => {
+      // Convierte todos los valores a cadenas para realizar una búsqueda sin distinción entre mayúsculas y minúsculas
+      return Object.entries(item).some(([key, value]) => {
+        if (key === 'ip' || key=== 'Host' || key=== 'name') {
+          return String(value).toLowerCase().includes(term.toLowerCase());
+        }
+        return false; // Si no es el atributo 'ip', retorna falso para continuar buscando en otros atributos
+      });
+    });
+      setResultList(filteredResults)
+      
+  }
+  const validateIp= (ip) => {
+    // console.log("validando correo: ",ip )
+    const ipRegex = /^$/;
+    // const ipRegex = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+    let result = ipRegex.test(ip);
+    setFlagSearch(result)
+    return result;
+  };
   // console.log((typeof(dataInfo.data.metrics)!=='undefined')?dataInfo.data.metrics[0]:'') 
   // console.log(elementosToRender)
   // console.log(dataInfo.data.metrics[indexSelected].metric_name+"_"+(parseInt(0)+parseInt(1)))
+
+  function search_devices(){
+      
+       
+    setDevices({data:devices.data,loading:true,error:devices.error})
+    
+    
+    const fetchData = async () => {
+      try {
+        //console.log(`Bearer ${token_item}`)
+        const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWFuLm1hcmNpYWwiLCJleHAiOjE2OTExNjg3ODZ9.LETk5Nu-2WXF571qMqTd__RxHGcyOHzg4GfAbiFejJY'; // Reemplaza con tu token de autenticación
+        // const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/db/hosts/relations/'+ubicacion.groupid, {
+          const devicefilter=''
+    const subtypefilter=''
+    let andAux=(devicefilter!=='' )?'&':'?'
+          andAux=(subtypefilter!=='')?andAux:''
+    // console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter)
+          const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/'+'0'+''+devicefilter+andAux+subtypefilter, {                 
+                            headers: {
+                              'Content-Type': 'application/json',
+                              Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+                            },
+                          });
+                          
+        if (response.ok) {
+          const response_data = await response.json();
+          setDevices({data:response_data.data,loading:false,error:devices.error})
+          // console.log(response_data)
+         
+        } else {
+          throw new Error('Error en la solicitud');
+        }
+      } catch (error) {
+        // Manejo de errores
+        setDevices({data:devices.data,loading:devices.loading,error:error})
+        //console.error(error);
+      }
+    };
+    fetchData();
+}
+const handleSelected=(element)=>{
+  setResultList([])
+  setChekedSearch(true)
+  setFlagSearch(true)
+setInputIP("")
+// setInputIP([])
+  console.log(element)
+  // setViewArrayHost(false)
+  if(!arrayHost.includes(element)){
+    setArrayHost(prevArreglo => [...prevArreglo, element]);
+    
+  }
+ 
+
+}
+const porHost=()=>{
+  setDataInfo({data:[],loading:false,error:null})
+  if(reportbyHost){
+    setArrayHost([])
+    setDataByHost([])
+    search_reporte_disponibilidad()
+  }
+  setReportByHost(!reportbyHost);
+  setFlagGeneral(!flagGeneral)
+}
     return (
       <>
         <div className="main-reporte-disp">
+        
+              
+            
+         
         <div className='cont-add-graf'>
         {(elementos.length<3 && (opcionesArray.municipio[0]!=0))?<img
                         className='img-field-add-graf'
@@ -577,18 +834,27 @@ function download_reporte_disponibilidad(){
                       />:''}
         </div>
         <div className='cont-print-graf'>
-        <Action disabled={false} origen='Green' titulo='Buscar'  action={search_reporte_disponibilidad}/>  
+        <Action disabled={false} origen='Green' titulo='Buscar'  action={()=>accionar_reporte()}/>  
         </div>
-        <div className='cont-download-graf'>
+        <div className='compact-list-graf' style={{position:'absolute',width:'10%',height:'15%',top:'20%',left:'-1%'}}>
+                    {
+                      (!dataInfo.loading)?<div className='cont-option-todos' >
+                      <input  defaultChecked={reportbyHost}  value={1} name="ce" type="checkbox" id={`show-general`} onClick={()=>{porHost()}}  style={{width:'20px',height:'20px',zIndex:'2'}}/>
+                        <label htmlFor={`close-event`}>Por Host</label>
+                      </div>:''
+                    }
+                    
+            </div>
+        <div className='cont-download-graf' style={{zIndex:'3'}}>
         {<img
                         className='img-field-download-graf'
                         src='/iconos/download.png'
                         title='Descargar'
                         name='Descargar'
-                        onClick={download_reporte_disponibilidad}
+                        onClick={download}
                       />}
         </div>
-        <div className='cont-expand-graf'>
+        <div className='cont-expand-graf' style={{zIndex:'3'}}>
         {<img
                         className='img-field-expand-graf'
                         src='/iconos/full-screen.png'
@@ -622,23 +888,115 @@ function download_reporte_disponibilidad(){
 
           </div>
           
-          </div>:
-              <div className='cont-list-graf' style={{width:'14%'}}>
-              <div className='compact-list-graf'>
-                    <div className='cont-option-todos'>
-                    <input    value={1} name="ce" type="checkbox" id={`show-general`} onClick={()=>setFlagGeneral(!flagGeneral)}  style={{width:'20px',height:'20px',zIndex:'2'}}/>
-                      <label htmlFor={`close-event`}>Promedio</label>
-                    </div>
-                    
+          </div>:<>
+          {
+            (!reportbyHost)?
+            <div className='cont-list-graf' style={{width:'14%'}}>
+             <div className='compact-list-graf'>
+                <div className='cont-option-todos'>
+              <input    value={1} name="ce" type="checkbox" id={`show-general`} onClick={()=>setFlagGeneral(!flagGeneral)}  style={{width:'20px',height:'20px',zIndex:'2'}}/>
+              <label htmlFor={`close-event`}>Promedio</label>
             </div>
-            
-          </div>
+                      
+            </div>
+              
+           </div>:''
+          }
+          </>
+
+             
         }
 
 
             <div className='cont-reporte-disp'>
             <div className='cont-menu-disp'>
-              
+            {
+                (reportbyHost)?<>
+              <div className='cont-selectores'>
+              <div className='cont-title-selectores'>
+              <>
+        <div className='contSearchHostReporte'>
+                <div className="container-searchHost" style={{height: '100%'}}>
+                    <input defaultChecked={false} disabled={true} className="checkbox-searchHost" type="checkbox" onClick={closeFindHost}/> 
+                    <div className="mainbox-searchHostReporte">
+                        <div className="iconcontainer-searchHost" style={{zIndex: '-1'}}>
+                            <svg viewBox="0 0 512 512" height="1em" xmlns="http://www.w3.org/2000/svg" className="search_icon-searchHost "><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"></path></svg>
+                        </div>
+                    <input className="search_input-searchHost" placeholder="Buscar IP ..." type="text" value={inputIp}onChange={handleChangeSeacrhHost}/>
+                    </div>
+                    <div className={`container-searchHost-list ${!flagSearch ? 'large' : 'small'}`} >
+                <div className={`compact-searchHost-list ${!flagSearch ? 'large' : 'small'}`}  style={{border: '1px solid rgba(70, 70, 70, 0.58) !important'}}>
+                    {
+                        (inputIp==="" )?'':(resultList.length==0)?<div className='row-searchHost-list' >
+                        Sin Resultados
+                    </div>:
+                        
+                        resultList.map((element, index) => (
+                            <div className='row-searchHost-list' id={index} onClick={()=>handleSelected(element)}>
+                                <div className='cont-row-searchHost-txt'>
+                                    <div className='ip-row-searchHost' >{element.ip+" / "}</div>
+                                    <div> &nbsp; {element.Host}</div>
+                                    {(element.latitude.replace(",", ".")<-90 || element.latitude.replace(",", ".")>90)?
+                                    <div style={{color:'red'}}> &nbsp; coordenadas erroneas</div>:''
+                                    }
+                                    
+                                </div>
+                                
+                            </div>
+                        ))
+                       
+                            
+                    }
+                    
+                     
+                </div>
+               
+            </div>
+            </div>
+            
+        </div>
+        </>
+              </div> 
+              <div className='cont-list-selectoresHost' ref={containerRef} >
+              {(viewArrayHost)?
+              <>
+                {
+                  
+                  arrayHost.map((elemento, index) => (
+                    <div key={index} className='content-menu-search'id='content-menu-search'>
+                      <div className='cont-hostid-menu' style={{color:color_graf[index+1],fontSize:'small'}}>
+                        {elemento.hostid}
+                      </div>
+                      <div className='cont-ip-menu' style={{fontSize:'x-small'}}> 
+                        {elemento.ip}
+                      </div>
+                      <div className='cont-host-menu' style={{fontSize:'x-small'}}> 
+                        {elemento.Host}
+                      </div>
+                      <div className='cont-action-menu'>
+                        <div className='cont-img-field-delete-graf'>
+                          {
+                            
+                               <img
+                              className='img-field-delete-graf ' 
+                              src='/iconos/delete.png'
+                              title={'Eliminar'+index+'|'+elementos.length}
+                              name='Eliminar'
+                              onClick={() => eliminarElementoHost(index)}
+                            />
+                          }
+                      </div>
+                      </div>
+                    </div>
+                  ))
+                  }
+                  </>:''
+                  }
+                </div>
+                  {/* <MenuSearch completo={true} server={server} opciones={opciones} setOpciones={setOpciones} action1={Buscar} action2={add}></MenuSearch> */}
+              </div>
+                </>:
+                <>
               <div className='cont-selectores'>
               <div className='cont-title-selectores'>
               <div className='cont-title-numeric-menu'>
@@ -663,36 +1021,38 @@ function download_reporte_disponibilidad(){
               <div className='cont-list-selectores' ref={containerRef} >
 
               
-              {
-
-                elementos.map((elemento, index) => (
-                  <div key={index} className='content-menu-search'id='content-menu-search'>
-                    <div className='cont-numeric-menu' style={{color:color_graf[index+1]}}>
-                      {elemento}
+                {
+                  elementos.map((elemento, index) => (
+                    <div key={index} className='content-menu-search'id='content-menu-search'>
+                      <div className='cont-numeric-menu' style={{color:color_graf[index+1]}}>
+                        {elemento}
+                      </div>
+                      <div className='cont-options-menu'>
+                        <MenuSearch  dataLocations={dataLocations} eliminarElemento={eliminarElemento}  setElementos={setElementos} dataTec={dataTec} setDataTec={setDataTec} dataModelo={dataModelo} setDataModelo={setDataModelo} dataMarca={dataMarca} setDataMarca={setDataMarca} index={index} prevOpcionesArray={prevOpcionesArray}  setPrevOpcionesArray={setPrevOpcionesArray} opcionesArray={opcionesArray}    opcionesTxtArray={opcionesTxtArray} setOpcionesTxtArray={setOpcionesTxtArray} setOpcionesArray={setOpcionesArray} server={server} opciones={opciones} setOpciones={setOpciones} completo={false}></MenuSearch>
+                      </div>
+                      <div className='cont-action-menu'>
+                        <div className='cont-img-field-delete-graf'>
+                          {
+                            
+                              (index!==0 && index==elementos.length-1 )? <img
+                              className='img-field-delete-graf ' 
+                              src='/iconos/delete.png'
+                              title={'Eliminar'+index+'|'+elementos.length}
+                              name='Eliminar'
+                              onClick={() => eliminarElemento(index)}
+                            />:''
+                          }
+                      </div>
+                      </div>
                     </div>
-                    <div className='cont-options-menu'>
-                      <MenuSearch  dataLocations={dataLocations} eliminarElemento={eliminarElemento}  setElementos={setElementos} dataTec={dataTec} setDataTec={setDataTec} dataModelo={dataModelo} setDataModelo={setDataModelo} dataMarca={dataMarca} setDataMarca={setDataMarca} index={index} prevOpcionesArray={prevOpcionesArray}  setPrevOpcionesArray={setPrevOpcionesArray} opcionesArray={opcionesArray}    opcionesTxtArray={opcionesTxtArray} setOpcionesTxtArray={setOpcionesTxtArray} setOpcionesArray={setOpcionesArray} server={server} opciones={opciones} setOpciones={setOpciones} completo={false}></MenuSearch>
-                    </div>
-                    <div className='cont-action-menu'>
-                      <div className='cont-img-field-delete-graf'>
-                        {
-                          
-                            (index!==0 && index==elementos.length-1 )? <img
-                            className='img-field-delete-graf ' 
-                            src='/iconos/delete.png'
-                            title={'Eliminar'+index+'|'+elementos.length}
-                            name='Eliminar'
-                            onClick={() => eliminarElemento(index)}
-                          />:''
-                        }
-                       
-                    </div>
-                    </div>
-                  </div>
-                ))}
+                  ))
+                  }
+                  
                 </div>
                   {/* <MenuSearch completo={true} server={server} opciones={opciones} setOpciones={setOpciones} action1={Buscar} action2={add}></MenuSearch> */}
               </div>
+              </>
+              }
               <div className='cont-periodos'> 
                   <div className='cont-periodo-manual'> 
                   <>
@@ -766,7 +1126,7 @@ function download_reporte_disponibilidad(){
                 
             </div>
              
-            <div className='cont-graf-disp'>
+            <div className='cont-graf-disp' style={{zIndex:'1'}}>
                 <div className='cont-info-graf'>
                     {/* <div className='cont-info-top'>
 
@@ -774,79 +1134,72 @@ function download_reporte_disponibilidad(){
                     <div className='cont-info-center'>
                       
                       {
-                            (dataInfo.loading || typeof(dataInfo.data.metrics)=='undefined' )?<div style={{width:'100%',height:'95%',display:'flex',justifyContent:'center'}}><LoadSimple></LoadSimple></div>:
+                            (dataInfo.loading || typeof(dataInfo.data.metrics)=='undefined' )?<div style={{width:'100%',height:'95%',display:'flex',justifyContent:'center',alignItems:'center',color:'gray'}}>{(reportbyHost && databyHost.length==0)?'Ingrese un host para buscar datos':<LoadSimple></LoadSimple>}</div>:
+                              (!reportbyHost || (reportbyHost && arrayHost.length>0))?
                               <>
-                              {
-                                (dataInfo.data.metrics[indexSelected].dataset2.length>0 )?'':<h1 style={{position: 'absolute',top: '30%',left: '50%',transform: 'translate(-50%, -50%)',color: '#cecece'}}>Sin Datos</h1>
-                              }
-                              <ResponsiveContainer width="100%" height="95%">
-                              <LineChart
-                                width={400}
-                                height={200}
-                                // data={dataInfo.data.metrics[0].dataset}
 
-
-                                data={(flagGeneral)?dataInfo.data.metrics[indexSelected].dataset:dataInfo.data.metrics[indexSelected].dataset2}
-
-
-                                // data={data}
-                                margin={{
-                                  top: 5,
-                                  right: 30,
-                                  left: 20,
-                                  bottom: 5,
-                                }}
-                              >
-                                <CartesianGrid strokeDasharray="3 3" />
-                                {/* <XAxis dataKey="Tiempo" /> */}
-                                <XAxis dataKey="Tiempo" />
-                                <YAxis domain={[0, 100]}/>
-
-                                <Tooltip content={<CustomTooltip />} />
-                                
-
-                                <Legend />
-
-                                {/* <Line type="monotone" dataKey="Disponibilidad_1" stroke="#8884d8" strokeWidth={2}  /> */}
-                                {/* <Area type="monotone" dataKey="Disponibilidad" fill="#8884d8" fillOpacity={0.3} /> */}
-                                {/* <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-                                <Line type="monotone" dataKey="pv" stroke="#82ca9d" /> */}
-                                
                                 {
-
-
-                                  (flagGeneral)?
-                                  dataInfo.data.metrics[indexSelected].indices.map((key, index) => (
-                                    <Line
-                                    key={index}
-                                      type="monotone"
-                                      // dataKey={elementosToRender[index]}
-                                      dataKey={"Disponibilidad_"+key}
-                                      // stroke={`#${Math.floor(Math.random()*16777215).toString(16)}`} // Color aleatorio
-                                    // stroke={color_graf[index+1]}
-                                    stroke={color_graf[key]}
-                                    activeDot={{ onClick: (e)=>{console.log(e)}, r: 8 }}
-                                    />
-                                  ))
-                                  :
-                                  dataInfo.data.metrics[indexSelected].municipality.map((key, index) => (
-                                    <Line
-                                    key={index}
-                                      type="monotone"
-                                      // dataKey={elementosToRender[index]}
-                                      dataKey={key}
-                                      // stroke={`#${Math.floor(Math.random()*16777215).toString(16)}`} // Color aleatorio
-                                    stroke={color_graf[((index+1)>50)?(index+1)-50:(index+1)]}
-                                    // stroke={generateColorOptions()}
-                                    />
-                                  ))
-                                  
+                                  (dataInfo.data.metrics[indexSelected].dataset.length>0 )?'':<h1 style={{position: 'absolute',top: '30%',left: '50%',transform: 'translate(-50%, -50%)',color: '#cecece'}}>Sin Datos</h1>
                                 }
+                                <ResponsiveContainer width="100%" height="95%">
+                                <LineChart
+                                  width={400}
+                                  height={200}
+                                  // data={dataInfo.data.metrics[0].dataset}
+                                  data={(flagGeneral)?dataInfo.data.metrics[indexSelected].dataset:dataInfo.data.metrics[indexSelected].dataset2}
+                                  // data={data}
+                                  margin={{
+                                    top: 5,
+                                    right: 30,
+                                    left: 20,
+                                    bottom: 5,
+                                  }}
+                                >
+                                  <CartesianGrid strokeDasharray="3 3" />
+                                  {/* <XAxis dataKey="Tiempo" /> */}
+                                  <XAxis dataKey="Tiempo" />
+                                  <YAxis domain={[0, 100]}/>
+                                  <Tooltip content={<CustomTooltip />} />
+                                  
+                                  <Legend />
 
+                                  {/* <Line type="monotone" dataKey="Disponibilidad_1" stroke="#8884d8" strokeWidth={2}  /> */}
+                                  {/* <Area type="monotone" dataKey="Disponibilidad" fill="#8884d8" fillOpacity={0.3} /> */}
+                                  {/* <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+                                  <Line type="monotone" dataKey="pv" stroke="#82ca9d" /> */}
+                                  
+                                  {
+                                    (flagGeneral)?
+                                    dataInfo.data.metrics[indexSelected].indices.map((key, index) => (
+                                      <Line
+                                      key={index}
+                                        type="monotone"
+                                        // dataKey={elementosToRender[index]}
+                                        dataKey={"Disponibilidad_"+key}
+                                        // stroke={`#${Math.floor(Math.random()*16777215).toString(16)}`} // Color aleatorio
+                                      // stroke={color_graf[index+1]}
+                                      stroke={color_graf[key]}
+                                      activeDot={{ onClick: (e)=>{console.log(e)}, r: 8 }}
+                                      />
+                                    ))
+                                    :
+                                    dataInfo.data.metrics[indexSelected].municipality.map((key, index) => (
+                                      <Line
+                                      key={index}
+                                        type="monotone"
+                                        // dataKey={elementosToRender[index]}
+                                        dataKey={key}
+                                        // stroke={`#${Math.floor(Math.random()*16777215).toString(16)}`} // Color aleatorio
+                                      stroke={color_graf[((index+1)>50)?(index+1)-50:(index+1)]}
+                                      // stroke={generateColorOptions()}
+                                      />
+                                    ))
+                                    
+                                  }
+                                </LineChart>
+                                </ResponsiveContainer>
+                              </>:''
 
-                              </LineChart>
-                              </ResponsiveContainer>
-                              </>
                         }
                     </div>
                     <div className='cont-info-bottom'>

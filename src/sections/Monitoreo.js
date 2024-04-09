@@ -156,7 +156,7 @@ useEffect(()=>{
   }, [rfid]);
   useEffect(() => {
     if(lpr.length>0){
-      //console.log('El proceso de lpr ha terminado');
+      console.log('El proceso de lpr ha terminado');
       // //console.log(rfid)
       setRenderCapas(prevState => ({
         ...prevState,
@@ -214,6 +214,8 @@ useEffect(()=>{
 
     },[rfid])
     useEffect(()=>{
+      console.log("lpr list --------------------------------------")
+      console.log(lpr_list)
       if(lpr_list.data.length!==0){
         objeto_lpr(lpr_list.data)
         }
@@ -366,7 +368,7 @@ useEffect(()=>{
     }
     /****************************************************************** */
     function objeto_lpr(lpr_list){
-      // //console.log("objeto rfid")
+      console.log("objeto lpr ---------------------------------------------------------")
       console.log(lpr_list)
       setLpr([])
       lpr_list.map((host, index, array)=>
@@ -525,17 +527,18 @@ useEffect(()=>{
       setLprList({data:[],loading:true,error:lpr_list.error})
         const fetchData = async () => {
           try {
-            //console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/layers/lpr/'+ubicacion.groupid)
+            console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/layers/lpr/'+ubicacion.groupid)
          const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/layers/lpr/'+ubicacion.groupid, {                 
                                 headers: {
                                   'Content-Type': 'application/json',
                                   Authorization: `Bearer ${token_item}`,
                                 },
                               });
+                              console.log(response)
             if (response.ok) {
               const response_data = await response.json();
-              //console.log(response_data.data)
-              // //console.log("arcos")
+              console.log(response_data)
+              console.log("response lpr-----------------------------------------")
               // //console.log(arcos_list)
               setLprList({data:response_data.data,loading:false,error:lpr_list.error})
               // setRfidList({data:arcos_list,loading:false,error:rfid_list.error})
