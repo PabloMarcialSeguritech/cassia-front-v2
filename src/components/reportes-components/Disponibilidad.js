@@ -142,6 +142,7 @@ const Disponibilidad=({server})=>{
     const [viewArrayHost,setViewArrayHost]=useState(true)
     const [reportbyHost,setReportByHost]=useState(false)
     const [databyHost,setDataByHost]=useState([])
+    const [msgError,setMsgError]=useState("Ingrese un host para buscar datos")
     console.log(arrayHost)
     console.log(dataInfo)
     // console.log(opcionesTxtArray)
@@ -304,6 +305,7 @@ const Buscar=()=>{
 }
 const accionar_reporte=()=>{
     if(reportbyHost){
+
       search_reporte_host()
     }else{
       search_reporte_disponibilidad()
@@ -372,7 +374,7 @@ function search_reporte_disponibilidad(){
 function search_reporte_host(hostID){
 
    let baseURL
-   
+   setDataByHost([0])
      baseURL = 'http://'+server.ip+':'+server.port+'/api/v1/cassia/reports/availability/devices/multiple';
   
   const hostParam =arrayHost.map(objeto => `device_ids=${objeto.hostid}`).join('&');
@@ -401,12 +403,17 @@ function search_reporte_host(hostID){
            // console.log(dataInfo)
            // setOpcionesTxtArrayFijo([...opcionesTxtArray])
          } else {
+          setDataByHost([])
+           setMsgError("Ocurrio un error favor de intentar nuevamente...")
            throw new Error('Error en la solicitud');
+           
          }
        } catch (error) {
          // Manejo de errores
          setDataInfo({data:dataInfo.data,loading:dataInfo.loading,error:error})
-         //console.error(error);
+         console.error(error);
+         setDataByHost([])
+         setMsgError("Ocurrio un error favor de intentar nuevamente...")
        }
      };
      fetchData();
@@ -631,11 +638,11 @@ useEffect(()=>{
   const eliminarElementoHost = (indice) => {
     setViewArrayHost(false)
     console.log('elimina la posicion '+indice)
-    // if(indice===0){
-    //   setArrayHost(arrayHost.shift())
-    // }else{
-    //   setArrayHost(arrayHost.splice(indice,1))
-    // }
+    if(arrayHost.length==1 && indice===0){
+      setMsgError("Ingrese un host para buscar datos")
+      setDataByHost([])
+      setDataInfo({data:[],loading:false,error:null})
+    }
     const nuevoArreglo = [...arrayHost];
     // Usar splice para eliminar el objeto en la posición "indice"
     nuevoArreglo.splice(indice, 1);
@@ -824,27 +831,7 @@ const porHost=()=>{
               
             
          
-        <div className='cont-add-graf'>
-        {(elementos.length<3 && (opcionesArray.municipio[0]!=0))?<img
-                        className='img-field-add-graf'
-                        src='/iconos/add.png'
-                        title='Agregar'
-                        name='Agregar'
-                        onClick={handleClickAdd}
-                      />:''}
-        </div>
-        <div className='cont-print-graf'>
-        <Action disabled={false} origen='Green' titulo='Buscar'  action={()=>accionar_reporte()}/>  
-        </div>
-        <div className='compact-list-graf' style={{position:'absolute',width:'10%',height:'15%',top:'20%',left:'-1%'}}>
-                    {
-                      (!dataInfo.loading)?<div className='cont-option-todos' >
-                      <input  defaultChecked={reportbyHost}  value={1} name="ce" type="checkbox" id={`show-general`} onClick={()=>{porHost()}}  style={{width:'20px',height:'20px',zIndex:'2'}}/>
-                        <label htmlFor={`close-event`}>Por Host</label>
-                      </div>:''
-                    }
-                    
-            </div>
+        
         <div className='cont-download-graf' style={{zIndex:'3'}}>
         {<img
                         className='img-field-download-graf'
@@ -910,6 +897,29 @@ const porHost=()=>{
 
             <div className='cont-reporte-disp'>
             <div className='cont-menu-disp'>
+              <div className='cont-controls'>
+                        <div className='row-controls '>
+                  {(elementos.length<3 && (opcionesArray.municipio[0]!=0))?<img
+                                  className='img-field-add-graf'
+                                  src='/iconos/add.png'
+                                  title='Agregar'
+                                  name='Agregar'
+                                  onClick={handleClickAdd}
+                                />:''}
+                  </div>
+                  <div className='row-controls '>
+                  <Action disabled={false} origen='Green' titulo='Buscar'  action={()=>accionar_reporte()}/>  
+                  </div>
+                  <div className='row-controls ' >
+                              {
+                                (!dataInfo.loading)?<div className='cont-option-todos' >
+                                <input  defaultChecked={reportbyHost}  value={1} name="ce" type="checkbox" id={`show-general`} onClick={()=>{porHost()}}  style={{width:'20px',height:'20px',zIndex:'2'}}/>
+                                  <label htmlFor={`close-event`}>Por Host</label>
+                                </div>:''
+                              }
+                              
+                      </div>
+              </div>
             {
                 (reportbyHost)?<>
               <div className='cont-selectores'>
@@ -1134,7 +1144,7 @@ const porHost=()=>{
                     <div className='cont-info-center'>
                       
                       {
-                            (dataInfo.loading || typeof(dataInfo.data.metrics)=='undefined' )?<div style={{width:'100%',height:'95%',display:'flex',justifyContent:'center',alignItems:'center',color:'gray'}}>{(reportbyHost && databyHost.length==0)?'Ingrese un host para buscar datos':<LoadSimple></LoadSimple>}</div>:
+                            (dataInfo.loading || typeof(dataInfo.data.metrics)=='undefined' )?<div style={{width:'100%',height:'95%',display:'flex',justifyContent:'center',alignItems:'center',color:'gray'}}>{(reportbyHost && databyHost.length==0)?msgError:<LoadSimple></LoadSimple>}</div>:
                               (!reportbyHost || (reportbyHost && arrayHost.length>0))?
                               <>
 
