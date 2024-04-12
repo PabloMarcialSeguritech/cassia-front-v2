@@ -356,10 +356,12 @@ function search_reporte_disponibilidad(){
           // console.log(dataInfo)
           // setOpcionesTxtArrayFijo([...opcionesTxtArray])
         } else {
+          setMsgError("Ocurrio un error favor de intentar nuevamente...")
           throw new Error('Error en la solicitud');
         }
       } catch (error) {
         // Manejo de errores
+        setMsgError("Ocurrio un error favor de intentar nuevamente...")
         setDataInfo({data:dataInfo.data,loading:dataInfo.loading,error:error})
         //console.error(error);
       }
@@ -374,15 +376,13 @@ function search_reporte_host(hostID){
      baseURL = 'http://'+server.ip+':'+server.port+'/api/v1/cassia/reports/availability/devices/multiple';
   
   const hostParam =arrayHost.map(objeto => `device_ids=${objeto.hostid}`).join('&');
-  //  const url=`${baseURL}?${municipioParam}&${tecParam}&${marcaParam}&${modeloParam}&init_date=${opciones.fecha_ini}&end_date=${opciones.fecha_fin}`
   const url=`${baseURL}?${hostParam}&init_date=${opciones.fecha_ini}&end_date=${opciones.fecha_fin}` 
-  console.log(url)  
-   // console.log('http://'+server.ip+':'+server.port+'/api/v1/cassia/reports/availability?municipality_id='+opciones.municipio+'&tech_id='+opciones.tecnologia+'&brand_id='+opciones.marca+'&model_id='+opciones.modelo+'&init_date='+opciones.fecha_ini+'&end_date='+opciones.fecha_fin)
-   setDataInfo({data:dataInfo.data,loading:true,error:dataInfo.error})
+//  const url='http://172.18.200.14:8002/api/v1/cassia/reports/error-test'
+  setDataInfo({data:dataInfo.data,loading:true,error:dataInfo.error})
      const fetchData = async () => {
        try {
          const response = await fetch(url,{
-      headers: {
+                   headers: {
                                'Content-Type': 'application/json',
                                Authorization: `Bearer ${token_item}`,
                              },
@@ -390,14 +390,10 @@ function search_reporte_host(hostID){
                            // console.log(response)
          if (response.ok) {
            const response_data = await response.json();
-           console.log(response_data.data)
            setDataByHost(response_data.data)
-           setTotalLineas(1)
-           // setSeriesKeys(countArray[totalLienas]) 
-           // setDataInfo({data:response_data.data,loading:false,error:dataInfo.error})
+          //  setTotalLineas(1)
            setDataInfo({data:response_data.data,loading:false,error:dataInfo.error})
-           // console.log(dataInfo)
-           // setOpcionesTxtArrayFijo([...opcionesTxtArray])
+           
          } else {
           setDataByHost([])
            setMsgError("Ocurrio un error favor de intentar nuevamente...")
@@ -811,14 +807,18 @@ setInputIP("")
 
 }
 const porHost=()=>{
+  setOpcionesArray({municipio:[0],tecnologia:[11],marca:[0],modelo:[0]})
+  setOpcionesTxtArray({municipio:['TODOS'],tecnologia:['SUSCRIPTORES'],marca:['TODAS'],modelo:['TODOS']})
+  setOpcionesTxtArrayFijo({municipio:['TODOS'],tecnologia:['SUSCRIPTORES'],marca:['TODAS'],modelo:['TODOS']})
   setDataInfo({data:[],loading:false,error:null})
+  setFlagGeneral(!flagGeneral)
   if(reportbyHost){
     setArrayHost([])
     setDataByHost([])
     search_reporte_disponibilidad()
   }
   setReportByHost(!reportbyHost);
-  setFlagGeneral(!flagGeneral)
+ 
 }
     return (
       <>
@@ -909,9 +909,10 @@ const porHost=()=>{
                       </div>
               </div>
             {
-                (reportbyHost)?<>
+                (reportbyHost )?<>
               <div className='cont-selectores'>
               <div className='cont-title-selectores'>
+                {(devices.loading==false)?
               <>
         <div className='contSearchHostReporte'>
                 <div className="container-searchHost" style={{height: '100%'}}>
@@ -953,7 +954,7 @@ const porHost=()=>{
             </div>
             
         </div>
-        </>
+        </>:<div className='contSearchHostReporte' style={{color:'aliceblue'}}>Cargando lista de dispositivos...</div>}
               </div> 
               <div className='cont-list-selectoresHost' ref={containerRef} >
               {(viewArrayHost)?
@@ -1170,7 +1171,7 @@ const porHost=()=>{
                                       key={index}
                                         type="monotone"
                                         // dataKey={elementosToRender[index]}
-                                        dataKey={"Disponibilidad_"+key}
+                                        dataKey={((reportbyHost)?dataInfo.data.metrics[indexSelected].hostids[index]:"Disponibilidad_"+key)}
                                         // stroke={`#${Math.floor(Math.random()*16777215).toString(16)}`} // Color aleatorio
                                       // stroke={color_graf[index+1]}
                                       stroke={color_graf[key]}
@@ -1200,7 +1201,7 @@ const porHost=()=>{
                         <div className='cont-text-info'>
                             <div className='txt-info-fijo'>Funcionalidad Promedio:    </div>
                             {
-                              (typeof dataInfo.data.metrics !== 'undefined')?
+                              (typeof dataInfo.data.metrics !== 'undefined' && dataInfo.loading==false)?
                                 dataInfo.data.general_funcionality_average.map((key, index) => (
                                   // console.log(dataInfo.data.metrics[0].availability_average.length,index)
                                   <div className='txt-info-dinamic' id={'fp'+index} style={{color:color_graf[index+1]}}> &nbsp; {typeof dataInfo.data.general_funcionality_average === 'undefined' ?'---':((dataInfo.data.general_funcionality_average[index]==="" ?0:dataInfo.data.general_funcionality_average[index].toFixed(2)))}%</div>
@@ -1214,7 +1215,7 @@ const porHost=()=>{
                         <div className='cont-text-info'>
                             <div className='txt-info-fijo'>Lapso de tiempo:    </div>
                             {
-                              (typeof dataInfo.data.metrics !== 'undefined')?
+                              (typeof dataInfo.data.metrics !== 'undefined'  && dataInfo.loading==false)?
                               dataInfo.data.metrics[0].days.map((key, index) => (
                                 // console.log(dataInfo.data.metrics[0].availability_average.length,index)
                                 <div className='txt-info-dinamic' id={'lt'+index} style={{color:color_graf[index+1]}}> &nbsp; {typeof dataInfo.data.metrics === 'undefined' ?'---':((dataInfo.data.metrics[0].days[index]==="" ?0:dataInfo.data.metrics[0].days[index].toFixed(2)))}dias</div>
@@ -1223,7 +1224,7 @@ const porHost=()=>{
                         <div className='cont-text-info'>
                             <div className='txt-info-fijo'>Dispositivos:    </div>
                             {
-                              (typeof dataInfo.data.metrics !== 'undefined')?
+                              (typeof dataInfo.data.metrics !== 'undefined'  && dataInfo.loading==false)?
                               dataInfo.data.metrics[0].device_count.map((key, index) => (
                                 // console.log(dataInfo.data.metrics[0].availability_average.length,index)
                                 <div className='txt-info-dinamic' id={'dis'+index} style={{color:color_graf[index+1]}}> &nbsp; {typeof dataInfo.data.metrics === 'undefined' ?'---':((dataInfo.data.metrics[0].device_count[index]==="" ?0:dataInfo.data.metrics[0].device_count[index]))}</div>
@@ -1268,7 +1269,7 @@ const porHost=()=>{
                           </div>
                           
                         </div>
-                        { (dataInfo.data.length==0 )?'':
+                        { (dataInfo.data.length==0 || dataInfo.loading )?'':
                         dataInfo.data.metrics.map((key, index) => (
                           <>
                           <div className='rowInfoDisp'>
@@ -1286,7 +1287,6 @@ const porHost=()=>{
                               {
                             (typeof dataInfo.data.metrics !== 'undefined')?
                             dataInfo.data.metrics[index].availability_average.map((key, index2) => (
-                              // console.log(dataInfo.data.metrics[0].availability_average.length,index)
                               <div className='txt-info-dinamic' id={'avail'+index2} style={{color:color_graf[dataInfo.data.metrics[index].indices[index2]]}}> &nbsp; {typeof dataInfo.data.metrics === 'undefined' ?'---':((dataInfo.data.metrics[index].availability_average[index2]==="" ?0:dataInfo.data.metrics[index].availability_average[index2].toFixed(2)))}%</div>
                             )):''}
                               {/* {typeof dataInfo.data.general_funcionality_average === 'undefined'?'---':(dataInfo.data.general_funcionality_average.toFixed(2))}% */}
