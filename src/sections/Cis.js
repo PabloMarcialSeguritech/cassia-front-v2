@@ -12,7 +12,7 @@ const Cis=({server,dataGlobals})=>{
             <div className='head-cis'>
                 <div className='title-cis'>
                     <div className='txt-title-cis'>
-                    CI´s
+                    CMDB
                     </div>
                 </div>
                 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import CisList from './CisList';
 import LoadSimple from '../LoadSimple';
-const TableCis = ({devices, cisSelected,setCisSelected,registerIsValid,searchResults, setSearchResults,onSearch,dataUsers,setDataUsers,searchTerm, setSearchTerm,server,setRegisterIsValid,setData,setLoading,setError,handleChangEdit }) => {
+const TableCis = ({pageActual,limitList,devices,dataList, cisSelected,setCisSelected,registerIsValid,searchResults, setSearchResults,onSearch,dataUsers,setDataUsers,searchTerm, setSearchTerm,server,setRegisterIsValid,setData,setLoading,setError,handleChangEdit }) => {
   
   return (
     <div className='cont-table-cis'>
@@ -12,9 +12,9 @@ const TableCis = ({devices, cisSelected,setCisSelected,registerIsValid,searchRes
                                         <div className='field-head-table-cis field-medium'>
                                             Host IP
                                         </div>
-                                        <div className='field-head-table-cis field-larger'>
+                                        {/* <div className='field-head-table-cis field-larger'>
                                             Host name
-                                        </div>
+                                        </div> */}
                                         <div className='field-head-table-cis field-larger'>
                                             Tecnologia
                                         </div>
@@ -32,6 +32,9 @@ const TableCis = ({devices, cisSelected,setCisSelected,registerIsValid,searchRes
                                         </div>
                                         <div className='field-head-table-cis field-medium'>
                                             Versión
+                                        </div>
+                                        <div className='field-head-table-cis field-medium'>
+                                            No. serie
                                         </div>
                                         <div className='field-head-table-cis field-medium'>
                                             Ubicación
@@ -63,7 +66,7 @@ const TableCis = ({devices, cisSelected,setCisSelected,registerIsValid,searchRes
                                     <div className='body-table-cis'>
                                       {
                                             ( registerIsValid)?<div className='cont-load-user-list'><LoadSimple></LoadSimple></div>:
-                                            <CisList devices={devices} cisSelected={cisSelected} setCisSelected={setCisSelected} searchResults={searchResults} setSearchResults={setSearchResults} searchTerm={searchTerm} setSearchTerm={setSearchTerm} dataUsers={dataUsers} setDataUsers={setDataUsers} server={server} setRegisterIsValid={setRegisterIsValid} setData={setData} setLoading={setLoading} setError={setError}  handleChangEdit={handleChangEdit}></CisList>
+                                            <CisList pageActual={pageActual} limitList={limitList} dataList={dataList}devices={devices} cisSelected={cisSelected} setCisSelected={setCisSelected} searchResults={searchResults} setSearchResults={setSearchResults} searchTerm={searchTerm} setSearchTerm={setSearchTerm} dataUsers={dataUsers} setDataUsers={setDataUsers} server={server} setRegisterIsValid={setRegisterIsValid} setData={setData} setLoading={setLoading} setError={setError}  handleChangEdit={handleChangEdit}></CisList>
                                         
                                           }
                                         

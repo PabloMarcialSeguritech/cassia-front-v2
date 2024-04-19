@@ -33,15 +33,16 @@ const CisAfectaModalStyles = {
     padding:'20px'
   },
 };
-const CisList =({devices,handleChangEdit,setData,setRegisterIsValid ,setLoading,setError,server,dataUsers,setDataUsers,searchResults, setSearchResults,searchTerm,cisSelected,setCisSelected})=>{
+const CisList =({pageActual,limitList,dataList,devices,handleChangEdit,setData,setRegisterIsValid ,setLoading,setError,server,dataUsers,setDataUsers,searchResults, setSearchResults,searchTerm,cisSelected,setCisSelected})=>{
     // const dataUsers=useFetch('cassia/ci','',localStorage.getItem('access_token'),'GET',server)
     
     const [deleteCisModalOpen, setdeleteCisModalOpen] =useState(false);
     const [userSelected,setUserSelected]=useState({})
     const [CisAfectaModalOpen, setCisAfectaModalOpen] =useState(false); 
     const [cisSelectedAux,setCisSelectedAux]=useState([])
-    var dataList=(searchTerm==='')?dataUsers.data:searchResults;
+    // var dataList=(searchTerm==='')?dataUsers.data:searchResults;
     console.log(dataList)
+    console.log('intervalo de resultados',pageActual,limitList)
     function openDeleteUserModal() {
         setdeleteCisModalOpen(true);
       }
@@ -118,7 +119,7 @@ setCisSelected(elemento)
         {(dataUsers.loading ) ?<div className='cont-load-user-list'><LoadSimple></LoadSimple></div>:
           
            
-          dataList.map((elemento, indice) => (
+          dataList.slice(pageActual,(pageActual+limitList)).map((elemento, indice) => (
             <div className='row-table-cis' key={indice}   onClick={()=>cisSelectRow(elemento)}>
               <div className='field-body-table-cis field-medium'>
                 {elemento.folio}
@@ -126,9 +127,9 @@ setCisSelected(elemento)
               <div className='field-body-table-cis field-medium'>
                 {elemento.ip}
               </div>
-              <div className='field-body-table-cis field-larger'>
+              {/* <div className='field-body-table-cis field-larger'>
                 {elemento.name.slice(0,35)}...
-              </div>
+              </div> */}
               <div className='field-body-table-cis field-larger'>
                 {(elemento.technology=="")?elemento.tech_name:elemento.technology}
               </div>
@@ -148,12 +149,15 @@ setCisSelected(elemento)
                 {elemento.software_version}
               </div>
               <div className='field-body-table-cis field-medium'>
+                {elemento.hardware_no_serie}
+              </div>
+              <div className='field-body-table-cis field-medium'>
                 {elemento.location}
               </div>
               <div className='field-body-table-cis field-small'>
                 {elemento.criticality}
               </div>
-              <div className='field-body-table-cis field-medium' style={{fontWeight:'bold',color:(elemento.status=="Activo")?'green':'red'}}>
+              <div className='field-body-table-cis field-medium' style={{fontWeight:'bold',color:(elemento.status.toLowerCase().includes('activo'))?'green':'red'}}>
                 {elemento.status}
               </div>
               <div className='field-body-table-cis field-medium'>
@@ -177,7 +181,7 @@ setCisSelected(elemento)
           ))
         }
         {
-          (dataList.length==0)?<div className="no-results">SIN RESULTADOS.</div>:''
+          (dataUsers.loading==false && dataList.length==0)?<div className="no-results">SIN RESULTADOS.</div>:''
         }
       </div>
         <Modal

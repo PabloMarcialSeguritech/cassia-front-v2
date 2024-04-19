@@ -157,10 +157,10 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
         formData.append("message", textAreaValue);
         formData.append("close", closeEvent);
         formData.append("is_zabbix_event",( (props.data.alert_type=="")?true:false));
-        console.log('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/acknowledge_/'+props.data.eventid)
+        console.log('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/acknowledge/'+props.data.eventid)
       
         try {
-          const response = await fetch('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/acknowledge_/'+props.data.eventid, {
+          const response = await fetch('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/acknowledge/'+props.data.eventid, {
             method: "POST",
             headers: {
               "Accept": "application/json",
