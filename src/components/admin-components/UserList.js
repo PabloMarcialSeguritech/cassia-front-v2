@@ -57,7 +57,7 @@ const UserList =({handleChangEdit,setData,setLoading,setError,server})=>{
                 {elemento.mail}
               </div>
               <div className='field-body-table-users field-rol'>
-                {elemento.roles[0].name}
+                {(elemento.roles.length==0)?'---':elemento.roles[0].name}
               </div>
             </div>
           ))

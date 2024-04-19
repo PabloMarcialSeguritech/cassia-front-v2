@@ -130,7 +130,7 @@ const FlujoModal = ({ eventId ,props}) => {
                                             {element.message}
                                         </div>   
                                         <div className='contMsgBotFlujo par'>
-                                        {element.user+" / "+element.profile}
+                                        {element.user}
                                         </div>  
                                 </div>
                             </div>
@@ -173,7 +173,7 @@ const FlujoModal = ({ eventId ,props}) => {
                                         {element.message}
                                         </div>   
                                         <div className='contMsgBotFlujo impar'>
-                                        {element.user+" / "+element.profile}
+                                        {element.user}
                                         </div>  
                                 </div>
                                 <div className='contBotLeftFlujo'>

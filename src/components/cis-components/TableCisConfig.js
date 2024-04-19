@@ -194,8 +194,11 @@ const TableCisConfig = ({ buscar_cis_history,handleChangEdit,cisSelected,setCisS
                                         <div className='field-head-table-cis-config field-medium'>
                                             Modelo
                                         </div>
-                                        <div className='field-head-table-cis-config field-small'>
+                                        <div className='field-head-table-cis-config field-medium'>
                                             Versión
+                                        </div>
+                                        <div className='field-head-table-cis-config field-medium'>
+                                            Ticket
                                         </div>
                                         <div className='field-head-table-cis-config field-medium'>
                                             Responsable
@@ -253,8 +256,11 @@ const TableCisConfig = ({ buscar_cis_history,handleChangEdit,cisSelected,setCisS
               <div className='field-body-table-cis field-medium'>
                 {elemento.hardware_model}
               </div>
-              <div className='field-body-table-cis field-small'>
+              <div className='field-body-table-cis field-medium'>
                 {elemento.software_version}
+              </div>
+              <div className='field-body-table-cis field-medium'>
+                {elemento.ticket}
               </div>
               <div className='field-body-table-cis field-medium'>
                 {elemento.responsible_name}

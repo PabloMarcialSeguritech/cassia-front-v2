@@ -23,8 +23,9 @@ const ModalCreateCisConfig =({server,buscar_cis_history,ci_id,setRegisterIsValid
     const [disabled,setDisabled]=useState(true)
     const [host,sethost]=useState([])
     // const [cisDataConf,setCisDataConf]=useState({ip:(editActiveConfig)?dataCisConfig.ip:"",host_id:(editActiveConfig)?dataCisConfig.host_id:0,date:(editActiveConfig)?dataCisConfig.date:"",responsible_name:(editActiveConfig)?dataCisConfig.responsible_name:"",auth_name:(editActiveConfig)?dataCisConfig.auth_name:"",device_description:(editActiveConfig)?dataCisConfig.device_description:"",justification:(editActiveConfig)?dataCisConfig.justification:"",previous_state:(editActiveConfig)?dataCisConfig.previous_state:"",new_state:(editActiveConfig)?dataCisConfig.new_state:"",impact:(editActiveConfig)?dataCisConfig.impact:"",result:(editActiveConfig)?dataCisConfig.result:"",observations:(editActiveConfig)?dataCisConfig.observations:"",files:(editActiveConfig)?dataCisConfig.files:[],status:(editActiveConfig)?dataCisConfig.status:'Activo'})
-    const [cisDataConf,setCisDataConf]=useState({element_id:ci_id,change_type:(editActiveConfig)?dataCisConfig.change_type:"",description:(editActiveConfig)?dataCisConfig.description:"",justification:(editActiveConfig)?dataCisConfig.justification:"",hardware_no_serie:(editActiveConfig)?dataCisConfig.hardware_no_serie:"",hardware_brand:(editActiveConfig)?dataCisConfig.hardware_brand:"",hardware_model:(editActiveConfig)?dataCisConfig.hardware_model:"",software_version:(editActiveConfig)?dataCisConfig.software_version:"",responsible_name:(editActiveConfig)?dataCisConfig.responsible_name:"",auth_name:(editActiveConfig)?dataCisConfig.auth_name:"",created_at:(editActiveConfig)?dataCisConfig.created_at:obtenerFechaActualLocal(),closed_at:(editActiveConfig)?dataCisConfig.closed_at:null,status:'Cancelada'})
+    const [cisDataConf,setCisDataConf]=useState({element_id:ci_id,change_type:(editActiveConfig)?dataCisConfig.change_type:"",description:(editActiveConfig)?dataCisConfig.description:"",justification:(editActiveConfig)?dataCisConfig.justification:"",hardware_no_serie:(editActiveConfig)?dataCisConfig.hardware_no_serie:"",hardware_brand:(editActiveConfig)?dataCisConfig.hardware_brand:"",hardware_model:(editActiveConfig)?dataCisConfig.hardware_model:"",software_version:(editActiveConfig)?dataCisConfig.software_version:"",responsible_name:(editActiveConfig)?dataCisConfig.responsible_name:"",auth_name:(editActiveConfig)?dataCisConfig.auth_name:"",created_at:(editActiveConfig)?dataCisConfig.created_at:obtenerFechaActualLocal(),closed_at:(editActiveConfig)?dataCisConfig.closed_at:null,status:'Cancelada',ticket:(editActiveConfig)?dataCisConfig.ticket:""})
     const [hostName,setHostName]=useState("") 
+    const [load,setLoad]=useState(false)
     console.log(cisDataConf)
     const dataStatus=[
         {
@@ -100,7 +101,7 @@ if(editActiveConfig){
 
       useEffect(()=>{
        
-            if(cisDataConf.change_type==="" || cisDataConf.description===""  || cisDataConf.justification==="" || cisDataConf.hardware_no_serie==="" || cisDataConf.hardware_brand==="" || cisDataConf.hardware_model==="" || cisDataConf.software_version==="" || cisDataConf.responsible_name==="" || cisDataConf.auth_name==="" || cisDataConf.created_at==="" ){
+            if(cisDataConf.change_type==="" || cisDataConf.description===""  || cisDataConf.justification==="" || cisDataConf.hardware_no_serie==="" || cisDataConf.hardware_brand==="" || cisDataConf.hardware_model==="" || cisDataConf.software_version==="" || cisDataConf.responsible_name===""   ){
                 console.log('disabled')
                 setDisabled(true)
             }else{
@@ -123,6 +124,7 @@ const nuevaFechaISO = fecha.toISOString()
 return nuevaFechaISO
       }
       const Registrar=()=>{
+        setLoad(true)
         console.log("registra")
         let method='POST'
         let url_add=''
@@ -184,6 +186,7 @@ return nuevaFechaISO
                 // Manejo de la respuesta
                 // setData(data1)
                 // console.log(data1);
+                setLoad(false)
                 closCreateCisModal()
             //   setRegisterIsValid(true)
               
@@ -273,7 +276,7 @@ return nuevaFechaISO
         }
         return result;
       };
-    const {element_id,change_type,description,justification,hardware_no_serie,hardware_brand,hardware_model,software_version,responsible_name,auth_name,created_at,closed_at,status}=cisDataConf;
+    const {element_id,change_type,description,justification,hardware_no_serie,hardware_brand,hardware_model,software_version,responsible_name,auth_name,created_at,closed_at,status,ticket}=cisDataConf;
     return(
         <div className="modal-user-content">
             <div className='card-users modal-verificate'>
@@ -348,6 +351,15 @@ return nuevaFechaISO
                                         
                                     </div>
                                     <div className="user-box-cis">
+                                    <input required name="ticket"  type="text" value={ticket}  className ={(editActiveConfig)?'Input_disabled':''} disabled={editActiveConfig}
+                                    onChange={handleChange} />
+                                        <label className={'label-cis '+((editActiveConfig)?'active':'')}>Ticket</label>
+                                        {
+                                            // (name==="" || nombreIsValid)?'':<span className='form-msg-error'> Nombre no valido</span>
+                                        }
+                                        
+                                    </div>
+                                    <div className="user-box-cis">
                                     <input required name="responsible_name"  type="text" value={responsible_name} className ={(editActiveConfig)?'Input_disabled':''} disabled={editActiveConfig}
                                     onChange={handleChange} />
                                         <label className={'label-cis '+((editActiveConfig)?'active':'')}>Responsable</label>
@@ -356,7 +368,7 @@ return nuevaFechaISO
                                         }
                                         
                                     </div>
-                                    <div className="user-box-cis">
+                                    {/* <div className="user-box-cis">
                                     <input required name="auth_name"  type="text" value={auth_name} className ={(editActiveConfig)?'Input_disabled':''} disabled={editActiveConfig}
                                     onChange={handleChange} />
                                         <label className={'label-cis '+((editActiveConfig)?'active':'')}>Autoriza</label>
@@ -364,8 +376,8 @@ return nuevaFechaISO
                                             
                                         }
                                         
-                                    </div>
-                                    <div className="user-box-cis">
+                                    </div> */}
+                                    {/* <div className="user-box-cis">
                                         <input required name="created_at"  type="datetime-local" value={created_at} className ={(editActiveConfig)?'Input_disabled':''} disabled={editActiveConfig}
                                     onChange={handleChange} />
                                         <label className='label-cis active' >Fecha de inicio</label>
@@ -373,7 +385,7 @@ return nuevaFechaISO
                                             // (name==="" || nombreIsValid)?'':<span className='form-msg-error'> Nombre no valido</span>
                                         }
                                         
-                                    </div>
+                                    </div> */}
                                     {(editActiveConfig)?<div className="user-box-cis">
                                      <input required name="closed_at"  type="datetime-local" value={closed_at} 
                                     onChange={handleChange} />
@@ -390,7 +402,7 @@ return nuevaFechaISO
                                     
                                     <div className="user-box-cis">
                                         {
-                                            (loading)?<LoadSimple></LoadSimple>
+                                            (load)?<LoadSimple></LoadSimple>
                                             :
                                             <Action disabled={disabled} origen='Login' titulo='Guardar'  action={Registrar}/>
                                         }
