@@ -617,7 +617,7 @@ height: 10%;
 
 /* Estilo para la barra de desplazamiento */
 ::-webkit-scrollbar {
-  width: 4px;
+  width: 10px !important;
   border-radius: 10px;
   height: 5px !important;
 }

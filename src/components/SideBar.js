@@ -85,7 +85,7 @@ const SideBar =({userPermissions,rolId,onLogin,pageSelected,setPageSelected,data
                     
                         </div>
                         <div className='textSideCont ' name="cis" >
-                        CI's
+                        CMDB
                         </div>
                     </div>
                 </div>:''
