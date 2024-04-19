@@ -45,9 +45,9 @@ const MapBox = ({capas,switchesFO,switchesMO,setCapas,actualizar_rfi,actualizar_
 
   
 
-  // console.log("markers*****************************************************")
+  console.log("markers*****************************************************")
+  // console.log(towers)
 
-  // console.log(downs)
   // console.log(switches)
   // console.log(switchesMO)
   // console.log(markers)
@@ -81,9 +81,8 @@ const MapBox = ({capas,switchesFO,switchesMO,setCapas,actualizar_rfi,actualizar_
     mapRef.current  = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/giorocha/clkirdmmx00ox01qm7js2bdas',
-      // style:'mapbox://styles/mapbox/navigation-night-v1',
-      // style:'mapbox://styles/giorocha/clklfh8h8011001qm5hah2vje',
-      // style: 'mapbox://styles/mapbox/dark-v11',
+      // style:'mapbox://styles/giorocha/clu0fbjhb005001pd5r0bafzc',///white mode
+      
       zoom: zoom_provicional,
       center:[longitud_provicional,latitud_provicional]
 //       center: [-73.9709, 40.6712], // starting position [lng, lat]
@@ -151,7 +150,7 @@ if(servidores_id[ubicacion.dispId]!==undefined){
   );
 }
      /************************************************************ CAPA MWOR ************************************************************************ */
-  const markerWOR ={
+     if(markersWOR.length!==0){const markerWOR ={
     id: 'host-markerWOR',
     type: 'circle',
     source:  {
@@ -163,10 +162,11 @@ if(servidores_id[ubicacion.dispId]!==undefined){
     },
     filter: ['!', ['has', 'point_count']],
     paint: {
+      // 'circle-color': "#58c322",//"#00ff70",
       'circle-color': "#00ff70",
-      'circle-radius': 3,
+      'circle-radius': 3,//3
       'circle-stroke-width':1,
-      'circle-stroke-color': '#d1d1d1',
+      'circle-stroke-color':'#d1d1d1',
     }
     ,
   }
@@ -219,7 +219,7 @@ map.on('mouseenter', 'host-markerWOR', (e) => {
 map.on('click', 'host-markerWOR', (e) => {
   handleMarkerClick(e.features[0].properties)
 });
-       
+       }
      /************************************************************ CAPA LINEAS ************************************************************************ */
 
      if(lines.length!==0){
@@ -238,7 +238,8 @@ map.on('click', 'host-markerWOR', (e) => {
               'line-color':[
                 'match',
                 ['get', 'severity'], 
-                0, '#62a0bd', 
+                // 0,'#36cefd',// day mode
+                0,'#62a0bd',
                 1, '#ffee00', 
                 2, '#ee9d08', 
                 3, '#ee5c08', 
@@ -1436,8 +1437,8 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
           
      }
       /************************************************************ CAPA DOWNS ************************************************************************ */
-      console.log("downs map")
-      console.log(downs)
+      // console.log("downs map")
+      // console.log(downs)
       const size = 200;
 
     const pulsingDot = {
@@ -1535,7 +1536,8 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
           0,
           Math.PI * 2
         );
-        context.fillStyle = 'rgba(255, 110, 110, 1)';
+        // context.fillStyle = 'rgba(255, 110, 110, 1)';
+        context.fillStyle = 'rgb(240, 0, 191)';
         context.strokeStyle = 'white';
         context.lineWidth = 2 + 4 * (1 - t);
         context.fill();
@@ -1599,7 +1601,7 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
       'icon-image': [
         'match',
         ['get', 'origen'],
-        1, 'pulsing-dot', // Si el valor de 'origen' es 1, usa 'static-dot-1' como imagen
+        1, 'pulsing-dot', //'pulsing-dot'
         0, 'static-dot', // Si el valor de 'origen' es 0, usa 'static-dot-0' como imagen
         'static-dot-default' // Valor por defecto si no coincide con ninguno de los anteriores
       ],
@@ -1712,7 +1714,7 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
           })
               .setLngLat(coordinates)
               .setHTML(`<div class='cont-pop' style='border: 1px solid #ffffff;'>
-              <div>${e.features[0].properties.Name.slice(0, 25)}...</div><br>
+              <div>${e.features[0].properties.Name}</div><br>
               </div>`)
               .addTo(map);
           });
@@ -1726,7 +1728,7 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
    
     
     return () => map.remove();
-  }, [markers]);
+  }, [downs]);
  
   
   return <div id="map" style={{ position: 'absolute', top: 0, bottom: 0, width: '100%' }} />;

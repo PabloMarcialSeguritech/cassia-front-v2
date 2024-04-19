@@ -11,6 +11,7 @@ import TableCis from './TableCis';
 import InfoCis from './InfoCis';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import Paginador from '../generales/Paginador';
 const CreateCisModalStyles = {
     content: {
       top: '50%',
@@ -26,14 +27,20 @@ const CreateCisModalStyles = {
     },
   };
 const PanelCis=({server})=>{
+  const limitList=200;
+    const [pageActual,setPageActual]=useState(1)
     const [CreateCisModalOpen, setCreateCisModalOpen] =useState(false);
     const [dataUsers,setDataUsers]=useState({data:[],loading:true,error:null})
     const [searchResults, setSearchResults] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
-   
+    var dataList=(searchTerm==='')?dataUsers.data:searchResults;
     const [devices,setDevices]=useState({data:[],loading:true,error:null});
-    console.log(devices)
+    // const startLimit=(searchTerm==='')?((limitList*pageActual)-limitList):0;
+    const startLimit=((limitList*pageActual)-limitList)
+    const pages=parseInt((dataList.length/limitList))+1
+    console.log(dataUsers)
     const [searchResult, setSearchResult] = useState(null);
+
     const [registerIsValid, setRegisterIsValid] = useState(false);
     const [editActive, setEditActive] = useState(false);
     const [data,setData]=useState([]);
@@ -54,6 +61,9 @@ const PanelCis=({server})=>{
     
       return `${anio}-${mes}-${dia}_${horas}-${minutos}`;
     };
+    useEffect(()=>{
+      setPageActual(1)
+    },[dataList])
     const handleSearch = (query) => {
         // Aquí puedes realizar la búsqueda usando el valor de 'query'
         // Por ejemplo, puedes actualizar el estado 'searchResult' con los resultados
@@ -118,6 +128,7 @@ const PanelCis=({server})=>{
     }
     const regresar_cis=()=>{
         setCisSelected([])
+        // setLoadingCis(true)
     }
     
     const generatePDF = () => {
@@ -161,8 +172,8 @@ const PanelCis=({server})=>{
         const subtypefilter=''
         let andAux=(devicefilter!=='' )?'&':'?'
               andAux=(subtypefilter!=='')?andAux:''
-        // console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter)
-              const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/'+'0'+''+devicefilter+andAux+subtypefilter, {                 
+        console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/0')
+              const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/0', {                 
                                 headers: {
                                   'Content-Type': 'application/json',
                                   Authorization: `Bearer ${localStorage.getItem('access_token')}`,
@@ -172,8 +183,8 @@ const PanelCis=({server})=>{
             if (response.ok) {
               const response_data = await response.json();
               setDevices({data:response_data.data,loading:false,error:devices.error})
-              // console.log(response_data)
-             
+              console.log(response_data)
+              setLoadingCis(false)
             } else {
               throw new Error('Error en la solicitud');
             }
@@ -192,12 +203,13 @@ const PanelCis=({server})=>{
                 <div className='cont-cis-search'>
               {(cisSelected.length===0)?
               <>
-              <div className='cont-search'>
+              <div className='cont-search' style={{width:'25%'}}>
                     
                     <Search  searchResults={searchResults} setSearchResults={setSearchResults} searchTerm={searchTerm} setSearchTerm={setSearchTerm} onSearch={handleSearch}  dataObject={dataUsers.data} setDataObject={setDataUsers} />
+                    <p style={{color:'aliceblue',textAlign:'center'}}>&nbsp;{'('+(startLimit+1)+" - "+((dataList.length>(startLimit+limitList)?startLimit+limitList:dataList.length))+")  de "+dataList.length+' resultados'}</p>
                 </div>
-                <div className='cont-search-space'>
-
+                <div className='cont-search-space pal-lado' >
+                    <Paginador pages={pages} pageActual={pageActual} setPageActual={setPageActual}/>
                 </div>
                 <div className='cont-search-buttons'>
                 <Action disabled={false} origen='Blanco' titulo='+ Crear Registro'  action={crear}/>
@@ -229,10 +241,10 @@ const PanelCis=({server})=>{
                 <div className='cont-cis-table'>
                 <div className='content-card-cis' id='content'>
                   {
-                    (devices.loading)?<LoadSimple/>:
+                    (devices.loading )?<LoadSimple/>:
                     <>
                     {(cisSelected.length===0)?
-                              <TableCis  cisSelected={cisSelected} setCisSelected={setCisSelected} registerIsValid={registerIsValid} searchResults={searchResults} setSearchResults={setSearchResults} searchTerm={searchTerm} setSearchTerm={setSearchTerm} dataUsers={dataUsers} setDataUsers={setDataUsers} server={server} setRegisterIsValid={setRegisterIsValid} setData={setData} setLoading={setLoading} setError={setError}  handleChangEdit={handleChangEdit} devices={devices}></TableCis>:
+                              <TableCis pageActual={startLimit} limitList={limitList} dataList={dataList} cisSelected={cisSelected} setCisSelected={setCisSelected} registerIsValid={registerIsValid} searchResults={searchResults} setSearchResults={setSearchResults} searchTerm={searchTerm} setSearchTerm={setSearchTerm} dataUsers={dataUsers} setDataUsers={setDataUsers} server={server} setRegisterIsValid={setRegisterIsValid} setData={setData} setLoading={setLoading} setError={setError}  handleChangEdit={handleChangEdit} devices={devices}></TableCis>:
                               <InfoCis server={server} cisSelected={cisSelected} searchResults={searchResults} setSearchResults={setSearchResults} searchTerm={searchTerm} setSearchTerm={setSearchTerm} onSearch={handleSearch}  dataUsers={dataUsers} setDataUsers={setDataUsers} setCisSelected={setCisSelected} registerIsValid={registerIsValid}  ></InfoCis>
                             }
                     </>

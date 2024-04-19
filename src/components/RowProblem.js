@@ -86,18 +86,27 @@ const popups = document.querySelectorAll('.custom-popup-findHost');
     return(
       <>
       {
-      (props.data.tipo==1 || (props.data.tipo==0 & props.filtraOrigen==false))?
+      (  props.data.Estatus!="RESOLVED" && (props.data.tipo==1 || (props.data.tipo==0 & props.filtraOrigen==false)))?
+      // (  props.data.Estatus!="RESOLVED" && (props.data.severity==6 && props.data.tipo==1 ) || (props.data.severity!==6 ) )?
       // (true)?
       
         <div className={'rowProblem '/*+props.data.Estatus*/} style={{background:menuAlertOpen?'#82829160':'#43434d60'}} onClick={menuAlertOpen?closeMenuAlert:openMenuAlert}>
         <span className="rowProblem-hover"> </span>
                   <div className='problemCell ' style={{width:'6%'}}>
-                    {/* <div className='txtProblemCell' >
-                        {props.severity}
-                    </div> */}
-                    {/* <div className={'sphere s'+props.data.severity}></div> */}
-                    <img  src={'/iconos/alerts'+props.data.severity+'.svg'} className={' s'+props.data.severity} alt="Logo"></img>
+                    
+                    {
+                      (props.data.exception_id==null)?<img  src={'/iconos/alerts'+props.data.severity+'.svg'} className={' s'+props.data.severity} alt="Logo"></img>:
+                      <div style={{border:'1px solid white', fontSize:'x-small', fontWeight:'bold',borderRadius:'50%',width:(props.data.exception_agency_id==2)?'50px':'30px',height:'30px',background:(props.data.exception_agency_id==2)?'blue':'green',display:'flex',justifyContent:'center',alignItems:'center' }}>{props.data.agency_name}</div>
+                    }
+                    
                     <p className='txtSeverity'>{'S-'+props.data.severity}</p>
+                  </div>
+                  <div className='problemCell' style={{width:'19%'}}>
+                    <div className='txtProblemCell'>
+                      {/* Diagnosta:<br/> */}
+                      {props.data.Problem.length > 25 ? `${props.data.Problem.slice(0, 25)}...` : ((props.data.Problem.includes("Unavailable by ICMP ping") )?"CASSIA detecto DESCONEXIÓN en:":props.data.Problem )}
+                    
+                    </div>
                   </div>
                   <div className='problemCell' style={{width:'26%'}}>
                     <div className='txtProblemCell' >
@@ -106,41 +115,41 @@ const popups = document.querySelectorAll('.custom-popup-findHost');
                     
                     </div>
                   </div>
-                  <div className='problemCell' style={{width:'15%'}}>
-                    <div className='txtProblemCell'>
-                      {props.data.Problem.length > 25 ? `${props.data.Problem.slice(0, 25)}...` : props.data.Problem}
-                    
-                    </div>
-                  </div>
+                  
                   <div className='problemCell' style={{width:'10%'}}>
                     <div className='txtProblemCell'>
                     {/* {props.data.ip} */}
                     {props.data.Estatus}
                     </div>
                   </div>
-                  <div className='problemCell' style={{width:'5%'}}>
+                  <div className='problemCell' style={{width:'4%'}}>
                     <div className='txtProblemCell'>
                     {props.data.tipo}
                     </div>
                   </div>
-                  <div className='problemCell' style={{width:'15%'}}>
+                  <div className='problemCell' style={{width:'4%'}}>
+                    <div className='txtProblemCell' style={{fontWeight:'bold'}}>
+                    {props.data.dependents}
+                    </div>
+                  </div>
+                  <div className='problemCell' style={{width:'12%'}}>
                     <div className='txtProblemCell'>
                     {props.data.Ack_message.length > 20 ? `${props.data.Ack_message.slice(0, 20)}...` : props.data.Ack_message}
                        {/* {props.data.Ack_message} */}
                     </div>
                   </div>
-                  <div className='problemCell'style={{width:'12%'}}>
+                  <div className='problemCell'style={{width:'10%'}}>
                     <div className='txtProblemCell'>
                     {/* {calcularDiferenciaTiempo(fechaDada,horaDada)} */}
                     {calcularDiferenciaTiempo(cambiarFormatoFecha(props.data.Time.slice(0,10)), props.data.Time.slice(-8))}
                     </div>
                   </div>
-                  <div className='problemCell'style={{width:'7%'}}>
+                  <div className='problemCell'style={{width:'6%'}}>
                     <div className='txtProblemCell'>
                     {props.data.Time.slice(0,10)}
                     </div>
                   </div>
-                  <div className='problemCell'style={{width:'7%'}}>
+                  <div className='problemCell'style={{width:'6%'}}>
                     <div className='txtProblemCell'>
                     {props.data.Time.slice(-9)}
                     </div>

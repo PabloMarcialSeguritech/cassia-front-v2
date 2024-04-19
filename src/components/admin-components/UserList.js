@@ -19,7 +19,7 @@ const deleteUserModalStyles = {
   };
 const UserList =({handleChangEdit,setData,setLoading,setError,server})=>{
     const dataUsers=useFetch('cassia/users','',localStorage.getItem('access_token'),'GET',server)
-    // console.log(dataUsers)
+    console.log(dataUsers.data.data)
     const [deleteUserModalOpen, setDeleteUserModalOpen] =useState(false);
     const [userSelected,setUserSelected]=useState({})
     // console.log(userSelected)
@@ -55,6 +55,9 @@ const UserList =({handleChangEdit,setData,setLoading,setError,server})=>{
               </div>
               <div className='field-body-table-users field-correo'>
                 {elemento.mail}
+              </div>
+              <div className='field-body-table-users field-rol'>
+                {(elemento.roles.length==0)?'---':elemento.roles[0].name}
               </div>
             </div>
           ))

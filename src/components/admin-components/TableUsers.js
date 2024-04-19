@@ -21,6 +21,9 @@ const TableUsers=(props)=>{
                                         <div className='field-head-table-users field-correo'>
                                             Correo
                                         </div>
+                                        <div className='field-head-table-users field-rol'>
+                                            Rol
+                                        </div>
                                     </div>
                                     <div className='body-table-users'>
                                         {

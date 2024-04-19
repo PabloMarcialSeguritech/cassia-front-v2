@@ -42,7 +42,22 @@ const infoMarkerStyles = {
 };
 const LeftQuadrant =(props)=>{
  
-// console.log(props)
+console.log(props.dataProblems.data)
+console.log(props.dataProblems.data.filter(elemento => elemento.tipo === 1))
+console.log( props.dataProblems.data.filter(elemento => elemento.tipo === 1).length)
+function eliminarPorAtributo(objeto, atributo, valor) {
+  console.log(objeto)
+  for (var i = 0; i < objeto.length; i++) {
+    console.log(objeto[i])
+      if (objeto[i][atributo] === valor) {
+          delete objeto[i];
+      }
+  }
+  // Filtrar el objeto para eliminar los elementos eliminados con delete
+  objeto = objeto.filter(function (elemento) {
+      return elemento !== undefined;
+  });
+}
 
   const mapContainerRef = useRef(null);
   
@@ -60,14 +75,16 @@ const LeftQuadrant =(props)=>{
   }
   const [optionsSelectList, setOptionsSelectList] = useState([
     // { value: '7', label: 'Down Origen', status: true },
-    { value: '6', label: 'Down', status: true },
-    { value: '7', label: 'Down Origen', status: false },
+    { value: '6', label: 'Down Origen', status: true},
+    // { value: '7', label: 'Down Origen', status: true},
     { value: '5', label: 'Severidad 5', status: false },
     { value: '4', label: 'Severidad 4', status: false },
     { value: '3', label: 'Severidad 3', status: false },
     { value: '2', label: 'Severidad 2', status: false },
     { value: '1', label: 'Severidad 1', status: false },
   ]);
+
+  console.log(optionsSelectList)
   const [searchResults, setSearchResults] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
   // const [infoMarkerOpen, setInfoMarkerOpen] = React.useState(false);
@@ -98,20 +115,48 @@ const LeftQuadrant =(props)=>{
   // console.log(props.dataHosts.data)
   useEffect(()=>{
     if(props.dataHosts.data.length!=0){
-      // s5= props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 5)
-      // s4= props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 4)
-      // s3= props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 3)
-      // s2= props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 2)
-     //  s1= props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 1)
-     setS5(props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 5))
-     setS4(props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 4))
-     setS3(props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 3))
-     setS2(props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 2))
-     setS1(props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 1))
+      
+    //  setS5(props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 5))
+    //  setS4(props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 4))
+    //  setS3(props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 3))
+    //  setS2(props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 2))
+    //  setS1(props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 1))
+    // setS5( props.dataProblems.data.filter(elemento => elemento.severity === 5).length)
+    // setS4( props.dataProblems.data.filter(elemento => elemento.severity === 4).length)
     }
   },[props.dataHosts.data])
   useEffect(()=>{
-    props.setSeverityProblms(["6"])
+    console.log("entrona separar el contador")
+    const severityActive = optionsSelectList.find(option => option.value === '6');
+    console.log(severityActive)
+    if(props.dataProblems.data.length!=0){
+      console.log("dataproblems contiene datos ",props.dataProblems.data.length)
+
+      if(props.ubiActual.dispId==-1){
+        console.log(props.dataProblems.data)
+        // eliminarPorAtributo(props.dataProblems.data, 'tipo', 0)
+      }
+      if(severityActive.status){
+        setS5( props.dataProblems.data.filter(elemento =>( elemento.severity === 5 && elemento.tipo===1)).length)
+        setS4( props.dataProblems.data.filter(elemento => elemento.severity === 4 && elemento.tipo===1).length)
+        setS3( props.dataProblems.data.filter(elemento => elemento.severity === 3 && elemento.tipo===1).length)
+        setS2( props.dataProblems.data.filter(elemento => elemento.severity === 2  && elemento.tipo===1).length)
+        setS1( props.dataProblems.data.filter(elemento => elemento.severity === 1  && elemento.tipo===1).length)
+      }else{
+        setS5( props.dataProblems.data.filter(elemento => elemento.severity === 5 ).length)
+        setS4( props.dataProblems.data.filter(elemento => elemento.severity === 4 ).length)
+        setS3( props.dataProblems.data.filter(elemento => elemento.severity === 3 ).length)
+        setS2( props.dataProblems.data.filter(elemento => elemento.severity === 2 ).length)
+        setS1( props.dataProblems.data.filter(elemento => elemento.severity === 1 ).length)
+      }
+     
+     
+    
+    }
+  },[props.dataProblems.data])
+  useEffect(()=>{
+    props.setSeverityProblms([((props.ubiActual.dispId==-1)?"6":"6")])
+    // props.setSeverityProblms(["6"])
   },[])
     return(
       <>
@@ -136,19 +181,20 @@ const LeftQuadrant =(props)=>{
                    <div className='menuActionData'>
                    
                         <div className='menuActionCell'>
-                            <InfoStatus titulo={'S5 - Desastre'} tipo={'DOWN'} size='min' value={props.markersWOR.length==0?'...':(s5===undefined ?0:s5.Severities)}/>
+                            <InfoStatus titulo={'S5 - Desastre'} tipo={'DOWN'} size='min' value={props.dataProblems.loading?'...':(s5===undefined ?0:s5)}/>
                         </div>
                         <div className='menuActionCell'>
-                            <InfoStatus titulo={'S4 - Riesgo'} tipo={'DOWN4'} size='min' value={props.markersWOR.length==0?'...':(s4===undefined ?0:s4.Severities)}/>
+                            <InfoStatus titulo={'S4 - Riesgo'} tipo={'DOWN4'} size='min' value={props.dataProblems.loading?'...':(s4===undefined ?0:s4)}/>
                         </div>
                         <div className='menuActionCell'>
-                        <InfoStatus titulo={'S3 - Moderado'} tipo={'DOWN3'} size='min' value={props.markersWOR.length==0?'...':(s3===undefined ?0:s3.Severities)}/>
+                        {/* <InfoStatus titulo={'S3 - Moderado'} tipo={'DOWN3'} size='min' value={props.markersWOR.length==0?'...':(s3===undefined ?0:s3.Severities)}/> */}
+                        <InfoStatus titulo={'S3 - Moderado'} tipo={'DOWN3'} size='min' value={props.dataProblems.loading?'...':(s3===undefined ?0:s3)}/>
                            </div>
                         <div className='menuActionCell' style={{borderRadius:' 0px 0px 0px 10px'}}>
-                        <InfoStatus titulo={'S2 - Advertencia'} tipo={'DOWN2'} size='min' value={props.markersWOR.length==0?'...':(s2===undefined ?0:s2.Severities)}/>
+                        <InfoStatus titulo={'S2 - Advertencia'} tipo={'DOWN2'} size='min' value={props.dataProblems.loading?'...':(s2===undefined ?0:s2)}/>
                             </div>
                         <div className='menuActionCell' style={{borderRadius:' 0px 0px 10px 0px'}}>
-                        <InfoStatus titulo={'S1 - Informativo'} tipo={'DOWN1'} size='min' value={props.markersWOR.length==0?'...':(s1===undefined ?0:s1.Severities)}/>
+                        <InfoStatus titulo={'S1 - Informativo'} tipo={'DOWN1'} size='min' value={props.dataProblems.loading?'...':(s1===undefined ?0:s1)}/>
                           
                         </div>
                         <div className='menuActionCell' >

@@ -298,7 +298,7 @@ const buscar_cis=(ci_id)=>{
                 <div className='title-info_cis' style={{width:'50%' }}>
                     Status:
                 </div>
-                <div className='txt-info_cis' style={{width:'50%',color:(cisSelected.status.toLowerCase()==='activo')?'green':'red'}} >
+                <div className='txt-info_cis' style={{width:'50%',color:(cisSelected.status.toLowerCase().includes('activo'))?'green':'red'}} >
                 {cisSelected.status}
                 </div>
                 </div>

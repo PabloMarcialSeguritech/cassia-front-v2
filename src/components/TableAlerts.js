@@ -65,7 +65,7 @@ const selectOptionList=(element)=>{
   if (props.severityProblms.includes(element.value)) {
     // Si existe, eliminarlo
     const newArray = props.severityProblms.filter(value => value !== element.value);
-    console.log(newArray); // Output: [1, 3]
+    // console.log(newArray); // Output: [1, 3]
     props.setSeverityProblms(newArray)
   }else{
     props.setSeverityProblms([...props.severityProblms, ...element.value])
@@ -93,8 +93,11 @@ const selectOptionList=(element)=>{
   const [countList,setCountList]=useState(0)
   var dataList=(props.searchTerm==='')?problems:props.searchResults;
   // var dataList=props.searchResults;
-  console.log(dataList)
+  // console.log("datalist desde table alert *********************************************************")
+  // console.log(dataList)
+  // console.log(dataList.length)
   const contOrigen = dataList.filter(elemento => elemento.tipo === 1).length;
+  const contZabbix = dataList.filter(elemento => ( elemento.Estatus!="RESOLVED")).length;
   // console.log(contadorTipo1)
   useEffect(()=>{
     setCountList(dataList.length)
@@ -142,11 +145,11 @@ const selectOptionList=(element)=>{
 };
 
     function exportData(){
-      console.log('exportData')
+      // console.log('exportData')
       // setDataProblems({data:dataProblems.data,loading:true,error:dataProblems.error})
         const fetchData = async () => {
-          console.log('fetch')
-          console.log(+props.ubiActual)
+          // console.log('fetch')
+          // console.log(+props.ubiActual)
           try {
             const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWFuLm1hcmNpYWwiLCJleHAiOjE2OTExNjg3ODZ9.LETk5Nu-2WXF571qMqTd__RxHGcyOHzg4GfAbiFejJY'; // Reemplaza con tu token de autenticación
             const devicefilter=props.ubiActual.dispId!==0?'?tech_host_type='+props.ubiActual.dispId:''
@@ -192,18 +195,22 @@ const selectOptionList=(element)=>{
         fetchData();
       
    }
-   const [filtraOrigen,setFiltraOrigen]=useState(false)
+  //  const [filtraOrigen,setFiltraOrigen]=useState((props.ubiActual.dispId==-1)?true:false)
+   const [filtraOrigen,setFiltraOrigen]=useState((props.severityProblms[0]==6)?true:false)
    function search_severitys(){
-    console.log(props.severityProblms)
-    if(props.severityProblms.length===1 && props.severityProblms[0]==7){
-        console.log("filtra")
+    // console.log(props.severityProblms)
+    if(props.severityProblms.length===1 && props.severityProblms[0]==6){
+      // props.search_problems()
+      //   console.log("filtra")
         setFiltraOrigen(true)
-        setOpenSelect(false);props.setSearchTerm("")
+        // setOpenSelect(false);
+        // props.setSearchTerm("")
     }else{
       setFiltraOrigen(false)
-      props.search_problems();setFlagsearch(false);setOpenSelect(false);props.setSearchTerm("")
+      // props.search_problems();setFlagsearch(false);setOpenSelect(false);props.setSearchTerm("")
     }
-   
+    
+    props.search_problems();setFlagsearch(false);setOpenSelect(false);props.setSearchTerm("")
    }
     return(
 <>
@@ -219,9 +226,12 @@ const selectOptionList=(element)=>{
                               <>
                               <div className='selector-multiple'  onClick={openSelector} >
                                   <div className='selector-cont-text'>
-                                      {(props.severityProblms=="")?'Severidades...':props.severityProblms.map((element,index)=>(
-                                        element=="6"?'Down, ':(element=="7"?'Down Origen, ':'S'+element+', ')
-                                      ))}
+                                      {
+                                      
+                                      (props.severityProblms=="")?'Severidades...':props.severityProblms.map((element,index)=>(
+                                        element=="6"?'Down Origen, ':(element=="7"?'Down Origen, ':'S'+element+', ')
+                                      ))
+                                      }
                                   </div>
                                   <hr className="vertical-line"></hr>
                                   <div className='selector-cont-depliegue ' >
@@ -231,7 +241,12 @@ const selectOptionList=(element)=>{
                               </div>
                               {(openSelectList)?
                                 <div className='select-multiple-list' >
-                                  {
+                                  {(props.ubiActual.dispId==-1)?
+                                  <div className={'row-option-select-list option_bloqueado'} >
+                                  <input   defaultChecked={true} onClick={()=>selectOptionList(6)} value={6} name="r" type="checkbox" id={`checkboxList-${6}`}  />
+                                  <label htmlFor={`checkboxList-${0}`}>{props.optionsSelectList[0].label}</label>
+                                  </div>
+                                  :
                                       props.optionsSelectList.map((element,index)=>(
                                         <>
                                     <div className={'row-option-select-list '+((((props.severityProblms=="6" && props.optionsSelectList[index].value!="6") || (props.severityProblms!="" && props.severityProblms!="6" && props.optionsSelectList[index].value=="6")) || ((props.severityProblms=="7" && props.optionsSelectList[index].value!="7") || (props.severityProblms!="" && props.severityProblms!="7" && props.optionsSelectList[index].value=="7")))?'option_bloqueado':'')} >
@@ -267,7 +282,7 @@ const selectOptionList=(element)=>{
                 // </div>:''
                 }
                             <div className='textCardTitle'>
-                            EVENTOS ({(filtraOrigen)?contOrigen:dataList.length })
+                            EVENTOS ({(filtraOrigen)?contOrigen:contZabbix })
                             </div>
                             <div className='imgCardTitleMin'>
                               <div className='imgContent'>
@@ -294,45 +309,52 @@ const selectOptionList=(element)=>{
                         Severidad
                     </div>
                   </div>
+                  <div className='headerCell' style={{width:'19%'}}>
+                    <div className='txtHeaderCell'>
+                        Incidencia
+                    </div>
+                  </div>
                   <div className='headerCell' style={{width:'26%'}}>
                     <div className='txtHeaderCell' >
                         Host
                     </div>
                   </div>
-                  <div className='headerCell' style={{width:'15%'}}>
-                    <div className='txtHeaderCell'>
-                        Incidencia
-                    </div>
-                  </div>
+                  
                   <div className='headerCell' style={{width:'10%'}}>
                     <div className='txtHeaderCell'>
                         {/* IP */}
                         Estatus
                     </div>
                   </div>
-                  <div className='headerCell' style={{width:'5%'}}>
+                  <div className='headerCell' style={{width:'4%'}}>
                     <div className='txtHeaderCell'>
                         {/* Ack */}
                         ODD
                     </div>
                   </div>
-                  <div className='headerCell' style={{width:'15%'}}>
+                  <div className='headerCell' style={{width:'4%'}} >
+                    <div className='txtHeaderCell'>
+                        {/* Ack */}
+                        DDT
+                    </div>
+                  </div>
+                  <div className='headerCell' style={{width:'12%'}}>
                     <div className='txtHeaderCell'>
                         Last Ack Message
                     </div>
                   </div>
-                  <div className='headerCell'style={{width:'12%'}}>
+                  <div className='headerCell'style={{width:'10%'}}>
                     <div className='txtHeaderCell'>
-                        Tiempo activo
+                        Tiempo evento
                     </div>
                   </div>
-                  <div className='headerCell headerbtn'style={{width:'7%'}} onClick={()=>orderBy('Time')} >
+                  <div className='headerCell headerbtn'style={{width:'6%'}} onClick={()=>orderBy('Time')} >
                     <div className='txtHeaderCell'>
                         Fecha
                     </div>
                     <img className='img-field-acciones' src={'/iconos/'+((!orderAsc)?'up':'down')+'-arrow-select.png'} title='expand' alt='expand' name='expand'   />
                   </div>
-                  <div className='headerCell'style={{width:'7%'}}>
+                  <div className='headerCell'style={{width:'6%'}}>
                     <div className='txtHeaderCell'>
                         Hora
                     </div>

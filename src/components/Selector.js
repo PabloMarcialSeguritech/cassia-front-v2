@@ -4,10 +4,10 @@ import Select from 'react-select'
 import data_ubi from './ubicaciones'
 import { useFetch } from '../hooks/useFetch'
 import {permisos_codigo_id,servidores_id} from './generales/GroupsId'
-const Selector=({opGeneral,txtOpGen,opt_de,titulo,data,loading,props,origen,userPermissions})=>{
+const Selector=({opGeneral,txtOpGen,opt_de,titulo,data,loading,props,origen,onChangeSelect,userPermissions})=>{
     // console.log(titulo)
     // // console.log(opt_de)
-    console.log(data)
+    // console.log(data)
     const customStyles = {
         // Estilos para el contenedor del react-select
         control: (provided, state) => ({
@@ -72,7 +72,7 @@ const Selector=({opGeneral,txtOpGen,opt_de,titulo,data,loading,props,origen,user
         return op                           // <option key={datas.uuid}> {datas.name} </option>
 })
 // console.log(options[opcion_default].label)
-console.log(options)
+// console.log(options)
 //console.log(opt_de)
     
     
@@ -95,6 +95,7 @@ console.log(options)
                 case 'Métrica': props.setUbicacion({latitud:props.ubicacion.latitud,longitud:props.ubicacion.longitud,groupid:props.ubicacion.groupid,dispId:props.ubicacion.dispId,templateId:selected.value})
                                     break;                    
                 default:
+                    onChangeSelect(selected.value)
                         break;                        
             }
         }else if(origen==='admin'){

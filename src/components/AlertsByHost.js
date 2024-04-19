@@ -97,14 +97,15 @@ useEffect(()=>{
                         Severidad
                     </div>
                   </div>
+                  
+                  <div className='headerCell' style={{width:'19%'}}>
+                    <div className='txtHeaderCell'>
+                        Incidencia
+                    </div>
+                  </div>
                   <div className='headerCell' style={{width:'26%'}}>
                     <div className='txtHeaderCell' >
                         Host
-                    </div>
-                  </div>
-                  <div className='headerCell' style={{width:'15%'}}>
-                    <div className='txtHeaderCell'>
-                        Incidencia
                     </div>
                   </div>
                   <div className='headerCell' style={{width:'10%'}}>
@@ -113,28 +114,33 @@ useEffect(()=>{
                         Estatus
                     </div>
                   </div>
-                  <div className='headerCell' style={{width:'5%'}}>
+                  <div className='headerCell' style={{width:'4%'}}>
                     <div className='txtHeaderCell'>
                         ODD
                     </div>
                   </div>
-                  <div className='headerCell' style={{width:'15%'}}>
+                  <div className='headerCell' style={{width:'4%'}}>
+                    <div className='txtHeaderCell'>
+                    DDT
+                    </div>
+                  </div>
+                  <div className='headerCell' style={{width:'12%'}}>
                     <div className='txtHeaderCell'>
                         Ack_message
                     </div>
                   </div>
-                  <div className='headerCell'style={{width:'12%'}}>
+                  <div className='headerCell'style={{width:'10%'}}>
                     <div className='txtHeaderCell'>
-                        Tiempo Activo
+                        Tiempo evento
                     </div>
                   </div>
-                  <div className='headerCell headerbtn'style={{width:'7%'}} onClick={()=>orderBy('Time')} >
+                  <div className='headerCell headerbtn'style={{width:'6%'}} onClick={()=>orderBy('Time')} >
                     <div className='txtHeaderCell'>
                         Fecha
                     </div>
                     <img className='img-field-acciones' src={'/iconos/'+((!orderAsc)?'up':'down')+'-arrow-select.png'} title='expand' alt='expand' name='expand'   />
                   </div>
-                  <div className='headerCell'style={{width:'7%'}}>
+                  <div className='headerCell'style={{width:'6%'}}>
                     <div className='txtHeaderCell'>
                         Hora
                     </div>

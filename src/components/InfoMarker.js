@@ -28,11 +28,16 @@ const pingModalStyles = {
     padding:'20px'
   },
 };
-const InfoMarker = ({isOpen,userPermissions,source,handleShowPopup,devices,mapAux,setmapAux, data,closeInfoMarker,server,ubiActual,search_problems }) => {
-  // console.log(data)
+const InfoMarker = ({isOpen,downs_list,userPermissions,source,handleShowPopup,devices,mapAux,setmapAux, data,closeInfoMarker,server,ubiActual,search_problems }) => {
+  console.log(downs_list)
   var ubicacion_mix;
   if(source=='Monitoreo'){
-     ubicacion_mix=devices.data.hosts.filter(obj => (((obj.latitude.charAt(obj.latitude.length - 1)==0)?obj.latitude.slice(0, -1):obj.latitude) === ((data.end_lat.charAt(data.end_lat.length - 1)==0)?data.end_lat.slice(0, -1):data.end_lat )) && (((obj.longitude.charAt(obj.longitude.length - 1)==0)?obj.longitude.slice(0, -1):obj.longitude) === ((data.end_lon.charAt(data.end_lon.length - 1)==0)?data.end_lon.slice(0, -1):data.end_lon )))
+    if(ubiActual.dispId!=-1){
+      ubicacion_mix=devices.data.hosts.filter(obj => (((obj.latitude.charAt(obj.latitude.length - 1)==0)?obj.latitude.slice(0, -1):obj.latitude) === ((data.end_lat.charAt(data.end_lat.length - 1)==0)?data.end_lat.slice(0, -1):data.end_lat )) && (((obj.longitude.charAt(obj.longitude.length - 1)==0)?obj.longitude.slice(0, -1):obj.longitude) === ((data.end_lon.charAt(data.end_lon.length - 1)==0)?data.end_lon.slice(0, -1):data.end_lon )))
+    }else{
+      ubicacion_mix=downs_list.data.downs.filter(obj => (((obj.latitude.charAt(obj.latitude.length - 1)==0)?obj.latitude.slice(0, -1):obj.latitude) === ((data.end_lat.charAt(data.end_lat.length - 1)==0)?data.end_lat.slice(0, -1):data.end_lat )) && (((obj.longitude.charAt(obj.longitude.length - 1)==0)?obj.longitude.slice(0, -1):obj.longitude) === ((data.end_lon.charAt(data.end_lon.length - 1)==0)?data.end_lon.slice(0, -1):data.end_lon )))
+    }
+     
   // console.log(ubicacion_mix)
     }else{
      ubicacion_mix=[{
@@ -47,7 +52,7 @@ const InfoMarker = ({isOpen,userPermissions,source,handleShowPopup,devices,mapAu
   
   
   // const ubicacion_mix=devices.data.hosts.filter(obj => (obj.latitude === data.end_lat && obj.longitude === data.end_lon ))
-  let relation = devices.data.relations.find(obj => obj.hostidC === data.hostidC)
+  let relation =(ubiActual.dispId==-1)?undefined:devices.data.relations.find(obj => obj.hostidC === data.hostidC)
   const [consoleActive,setConsoleActive]=useState(false)
   const [pingModalOpen, setPingModalOpen] =useState(false);
   const [statusPing, setStatusPing] =useState(false);
@@ -127,9 +132,10 @@ useEffect(()=>{
   },[hostId])
 
   useEffect(()=>{
-    let hostidPa = devices.data.hosts.find(obj => obj.hostid === hostIdP)
+    if(ubiActual.dispId!==-1){
+      let hostidPa = devices.data.hosts.find(obj => obj.hostid === hostIdP)
     // console.log("relation P:",hostIdP)
-    setInfoHostP(hostidPa)
+    setInfoHostP(hostidPa)}
   },[hostIdP])
   
   function openPingModal() {

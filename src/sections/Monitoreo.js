@@ -20,31 +20,33 @@ import data_switches from '../components/switches'
 import ShowLayers from '../components/ShowLayers'
 import { render } from '@testing-library/react'
 const Monitoreo=({token_item,userPermissions,dataGlobals,server,handleShowPopup,estados_list,estadoSelected,setEstadoSelected})=>{
-  
+  const dispId_default=-1
   const [capas,setCapas]=useState({})
   const global_longitud=dataGlobals.find(obj => obj.name === 'state_longitude')
   const global_latitude=dataGlobals.find(obj => obj.name === 'state_latitude')
   const global_zoom=dataGlobals.find(obj => obj.name === 'zoom')
   token_item=localStorage.getItem('access_token')
-  const [severityProblms,setSeverityProblms]=useState(["6"])
+  
     // const [ubicacion,setUbicacion]=useState({latitud:'20.01808757489169',longitud:'-101.21789252823293',groupid:0,dispId:11,templateId:0})
-    const [ubicacion,setUbicacion]=useState({latitud:global_latitude.value,longitud:global_longitud.value,groupid:0,dispId:11,templateId:0})
-    const [ubiActual,setUbiActual]=useState({municipio:'TODOS',groupid:0,dispId:11,templateId:0})
+    const [ubicacion,setUbicacion]=useState({latitud:global_latitude.value,longitud:global_longitud.value,groupid:0,dispId:dispId_default,templateId:0})
+    const [ubiActual,setUbiActual]=useState({municipio:'TODOS',groupid:0,dispId:dispId_default,templateId:0})
+    // const [severityProblms,setSeverityProblms]=useState(["6"])
+    const [severityProblms,setSeverityProblms]=useState([((ubiActual.dispId==-1)?"6":"6")])
     const [metricaSelected,setMetricaSelected]=useState("")
     const [zoom,setZoom]=useState(11)
     const [latitudes,setLatitudes]=useState([])
     const [longitudes,setLongitudes]=useState([])
     const [locations,setLocations]=useState([])
 
-    // //console.log(ubicacion)
+    // console.log(ubicacion)
 
     const [markers,setMarkers]=useState([])
     const [markers1, setMarkers1] = useState([]);
-const [markers2, setMarkers2] = useState([]);
-const [switchesFO, setSwitchesFO] = useState([]);
-const [switchesMO, setSwitchesMO] = useState([]);
-const [switchesDownFO, setSwitchesDownFO] = useState([]);
-const [switchesDownMO, setSwitchesDownMO] = useState([]);
+    const [markers2, setMarkers2] = useState([]);
+    const [switchesFO, setSwitchesFO] = useState([]);
+    const [switchesMO, setSwitchesMO] = useState([]);
+    const [switchesDownFO, setSwitchesDownFO] = useState([]);
+    const [switchesDownMO, setSwitchesDownMO] = useState([]);
 // //console.log(switchesFO,switchesFO,markers)
     const [markersWOR,setMarkersWOR]=useState([])
     const [lines,setLines]=useState([])
@@ -59,30 +61,33 @@ const [switchesDownMO, setSwitchesDownMO] = useState([]);
     const [loading,setLoading]=useState(true);
     const [error,setError]=useState(null);
     const [devices,setDevices]=useState({data:[],loading:true,error:null});
-    // //console.log(devices)
+    console.log(devices)
     const [dataProblems,setDataProblems]=useState({data:[],loading:true,error:null})
     // const downs_list=useFetch('zabbix/layers/downs',0,token_item,'GET')
     const[downs_list,setDownsList]=useState({data:[],loading:true,error:null});
-    const tower_list=useFetch('zabbix/layers/aps',0,token_item,'GET',server)
+    const tower_list=useFetch('zabbix/layers/towers','',token_item,'GET',server)
     const[rfid_list,setRfidList]=useState({data:[],loading:true,error:null});
     const [rfidData,setRfidData]=useState({map:{},getSource:{},popup:null});
     const[lpr_list,setLprList]=useState({data:[],loading:true,error:null});
     const [lprData,setLprData]=useState({map:{},getSource:{},popup:null});
     const[switch_list,setSwitchList]=useState({data:[],loading:true,error:null});
-    // //console.log(switch_list)
+    console.log(tower_list)
     const [mapAux,setmapAux]=useState({});
     const [rfidInterval,setRfidInterval]=useState(0)
 
     const [lprInterval,setLprInterval]=useState(0)
-    const [renderCapas,setRenderCapas]=useState({downs:false,markersWOR:false,markers:true,rfid:true,switches:true,lpr:true})
+    const [renderCapas,setRenderCapas]=useState({downs:false,markersWOR:true,markers:true,rfid:true,switches:true,lpr:true,towers:false})
     // //console.log(renderCapas)
 
    const [renderMap,setRenderMap]=useState(false)
    const allTrue = Object.values(renderCapas).every(value => value === true);
-// //console.log(devices)
+   const [loaderMap,setLoaderMap]=useState(true)
+  // const loaderMap=(ubicacion.dispId==-1)?downs_list.loading:devices.loading
+console.log('alltrue '+loaderMap)
 useEffect(()=>{
   if (allTrue) {
     console.log('Todos los atributos están en true');
+    // setLoaderMap(true)
     // setRenderMap(true)
   } else {
     console.log('Al menos uno de los atributos está en false');
@@ -117,6 +122,20 @@ useEffect(()=>{
     
   }, [markersWOR]); 
   useEffect(() => {
+    console.log(renderCapas.towers)
+    console.log("++++++++++++++++++++++++++++++++++++++++++++++++++")
+    console.log(towers)
+    if(towers.length!==0){
+      //console.log('El proceso de markersWOR ha terminado',markersWOR.length);
+      setRenderCapas(prevState => ({
+        ...prevState,
+        towers: true 
+      }));
+    }
+    
+    
+  }, [towers]); 
+  useEffect(() => {
     //console.log('El proceso de downs ha terminado');
     // //console.log(downs)
     setRenderCapas(prevState => ({
@@ -137,7 +156,7 @@ useEffect(()=>{
   }, [rfid]);
   useEffect(() => {
     if(lpr.length>0){
-      //console.log('El proceso de lpr ha terminado');
+      console.log('El proceso de lpr ha terminado');
       // //console.log(rfid)
       setRenderCapas(prevState => ({
         ...prevState,
@@ -195,6 +214,8 @@ useEffect(()=>{
 
     },[rfid])
     useEffect(()=>{
+      console.log("lpr list --------------------------------------")
+      console.log(lpr_list)
       if(lpr_list.data.length!==0){
         objeto_lpr(lpr_list.data)
         }
@@ -210,8 +231,8 @@ useEffect(()=>{
     },[lpr])
     useEffect(()=>{
       if(tower_list.data.length!==0){
-        ////console.log("pinta")
-        objeto_towers(tower_list.data.data.aps)
+        console.log("pinta")
+        objeto_towers(tower_list.data.data)
         }
     },[tower_list.data])
     useEffect(()=>{
@@ -229,11 +250,10 @@ useEffect(()=>{
               setTowers(towers=>[...towers,{
                 type: 'Feature',
                 properties:{
-                  Name: host.Host,
+                  Name: host.name,
                   latitude: host.latitude,
                   longitude: host.longitude,
-                  hostid: host.hostid,
-                  ip:host.ip
+                  
                 },
                 geometry: {
                   type: 'Point',
@@ -251,10 +271,20 @@ useEffect(()=>{
      /****************************************************************** */
      function objeto_downs(downs_list){
       // //console.log(devices)
+      let flag_ubicacion=false
       downs_list.map((host, index, array)=>
           {
+            
+            if (ubicacion.dispId==-1 && !flag_ubicacion) {
+              if(host.length!==0 && host.latitude.replace(",", ".")>=-90 && host.latitude.replace(",", ".")<=90){
+                setUbicacion({latitud:host.latitude,longitud:host.longitude,groupid:ubicacion.groupid,dispId:ubicacion.dispId,templateId:ubicacion.templateId})
+                // //console.log(host);
+                flag_ubicacion=true
+              }
+            }
             if(host.length!==0 && host.latitude.replace(",", ".")>=-90 && host.latitude.replace(",", ".")<=90 ){
               // //console.log(host.hostid)
+              
               // const hostidC = devices.data.hosts.find(obj => obj.hostid === host.hostid)
               // //console.log(hostidC)
               // //console.log(hostidC.hostidC)
@@ -338,7 +368,7 @@ useEffect(()=>{
     }
     /****************************************************************** */
     function objeto_lpr(lpr_list){
-      // //console.log("objeto rfid")
+      console.log("objeto lpr ---------------------------------------------------------")
       console.log(lpr_list)
       setLpr([])
       lpr_list.map((host, index, array)=>
@@ -372,18 +402,19 @@ useEffect(()=>{
     
     function search_problems(){
       
-    setDataProblems({data:dataProblems.data,loading:true,error:dataProblems.error})
+    setDataProblems({data:dataProblems.data,loading:true,error:""})
       const fetchData = async () => {
         try {
           const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWFuLm1hcmNpYWwiLCJleHAiOjE2OTExNjg3ODZ9.LETk5Nu-2WXF571qMqTd__RxHGcyOHzg4GfAbiFejJY'; // Reemplaza con tu token de autenticación
-          const devicefilter=ubicacion.dispId!==0?'?tech_host_type='+ubicacion.dispId:''
+          const devicefilter=(ubicacion.dispId!==0 && ubicacion.dispId!==-1)?'?tech_host_type='+ubicacion.dispId:''
       const subtypefilter=ubicacion.templateId!==0?'subtype='+ubicacion.templateId:''
-      const severityfilter=severityProblms.length>0?'severities='+severityProblms.join(', '):''
+      const severityfilter=(ubiActual.dispId==-1)?'severities=6':(severityProblms.length>0?'severities='+severityProblms.join(', '):'')
       let andAux=(devicefilter!=='' )?'&':'?'
             andAux=(subtypefilter!=='')?andAux:''
             
-      // //console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/problems/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter+((ubicacion.dispId==0 && ubicacion.templateId==0)?'?':'&')+severityfilter)
-          const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/problems/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter+((ubicacion.dispId==0 && ubicacion.templateId==0)?'?':'&')+severityfilter, {                 
+      console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/problems/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter+(((ubicacion.dispId==0 && ubicacion.templateId==0) || ubicacion.dispId==-1)?'?':'&')+severityfilter)
+          // const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/problems/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter+(((ubicacion.dispId==0 && ubicacion.templateId==0) || ubicacion.dispId==-1)?'?':'&')+severityfilter, {     
+          const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/problems/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter+(((ubicacion.dispId==0 && ubicacion.templateId==0) || ubicacion.dispId==-1)?'?':'&')+severityfilter, {             
                               headers: {
                                 'Content-Type': 'application/json',
                                 Authorization: `Bearer ${token_item}`,
@@ -391,15 +422,17 @@ useEffect(()=>{
                             });
           if (response.ok) {
             const response_data = await response.json();
-            setDataProblems({data:response_data.data,loading:false,error:dataProblems.error})
-            //console.log(response_data)
+            console.log(response_data)
+            console.log("#########################################################3")
+            setDataProblems({data:response_data.data,loading:false,error:""})
+            
             
           } else {
             throw new Error('Error en la solicitud');
           }
         } catch (error) {
           // Manejo de errores
-          setDataProblems({data:dataProblems.data,loading:dataProblems.loading,error:error})
+          setDataProblems({data:[],loading:dataProblems.loading,error:error})
           //console.error(error);
         }
       };
@@ -412,7 +445,7 @@ useEffect(()=>{
     
     
     useEffect(()=>{
-      search_devices()
+      // search_devices()
       search_downs()
       // search_rfid()
     },[])
@@ -494,17 +527,18 @@ useEffect(()=>{
       setLprList({data:[],loading:true,error:lpr_list.error})
         const fetchData = async () => {
           try {
-            //console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/layers/lpr/'+ubicacion.groupid)
+            console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/layers/lpr/'+ubicacion.groupid)
          const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/layers/lpr/'+ubicacion.groupid, {                 
                                 headers: {
                                   'Content-Type': 'application/json',
                                   Authorization: `Bearer ${token_item}`,
                                 },
                               });
+                              console.log(response)
             if (response.ok) {
               const response_data = await response.json();
-              //console.log(response_data.data)
-              // //console.log("arcos")
+              console.log(response_data)
+              console.log("response lpr-----------------------------------------")
               // //console.log(arcos_list)
               setLprList({data:response_data.data,loading:false,error:lpr_list.error})
               // setRfidList({data:arcos_list,loading:false,error:rfid_list.error})
@@ -530,11 +564,12 @@ useEffect(()=>{
       setRenderCapas(prevState => ({
         ...prevState,
         downs:false,
-        markersWOR:false,
+        markersWOR:(ubicacion.dispId!==-1)?false:true,
         markers: (ubicacion.templateId!==0)?false:true ,
         rfid:(ubicacion.dispId===9)?false:true,
         lpr:(ubicacion.dispId===1)?false:true,
         switches:(ubicacion.dispId===12)?false:true,
+        towers:true
       }));
         setMarkers([])
         setMarkers1([])
@@ -543,19 +578,20 @@ useEffect(()=>{
         setLines([])
         setSwitches([])
         setLocations([])
+        setLoaderMap(true)
         setDevices({data:devices.data,loading:true,error:devices.error})
         
         
         const fetchData = async () => {
           try {
-            ////console.log(`Bearer ${token_item}`)
+            console.log(`Bearer ${token_item}`)
             const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWFuLm1hcmNpYWwiLCJleHAiOjE2OTExNjg3ODZ9.LETk5Nu-2WXF571qMqTd__RxHGcyOHzg4GfAbiFejJY'; // Reemplaza con tu token de autenticación
             // const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/db/hosts/relations/'+ubicacion.groupid, {
               const devicefilter=ubicacion.dispId!==0?'?dispId='+ubicacion.dispId:''
         const subtypefilter=ubicacion.templateId!==0?'subtype_id='+ubicacion.templateId:''
         let andAux=(devicefilter!=='' )?'&':'?'
               andAux=(subtypefilter!=='')?andAux:''
-        // //console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter)
+        console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter)
               const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/hosts/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter, {                 
                                 headers: {
                                   'Content-Type': 'application/json',
@@ -566,8 +602,8 @@ useEffect(()=>{
             if (response.ok) {
               const response_data = await response.json();
               setDevices({data:response_data.data,loading:false,error:devices.error})
-              //console.log(response_data)
-             
+              console.log(response_data)
+              setLoaderMap(false)
             } else {
               throw new Error('Error en la solicitud');
             }
@@ -609,13 +645,17 @@ useEffect(()=>{
     function search_downs(){
       setDowns([])
       // //console.log("use downs",ubicacion)
+      const odd=(ubicacion.dispId===-1)?'/origen':''
+      if(ubicacion.dispId===-1){
+        setLoaderMap(true)
+      }
         setDownsList({data:downs_list.data,loading:true,error:downs_list.error})
         const fetchData = async () => {
           try {
             
-            let body = (ubicacion.dispId===0)?'':'?dispId='+ubicacion.dispId
-            // //console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/layers/downs/'+ubicacion.groupid+''+body)
-            const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/layers/downs/'+ubicacion.groupid+''+body, {                 
+            let body = (ubicacion.dispId===0 || ubicacion.dispId===-1)?'':'?dispId='+ubicacion.dispId
+            console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/layers/downs'+odd+'/'+ubicacion.groupid+''+body)
+            const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/layers/downs'+odd+'/'+ubicacion.groupid+''+body, {                 
                                 headers: {
                                   'Content-Type': 'application/json',
                                   Authorization: `Bearer ${token_item}`,
@@ -624,8 +664,10 @@ useEffect(()=>{
             if (response.ok) {
               const response_data = await response.json();
               setDownsList({data:response_data.data,loading:false,error:downs_list.error})
-              // ////console.log(response_data)
-              
+              console.log(response_data)
+              if(ubicacion.dispId===-1){
+                setLoaderMap(false)
+              }
             } else {
               throw new Error('Error en la solicitud');
             }
@@ -1275,7 +1317,7 @@ useEffect(()=>{
         //console.log("se inicia el monitoreo")
       },[])
       const handleMarkerClick = (data) => {
-        //console.log(data)
+        console.log(data)
         setInfoMarker(data)
         openInfoMarker()
         // Realiza las acciones deseadas al hacer clic en el marcador
@@ -1400,17 +1442,17 @@ useEffect(()=>{
 
 
           {
-            devices.loading ?'':
+            loaderMap ?'':
             <>
-            <SearchHost mapAux={mapAux} setmapAux={setmapAux}  devices={devices} markersWOR={markersWOR}></SearchHost>
+            <SearchHost mapAux={mapAux} setmapAux={setmapAux} ubiActual={ubiActual} downs_list={downs_list} devices={devices} markersWOR={markersWOR}></SearchHost>
           <Notifications estadoSelected={estadoSelected} setEstadoSelected={setEstadoSelected} estados_list={estados_list} dataGlobals={dataGlobals} server={server} handleShowPopup={handleShowPopup} mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} devices={devices}  ubiActual={ubiActual}/>
 
           
             </>
           }
-          <RightQuadrant userPermissions={userPermissions} capas={capas} setCapas={setCapas} metricaSelected={metricaSelected} setMetricaSelected={setMetricaSelected} ubiActual={ubiActual} setUbiActual={setUbiActual}  server={server} setRfid={setRfid} search_rfid={search_rfid} setLpr={setLpr} search_lpr={search_lpr} search_switches={search_switches} search_devices={search_devices} markersWOR={markersWOR}  search_downs={search_downs} downs={downs} search_problems={search_problems} token={token_item} ubicacion={ubicacion} markers={markers}  dataHosts={devices} setUbicacion={setUbicacion} />
+          <RightQuadrant userPermissions={userPermissions} downs_list={downs_list} capas={capas} setCapas={setCapas} metricaSelected={metricaSelected} setMetricaSelected={setMetricaSelected} ubiActual={ubiActual} setUbiActual={setUbiActual}  server={server} setRfid={setRfid} search_rfid={search_rfid} setLpr={setLpr} search_lpr={search_lpr} search_switches={search_switches} search_devices={search_devices} markersWOR={markersWOR}  search_downs={search_downs} downs={downs} search_problems={search_problems} token={token_item} ubicacion={ubicacion} markers={markers}  dataHosts={devices} setUbicacion={setUbicacion} />
           {
-            devices.loading ?<LoadData/>:
+            loaderMap?<LoadData/>:
               <>
                 <ShowLayers capas={capas} setCapas={setCapas} mapAux={mapAux} setmapAux={setmapAux}  ></ShowLayers>
                 {
@@ -1428,7 +1470,7 @@ useEffect(()=>{
                   contentLabel="Example Modal2"
                   // shouldCloseOnOverlayClick={false}
                   >
-                    <InfoMarker userPermissions={userPermissions} source={'Monitoreo'} handleShowPopup={handleShowPopup} mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} devices={devices} server={server} isOpen={infoMarkerOpen} data={infoMarker} closeInfoMarker={closeInfoMarker} ubiActual={ubiActual}></InfoMarker>
+                    <InfoMarker downs_list={downs_list} userPermissions={userPermissions} source={'Monitoreo'} handleShowPopup={handleShowPopup} mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} devices={devices} server={server} isOpen={infoMarkerOpen} data={infoMarker} closeInfoMarker={closeInfoMarker} ubiActual={ubiActual}></InfoMarker>
                 </Modal>
               </>
           }
