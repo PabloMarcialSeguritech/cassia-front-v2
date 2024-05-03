@@ -94,6 +94,9 @@ letter-spacing: 1px;
 .react-host-select__menu-portal{
     z-index: 3 !important;
 }
+.Whitereact-host-select__menu-portal{
+    z-index: 3 !important;
+}
 .react-select__option{
     border-bottom-color: rgba(255, 255, 255, 0.127) !important;
 }

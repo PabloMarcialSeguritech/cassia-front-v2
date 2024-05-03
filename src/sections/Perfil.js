@@ -1,6 +1,6 @@
 
 
-const Perfil=({server,dataGlobals,setNameState})=>{
+const Perfil=({server,dataGlobals,setNameState,mode,setMode})=>{
     
     var estado=''
     if(dataGlobals.data.data!==undefined){
@@ -8,13 +8,19 @@ const Perfil=({server,dataGlobals,setNameState})=>{
         // console.log(estado)
         setNameState(estado.value)
     }
-    
+    const modeAction=()=>{
+        if(mode==''){
+            setMode('White')
+        }else{
+            setMode('')
+        }
+    }
     return (
         <div className="main-perfil">
             <div className='welcome-card'>
                 <div className='top-welcome'>
                     <div className='Title'>
-                    <img src="logo_cassia.png"  style={{height: '50%'}} alt="Logo"/>
+                    <img src={"logo_cassia"+mode+".png"}  style={{height: '50%'}} alt="Logo"/>
                     </div>
                 </div>
                 <div className='mid-welcome'>
@@ -34,8 +40,8 @@ const Perfil=({server,dataGlobals,setNameState})=>{
                     </section>
                     </div>
                         :
-                    <div className='Title' style={{width:'100%'}}>
-                        <h1 className='textTitle' >{estado.value}</h1>
+                    <div className={'Title'} style={{width:'100%'}}>
+                        <h1 className={'textTitle'+mode} >{estado.value}</h1>
                     </div>
                     }
                     
@@ -47,6 +53,25 @@ const Perfil=({server,dataGlobals,setNameState})=>{
             <div className='footer-version'>
                    Version 1.3
             </div>
+            {/* <div className='footer-mode'>
+            <label for="theme" class="theme">
+	<span class="theme__toggle-wrap">
+		<input id="theme" class="theme__toggle" type="checkbox" role="switch" name="theme"  onClick={()=>modeAction()}value="dark"/>
+		<span class="theme__fill"></span>
+		<span class="theme__icon">
+			<span class="theme__icon-part"></span>
+			<span class="theme__icon-part"></span>
+			<span class="theme__icon-part"></span>
+			<span class="theme__icon-part"></span>
+			<span class="theme__icon-part"></span>
+			<span class="theme__icon-part"></span>
+			<span class="theme__icon-part"></span>
+			<span class="theme__icon-part"></span>
+			<span class="theme__icon-part"></span>
+		</span>
+	</span>
+</label>
+            </div> */}
         </div>
     )
 }

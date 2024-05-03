@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import Select from 'react-select'
 import data_ubi from './ubicaciones'
 import { useFetch } from '../hooks/useFetch'
-const HostSelector=({search_actions,setListSelected,setHostId,opGeneral,txtOpGen,opt_de,titulo,data,loading,origen})=>{
+const HostSelector=({search_actions,mode,setListSelected,setHostId,opGeneral,txtOpGen,opt_de,titulo,data,loading,origen})=>{
     // console.log(titulo)
     // console.log(opt_de)
     // console.log(data)
@@ -45,7 +45,7 @@ const HostSelector=({search_actions,setListSelected,setHostId,opGeneral,txtOpGen
         cont_i++
         let op;
         
-        op={ filter:titulo,value: datas.hostid, label: datas.ip+" / "+datas.Host ,id:datas.hostid};
+        op={ filter:titulo,value: datas.hostid, label: datas.ip+" / "+((datas.name==undefined)?datas.Host:datas.name ),id:datas.hostid};
             
         return op                           // <option key={datas.uuid}> {datas.name} </option>
 })
@@ -59,7 +59,7 @@ const HostSelector=({search_actions,setListSelected,setHostId,opGeneral,txtOpGen
     
     // //console.log(value,'value') 
     const HandleChange=(selected,name)=>{
-        //console.log(selected)
+        console.log(selected)
         // setValue((state)=>({
         //     ...state,[name]:selected.label
         // }))
@@ -82,8 +82,8 @@ const HostSelector=({search_actions,setListSelected,setHostId,opGeneral,txtOpGen
                             options={options}
                             value={(value.length===0)?options[opcion_default]:value}
                             // options={{filter:titulo, value: 0, label: 'cargando...' }}
-                            className="react-host-select-container"
-                            classNamePrefix="react-host-select"
+                            className={mode+"react-host-select-container"}
+                            classNamePrefix={mode+"react-host-select"}
                             onChange={(selected)=>HandleChange(selected,titulo)}
                             // placeholder={loading?'cargando..':options[0].label}
                             noOptionsMessage={() => "No existe"}

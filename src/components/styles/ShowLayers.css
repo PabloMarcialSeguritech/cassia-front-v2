@@ -283,6 +283,7 @@ height: 30px;
     justify-content: center;
     border-radius: 10px;
     background-color: #13152be5;
+    /* background-color: #404040e5; */
     transition: all 0.3s ease;
     box-shadow: 3px 3px 10px rgba(67, 67, 67, 0.4);
   border: 1px solid #f0f8ff3d 

@@ -1,7 +1,7 @@
 import './styles/Container.css'
-const Container=({children})=>{
+const Container=({children,mode})=>{
     return(
-        <div className='container'> 
+        <div className={'container'+mode}> 
             {children}
         </div>
     )

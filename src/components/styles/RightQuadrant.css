@@ -40,9 +40,7 @@ position: absolute;
 
 .card{
     position: relative;
-
-/* background-color: #292929; */
-/* background-color: #2020207d; */
+/* background-color: #6f6f6f; */
 background-color: #161935bd;
 width: 90%;
 height: 90%;
@@ -51,7 +49,17 @@ box-shadow: 3px 3px 10px rgba(67, 67, 67, 0.4);
 border-radius: 10px;
 border: 1px solid #f0f8ff3d;
 }
-
+.cardWhite{
+    position: relative;
+/* background-color: #6f6f6f; */
+background-color: #3f3f3fbd;
+width: 90%;
+height: 90%;
+/* box-shadow: 5px 5px 10px rgb(32, 32, 32); */
+box-shadow: 3px 3px 10px rgba(67, 67, 67, 0.4);
+border-radius: 10px;
+border: 1px solid #003757;
+}
 .menuSearch{
     display: block;
 }

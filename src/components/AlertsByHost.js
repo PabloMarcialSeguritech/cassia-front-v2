@@ -5,7 +5,7 @@ import data_ubi from './ubicaciones'
 import { useFetch } from '../hooks/useFetch'
 import RowProblem from './RowProblem'
 import LoadAlerts from './LoadAlerts'
-const AlertsByHost=({hostId,userPermissions ,mapAux,ubiActual,setmapAux,server,search_problems})=>{
+const AlertsByHost=({mode,hostId,userPermissions ,mapAux,ubiActual,setmapAux,server,search_problems})=>{
     // const alerts_list=useFetch('zabbix/hosts/detail/alerts',hostId,'','GET',server)
     const dataAgencies=useFetch('zabbix/exception_agencies','','props.token','GET',server)
     const [orderAsc,setOrderAsc]=useState(true)
@@ -90,7 +90,7 @@ useEffect(()=>{
   };
     return(
         <div className='contAlertsByHost'>
-           <div className='TableHeader' style={{backgroundColor:'#e3290f6e'}}>
+           <div className='TableHeader' style={{backgroundColor:(mode=="")?'#e3290f6e':'rgba(227, 41, 15, 0.99)'}}>
                   
                   <div className='headerCell' style={{width:'6%'}}>
                     <div className='txtHeaderCell' >
@@ -153,7 +153,7 @@ useEffect(()=>{
                   dataProblems.loading?<LoadAlerts/>:(problems.length===0?<div className='txtLoader'>Sin Resultados</div>:
                   problems.map((elemento, indice)=>(
                     
-                    <RowProblem filtraOrigen={false} userPermissions={userPermissions}  ubiActual={ubiActual}mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} key={indice} severity={elemento.severity} dataAgencies={dataAgencies} data={elemento} server={server}/>
+                    <RowProblem mode={mode} filtraOrigen={false} userPermissions={userPermissions}  ubiActual={ubiActual}mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} key={indice} severity={elemento.severity} dataAgencies={dataAgencies} data={elemento} server={server}/>
                   )))
                   }
                 </div>

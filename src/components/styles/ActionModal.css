@@ -4,6 +4,13 @@
     height: 100%;
     display: block;
 }
+.contActionModalWhite{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: block;
+  background-color: #fff;
+}
 .titlePinglModal{
     position: relative;
     display: flex;
@@ -20,6 +27,15 @@
     color: #505050a3;
     height: 1px;
     background: #3b3b3ba3;
+}
+.lineTitlePingWhite{
+  width: 90%;
+  position: absolute;
+  left: 5%;
+  top: 72%;
+  color: #003757;
+  height: 1px;
+  background: #003757;
 }
 .contAnimationActionModal{
     position: relative;

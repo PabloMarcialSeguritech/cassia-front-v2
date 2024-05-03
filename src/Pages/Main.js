@@ -37,7 +37,7 @@ const Main=({ onLogin,setMsgErrorLogin,token,setToken,server,setServer,object_st
     const [rol_id,setRolID]=useState("")
     const [dataPermisos,setDataPermisos]=useState({data:[],loading:true,error:''})
     const [userPermissions,setUserPermissions]=useState([])
-
+    const [mode,setMode]=useState('')
     const getPermisos=(rol_id)=>{
       console.log('solicita permisos')
       setDataPermisos({data:dataPermisos.data,loading:true,error:''})
@@ -441,8 +441,8 @@ const Main=({ onLogin,setMsgErrorLogin,token,setToken,server,setServer,object_st
       </div> */}
       <>
       <NavBar setServer={setServer} login_state ={login_state} setStatusLoginState={setStatusLoginState} statusLoginState={statusLoginState} dataGlobals={globals.data.data} loadGlobals={globals.loading} msgCharge={msgCharge} statusChangeState={statusChangeState} setStatusChangeState={setStatusChangeState} server={server}  object_state_sessions={object_state_sessions} set_object_state_sessions={set_object_state_sessions} estadoActivo={estadoActivo} setEstadoActivo={setEstadoActivo} estados_list={estados_list} nameState={nameState} estadoSelected={estadoSelected} setEstadoSelected={setEstadoSelected} dataPingEstado={dataPingEstado}/>
-      <SideBar dataGlobals={globals} userPermissions={userPermissions} rolId={rol_id} onLogin={onLogin} pageSelected={pageSelected} setPageSelected={setPageSelected}/>
-      <Container>
+      <SideBar   mode={mode} dataGlobals={globals} userPermissions={userPermissions} rolId={rol_id} onLogin={onLogin} pageSelected={pageSelected} setPageSelected={setPageSelected}/>
+      <Container mode={mode}>
       {(() => {
         if(globals.loading){
           return <>
@@ -515,9 +515,9 @@ const Main=({ onLogin,setMsgErrorLogin,token,setToken,server,setServer,object_st
             </>
            }else{
             if (pageSelected === "perfil") {
-              return <Perfil server={server} userPermissions={userPermissions} dataGlobals={globals} setNameState={setNameState} />;
+              return <Perfil mode={mode} setMode={setMode}server={server} userPermissions={userPermissions} dataGlobals={globals} setNameState={setNameState} />;
           } else  if (pageSelected === "monitoreo"){
-              return <Monitoreo estados_list={estados_list}  userPermissions={userPermissions} handleShowPopup={handleShowPopup} server={server} token={token} dataGlobals={globals.data.data} estadoSelected={estadoSelected} setEstadoSelected={setEstadoSelected}/>;
+              return <Monitoreo mode={mode} estados_list={estados_list}  userPermissions={userPermissions} handleShowPopup={handleShowPopup} server={server} token={token} dataGlobals={globals.data.data} estadoSelected={estadoSelected} setEstadoSelected={setEstadoSelected}/>;
           }else if (pageSelected === "panel-admin"){
             return <Admin server={server}  userPermissions={userPermissions} dataGlobals={globals.data.data} />;
         }else if (pageSelected === "cis"){

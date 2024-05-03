@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './styles/SideBar.css'
 import {permisos_codigo_id} from '../components/generales/GroupsId'
-const SideBar =({userPermissions,rolId,onLogin,pageSelected,setPageSelected,dataGlobals})=>{
+const SideBar =({mode,userPermissions,rolId,onLogin,pageSelected,setPageSelected,dataGlobals})=>{
     console.log(userPermissions)
     // console.log(permisos_codigo_id)
     // const existePermiso = userPermissions.some(objeto => objeto.permission_id === permisos_codigo_id['cis']);
@@ -28,15 +28,15 @@ const SideBar =({userPermissions,rolId,onLogin,pageSelected,setPageSelected,data
     }
     
     return(
-        <div className="sidebar">
+        <div className={"sidebar"+mode}>
             {
                 (dataGlobals.loading || dataGlobals.error)?'':
             
             <>
-            <div className={'sidebarRow '+(pageSelected==="perfil"?'sideRowSelected':'')} >
-                <div className={'sidebarCont '+(pageSelected==="perfil"?'sideSelected':'')} name="perfil" onClick={handleSection} >
+            <div className={'sidebarRow '+(pageSelected==="perfil"?'sideRowSelected'+mode:'')} >
+                <div className={'sidebarCont'+mode+' '+(pageSelected==="perfil"?'sideSelected'+mode:'')} name="perfil" onClick={handleSection} >
                     <div className='imgSideCont' name="perfil" >
-                        <img src={'/iconos/perfil'+(pageSelected==="perfil"?'-blanco.png':'.png')} name="perfil"/>
+                        <img src={'/iconos/perfil'+(pageSelected==="perfil"?(mode==''?'-blanco.png':'.png'):(mode!=''?'-blanco.png':'.png'))} name="perfil"/>
                     </div>
                     <div className='textSideCont' name="perfil" >
                         PERFIL
@@ -44,11 +44,11 @@ const SideBar =({userPermissions,rolId,onLogin,pageSelected,setPageSelected,data
                 </div>
             </div>
 {(userPermissions.some(objeto => objeto.permission_id === permisos_codigo_id['monitor']))?
-            <div className={'sidebarRow '+(pageSelected==="monitoreo"?'sideRowSelected':'')}>
-                <div className={'sidebarCont '+(pageSelected==="monitoreo"?'sideSelected':'')} name="monitoreo" onClick={handleSection}>
+            <div className={'sidebarRow '+(pageSelected==="monitoreo"?'sideRowSelected'+mode:'')}>
+                <div className={'sidebarCont'+mode+' '+(pageSelected==="monitoreo"?'sideSelected'+mode:'')} name="monitoreo" onClick={handleSection}>
                 
                 <div className='imgSideCont' name="monitoreo" >
-                <img src={'/iconos/monitoreo'+(pageSelected==="monitoreo"?'-blanco.png':'.png')} name="monitoreo" />
+                <img src={'/iconos/monitoreo'+(pageSelected==="monitoreo"?(mode==''?'-blanco.png':'.png'):(mode!=''?'-blanco.png':'.png'))} name="monitoreo" />
                 {/* <img src="/iconos/monitoreo-blanco.png"/> */}
                     </div>
                     <div className='textSideCont ' name="monitoreo" >
@@ -60,11 +60,11 @@ const SideBar =({userPermissions,rolId,onLogin,pageSelected,setPageSelected,data
             {
                 (userPermissions.some(objeto => objeto.permission_id === permisos_codigo_id['admin']))?
             
-             <div className={'sidebarRow '+(pageSelected==="panel-admin"?'sideRowSelected':'')}>
-                <div className={'sidebarCont '+(pageSelected==="panel-admin"?'sideSelected':'')} name="panel-admin" onClick={handleSection}>
+             <div className={'sidebarRow '+(pageSelected==="panel-admin"?'sideRowSelected'+mode:'')}>
+                <div className={'sidebarCont'+mode+' '+(pageSelected==="panel-admin"?'sideSelected'+mode:'')} name="panel-admin" onClick={handleSection}>
                 
                 <div className='imgSideCont' name="panel-admin" >
-                <img src={'/iconos/panel-admin'+(pageSelected==="panel-admin"?'-blanco.png':'.png')} name="panel-admin" />
+                <img src={'/iconos/panel-admin'+(pageSelected==="panel-admin"?(mode==''?'-blanco.png':'.png'):(mode!=''?'-blanco.png':'.png'))} name="panel-admin" />
                 
                     </div>
                     <div className='textSideCont ' name="panel-admin" >
@@ -77,11 +77,11 @@ const SideBar =({userPermissions,rolId,onLogin,pageSelected,setPageSelected,data
             }
             {
                 (cis.value==1 && userPermissions.some(objeto => objeto.permission_id === permisos_codigo_id['cis']))?
-                <div className={'sidebarRow '+(pageSelected==="cis"?'sideRowSelected':'')}>
-                    <div className={'sidebarCont '+(pageSelected==="cis"?'sideSelected':'')} name="cis" onClick={handleSection}>
+                <div className={'sidebarRow '+(pageSelected==="cis"?'sideRowSelected'+mode:'')}>
+                    <div className={'sidebarCont'+mode+' '+(pageSelected==="cis"?'sideSelected'+mode:'')} name="cis" onClick={handleSection}>
                     
                     <div className='imgSideCont' name="cis" >
-                    <img src={'/iconos/cis'+(pageSelected==="cis"?'-blanco.png':'.png')} name="cis" />
+                    <img src={'/iconos/cis'+(pageSelected==="cis"?(mode==''?'-blanco.png':'.png'):(mode!=''?'-blanco.png':'.png'))} name="cis" />
                     
                         </div>
                         <div className='textSideCont ' name="cis" >
@@ -92,11 +92,11 @@ const SideBar =({userPermissions,rolId,onLogin,pageSelected,setPageSelected,data
             }
             {
                 (reportes.value==1 && userPermissions.some(objeto => objeto.permission_id === permisos_codigo_id['reportes']))?
-                <div className={'sidebarRow '+(pageSelected==="reportes"?'sideRowSelected':'')}>
-                    <div className={'sidebarCont '+(pageSelected==="reportes"?'sideSelected':'')} name="cireportess" onClick={handleSection}>
+                <div className={'sidebarRow '+(pageSelected==="reportes"?'sideRowSelected'+mode:'')}>
+                    <div className={'sidebarCont'+mode+' '+(pageSelected==="reportes"?'sideSelected'+mode:'')} name="cireportess" onClick={handleSection}>
                     
                     <div className='imgSideCont' name="reportes" >
-                    <img src={'/iconos/reportes'+(pageSelected==="reportes"?'-blanco.png':'.png')} name="reportes" />
+                    <img src={'/iconos/reportes'+(pageSelected==="reportes"?(mode==''?'-blanco.png':'.png'):(mode!=''?'-blanco.png':'.png'))} name="reportes" />
                     
                         </div>
                         <div className='textSideCont ' name="reportes" >
@@ -107,11 +107,11 @@ const SideBar =({userPermissions,rolId,onLogin,pageSelected,setPageSelected,data
             }
             {
                 (acciones.value==1 && userPermissions.some(objeto => objeto.permission_id === permisos_codigo_id['acciones']))?
-                <div className={'sidebarRow '+(pageSelected==="acciones"?'sideRowSelected':'')}>
-                    <div className={'sidebarCont '+(pageSelected==="acciones"?'sideSelected':'')} name="acciones" onClick={handleSection}>
+                <div className={'sidebarRow '+(pageSelected==="acciones"?'sideRowSelected'+mode:'')}>
+                    <div className={'sidebarCont'+mode+' '+(pageSelected==="acciones"?'sideSelected'+mode:'')} name="acciones" onClick={handleSection}>
                     
                     <div className='imgSideCont' name="acciones" >
-                    <img src={'/iconos/acciones'+(pageSelected==="acciones"?'-blanco.png':'.png')} name="acciones" />
+                    <img src={'/iconos/acciones'+(pageSelected==="acciones"?(mode==''?'-blanco.png':'.png'):(mode!=''?'-blanco.png':'.png'))} name="acciones" />
                     
                         </div>
                         <div className='textSideCont ' name="acciones" >
@@ -122,11 +122,11 @@ const SideBar =({userPermissions,rolId,onLogin,pageSelected,setPageSelected,data
             }
             {
                 (hosts==1)?
-                <div className={'sidebarRow '+(pageSelected==="host-manage"?'sideRowSelected':'')}>
-                    <div className={'sidebarCont '+(pageSelected==="host-manage"?'sideSelected':'')} name="host-manage" onClick={handleSection}>
+                <div className={'sidebarRow '+(pageSelected==="host-manage"?'sideRowSelected'+mode:'')}>
+                    <div className={'sidebarCont'+mode+' '+(pageSelected==="host-manage"?'sideSelected'+mode:'')} name="host-manage" onClick={handleSection}>
                     
                     <div className='imgSideCont' name="host-manage" >
-                    <img src={'/iconos/host-manage'+(pageSelected==="host-manage"?'-blanco.png':'.png')} name="host-manage" />
+                    <img src={'/iconos/host-manage'+(pageSelected==="host-manage"?(mode==''?'-blanco.png':'.png'):(mode!=''?'-blanco.png':'.png'))} name="host-manage" />
                     
                         </div>
                         <div className='textSideCont ' name="host-manage" >
@@ -137,11 +137,11 @@ const SideBar =({userPermissions,rolId,onLogin,pageSelected,setPageSelected,data
             }
             {
                 (buzon.value==1 && userPermissions.some(objeto => objeto.permission_id === permisos_codigo_id['buzon']))?
-                <div className={'sidebarRow '+(pageSelected==="buzon"?'sideRowSelected':'')}>
-                    <div className={'sidebarCont '+(pageSelected==="buzon"?'sideSelected':'')} name="buzon" onClick={handleSection}>
+                <div className={'sidebarRow '+(pageSelected==="buzon"?'sideRowSelected'+mode:'')}>
+                    <div className={'sidebarCont'+mode+' '+(pageSelected==="buzon"?'sideSelected'+mode:'')} name="buzon" onClick={handleSection}>
                     
                     <div className='imgSideCont' name="buzon" >
-                    <img src={'/iconos/buzon'+(pageSelected==="buzon"?'-blanco.png':'.png')} name="buzon" />
+                    <img src={'/iconos/buzon'+(pageSelected==="buzon"?(mode==''?'-blanco.png':'.png'):(mode!=''?'-blanco.png':'.png'))} name="buzon" />
                     
                         </div>
                         <div className='textSideCont ' name="buzon" >
@@ -151,7 +151,7 @@ const SideBar =({userPermissions,rolId,onLogin,pageSelected,setPageSelected,data
                 </div>:''
             }
             <div className="sidebarRow">
-                <div className='sidebarCont ' onClick={onLogin} >
+                <div className={'sidebarCont'+mode} onClick={onLogin} >
                     <div className='imgSideCont'>
                     <img src="/iconos/log-out-red.svg"/>
                     </div>
@@ -164,7 +164,7 @@ const SideBar =({userPermissions,rolId,onLogin,pageSelected,setPageSelected,data
        {/* <img src="logo-spin.png"  className='icon-seguritech' alt="Logo"/> */}
        <img src={"/escudos/"+(typeof(estado.value)==='undefined'?estado.value:estado.value.toLowerCase().replaceAll(" ", ""))+".svg"}  className='icon-state' alt="Logo"/>
        {/* <label>Guanajuato</label> */}
-       <div className='textSideCont ' style={{textTransform: 'capitalize'}} name="estado" >
+       <div className={'textSideCont txtEstado'+mode} style={{textTransform: 'capitalize'}} name="estado" >
                        {(estado==='')?'':estado.value}
                     </div>
        </div>
