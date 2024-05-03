@@ -89,10 +89,12 @@ letter-spacing: 1px;
 }
 .react-select__menu-list{
     width: 100% !important;
+
     z-index: 3 !important;
 }
 .react-host-select__menu-portal{
     z-index: 3 !important;
+
 }
 .Whitereact-host-select__menu-portal{
     z-index: 3 !important;

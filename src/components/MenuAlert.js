@@ -445,7 +445,9 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                               <Action origen='General' disabled={false} titulo='Ack...' action={openAck}/>
                           </div>:''}
                           <div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
+
                               <Action origen='General' disabled={false} titulo='Flujo' action={openFlujo}/>
+
                           </div>
                           {
                             (props.userPermissions.some(objeto => objeto.permission_id === permisos_codigo_id['link_ticket']))?
@@ -523,9 +525,12 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
             >
                 <div className='exceptCont card'>
                 <div className='menuActiontitle' style={{width: "100%"}}>
+
                 <div className='cardTitle cardTitleAlert' style={{background:'aliceblue'}} >
                             <div className='textCardTitle' style={{color:'#003757',fontsize:'medium'}}>
                             CREAR ACKNOWLEDGE:
+
+
                             </div>
                         </div>
                     </div>
@@ -554,6 +559,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                             {/* <InputForm data={[]} loading={false} text={''} setValidaBtn={setValidaBtn} titulo='Notas' disabled={false}></InputForm> */}
                             </div>
                             <div className='formColumn input-column'>
+
                             {
                               ((props.data.r_eventid=="" || props.data.r_eventid==null) && props.data.manual_close==1 )?
                               <>
@@ -564,9 +570,13 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                             
                               </>:''
                             }
+
                             </div>
+
                             <div className='formColumn' >
+
                             <Action origen='General' titulo='GUARDAR' action={addAck} disabled={validaBtn}/>
+
                             <Action origen='Alert' titulo='CANCELAR' action={closeAck} disabled={false} />
                             </div>
                         

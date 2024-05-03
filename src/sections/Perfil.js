@@ -51,7 +51,9 @@ const Perfil=({server,dataGlobals,setNameState,mode,setMode})=>{
                 </div>
             </div>
             <div className='footer-version'>
+
                    Version 1.3
+
             </div>
             {/* <div className='footer-mode'>
             <label for="theme" class="theme">
