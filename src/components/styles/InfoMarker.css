@@ -7,6 +7,16 @@
   width: 100%;
   height: 100%;
 }
+.mainInfoMarkerWhite{
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  /* border: 1px solid #003757; */
+}
 .contInfoMarker{
   display: block;
   position: relative;
@@ -44,6 +54,10 @@
 .txtTitleInfoMarker{
   font-size: medium;
   color: aliceblue;
+}
+.txtTitleInfoMarkerWhite{
+  font-size: medium;
+  color: #003757;
 }
 .contHost{
   position: relative;
@@ -92,6 +106,19 @@
   border-radius: 0px 0px 10px 10px;
   width: 100%;
 }
+.rowInfoWhite {
+  justify-content: center;
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  height: 60%;
+  /* background: #5d5c69; */
+  background-color: #eeeeee;
+  background-size: 400%;
+  color: #003757;
+  border-radius: 0px 0px 10px 10px;
+  width: 100%;
+}
 .titlesInfo{
   height: 40%;
   position: relative;
@@ -100,6 +127,16 @@
   justify-content: center;
   align-items: center;
   background-color: rgba(13, 13, 13, 0.45);
+  /* max-height: 25px; */
+}
+.titlesInfoWhite{
+  height: 40%;
+  position: relative;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  background-color: #003757;
   /* max-height: 25px; */
 }
 .hostInfoCell{
@@ -126,6 +163,10 @@
   font-size: medium;
   color: #f0f8ff21;
 }
+.textWOAWhite{
+  font-size: medium;
+  color: #00375771;
+}
 
 
 /*************************************cont actions**************************************/
@@ -137,6 +178,19 @@
   width: 30%;
   height: 100%; */
   color: aliceblue;
+  font-weight: bold;
+  left: 0;
+  top: 0;
+  /* background-color: rgb(23, 24, 24); */
+}
+.txtHostSelectedWhite{
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  /* align-items: center;
+  width: 30%;
+  height: 100%; */
+  color: #003757;
   font-weight: bold;
   left: 0;
   top: 0;
@@ -169,6 +223,18 @@ list-style-type: none; /* Elimina los estilos de viñetas de la lista */
 padding: 0; /* Elimina el relleno predeterminado de la lista */
 margin: 0; 
 }
+.compactactions-listWhite{
+  position: relative;
+  display: flex;
+  width: 30%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  justify-content: space-between; /* Distribuye el espacio entre los elementos */
+list-style-type: none; /* Elimina los estilos de viñetas de la lista */
+padding: 0; /* Elimina el relleno predeterminado de la lista */
+margin: 0; 
+}
 .compactactions-list li {
   /* flex-grow: 1; Permite que los elementos ocupen el espacio disponible */
   width: 33%;
@@ -183,14 +249,34 @@ margin: 0;
   /* color: rgba(195,195,195,1); */
   color: aliceblue;
 }
-.compactactions-list li:hover{
-  background-color: rgba(130, 134, 138, 0.452);
+.compactactions-listWhite li {
+  /* flex-grow: 1; Permite que los elementos ocupen el espacio disponible */
+  width: 33%;
+  height: 100%;
+  background-color: transparent;
+  border-right: 1px solid #003757;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: small;
+  cursor: pointer;
+  /* color: rgba(195,195,195,1); */
+  color: #003757;
+}
+.compactactions-listWhite li:hover{
+  background-color: rgba(179, 179, 179, 0.534);
 }
 .action-selected{
   /* background-color: rgba(195,195,195,1) !important; */
   background-color: aliceblue !important;
   /* color: rgb(1, 17, 31) !important; */
   color:#003757 !important;
+}
+.action-selectedWhite{
+  /* background-color: rgba(195,195,195,1) !important; */
+  background-color: #003757 !important;
+  /* color: rgb(1, 17, 31) !important; */
+  color:aliceblue !important;
 }
 .contActions{
   position: relative;
@@ -200,6 +286,15 @@ margin: 0;
   width: 100%;
   height: 85%;
   border: #ffffff33 1px solid;
+}
+.contActionsWhite{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 85%;
+  border: #003757 2px solid;
 }
 .contAcciones{
   position: relative;
@@ -216,6 +311,14 @@ margin: 0;
   left: 0;
   top: 0;
   color: aliceblue;
+  margin-left: 1%;
+}
+.lblInfoHostWhite{
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  top: 0;
+  color: 003757;
   margin-left: 1%;
 }
 .menuActionDataIM {
@@ -299,5 +402,52 @@ max-height: 50px;
   background-position: 0 -24px;
 }
 
+/*///////////*/
 
 
+.checkHostWhite {
+  -webkit-appearance: none;
+ /* remove default */
+  display: block;
+  margin: 10px;
+  width: 24px;
+  height: 24px;
+  border-radius: 12px;
+  cursor: pointer;
+  vertical-align: middle;
+  box-shadow: hsla(0,0%,100%,.15) 0 1px 1px, inset hsla(0,0%,0%,.5) 0 0 0 1px;
+  background-color: hsla(0, 4%, 86%, 0.2);
+  background-image: -webkit-radial-gradient( rgb(3, 114, 170) 0%, rgba(4, 108, 160, 0.788) 15%, rgba(5, 108, 160, 0.651) 28%, hsla(200,100%,30%,0) 70% );
+  background-repeat: no-repeat;
+  -webkit-transition: background-position .15s cubic-bezier(.8, 0, 1, 1),
+    -webkit-transform .25s cubic-bezier(.8, 0, 1, 1);
+  outline: none;
+}
+
+.checkHostWhite:checked {
+  -webkit-transition: background-position .2s .15s cubic-bezier(0, 0, .2, 1),
+    -webkit-transform .25s cubic-bezier(0, 0, .2, 1);
+}
+
+.checkHostWhite:active {
+  -webkit-transform: scale(1.5);
+  -webkit-transition: -webkit-transform .1s cubic-bezier(0, 0, .2, 1);
+}
+
+
+
+/* The up/down direction logic */
+
+.checkHostWhite,
+.checkHostWhite:active {
+  background-position: 0 24px;
+}
+
+.checkHostWhite:checked {
+  background-position: 0 0;
+}
+
+.checkHostWhite:checked ~ .checkHostWhite,
+.checkHostWhite:checked ~ .checkHostWhite:active {
+  background-position: 0 -24px;
+}

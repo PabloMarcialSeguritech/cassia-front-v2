@@ -172,7 +172,7 @@ const RightQuadrant =(props)=>{
         <>
         <div className='rowQuadrant rightQuadrant'>
             <div className='column' style={{width:'70%'}}>
-                <div className='card menuSearch'>
+                <div className={'card'+props.mode+' menuSearch'}>
                     {/* <div className='menuSearchColumn menuSearchTitle'>
                         <div className='cardTitle'>
                             <div className='textCardTitle'>
@@ -210,7 +210,8 @@ const RightQuadrant =(props)=>{
                 </div>
             </div>
             <div className='column' style={{width:'40%',justifyContent: 'space-around'}}>
-                <div className='card menuInfo' style={{background:'rgba(94, 99, 115, 0.62)'}}>
+                {/* <div className='card menuInfo' style={{background:'rgba(94, 99, 115, 0.62)'}}> */}
+                <div className={'card'+props.mode+' menuInfo'}>
                     <div className='menuInfotitle'>
                         <div className='cardTitle'>
                             <div className='textCardTitle'>
@@ -240,7 +241,7 @@ const RightQuadrant =(props)=>{
                 {
                     (props.ubiActual.groupid!==0)?
                 
-                <div className='card menuInfo'>
+                <div className={'card'+props.mode+' menuInfo'}>
                     <div className='menuInfotitle'>
                         <div className='cardTitle' style={{}}>
                             <div className='textCardTitle'>

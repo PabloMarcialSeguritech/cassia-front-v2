@@ -16,7 +16,7 @@ function App() {
   // const [server,setServer]=useState({ip:'172.16.4.249',port:8004})//EDOMEX
   const [server,setServer]=useState({ip:'172.18.200.14',port:8002})//Guanajuato
   // const [server,setServer]=useState({ip:'10.12.1.61',port:8000})//Zacatecas
-  // const [server,setServer]=useState({ip:'172.16.10.50',port:8000})
+  // const [server,setServer]=useState({ip:'10.3.152.197',port:8000})//BajaCalifornia
    
   console.log('app')
   useEffect(()=>{

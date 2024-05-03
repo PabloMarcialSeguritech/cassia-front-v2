@@ -214,9 +214,9 @@ const selectOptionList=(element)=>{
    }
     return(
 <>
-<div className={props.alertsIsOpen?'menuAlertTitle' :'menuAlertTitleMin' } onClick={(!props.alertsIsOpen)?expandAlerts:()=>{}}>
+<div className={props.modalIsOpen?'menuAlertTitle' :'menuAlertTitleMin' } onClick={(!props.alertsIsOpen)?expandAlerts:()=>{}}>
 {/* <div className={props.alertsIsOpen?'menuAlertTitle' :'menuAlertTitleMin' }> */}
-                        <div className='cardTitle cardTitleAlert'>
+                        <div className={'cardTitle cardTitleAlert'+props.mode}>
                         {props.modalIsOpen || props.alertsIsOpen?
                         <div className='cont-menu-eventos'>
                           <div className='cont-option-eventos'>
@@ -367,7 +367,7 @@ const selectOptionList=(element)=>{
                   props.dataProblems.loading?<LoadAlerts/>:(dataList.length===0?<div className='txtLoader'>Sin Resultados</div>:
                   dataList.map((elemento, indice)=>(
                     
-                    <RowProblem userPermissions={props.userPermissions} setCountList={setCountList} filtraOrigen={filtraOrigen} ubiActual={props.ubiActual} mapAux={props.mapAux} setmapAux={props.setmapAux} search_problems={props.search_problems} key={indice} severity={elemento.severity} dataAgencies={dataAgencies} data={elemento} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion} server={props.server} />
+                    <RowProblem mode={props.mode} userPermissions={props.userPermissions} setCountList={setCountList} filtraOrigen={filtraOrigen} ubiActual={props.ubiActual} mapAux={props.mapAux} setmapAux={props.setmapAux} search_problems={props.search_problems} key={indice} severity={elemento.severity} dataAgencies={dataAgencies} data={elemento} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion} server={props.server} />
                     
                     )))
                   }
