@@ -90,9 +90,9 @@ const popups = document.querySelectorAll('.custom-popup-findHost');
       // (  props.data.Estatus!="RESOLVED" && (props.data.severity==6 && props.data.tipo==1 ) || (props.data.severity!==6 ) )?
       // (true)?
       
-        <div className={'rowProblem '/*+props.data.Estatus*/} style={{background:menuAlertOpen?'#82829160':'#43434d60'}} onClick={menuAlertOpen?closeMenuAlert:openMenuAlert}>
+        <div className={'rowProblem '/*+props.data.Estatus*/} style={{background:menuAlertOpen?((props.mode=='')?'#82829160':'#bbbbbb'):((props.mode=='')?'#43434d60':'#dddddd')}} onClick={menuAlertOpen?closeMenuAlert:openMenuAlert}>
         <span className="rowProblem-hover"> </span>
-                  <div className='problemCell ' style={{width:'6%'}}>
+                  <div className={'problemCell'+props.mode} style={{width:'6%'}}>
                     
                     {
                       (props.data.exception_id==null)?<img  src={'/iconos/alerts'+props.data.severity+'.svg'} className={' s'+props.data.severity} alt="Logo"></img>:
@@ -101,14 +101,14 @@ const popups = document.querySelectorAll('.custom-popup-findHost');
                     
                     <p className='txtSeverity'>{'S-'+props.data.severity}</p>
                   </div>
-                  <div className='problemCell' style={{width:'19%'}}>
+                  <div className={'problemCell'+props.mode} style={{width:'19%'}}>
                     <div className='txtProblemCell'>
                       {/* Diagnosta:<br/> */}
                       {props.data.Problem.length > 25 ? `${props.data.Problem.slice(0, 25)}...` : ((props.data.Problem.includes("Unavailable by ICMP ping") )?"CASSIA detecto DESCONEXIÓN en:":props.data.Problem )}
                     
                     </div>
                   </div>
-                  <div className='problemCell' style={{width:'26%'}}>
+                  <div className={'problemCell'+props.mode} style={{width:'26%'}}>
                     <div className='txtProblemCell' >
                     {/* {props.data.Host.length > 35 ? `${props.data.Host.slice(0, 35)}...` : props.data.Host} */}
                     { props.data.Host}
@@ -116,40 +116,40 @@ const popups = document.querySelectorAll('.custom-popup-findHost');
                     </div>
                   </div>
                   
-                  <div className='problemCell' style={{width:'10%'}}>
+                  <div className={'problemCell'+props.mode} style={{width:'10%'}}>
                     <div className='txtProblemCell'>
                     {/* {props.data.ip} */}
                     {props.data.Estatus}
                     </div>
                   </div>
-                  <div className='problemCell' style={{width:'4%'}}>
+                  <div className={'problemCell'+props.mode} style={{width:'4%'}}>
                     <div className='txtProblemCell'>
                     {props.data.tipo}
                     </div>
                   </div>
-                  <div className='problemCell' style={{width:'4%'}}>
+                  <div className={'problemCell'+props.mode} style={{width:'4%'}}>
                     <div className='txtProblemCell' style={{fontWeight:'bold'}}>
                     {props.data.dependents}
                     </div>
                   </div>
-                  <div className='problemCell' style={{width:'12%'}}>
+                  <div className={'problemCell'+props.mode} style={{width:'12%'}}>
                     <div className='txtProblemCell'>
                     {props.data.Ack_message.length > 20 ? `${props.data.Ack_message.slice(0, 20)}...` : props.data.Ack_message}
                        {/* {props.data.Ack_message} */}
                     </div>
                   </div>
-                  <div className='problemCell'style={{width:'10%'}}>
+                  <div className={'problemCell'+props.mode}style={{width:'10%'}}>
                     <div className='txtProblemCell'>
                     {/* {calcularDiferenciaTiempo(fechaDada,horaDada)} */}
                     {calcularDiferenciaTiempo(cambiarFormatoFecha(props.data.Time.slice(0,10)), props.data.Time.slice(-8))}
                     </div>
                   </div>
-                  <div className='problemCell'style={{width:'6%'}}>
+                  <div className={'problemCell'+props.mode}style={{width:'6%'}}>
                     <div className='txtProblemCell'>
                     {props.data.Time.slice(0,10)}
                     </div>
                   </div>
-                  <div className='problemCell'style={{width:'6%'}}>
+                  <div className={'problemCell'+props.mode}style={{width:'6%'}}>
                     <div className='txtProblemCell'>
                     {props.data.Time.slice(-9)}
                     </div>
@@ -157,7 +157,7 @@ const popups = document.querySelectorAll('.custom-popup-findHost');
                   
       </div>:''}
     
-      <MenuAlert ubiActual={props.ubiActual} search_problems={props.search_problems} server={props.server} ackMessage={ackMessage} setAckMessage={setAckMessage}isOpen={menuAlertOpen} props={props} onClose={closeMenuAlert} />
+      <MenuAlert   ubiActual={props.ubiActual} search_problems={props.search_problems} server={props.server} ackMessage={ackMessage} setAckMessage={setAckMessage}isOpen={menuAlertOpen} props={props} onClose={closeMenuAlert} />
       
       </>
     )

@@ -10,4 +10,117 @@
     background: #030f1e;
     /* z-index: -2; */
 }
+.containerWhite{
+    background: #eee !important;
+    position: absolute;
+    width: 96%;
+    left: 4%;
+    height: 92%;
+    /* display: flex; */
+    display: block;
+    justify-content: center;
+    flex-direction: row;
+    background: #030f1e;
+    /* z-index: -2; */
+}
+.MsgErrorGlobal{
+    position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  color: #c40303;
+  font-size: larger;
+}
 
+.contMainError{
+    position: relative;
+  width: 30%;
+  height: 80%;
+  left: 35%;
+  top: 10%;
+  display: block;
+}
+.contTitleErrorMsg{
+    position: relative;
+    width: 100%;
+    height: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #c40303;
+    font-size: xx-large;
+    
+}
+.contMainErrorMsg{
+    position: relative;
+    width: 100%;
+    height: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: aliceblue;
+    font-size: large;
+}
+.contMainErrorMsgWhite{
+    position: relative;
+    width: 100%;
+    height: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #003757;
+    font-size: large;
+}
+.contDetailErrorMsg{
+    position: relative;
+    width: 100%;
+    height: 70%;
+    display: block
+}
+.RowInfoErrorMsg{
+    position: relative;
+    width: 100%;
+    height: 10%;
+    display: flex ;
+    justify-content: center;
+    align-items: center;
+}
+.CellTxtErrorMsg{
+    position: relative;
+    width: 40%;
+    height: 100%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    text-align: center;
+    color: aliceblue;
+    font-size: medium;
+}
+.CellTxtErrorMsgWhite{
+    position: relative;
+    width: 40%;
+    height: 100%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    text-align: center;
+    color: #003757;
+    font-size: medium;
+}
+.CellValErrorMsg{
+    position: relative;
+    width: 20%;
+    height: 100%;
+    display: flex ;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: aliceblue;
+    font-size: medium;
+}

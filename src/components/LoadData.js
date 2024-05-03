@@ -1,18 +1,18 @@
 import './styles/LoadData.css'
 
-const LoadData=()=>{
+const LoadData=({mode})=>{
     return(
         <div className='LoadContent'>
             <div className='compactLoadItems'>
                 
                 <div className='loadCont iconLoadCont'>
                     {/* <span className='loader'></span> */}
-                    <div className="loader">
+                    <div className={"loader"+mode}>
                         <span></span>
                     </div>
                 </div>
                 <div className=' loadCont textLoadCont'>
-                    <div className='txtLoader'>Obteniendo datos. . .
+                    <div className={'txtLoader'+mode}>Obteniendo datos. . .
                     {/* <span className="blink_me" id="rotate">
                         <span>.</span>
                         <span>..</span>

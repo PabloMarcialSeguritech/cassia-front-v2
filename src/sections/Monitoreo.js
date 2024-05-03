@@ -10,6 +10,7 @@ import {  useEffect, useState } from 'react'
 import { useFetch } from '../hooks/useFetch'
 import mapboxgl from 'mapbox-gl'
 import MapBox from '../components/mapbox_gl'
+import MapBoxWhite from '../components/mapbox-white'
 import MapComponent from '../components/Map'
 import LoadData from '../components/LoadData'
 import Modal from 'react-modal';
@@ -19,7 +20,7 @@ import arcos_list from '../components/arcos'
 import data_switches from '../components/switches'
 import ShowLayers from '../components/ShowLayers'
 import { render } from '@testing-library/react'
-const Monitoreo=({token_item,userPermissions,dataGlobals,server,handleShowPopup,estados_list,estadoSelected,setEstadoSelected})=>{
+const Monitoreo=({mode,token_item,userPermissions,dataGlobals,server,handleShowPopup,estados_list,estadoSelected,setEstadoSelected})=>{
   const dispId_default=-1
   const [capas,setCapas]=useState({})
   const global_longitud=dataGlobals.find(obj => obj.name === 'state_longitude')
@@ -77,7 +78,10 @@ const Monitoreo=({token_item,userPermissions,dataGlobals,server,handleShowPopup,
 
     const [lprInterval,setLprInterval]=useState(0)
     const [renderCapas,setRenderCapas]=useState({downs:false,markersWOR:true,markers:true,rfid:true,switches:true,lpr:true,towers:false})
-    // //console.log(renderCapas)
+
+    const capasList=['Downs','Conectados','Dispositivos','RFID','Switches','LPR','Torres']
+    console.log(renderCapas)
+    console.log( Object.values(renderCapas))
 
    const [renderMap,setRenderMap]=useState(false)
    const allTrue = Object.values(renderCapas).every(value => value === true);
@@ -469,7 +473,7 @@ useEffect(()=>{
                               //console.log(response)
             if (response.ok) {
               const response_data = await response.json();
-              //console.log(response_data.data)
+              console.log(response_data.data)
               // //console.log("arcos")
               // //console.log(arcos_list)
               setSwitchList({data:response_data.data,loading:false,error:rfid_list.error})
@@ -561,6 +565,10 @@ useEffect(()=>{
         clearInterval(rfidInterval);
         setRfid([])
       }
+      if(lprInterval!==0){
+        clearInterval(lprInterval);
+        setLpr([])
+      }
       setRenderCapas(prevState => ({
         ...prevState,
         downs:false,
@@ -577,9 +585,10 @@ useEffect(()=>{
         setMarkersWOR([])
         setLines([])
         setSwitches([])
+        setLpr([])
         setLocations([])
         setLoaderMap(true)
-        setDevices({data:devices.data,loading:true,error:devices.error})
+        setDevices({data:devices.data,loading:true,error:''})
         
         
         const fetchData = async () => {
@@ -610,7 +619,7 @@ useEffect(()=>{
           } catch (error) {
             // Manejo de errores
             setDevices({data:devices.data,loading:devices.loading,error:error})
-            //console.error(error);
+            console.error(error);
           }
         };
         fetchData();
@@ -978,8 +987,8 @@ useEffect(()=>{
         )
     }
     function objeto_switches(devices_data){
-      //console.log("entra al objeto switches -----------------------------")
-      //console.log(devices_data.subgroup_info.length)
+      console.log("entra al objeto switches -----------------------------")
+      console.log(devices_data.subgroup_info)
       devices_data.subgroup_info.map((host, index, array)=>
           {
             if(ubicacion.dispId===12){
@@ -1445,21 +1454,31 @@ useEffect(()=>{
             loaderMap ?'':
             <>
             <SearchHost mapAux={mapAux} setmapAux={setmapAux} ubiActual={ubiActual} downs_list={downs_list} devices={devices} markersWOR={markersWOR}></SearchHost>
-          <Notifications estadoSelected={estadoSelected} setEstadoSelected={setEstadoSelected} estados_list={estados_list} dataGlobals={dataGlobals} server={server} handleShowPopup={handleShowPopup} mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} devices={devices}  ubiActual={ubiActual}/>
+
+          <Notifications mode={mode} estadoSelected={estadoSelected} setEstadoSelected={setEstadoSelected} estados_list={estados_list} dataGlobals={dataGlobals} server={server} handleShowPopup={handleShowPopup} mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} devices={devices}  ubiActual={ubiActual}/>
 
           
             </>
           }
-          <RightQuadrant userPermissions={userPermissions} downs_list={downs_list} capas={capas} setCapas={setCapas} metricaSelected={metricaSelected} setMetricaSelected={setMetricaSelected} ubiActual={ubiActual} setUbiActual={setUbiActual}  server={server} setRfid={setRfid} search_rfid={search_rfid} setLpr={setLpr} search_lpr={search_lpr} search_switches={search_switches} search_devices={search_devices} markersWOR={markersWOR}  search_downs={search_downs} downs={downs} search_problems={search_problems} token={token_item} ubicacion={ubicacion} markers={markers}  dataHosts={devices} setUbicacion={setUbicacion} />
+          <RightQuadrant mode={mode} userPermissions={userPermissions} downs_list={downs_list} capas={capas} setCapas={setCapas} metricaSelected={metricaSelected} setMetricaSelected={setMetricaSelected} ubiActual={ubiActual} setUbiActual={setUbiActual}  server={server} setRfid={setRfid} search_rfid={search_rfid} setLpr={setLpr} search_lpr={search_lpr} search_switches={search_switches} search_devices={search_devices} markersWOR={markersWOR}  search_downs={search_downs} downs={downs} search_problems={search_problems} token={token_item} ubicacion={ubicacion} markers={markers}  dataHosts={devices} setUbicacion={setUbicacion} />
           {
-            loaderMap?<LoadData/>:
-              <>
+            loaderMap?<LoadData mode={mode}/>:
+            <>  
+            {allTrue?<>
                 <ShowLayers capas={capas} setCapas={setCapas} mapAux={mapAux} setmapAux={setmapAux}  ></ShowLayers>
                 {
-                  allTrue?<MapBox capas={capas} setCapas={setCapas} mapAux={mapAux} setmapAux={setmapAux} search_rfid={search_rfid} search_lpr={search_lpr} actualizar_lpr={actualizar_lpr} actualizar_rfi={actualizar_rfi} global_latitude={global_latitude} global_longitud={global_longitud} global_zoom={global_zoom} devices={devices} markers={markers} markersWOR={markersWOR} lines={lines} downs={downs}towers={towers} rfid={rfid} lpr={lpr} ubicacion={ubicacion} switches={switches} switchesFO={switchesFO} switchesMO={switchesMO} handleMarkerClick={handleMarkerClick}/>:''
+                  // allTrue?(mode==""?
+                  allTrue?(mode==""?
+                  <MapBox      capas={capas} setCapas={setCapas} mapAux={mapAux} setmapAux={setmapAux} search_rfid={search_rfid} search_lpr={search_lpr} actualizar_lpr={actualizar_lpr} actualizar_rfi={actualizar_rfi} global_latitude={global_latitude} global_longitud={global_longitud} global_zoom={global_zoom} devices={devices} markers={markers} markersWOR={markersWOR} lines={lines} downs={downs}towers={towers} rfid={rfid} lpr={lpr} ubicacion={ubicacion} switches={switches} switchesFO={switchesFO} switchesMO={switchesMO} handleMarkerClick={handleMarkerClick}/>:
+                  <MapBoxWhite capas={capas} setCapas={setCapas} mapAux={mapAux} setmapAux={setmapAux} search_rfid={search_rfid} search_lpr={search_lpr} actualizar_lpr={actualizar_lpr} actualizar_rfi={actualizar_rfi} global_latitude={global_latitude} global_longitud={global_longitud} global_zoom={global_zoom} devices={devices} markers={markers} markersWOR={markersWOR} lines={lines} downs={downs}towers={towers} rfid={rfid} lpr={lpr} ubicacion={ubicacion} switches={switches} switchesFO={switchesFO} switchesMO={switchesMO} handleMarkerClick={handleMarkerClick}/>):
+                  <>
+                    <div >
+
+                    </div>
+                  </>
                 }
                 
-                <LeftQuadrant userPermissions={userPermissions} ubiActual={ubiActual} mapAux={mapAux} setmapAux={setmapAux} server={server} zoom={zoom} setZoom={setZoom}   markersWOR={markersWOR} markers={markers} token ={token_item} setLatitudes={setLatitudes} setLongitudes={setLongitudes} setLocations={setLocations}
+                <LeftQuadrant userPermissions={userPermissions} mode={mode}  ubiActual={ubiActual} mapAux={mapAux} setmapAux={setmapAux} server={server} zoom={zoom} setZoom={setZoom}   markersWOR={markersWOR} markers={markers} token ={token_item} setLatitudes={setLatitudes} setLongitudes={setLongitudes} setLocations={setLocations}
                   longitudes={longitudes} locations={locations} search_problems={search_problems}
                   ubicacion={ubicacion} dataHosts={devices} setUbicacion={setUbicacion} dataProblems={dataProblems} setDataProblems={setDataProblems} severityProblms={severityProblms} setSeverityProblms={setSeverityProblms}/>
                 <Modal
@@ -1470,8 +1489,32 @@ useEffect(()=>{
                   contentLabel="Example Modal2"
                   // shouldCloseOnOverlayClick={false}
                   >
-                    <InfoMarker downs_list={downs_list} userPermissions={userPermissions} source={'Monitoreo'} handleShowPopup={handleShowPopup} mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} devices={devices} server={server} isOpen={infoMarkerOpen} data={infoMarker} closeInfoMarker={closeInfoMarker} ubiActual={ubiActual}></InfoMarker>
+                    <InfoMarker mode={mode} downs_list={downs_list} userPermissions={userPermissions} source={'Monitoreo'} handleShowPopup={handleShowPopup} mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} devices={devices} server={server} isOpen={infoMarkerOpen} data={infoMarker} closeInfoMarker={closeInfoMarker} ubiActual={ubiActual}></InfoMarker>
                 </Modal>
+              </>:<>
+                    {/* <div className='contMainError'>
+                        <div className='contTitleErrorMsg'>
+                            Un momento por favor...
+                        </div>
+                        <div className={'contMainErrorMsg'+mode}>
+                            Alguno de los siguientes datos estan tardando en cargar, si el problema persiste favor de reportarlo.
+                        </div>
+                        <div className='contDetailErrorMsg'>
+                            {
+                              Object.values(renderCapas).map((element,index)=>(
+                                <div className='RowInfoErrorMsg'>
+                                <div className={'CellTxtErrorMsg'+mode}>
+                                  {capasList[index]+' --------> '}
+                                </div>
+                                <div className='CellValErrorMsg' style={{color:(element)?'lime':'red'}}>
+                                  {(element)?'OK':'----'}
+                                </div>
+                            </div>
+                              ))
+                            }
+                        </div>
+                    </div> */}
+                  </>}
               </>
           }
 
