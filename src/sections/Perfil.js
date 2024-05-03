@@ -55,7 +55,7 @@ const Perfil=({server,dataGlobals,setNameState,mode,setMode})=>{
                    Version 1.3
 
             </div>
-            {/* <div className='footer-mode'>
+            <div className='footer-mode'>
             <label for="theme" class="theme">
 	<span class="theme__toggle-wrap">
 		<input id="theme" class="theme__toggle" type="checkbox" role="switch" name="theme"  onClick={()=>modeAction()}value="dark"/>
@@ -73,7 +73,7 @@ const Perfil=({server,dataGlobals,setNameState,mode,setMode})=>{
 		</span>
 	</span>
 </label>
-            </div> */}
+            </div>
         </div>
     )
 }
