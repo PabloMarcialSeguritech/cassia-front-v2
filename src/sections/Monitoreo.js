@@ -1484,7 +1484,7 @@ useEffect(()=>{
                     <InfoMarker mode={mode} downs_list={downs_list} userPermissions={userPermissions} source={'Monitoreo'} handleShowPopup={handleShowPopup} mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} devices={devices} server={server} isOpen={infoMarkerOpen} data={infoMarker} closeInfoMarker={closeInfoMarker} ubiActual={ubiActual}></InfoMarker>
                 </Modal>
               </>:<>
-                    {/* <div className='contMainError'>
+                    <div className='contMainError'>
                         <div className='contTitleErrorMsg'>
                             Un momento por favor...
                         </div>
@@ -1505,7 +1505,7 @@ useEffect(()=>{
                               ))
                             }
                         </div>
-                    </div> */}
+                    </div>
                   </>}
               </>
           }
