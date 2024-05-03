@@ -44,8 +44,8 @@ right: 0;
     right: 0%;
   }
 .menuAlertTitle{
-    height: 15%;
-    max-height: 30px;
+    height: 5%;
+    /* max-height: 30px; */
     cursor: pointer;
 }
 .menuAlertTablaMin{
@@ -75,9 +75,14 @@ right: 0;
     /* background: linear-gradient( #6c0101, #8e0000); */
     background: linear-gradient( #6c01017a, #8e00004f);
 }
+.cardTitleAlertWhite{
+  /* background: linear-gradient( #4d0000, #8e0000); */
+  /* background: linear-gradient( #6c0101, #8e0000); */
+  background: linear-gradient( #6c0101f6, #8e0000d8);
+}
 .menuAlertTabla{
     /* padding: 1%; */
-    height: 85%;
+    height: 95%;
     position: relative;
     display: block;
     width: 100%;

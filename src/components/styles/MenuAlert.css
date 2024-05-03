@@ -25,7 +25,16 @@
     height: 100%;
     color: aliceblue;
   }
-
+  .rowExpandWhite{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #3f404ebd;
+    /* background: #80808047; */
+    height: 100%;
+    color: aliceblue;
+  }
   .infoCont{
     
     width: 100%;

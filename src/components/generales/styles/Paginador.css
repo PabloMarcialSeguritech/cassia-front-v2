@@ -8,22 +8,22 @@
 @import url('https://fonts.googleapis.com/css?family=Ruda&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville&display=swap');
 
-h1,h2,h3,h4,h5,h6{
+/* h1,h2,h3,h4,h5,h6{
 	font-family: 'Libre Baskerville', serif;
 	font-size: 40px;
 	font-style: italic;
-}
+} */
 .lead {
     margin-bottom: 20px;
     font-size: 16.099999999999998px;
     font-weight: 200;
     line-height: 1.4;
 }
-* {
+/* * {
 	padding:0;
 	margin:0;
 	font-style:italic;
-}
+} */
 
 .pal-lado {
 	display:flex;

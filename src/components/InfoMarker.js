@@ -28,8 +28,8 @@ const pingModalStyles = {
     padding:'20px'
   },
 };
-const InfoMarker = ({isOpen,downs_list,userPermissions,source,handleShowPopup,devices,mapAux,setmapAux, data,closeInfoMarker,server,ubiActual,search_problems }) => {
-  console.log(downs_list)
+const InfoMarker = ({isOpen,mode,downs_list,userPermissions,source,handleShowPopup,devices,mapAux,setmapAux, data,closeInfoMarker,server,ubiActual,search_problems }) => {
+  // console.log(downs_list)
   var ubicacion_mix;
   if(source=='Monitoreo'){
     if(ubiActual.dispId!=-1){
@@ -38,7 +38,7 @@ const InfoMarker = ({isOpen,downs_list,userPermissions,source,handleShowPopup,de
       ubicacion_mix=downs_list.data.downs.filter(obj => (((obj.latitude.charAt(obj.latitude.length - 1)==0)?obj.latitude.slice(0, -1):obj.latitude) === ((data.end_lat.charAt(data.end_lat.length - 1)==0)?data.end_lat.slice(0, -1):data.end_lat )) && (((obj.longitude.charAt(obj.longitude.length - 1)==0)?obj.longitude.slice(0, -1):obj.longitude) === ((data.end_lon.charAt(data.end_lon.length - 1)==0)?data.end_lon.slice(0, -1):data.end_lon )))
     }
      
-  // console.log(ubicacion_mix)
+  console.log(ubicacion_mix)
     }else{
      ubicacion_mix=[{
         "hostid": data.hostidC,
@@ -171,23 +171,23 @@ setListSelected(1)
   }
     return (
       <>
-        <div className='mainInfoMarker'>
+        <div className={'mainInfoMarker'+mode}>
           {
             (consoleActive)?<ConsolaHost server={server} ip={infoHostC.ip} actionConsole={actionConsole} hostId={hostSelected===1?hostIdP:hostId}/>:
 
           <div className='contInfoMarker'>
                 <div className='titleInfoMarker'>
-                  <div className='txtTitleInfoMarker'>Informacion general de dispositivo  </div>
+                  <div className={'txtTitleInfoMarker'+mode}>Informacion general de dispositivo  </div>
                 </div>
                 <div className='bodyInfoMarker'>
                   <div className='contHost'>
                     <div className='contCheck'>
-                      <input name="radio" type="radio" className="checkHost" defaultChecked onClick={()=>handleChangeOption(2)} />
+                      <input name="radio" type="radio" className={"checkHost"+mode} defaultChecked onClick={()=>handleChangeOption(2)} />
                     </div>
                     <div className='contInfoHost'>
-                      <label className='lblInfoHost'>Host</label>
+                      <label className={'lblInfoHost'+mode}>Host</label>
                       <div className='infoHost'>
-                        <div className='titlesInfo'>
+                        <div className={'titlesInfo'+mode}>
                           
                           <div className='headerCell' style={{width:'42%'}}>
                             <div className='txtHeaderCell' >
@@ -221,7 +221,7 @@ setListSelected(1)
                             </div>
                           </div> */}
                         </div>
-                        <div className='rowInfo'>
+                        <div className={'rowInfo'+mode}>
                         {/* <div className='hostInfoCell ' style={{width:'6%'}}>
                    </div> */}
                   <div className='hostInfoCell' style={{width:'42%'}}>
@@ -230,7 +230,7 @@ setListSelected(1)
                     {data.name_hostC}
                   </div>
                   :
-                  <HostSelector search_actions={search_actions} setListSelected={setListSelected} setHostId={setHostId} opGeneral={false}   txtOpGen={'N/A'} opt_de={data.hostidC} origen={'mapa'}  data={ubicacion_mix}  loading={false}  titulo='hosts' />
+                  <HostSelector mode={mode} search_actions={search_actions} setListSelected={setListSelected} setHostId={setHostId} opGeneral={false}   txtOpGen={'N/A'} opt_de={data.hostidC} origen={'mapa'}  data={ubicacion_mix}  loading={false}  titulo='hosts' />
                   
                   }
                     
@@ -265,16 +265,16 @@ setListSelected(1)
                   </div>
                   <div className='contHost'>
                     {
-                      infoHostP===undefined || infoHostP.length===0?<h1 className='textWOA'>Sin relacion con algun APS</h1>:
+                      infoHostP===undefined || infoHostP.length===0?<h1 className={'textWOA'+mode}>Sin relacion con algun APS</h1>:
                     
                       <>
                       <div className='contCheck'>
-                        <input name="radio" type="radio" className="checkHost" onClick={()=>handleChangeOption(1)} />
+                        <input name="radio" type="radio" className={"checkHost"+mode} onClick={()=>handleChangeOption(1)} />
                       </div>
                       <div className='contInfoHost'>
-                      <label className='lblInfoHost'>Host padre</label>
+                      <label className={'lblInfoHost'+mode}>Host padre</label>
                         <div className='infoHost'>
-                        <div className='titlesInfo'>
+                        <div className={'titlesInfo'+mode}>
                           
                           <div className='headerCell' style={{width:'42%'}}>
                             <div className='txtHeaderCell' >
@@ -350,18 +350,18 @@ setListSelected(1)
                 </div>
                 <div className='actionsInfoMarker'>
                   <div className='contActionsInfoMarker'>
-                  <div className='txtHostSelected'>Dispositivo seleccionado (ID): {hostSelected===1?hostIdP:hostId}</div>
+                  <div className={'txtHostSelected'+mode}>Dispositivo seleccionado (ID): {hostSelected===1?hostIdP:hostId}</div>
                   <div className='menu-actions'>
-                     <ol className='compactactions-list' >
-                        <li className={listSelected===1?'action-selected':''} onClick={() =>hadleChangeList(1)}>Acciones</li>
-                        <li className={listSelected===2?'action-selected':''}  onClick={() =>hadleChangeList(2)} >Alarmas</li>
-                        <li className={listSelected===3?'action-selected':''} onClick={() =>hadleChangeList(3)}>Salud</li>
+                     <ol className={'compactactions-list'+mode} >
+                        <li className={listSelected===1?'action-selected'+mode:''} onClick={() =>hadleChangeList(1)}>Acciones</li>
+                        <li className={listSelected===2?'action-selected'+mode:''}  onClick={() =>hadleChangeList(2)} >Alarmas</li>
+                        <li className={listSelected===3?'action-selected'+mode:''} onClick={() =>hadleChangeList(3)}>Salud</li>
                         {(ubiActual.dispId===9)?
-                          <li className={listSelected===9?'action-selected':''} onClick={() =>hadleChangeList(9)}>Carriles</li>:''}
+                          <li className={listSelected===9?'action-selected'+mode:''} onClick={() =>hadleChangeList(9)}>Carriles</li>:''}
                     </ol>
                     
                   </div>
-                  <div className='contActions'>
+                  <div className={'contActions'+mode}>
                   
                   {listSelected === 1 ? (
                     <div className='contAcciones'>
@@ -383,11 +383,11 @@ setListSelected(1)
                     </div>
                   </div>
                 ) : listSelected === 2 ? (
-                    <AlertsByHost userPermissions={userPermissions}  ubiActual={ubiActual} mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} hostId={hostSelected===1?hostIdP:hostId} server={server}></AlertsByHost>
+                    <AlertsByHost mode={mode} userPermissions={userPermissions}  ubiActual={ubiActual} mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} hostId={hostSelected===1?hostIdP:hostId} server={server}></AlertsByHost>
                 ) : listSelected === 3 ? (
-                  <HealthByHost hostId={hostSelected===1?hostIdP:hostId} server={server}></HealthByHost>
+                  <HealthByHost mode={mode} hostId={hostSelected===1?hostIdP:hostId} server={server}></HealthByHost>
                 ) : listSelected === 9 ? (
-                  <CarrilesArco hostId={hostSelected===1?hostIdP:hostId} server={server}></CarrilesArco>
+                  <CarrilesArco mode={mode} hostId={hostSelected===1?hostIdP:hostId} server={server}></CarrilesArco>
                 ) :''
                     }
                     
@@ -405,7 +405,7 @@ setListSelected(1)
           contentLabel="Example Modal2"
           // shouldCloseOnOverlayClick={false}
           >
-            <ActionModal  handleShowPopup={handleShowPopup} ip={infoHostC.ip} actionSelected={actionSelected} server={server}isOpen={pingModalOpen} data={data} statusPing={statusPing} closeActionModal={closePingModal}></ActionModal>
+            <ActionModal mode={mode} handleShowPopup={handleShowPopup} ip={infoHostC.ip} actionSelected={actionSelected} server={server}isOpen={pingModalOpen} data={data} statusPing={statusPing} closeActionModal={closePingModal}></ActionModal>
             {/* <PingModal actionSelected={actionSelected} server={server}isOpen={pingModalOpen} data={data} statusPing={statusPing} closePingModal={closePingModal}></PingModal> */}
         </Modal>
       </>

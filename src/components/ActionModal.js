@@ -6,7 +6,7 @@ import Selector from './Selector'
 import InputForm from './InputForm';
 import LoadAdding from './LoadAdding';
 import { useFetch } from '../hooks/useFetch'
-const ActionModal = ({isOpen,ip,handleShowPopup, data,actionSelected,statusPing,closeActionModal ,server}) => {
+const ActionModal = ({mode,isOpen,ip,handleShowPopup, data,actionSelected,statusPing,closeActionModal ,server}) => {
     console.log(actionSelected)
     const host=data.length===1?data[0]:data[1]
     console.log("host")
@@ -66,15 +66,15 @@ const ActionModal = ({isOpen,ip,handleShowPopup, data,actionSelected,statusPing,
     }
     return (
       <>
-        <div className='contActionModal'>
+        <div className={'contActionModal'+mode}>
             <div className='titlePinglModal'>
             <div className='actionsTitle'>
-                    <div className='textCardTitle'>
+                    <div className='textCardTitle' style={{color:(mode==''?'#fff':'#003757')}}>
                              Ejecutar Accion:
                               </div>
                               
                     </div>
-                    <hr className='lineTitlePing'></hr>
+                    <hr className={'lineTitlePing'+mode}></hr>
             </div>
             <div className='contAnimationActionModal'>
                
