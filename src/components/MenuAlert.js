@@ -356,7 +356,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
           <>
           <div className="expandInfo">
             <div className="contExpandInfo">
-              <div className='rowExpand' style={{width: '65%'}}>
+              <div className={'rowExpand'+props.mode} style={{width: '65%'}}>
                 <div className='infoCont'>
                     <div className='headContent'>
                       <div className='rowHeadExpand'>
@@ -416,7 +416,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                     </div>
                 </div>
               </div>
-              <div className='rowExpand' style={{width: '35%'}}>
+              <div className={'rowExpand'+props.mode} style={{width: '35%'}}>
                 <div className='rowcontActions'>
                   <div className='menuActiontitle' style={{width: "100%"}}>
                     <div className='actionsTitle'>
@@ -442,7 +442,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                     </div>
                           }
                           {(props.userPermissions.some(objeto => objeto.permission_id === permisos_codigo_id['acknownledge']))?<div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
-                              <Action origen='General' disabled={(  props.data.alert_type=="diagnosta" )?true:false} titulo='Ack...' action={openAck}/>
+                              <Action origen='General' disabled={false} titulo='Ack...' action={openAck}/>
                           </div>:''}
                           <div className='menuActionCell contEventsActions' style={{border: 'unset'}}>
 
@@ -606,18 +606,18 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                         <div className='formCompact'> 
                         {addingException?<LoadAdding/>:
                         <>
-                        <div className='formColumn' >
+                        <div className='formColumn' style={{height:'23%'}}>
                             <InputForm   titulo='Event ID' text={props.data.eventid} disabled={true} ></InputForm>
                             </div>
-                            <div className='formColumn' >
+                            <div className='formColumn' style={{height:'24%'}}>
                             <InputForm  titulo='Tracker ID' text={traker} setText={setTracker} setValidaBtn={setValidaBtn} disabled={false} ></InputForm>
                             </div>
-                            <div className='formColumn' style={{height:'50px'}}>
+                            <div className='formColumn' style={{height:'24%'}}>
                             <div className='menuSearchOption'>
             <div className='compactInputForm'>
-                <label htmlFor='InputForm' className='labelInputForm'>Notas:</label>
+                <label htmlFor='InputForm' className='labelInputForm'>Fecha:</label>
                 
-                <input required name="fecha_ini" className='InputForm' text={clock}  setText={setClock}  type="datetime-local" value={clock}
+                <input style={{top: '29%',position: 'relative'}} required name="fecha_ini" className='InputForm' text={clock}  setText={setClock}  type="datetime-local" value={clock}
                           onChange={handleChangeDate} />
                 {/* <textarea id="nota" name="nota" className="InputForm" rows="4" cols="25" style={{resize: 'none'}} onChange={handleTextAreaChange}></textarea> */}
                 
@@ -629,7 +629,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
                             {/* <InputForm data={[]} loading={false} text={''} setValidaBtn={setValidaBtn} titulo='Notas' disabled={false}></InputForm> */}
                             </div>
                             
-                            <div className='formColumn' style={{height:'50px',marginTop:'10%'}}>
+                            <div className='formColumn' style={{height:'23%',marginTop:'10%'}}>
                             <Action origen='General' titulo='GUARDAR' action={addTicket} disabled={validaBtnTicket}/>
                             <Action origen='Alert' titulo='CANCELAR' action={closeTicket} disabled={false} />
                             </div>

@@ -14,6 +14,22 @@ height: 100%;
   position: relative;
   /* animation: alertAnimation 0.5s infinite alternate; */
 }
+.problemCellWhite{
+  position: relative;
+display: flex;
+justify-content: center;
+align-items: center;
+height: 100%;
+  /* border-left: 1px solid rgb(59, 59, 59); */
+  /* border-bottom: 1px solid rgb(59, 59, 59); */
+  color: white;
+  color: #003757;
+}
+.problemCellWhite img{
+/* background-color: red; */
+position: relative;
+/* animation: alertAnimation 0.5s infinite alternate; */
+}
 @keyframes alertAnimation {
   0% {
     opacity: 1;

@@ -142,12 +142,13 @@ const ModalCreateCis =({user,devices,server,setRegisterIsValid,dataCis,setData,l
 
       
       const Registrar=()=>{
-        console.log("registra")
+        console.log("registra dataCis ----------------------------------------------------------")
+        console.log(dataCis)
         let method='POST'
         let url_add=''
         if(editActive){
             method='PUT'
-            url_add=dataCis.ci_id
+            url_add=dataCis.element_id
         }
         
         console.log(method)

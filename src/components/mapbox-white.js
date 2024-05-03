@@ -3,18 +3,14 @@ import React, { useRef, useEffect,useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import './styles/MapBox.css'
-import towerImg from '../img/torre2_blanca.png';
-
-
-import serverImg from '../img/server_up_2.png';
+import towerImg from '../img/torre2_azul2.png';
+import serverImg from '../img/server_up_3.png';
 import serverImg0 from '../img/server_0.png';
 import serverImg1 from '../img/server_1.png';
 import serverImg2 from '../img/server_2.png';
 import serverImg3 from '../img/server_3.png';
 import serverImg4 from '../img/server_4.png';
-
 import {servidores_id} from './generales/GroupsId';
-
 function calcularPuntoMedio(coordenadas1, coordenadas2) {
   // Extraer las coordenadas de los puntos
   const [x1, y1] = coordenadas1;
@@ -37,17 +33,11 @@ function bitsToGigabits(bits) {
   const gigabits = bits / 1e6; // 1e9 es equivalente a 1 billion (mil millones)
   return gigabits;
 }
-
-const MapBox = ({capas,switchesFO,switchesMO,setCapas,actualizar_rfi,actualizar_lpr,mapAux,setmapAux,search_rfid,global_longitud,global_latitude,global_zoom,devices,markers,markersWOR,lines,downs,towers,rfid,lpr,ubicacion,switches,handleMarkerClick}) => {
-
-
-
+const MapBoxWhite = ({capas,switchesFO,switchesMO,setCapas,actualizar_rfi,actualizar_lpr,mapAux,setmapAux,search_rfid,global_longitud,global_latitude,global_zoom,devices,markers,markersWOR,lines,downs,towers,rfid,lpr,ubicacion,switches,handleMarkerClick}) => {
 
   
-
   console.log("markers*****************************************************")
   // console.log(towers)
-
   // console.log(switches)
   // console.log(switchesMO)
   // console.log(markers)
@@ -80,9 +70,9 @@ const MapBox = ({capas,switchesFO,switchesMO,setCapas,actualizar_rfi,actualizar_
   useEffect(() => {
     mapRef.current  = new mapboxgl.Map({
       container: 'map',
-      style: 'mapbox://styles/giorocha/clkirdmmx00ox01qm7js2bdas',
+    //   style: 'mapbox://styles/giorocha/clkirdmmx00ox01qm7js2bdas',
       // style:'mapbox://styles/giorocha/clu0fbjhb005001pd5r0bafzc',///white mode
-      // style:'mapbox://styles/giorocha/clvczyqvb04f601nu26r7f4zm',
+      style:'mapbox://styles/giorocha/clveuj6so02at01ph3b3g02z6',
       
       zoom: zoom_provicional,
       center:[longitud_provicional,latitud_provicional]
@@ -94,7 +84,6 @@ const MapBox = ({capas,switchesFO,switchesMO,setCapas,actualizar_rfi,actualizar_
     let Popup;
     const map = mapRef.current;
     setmapAux(map)
-
     
 
 
@@ -102,9 +91,7 @@ const MapBox = ({capas,switchesFO,switchesMO,setCapas,actualizar_rfi,actualizar_
       console.log("on load map")
        /************************************************************ CAPA Servers ************************************************************************ */
        
-
 if(servidores_id[ubicacion.dispId]!==undefined){
-
   map.loadImage(
     serverImg,
     (error, image) => {
@@ -165,9 +152,9 @@ if(servidores_id[ubicacion.dispId]!==undefined){
     paint: {
       // 'circle-color': "#58c322",//"#00ff70",
       'circle-color': "#00ff70",
-      'circle-radius': 3,//3
+      'circle-radius': 4,//3
       'circle-stroke-width':1,
-      'circle-stroke-color':'#d1d1d1',
+      'circle-stroke-color':'#075700',
     }
     ,
   }
@@ -179,9 +166,7 @@ if(!idCapaExistente('host-markerWOR')){
   }));
 }
 
-
 // }
-
 map.on('mouseleave', 'host-markerWOR', (e) => {
   //  //console.log(e)
   // Popup.remove();
@@ -222,7 +207,6 @@ map.on('click', 'host-markerWOR', (e) => {
 });
        }
      /************************************************************ CAPA LINEAS ************************************************************************ */
-
      if(lines.length!==0){
         const LineConect={
             id: 'line-conection',
@@ -239,12 +223,16 @@ map.on('click', 'host-markerWOR', (e) => {
               'line-color':[
                 'match',
                 ['get', 'severity'], 
-                // 0,'#36cefd',// day mode
-                0,'#62a0bd',
-                1, '#ffee00', 
-                2, '#ee9d08', 
-                3, '#ee5c08', 
-                4, '#ee0808', 
+                // 0,'#62a0bd',
+                // 1, '#ffee00', 
+                // 2, '#ee9d08', 
+                // 3, '#ee5c08', 
+                // 4, '#ee0808', 
+                0, '#62a0bd', 
+                1, '#c1b504', 
+                2, '#aa6e01', 
+                3, '#b04102', 
+                4, '#b30303', 
                 '#4fb7f3', // Color predeterminado si no se cumplen las condiciones anteriores
               ],
               'line-width': 1,
@@ -258,7 +246,6 @@ map.on('click', 'host-markerWOR', (e) => {
             }));
           }
         }
-
     
          /************************************************************ CAPA LINEAS Switches ************************************************************************ */
         // if(switchesFO.length!==0 || switchesMO.length!==0){
@@ -289,7 +276,7 @@ map.on('click', 'host-markerWOR', (e) => {
                         ['get', 'connectivity'], 
                         -1, '#1fee08',
                     0, 'red', 
-                    1, 'lime', 
+                    1, '#0c0', 
                     '#11b4da', // Color predeterminado si no se cumplen las condiciones anteriores
                       ],
                       'line-width': 8,
@@ -394,7 +381,7 @@ map.on('click', 'host-markerWOR', (e) => {
                       ['get', 'connectivity'], 
                         -1, '#1fee08',
                     0, 'red', 
-                    1, 'lime', 
+                    1, '#0c0', 
                     '#11b4da', // Color predeterminado si no se cumplen las condiciones anteriores
                       ],
                     'line-width': 5,
@@ -516,7 +503,7 @@ const throughtputSourceD1={
           ['get', 'connectivity'], 
           -1, '#1fee08',
       0, 'red', 
-      1, 'lime', 
+      1, '#0c0', 
       '#11b4da', // Color predeterminado si no se cumplen las condiciones anteriores
         ],
         'line-width': 8,
@@ -601,7 +588,7 @@ data: {
         ['get', 'connectivity'], 
           -1, '#1fee08',
       0, 'red', 
-      1, 'lime', 
+      1, '#0c0', 
       '#11b4da', // Color predeterminado si no se cumplen las condiciones anteriores
         ],
       'line-width': 5,
@@ -775,7 +762,6 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
         
           //     animateDashArray.bind(this)(0);
              
-
           //    if(!idCapaExistente('switches-conection')){
           //      setCapas((prevCapas) => ({
           //        ...prevCapas,
@@ -783,7 +769,6 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
           //      }));
           //    }
           //  }
-
       /************************************************************ CAPA RFID ************************************************************************ */
       //console.log(downs)
       var rfidIval;
@@ -801,7 +786,7 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
           },
           filter: ['!', ['has', 'point_count']],
           paint: {
-            'circle-color': "#cacaca",
+            'circle-color': "#003757",
             'circle-radius': 3,
             'circle-stroke-width':1,
             'circle-stroke-color': '#fff',
@@ -811,9 +796,7 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
       if(!idCapaExistente('host-rfid')){
         setCapas((prevCapas) => ({
           ...prevCapas,
-
           [Object.keys(prevCapas).length ]: { show: true, name: 'RFID',id:`host-rfid`,layer:rifdLayer,source:null ,nivel:3},
-
         }));
       }
         var popup;
@@ -874,7 +857,7 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
           },
           filter: ['!', ['has', 'point_count']],
           paint: {
-            'circle-color': "#cacaca",
+            'circle-color': "#003757",
             'circle-radius': 3,
             'circle-stroke-width':1,
             'circle-stroke-color': '#fff',
@@ -930,11 +913,8 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
       }
       
      
-
-
        /************************************************************ CAPA Metricas ************************************************************************ */
       if(markers.length!==0){
-
         
        if(ubicacion.dispId===12){
  
@@ -961,16 +941,17 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
                       'match',
                       ['get', 'severity'], 
                       -1, '#1fee08',
-                  0, '#4fb7f3', 
-                  1, '#ffee00', 
-                  2, '#ee9d08', 
-                  3, '#ee5c08', 
-                  4, '#ee0808', 
+                  0, '#2e769f', 
+                  1, '#797100', 
+                  2, '#aa6e01', 
+                  3, '#b04102', 
+                  4, '#b30303', 
                   '#11b4da', // Color predeterminado si no se cumplen las condiciones anteriores
                     ],
-                    'line-width': 8,
+                    'line-width': 10,
                     'line-dasharray': [0, 0.3, 0.2]
                   }
+                  
                 }
                 map.addLayer(throughtputLayer);
           
@@ -1069,11 +1050,11 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
                     'match',
                     ['get', 'severity'], 
                     -1, '#1fee08',
-                0, '#4fb7f3', 
-                1, '#ffee00', 
-                2, '#ee9d08', 
-                3, '#ee5c08', 
-                4, '#ee0808', 
+                    0, '#2e769f', 
+                    1, '#797100', 
+                    2, '#aa6e01', 
+                    3, '#b04102', 
+                    4, '#b30303', 
                 '#11b4da', // Color predeterminado si no se cumplen las condiciones anteriores
                   ],
                   'line-width': 5,
@@ -1120,7 +1101,6 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
         
                 requestAnimationFrame(animateDashArray2);
               }
-
         
               animateDashArray2.bind(this)(0);
              
@@ -1133,16 +1113,6 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
              map.on('mouseleave', 'line-throughtput2', (e) => {
               
               const popups = document.querySelectorAll('.custom-popup');
-
-      
-              
-
-
-
-
-            
-
-            
             
             popups.forEach(popup => {
             
@@ -1387,7 +1357,19 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
             ],
             'circle-radius': 5,
             'circle-stroke-width':1,
-            'circle-stroke-color': '#fff',
+            'circle-stroke-color': [
+                'match',
+                ['get', 'severity'], 
+                -1, '#1fee08',
+                0, '#2e769f', 
+                1, '#c1b504', 
+                2, '#aa6e01', 
+                3, '#b04102', 
+                4, '#b30303',
+                '#11b4da', // Color predeterminado si no se cumplen las condiciones anteriores
+              ],
+
+             
           },
           }
         map.addLayer(alineacionLayer);
@@ -1612,12 +1594,10 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
   }
   
    map.addLayer(downLayer);
-
   if(!idCapaExistente('host-down')){
     setCapas((prevCapas) => ({
       ...prevCapas,
       [Object.keys(prevCapas).length ]: { show: true, name: 'Downs',id:`host-down`,layer:downLayer,source:null ,nivel:5},
-
     }));
   }
   map.on('mouseleave', 'host-down', (e) => {
@@ -1662,9 +1642,7 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
           map.addImage('tower', image);
 
           // Add a data source containing one point feature.
-
           const towerSource={
-
             type: 'geojson',
             data: {
               type: 'FeatureCollection',
@@ -1737,4 +1715,4 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
 };
 
 
-export default MapBox;
+export default MapBoxWhite;

@@ -11,6 +11,18 @@
     transition: width 0.3s ease;
     z-index: 3;
   }
+  .sidebarWhite {
+    width: 4%;
+    /* background-color: rgba(242, 242, 242, 0.777); */
+    /* background: linear-gradient(90deg, #003757 0%, #01273d 100%); */
+    background: linear-gradient(90deg, #5b5b5b 0%, #464646 100%);
+    position: absolute;
+    height: 100px;
+    height: 92%;
+    display: inline;
+    transition: width 0.3s ease;
+    z-index: 3;
+  }
   .sideLogo{
     position: absolute;
     bottom: 2%;
@@ -28,8 +40,22 @@
     justify-content: center;
     cursor: pointer;
 }
+.sidebarWhite:hover .icon-seguritech{
+  transform: rotate(15deg);
+  transition: ease-in-out;
+  cursor: pointer;
+}
+.sidebarWhite:hover .sidebarContWhite{
+  justify-content: center;
+  cursor: pointer;
+}
 .sidebarCont:hover{
   background: #c0c0c0;
+  border-radius: 5px;
+  transform:scale(1.1);
+}
+.sidebarContWhite:hover{
+  background: #b3b3b345;
   border-radius: 5px;
   transform:scale(1.1);
 }
@@ -43,11 +69,28 @@
   border-radius: 5px;
   color: #fff !important;
 }
+.sideSelectedWhite:hover{
+  background: #c4c4c4;
+  transform:scale(1.1);
+  color: #012c44 !important;
+}
+.sideSelectedWhite{
+  background: #eee;
+  border-radius: 5px;
+  color: #012c44 !important;
+}
+
 .sidebar:hover{
     width: 10%;
     z-index: 3;
     background-color: #444;
     transition: width 0.3s ease;
+}
+.sidebarWhite:hover{
+  width: 10%;
+  z-index: 3;
+  background-color: #444;
+  transition: width 0.3s ease;
 }
   .sideLogo img{
     height: 100%;
@@ -64,8 +107,23 @@
     color: #696969;
     
   }
+  .sidebarContWhite{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* border-bottom: 3px solid rgba(84, 84, 84, 0.34); */
+    width: 90%;
+    height: 70%;
+    transition: width 0.3s ease;
+    color: aliceblue;
+    
+  }
   .sideRowSelected{
     background: #003757;
+  }
+  .sideRowSelectedWhite{
+    background: #eee;
   }
   .sidebarRow{
     position: relative;
@@ -86,6 +144,7 @@
     height: 100%;
     transition: width 0.3s ease;
   }
+  
   .sidebar:hover .textSideCont{
     display: flex;
     justify-content: center;
@@ -97,10 +156,24 @@
   width: 30%;
   transition: width 0.3s ease;
 }
+.sidebarWhite:hover .textSideCont{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: width 0.3s ease;
+}
+.sidebarWhite:hover .imgSideCont{
+display: flex;
+width: 30%;
+transition: width 0.3s ease;
+}
 .imgSideCont{
   width: 30%;
   height: 100%;
   display: flex;
   justify-content: center;
   transition: width 0.3s ease;
+}
+.txtEstadoWhite{
+  color: aliceblue;
 }
