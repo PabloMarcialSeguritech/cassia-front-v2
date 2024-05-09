@@ -157,7 +157,7 @@ const popups = document.querySelectorAll('.custom-popup-findHost');
                   
       </div>:''}
     
-      <MenuAlert   ubiActual={props.ubiActual} search_problems={props.search_problems} server={props.server} ackMessage={ackMessage} setAckMessage={setAckMessage}isOpen={menuAlertOpen} props={props} onClose={closeMenuAlert} />
+      <MenuAlert  setSearchTerm={props.setSearchTerm} ubiActual={props.ubiActual} search_problems={props.search_problems} server={props.server} ackMessage={ackMessage} setAckMessage={setAckMessage}isOpen={menuAlertOpen} props={props} onClose={closeMenuAlert} />
       
       </>
     )

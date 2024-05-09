@@ -74,7 +74,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
     const [agenciaId, setAgenciaId] = useState(2);
     const [excepcion, setExcepcion] = useState('');
     const [cerrandoEvento, setCerrandoEvento] = useState(false);
-    console.log(agenciaId)
+    //console.log(agenciaId)
     const [currentDateTime, setCurrentDateTime] = useState(getCurrentDateTimeString());
 
   function getCurrentDateTimeString() {
@@ -82,7 +82,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
     // Formato de fecha y hora para datetime-local: 'YYYY-MM-DDTHH:MM'
     return now.toISOString().slice(0, 16);
   }
-// console.log(props.dataAgencies.data.data[0].exception_agency_id)
+// //console.log(props.dataAgencies.data.data[0].exception_agency_id)
     const handleTextAreaChange = (event) => {
       if(event.target.value.length === 0){
           setValidaBtn(true)
@@ -93,17 +93,17 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
       setTextAreaValue(event.target.value);
     };
     // const addException=()=>{
-    //   //console.log("exepcio" )
-    //   //console.log(props)
+    //   ////console.log("exepcio" )
+    //   ////console.log(props)
     //   setAddingException(true)
       
     // }}
-    // console.log(props.data)
+    // //console.log(props.data)
     const addException=async(e)=>{
-      console.log('ejecuta la excepcion')
+      //console.log('ejecuta la excepcion')
       setAddingException(true)
-      // console.log(props.data)
-      // //console.log("element_id:"+cisSelected.element_id+" | ci-relation:"+cisRelation)
+      // //console.log(props.data)
+      // ////console.log("element_id:"+cisSelected.element_id+" | ci-relation:"+cisRelation)
         
         var exceptData={
           "exception_agency_id": agenciaId,
@@ -111,8 +111,8 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
           "hostid": props.data.hostid,
           "created_at": currentDateTime
         }
-        console.log(exceptData)
-        console.log('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/exceptions')
+        //console.log(exceptData)
+        //console.log('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/exceptions')
       
         try {
           const response = await fetch('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/exceptions', {
@@ -124,18 +124,18 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
             },
             body: JSON.stringify(exceptData),
           });
-          console.log(response)
+          //console.log(response)
           if (response.ok) {
-            
+            props.setSearchTerm("")
             const data = await response.json();
-            //console.log(data)
+            ////console.log(data)
             setCloseEvent(false)
             setExeptionOpen(false);
             // setAddingException(false)
             props.search_problems()
           } else {
             const data = await response.json();
-            console.log(data.detail)
+            //console.log(data.detail)
             setCloseEvent(false)
             setResponseDetail(data.detail)
             throw new Error('Error en la solicitud');
@@ -143,21 +143,21 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
         
         } catch (error) {
           setAddingException(false)
-           console.log(error)
+           //console.log(error)
           
         }
     }
 
     const addAck=async(e)=>{
       setAddingException(true)
-      console.log(props.data)
-      // //console.log("element_id:"+cisSelected.element_id+" | ci-relation:"+cisRelation)
+      //console.log(props.data)
+      // ////console.log("element_id:"+cisSelected.element_id+" | ci-relation:"+cisRelation)
         
         const formData = new URLSearchParams();
         formData.append("message", textAreaValue);
         formData.append("close", closeEvent);
         formData.append("is_zabbix_event",( (props.data.alert_type=="")?true:false));
-        console.log('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/acknowledge/'+props.data.eventid)
+        //console.log('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/acknowledge/'+props.data.eventid)
       
         try {
           const response = await fetch('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/acknowledge/'+props.data.eventid, {
@@ -169,18 +169,19 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
             },
             body: formData
           });
-          console.log(response)
+          //console.log(response)
           if (response.ok) {
             
             const data = await response.json();
-            //console.log(data)
+            ////console.log(data)
             setCloseEvent(false)
             setAckOpen(false);
+            props.setSearchTerm("")
             // setAddingException(false)
             props.search_problems()
           } else {
             const data = await response.json();
-            console.log(data.detail)
+            //console.log(data.detail)
             setCloseEvent(false)
             setResponseDetail(data.detail)
             throw new Error('Error en la solicitud');
@@ -188,14 +189,14 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
         
         } catch (error) {
           setAddingException(false)
-           console.log(error)
+           //console.log(error)
           
         }
     }
     const addTicket=async(e)=>{
       setAddingException(true)
         // setDataticket({event_id:props.data.eventid,tracker_id:traker,clock:clock})
-        //console.log(dataTicket)
+        ////console.log(dataTicket)
         try {
           const response = await fetch('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/problems/tickets/link', {
             method: "POST",
@@ -205,25 +206,25 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
             },
             body: JSON.stringify({event_id:props.data.eventid,tracker_id:traker,clock:clock})
           });
-          //console.log(response)
+          ////console.log(response)
           if (response.ok) {
-            
+            props.setSearchTerm("")
             const data = await response.json();
-            //console.log(data)
+            ////console.log(data)
             setTicketOpen(false);
             // setAddingException(false)
             setClock('')
             setTracker('')
           } else {
             // const data = await response.json();
-            // //console.log(data.detail)
+            // ////console.log(data.detail)
             // setResponseDetail({text:data.detail,value:false})
             throw new Error('Error en la solicitud');
           }
         
         } catch (error) {
             
-           //console.log(error)
+           ////console.log(error)
           
         }
     }
@@ -238,7 +239,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
       }, [addingException]); 
     function openExeption() {
       setExeptionOpen(true);
-      //console.log(props)
+      ////console.log(props)
     }
   
     function afterOpenExeption() {
@@ -246,17 +247,17 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
       // subtitle.style.color = '#f00';
     }
   const cerrarExeption=async(e)=>{
-    console.log('ejecuta la excepcion')
+    //console.log('ejecuta la excepcion')
     setCerrandoEvento(true)
-    // console.log(props.data)
-    // //console.log("element_id:"+cisSelected.element_id+" | ci-relation:"+cisRelation)
+    // //console.log(props.data)
+    // ////console.log("element_id:"+cisSelected.element_id+" | ci-relation:"+cisRelation)
       
       var exceptData={
         
         "closed_at": currentDateTime
       }
-      console.log(exceptData)
-      console.log('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/exceptions/close'+props.data.exception_id)
+      //console.log(exceptData)
+      //console.log('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/exceptions/close'+props.data.exception_id)
     
       try {
         const response = await fetch('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/exceptions/close/'+props.data.exception_id, {
@@ -268,11 +269,11 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
           },
           body: JSON.stringify(exceptData),
         });
-        console.log(response)
+        //console.log(response)
         if (response.ok) {
-          
+          props.setSearchTerm("")
           const data = await response.json();
-          //console.log(data)
+          ////console.log(data)
           // setCloseEvent(false)
           // setExeptionOpen(false);
           // setAddingException(false)
@@ -280,7 +281,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
           props.search_problems()
         } else {
           const data = await response.json();
-          console.log(data.detail)
+          //console.log(data.detail)
           setCloseEvent(false)
           setResponseDetail(data.detail)
           throw new Error('Error en la solicitud');
@@ -288,7 +289,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
       
       } catch (error) {
         setAddingException(false)
-         console.log(error)
+         //console.log(error)
         
       }
   }
@@ -302,7 +303,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
     }
     function openAck() {
       setAckOpen(true);
-      //console.log(props)
+      ////console.log(props)
     }
 
     function closeTicket() {
@@ -311,7 +312,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
     }
     function openTicket() {
       setTicketOpen(true);
-      //console.log(props)
+      ////console.log(props)
     }
   
     useEffect(()=>{
@@ -330,9 +331,9 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
       setAnalisisOpen(false)
     }
     const handleChangeDate=(e)=>{
-      // //console.log(e.target)
+      // ////console.log(e.target)
       const {name,value}=e.target
-      // //console.log(value)
+      // ////console.log(value)
          setClock(value)
          
     }
