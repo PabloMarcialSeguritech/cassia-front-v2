@@ -132,6 +132,8 @@ const Disponibilidad=({server})=>{
     const [dataMarca,setDataMarca]=useState({data:[[]],loading:[true],error:[null]})
     const [dataModelo,setDataModelo]=useState({data:[[]],loading:[true],error:[null]})
     const [indexSelected,setIndexSelected] =useState(0)
+
+
     const [flagTodos,setFlagTodos]=useState(true)
     const [flagGeneral,setFlagGeneral]=useState(false)
     const [periodoSeleccionado, setPeriodoSeleccionado] = useState(null);
@@ -148,6 +150,8 @@ const Disponibilidad=({server})=>{
     // console.log("total.metr ",totalLienas)
     console.log('flag general',viewArrayHost)
     // console.log('flag todos',flagTodos)
+
+
     const Ampliar = () => {
       // Aquí puedes realizar la búsqueda usando el valor de 'query'
       // Por ejemplo, puedes actualizar el estado 'searchResult' con los resultados
@@ -846,9 +850,13 @@ const porHost=()=>{
                         onClick={Ampliar}
                       />}
         </div>
+
+
         {(!flagTodos)?
           <div className='cont-list-graf' style={{width:'14%'}}>
+
             <div className='compact-list-graf'>
+
 
             
           {(dataInfo.loading || typeof(dataInfo.data.metrics)=='undefined' )?'':dataInfo.data.metrics[indexSelected].indices.map((key, index) => (
@@ -863,6 +871,8 @@ const porHost=()=>{
             <hr className='separate-rof-graf'></hr>
                                   </>
                                   ))}
+
+
           </div>
           
           </div>:<>
@@ -883,6 +893,8 @@ const porHost=()=>{
 
              
         }
+
+
             <div className='cont-reporte-disp'>
             <div className='cont-menu-disp'>
               <div className='cont-controls'>
@@ -1057,7 +1069,9 @@ const porHost=()=>{
                   <>
                   <div className='compact-periodo-manual'>
 
+
                   <div className='menuSearchOption' style={{height:'unset'}}>
+
                   <div className='compact-option-date'>
                       <div className="user-box-disp">
                           <input required name="fecha_ini"  type="datetime-local" value={opciones.fecha_ini}
@@ -1134,6 +1148,7 @@ const porHost=()=>{
                             (dataInfo.loading || typeof(dataInfo.data.metrics)=='undefined' )?<div style={{width:'100%',height:'95%',display:'flex',justifyContent:'center',alignItems:'center',color:'gray'}}>{(reportbyHost && databyHost.length==0)?msgError:<LoadSimple></LoadSimple>}</div>:
                               (!reportbyHost || (reportbyHost && arrayHost.length>0))?
                               <>
+
                                 {
                                   (dataInfo.data.metrics[indexSelected].dataset.length>0 )?'':<h1 style={{position: 'absolute',top: '30%',left: '50%',transform: 'translate(-50%, -50%)',color: '#cecece'}}>Sin Datos</h1>
                                 }
@@ -1195,6 +1210,7 @@ const porHost=()=>{
                                 </LineChart>
                                 </ResponsiveContainer>
                               </>:''
+
                         }
                     </div>
                     <div className='cont-info-bottom'>
@@ -1340,7 +1356,11 @@ const porHost=()=>{
         contentLabel="Example Modal2"
         // shouldCloseOnOverlayClick={false}
         >
+
+
           <ModalAddMultiGraph flagTodos={flagTodos} flagGeneral={flagGeneral} setFlagGeneral={setFlagGeneral} generateColorOptions={generateColorOptions} indexSelected={indexSelected} dataInfo={dataInfo} elementosToRender={elementosToRender}closAddMultiGraphModal={closAddMultiGraphModal} setTotalLineas={setTotalLineas} color_graf={color_graf} opcionesTxtArrayFijo={opcionesTxtArrayFijo} ></ModalAddMultiGraph>
+
+
     </Modal>
         </>
     )

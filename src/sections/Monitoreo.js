@@ -38,7 +38,9 @@ const Monitoreo=({mode,token_item,userPermissions,dataGlobals,server,handleShowP
     const [latitudes,setLatitudes]=useState([])
     const [longitudes,setLongitudes]=useState([])
     const [locations,setLocations]=useState([])
+
     // //console.log(ubicacion)
+
     const [markers,setMarkers]=useState([])
     const [markers1, setMarkers1] = useState([]);
     const [markers2, setMarkers2] = useState([]);
@@ -73,11 +75,15 @@ const Monitoreo=({mode,token_item,userPermissions,dataGlobals,server,handleShowP
     //console.log(tower_list)
     const [mapAux,setmapAux]=useState({});
     const [rfidInterval,setRfidInterval]=useState(0)
+
     const [lprInterval,setLprInterval]=useState(0)
     const [renderCapas,setRenderCapas]=useState({downs:false,markersWOR:true,markers:true,rfid:true,switches:true,lpr:true,towers:false})
+
     const capasList=['Downs','Conectados','Dispositivos','RFID','Switches','LPR','Torres']
+
     //console.log(renderCapas)
     //console.log( Object.values(renderCapas))
+
    const [renderMap,setRenderMap]=useState(false)
    const allTrue = Object.values(renderCapas).every(value => value === true);
    const [loaderMap,setLoaderMap]=useState(true)
@@ -1452,11 +1458,14 @@ useEffect(()=>{
     return (
         <>
 
+
           {
             loaderMap ?'':
             <>
             <SearchHost mapAux={mapAux} setmapAux={setmapAux} ubiActual={ubiActual} downs_list={downs_list} devices={devices} markersWOR={markersWOR}></SearchHost>
+
           <Notifications mode={mode} estadoSelected={estadoSelected} setEstadoSelected={setEstadoSelected} estados_list={estados_list} dataGlobals={dataGlobals} server={server} handleShowPopup={handleShowPopup} mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} devices={devices}  ubiActual={ubiActual}/>
+
           
             </>
           }
@@ -1517,8 +1526,10 @@ useEffect(()=>{
                   </>}
               </>
           }
-        
+
+
         </>
+
         
     )
 }
