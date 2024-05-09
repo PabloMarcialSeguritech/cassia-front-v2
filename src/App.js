@@ -12,7 +12,7 @@ function App() {
   const [token,setToken] = useState(localStorage.getItem('access_token'));
   const [object_state_sessions,set_object_state_sessions]=useState({})
   const [msgErrorLogin,setMsgErrorLogin]=useState('')
-  // const [server,setServer]=useState({ip:'10.60.20.250',port:8002})
+  // const [server,setServer]=useState({ip:'10.60.20.250',port:8000})//Hidalgo
   // const [server,setServer]=useState({ip:'172.16.4.249',port:8004})//EDOMEX
   const [server,setServer]=useState({ip:'172.18.200.14',port:8002})//Guanajuato
   // const [server,setServer]=useState({ip:'10.12.1.61',port:8000})//Zacatecas
