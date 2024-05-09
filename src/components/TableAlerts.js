@@ -367,7 +367,7 @@ const selectOptionList=(element)=>{
                   props.dataProblems.loading?<LoadAlerts/>:(dataList.length===0?<div className='txtLoader'>Sin Resultados</div>:
                   dataList.map((elemento, indice)=>(
                     
-                    <RowProblem mode={props.mode} userPermissions={props.userPermissions} setCountList={setCountList} filtraOrigen={filtraOrigen} ubiActual={props.ubiActual} mapAux={props.mapAux} setmapAux={props.setmapAux} search_problems={props.search_problems} key={indice} severity={elemento.severity} dataAgencies={dataAgencies} data={elemento} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion} server={props.server} />
+                    <RowProblem mode={props.mode} userPermissions={props.userPermissions} setCountList={setCountList} filtraOrigen={filtraOrigen} ubiActual={props.ubiActual} mapAux={props.mapAux} setmapAux={props.setmapAux} search_problems={props.search_problems} key={indice} severity={elemento.severity} dataAgencies={dataAgencies} data={elemento} ubicacion={props.ubicacion} setUbicacion={props.setUbicacion} server={props.server}  setSearchTerm={props.setSearchTerm}/>
                     
                     )))
                   }

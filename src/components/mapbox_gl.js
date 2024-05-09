@@ -36,18 +36,18 @@ function bitsToGigabits(bits) {
 const MapBox = ({capas,switchesFO,switchesMO,setCapas,actualizar_rfi,actualizar_lpr,mapAux,setmapAux,search_rfid,global_longitud,global_latitude,global_zoom,devices,markers,markersWOR,lines,downs,towers,rfid,lpr,ubicacion,switches,handleMarkerClick}) => {
 
   
-  console.log("markers*****************************************************")
-  // console.log(towers)
-  // console.log(switches)
-  // console.log(switchesMO)
-  // console.log(markers)
-  // console.log(markersWOR)
-  // console.log(global_latitude,global_longitud)
+  //console.log("markers*****************************************************")
+  // //console.log(towers)
+  // //console.log(switches)
+  // //console.log(switchesMO)
+  // //console.log(markers)
+  // //console.log(markersWOR)
+  // //console.log(global_latitude,global_longitud)
  
   let latitud_provicional=(ubicacion.groupid===0?global_latitude.value:ubicacion.latitud)
   let longitud_provicional=(ubicacion.groupid===0?global_longitud.value:ubicacion.longitud)
   const zoom_provicional=(ubicacion.groupid===0?global_zoom.value:11)
-  // console.log(longitud_provicional,latitud_provicional)
+  // //console.log(longitud_provicional,latitud_provicional)
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
   const [rfidInterval,setRfidInterval]=useState(0)
@@ -61,9 +61,9 @@ const MapBox = ({capas,switchesFO,switchesMO,setCapas,actualizar_rfi,actualizar_
     
     
     if(markers.length===0){
-      //console.log("marker vacio")
+      ////console.log("marker vacio")
     }else{
-      //console.log("markers lleno")
+      ////console.log("markers lleno")
     
     }
     
@@ -88,7 +88,7 @@ const MapBox = ({capas,switchesFO,switchesMO,setCapas,actualizar_rfi,actualizar_
 
 
      map.on('load', () => {
-      console.log("on load map")
+      //console.log("on load map")
        /************************************************************ CAPA Servers ************************************************************************ */
        
 if(servidores_id[ubicacion.dispId]!==undefined){
@@ -168,7 +168,7 @@ if(!idCapaExistente('host-markerWOR')){
 
 // }
 map.on('mouseleave', 'host-markerWOR', (e) => {
-  //  //console.log(e)
+  //  ////console.log(e)
   // Popup.remove();
   const popups = document.querySelectorAll('.custom-popup');
 
@@ -178,12 +178,12 @@ popup.remove();
 });
   });
 map.on('mouseenter', 'host-markerWOR', (e) => {
-  // //console.log(e)
+  // ////console.log(e)
   if(e.features[0].properties.tooltip){
 
   
   const coordinates = e.features[0].geometry.coordinates.slice();
-  // console.log(coordinates)
+  // //console.log(coordinates)
 
   while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
     coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
@@ -245,7 +245,7 @@ map.on('click', 'host-markerWOR', (e) => {
     
          /************************************************************ CAPA LINEAS Switches ************************************************************************ */
         // if(switchesFO.length!==0 || switchesMO.length!==0){
-        console.log("entra a pintar switches")
+        //console.log("entra a pintar switches")
           if(ubicacion.dispId===12 && ubicacion.templateId==0){
  
         
@@ -304,7 +304,7 @@ map.on('click', 'host-markerWOR', (e) => {
                           // Puedes realizar operaciones adicionales aquí si la capa existe
                         }   
                       }catch(error){
-                        // console.log(error)
+                        // //console.log(error)
                       }
                       
                       step = newStep;
@@ -331,9 +331,9 @@ map.on('click', 'host-markerWOR', (e) => {
                 });
                   });
                 map.on('mouseenter', 'line-throughtput', (e) => {
-                  // console.log(e.features[0].geometry.coordinates)
+                  // //console.log(e.features[0].geometry.coordinates)
                   const coordinates = calcularPuntoMedio(e.features[0].geometry.coordinates[0],e.features[0].geometry.coordinates[1])
-                // console.log(coordinates)
+                // //console.log(coordinates)
                   //   const coordinates = e.features[0].geometry.coordinates.slice();
                   
         
@@ -423,7 +423,7 @@ map.on('click', 'host-markerWOR', (e) => {
                         // Puedes realizar operaciones adicionales aquí si la capa existe
                       }   
                     }catch(error){
-                      // console.log(error)
+                      // //console.log(error)
                     }
                     
                     step2 = newStep;
@@ -450,9 +450,9 @@ map.on('click', 'host-markerWOR', (e) => {
               });
                 });
               map.on('mouseenter', 'line-throughtput2', (e) => {
-                // console.log(e.features[0].geometry.coordinates)
+                // //console.log(e.features[0].geometry.coordinates)
                 const coordinates = calcularPuntoMedio(e.features[0].geometry.coordinates[0],e.features[0].geometry.coordinates[1])
-              // console.log(coordinates)
+              // //console.log(coordinates)
                 //   const coordinates = e.features[0].geometry.coordinates.slice();
                 
       
@@ -538,9 +538,9 @@ const throughtputSourceD1={
   });
     });
   map.on('mouseenter', 'line-throughtputD1', (e) => {
-    // console.log(e.features[0].geometry.coordinates)
+    // //console.log(e.features[0].geometry.coordinates)
     const coordinates = calcularPuntoMedio(e.features[0].geometry.coordinates[0],e.features[0].geometry.coordinates[1])
-  // console.log(coordinates)
+  // //console.log(coordinates)
     //   const coordinates = e.features[0].geometry.coordinates.slice();
     
 
@@ -630,7 +630,7 @@ data: {
           // Puedes realizar operaciones adicionales aquí si la capa existe
         }   
       }catch(error){
-        // console.log(error)
+        // //console.log(error)
       }
       
       step2 = newStep;
@@ -657,9 +657,9 @@ popup.remove();
 });
   });
 map.on('mouseenter', 'line-throughtput2D2', (e) => {
-  // console.log(e.features[0].geometry.coordinates)
+  // //console.log(e.features[0].geometry.coordinates)
   const coordinates = calcularPuntoMedio(e.features[0].geometry.coordinates[0],e.features[0].geometry.coordinates[1])
-// console.log(coordinates)
+// //console.log(coordinates)
   //   const coordinates = e.features[0].geometry.coordinates.slice();
   
 
@@ -747,7 +747,7 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
           //             map.setPaintProperty('switches-conection', 'line-dasharray', dashArraySequence[step]);
           //           }
           //         }catch(error){
-          //           // console.log(error)
+          //           // //console.log(error)
           //         }
                   
           //         step = newStep;
@@ -766,10 +766,10 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
           //    }
           //  }
       /************************************************************ CAPA RFID ************************************************************************ */
-      //console.log(downs)
+      ////console.log(downs)
       var rfidIval;
       if(rfid.length!==0){
-        // console.log("add layer rfid")
+        // //console.log("add layer rfid")
         const rifdLayer={
           id: 'host-rfid',
           type: 'circle',
@@ -824,23 +824,23 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
                 .addTo(map);
         });
         rfidIval=setInterval(() => {
-          console.log("rfidInterval ",rfidIval)
-          // console.log(map.getSource('host-rfid'))
+          //console.log("rfidInterval ",rfidIval)
+          // //console.log(map.getSource('host-rfid'))
           setRfidInterval(rfidIval)
         actualizar_rfi(map,popup,rfidIval)
        }, 10000);
         
-        // console.log(rfidInterval)
+        // //console.log(rfidInterval)
       }else{
-        console.log("******** no existe rfid *************",rfidInterval)
+        //console.log("******** no existe rfid *************",rfidInterval)
         clearInterval(rfidInterval);
       }
       
       /************************************************************ CAPA LPR ************************************************************************ */
-      //console.log(downs)
+      ////console.log(downs)
       var lprval;
       if(lpr.length!==0){
-        // console.log("add layer lpr")
+        // //console.log("add layer lpr")
         const lprLayer={
           id: 'host-lpr',
           type: 'circle',
@@ -896,15 +896,15 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
                 .addTo(map);
         });
         lprval=setInterval(() => {
-          console.log("LprInterval ",lprval)
-          // console.log(map.getSource('host-rfid'))
+          //console.log("LprInterval ",lprval)
+          // //console.log(map.getSource('host-rfid'))
           setLprInterval(lprval)
         actualizar_lpr(map,popup,lprval)
        }, 10000);
         
-        // console.log(rfidInterval)
+        // //console.log(rfidInterval)
       }else{
-        console.log("******** no existe rfid *************",lprInterval)
+        //console.log("******** no existe rfid *************",lprInterval)
         clearInterval(lprInterval);
       }
       
@@ -973,7 +973,7 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
                         // Puedes realizar operaciones adicionales aquí si la capa existe
                       }   
                     }catch(error){
-                      // console.log(error)
+                      // //console.log(error)
                     }
                     
                     step = newStep;
@@ -1000,9 +1000,9 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
               });
                 });
               map.on('mouseenter', 'line-throughtput', (e) => {
-                // console.log(e.features[0].geometry.coordinates)
+                // //console.log(e.features[0].geometry.coordinates)
                 const coordinates = calcularPuntoMedio(e.features[0].geometry.coordinates[0],e.features[0].geometry.coordinates[1])
-              // console.log(coordinates)
+              // //console.log(coordinates)
                 //   const coordinates = e.features[0].geometry.coordinates.slice();
                 
       
@@ -1088,7 +1088,7 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
                       // Puedes realizar operaciones adicionales aquí si la capa existe
                     }   
                   }catch(error){
-                    // console.log(error)
+                    // //console.log(error)
                   }
                   
                   step2 = newStep;
@@ -1115,9 +1115,9 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
             });
               });
             map.on('mouseenter', 'line-throughtput2', (e) => {
-              // console.log(e.features[0].geometry.coordinates)
+              // //console.log(e.features[0].geometry.coordinates)
               const coordinates = calcularPuntoMedio(e.features[0].geometry.coordinates[0],e.features[0].geometry.coordinates[1])
-            // console.log(coordinates)
+            // //console.log(coordinates)
               //   const coordinates = e.features[0].geometry.coordinates.slice();
               
     
@@ -1192,9 +1192,9 @@ const throughtputSourceD1={
   });
     });
   map.on('mouseenter', 'line-throughtputD1', (e) => {
-    // console.log(e.features[0].geometry.coordinates)
+    // //console.log(e.features[0].geometry.coordinates)
     const coordinates = calcularPuntoMedio(e.features[0].geometry.coordinates[0],e.features[0].geometry.coordinates[1])
-  // console.log(coordinates)
+  // //console.log(coordinates)
     //   const coordinates = e.features[0].geometry.coordinates.slice();
     
 
@@ -1277,7 +1277,7 @@ data: {
           // Puedes realizar operaciones adicionales aquí si la capa existe
         }   
       }catch(error){
-        // console.log(error)
+        // //console.log(error)
       }
       
       step2 = newStep;
@@ -1304,9 +1304,9 @@ popup.remove();
 });
   });
 map.on('mouseenter', 'line-throughtput2D2', (e) => {
-  // console.log(e.features[0].geometry.coordinates)
+  // //console.log(e.features[0].geometry.coordinates)
   const coordinates = calcularPuntoMedio(e.features[0].geometry.coordinates[0],e.features[0].geometry.coordinates[1])
-// console.log(coordinates)
+// //console.log(coordinates)
   //   const coordinates = e.features[0].geometry.coordinates.slice();
   
 
@@ -1365,7 +1365,7 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
       
       
         map.on('mouseleave', 'host-marker', (e) => {
-          //  //console.log(e)
+          //  ////console.log(e)
           // Popup.remove();
           const popups = document.querySelectorAll('.custom-popup');
         
@@ -1375,7 +1375,7 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
         });
           });
         map.on('mouseenter', 'host-marker', (e) => {
-          // //console.log(e)
+          // ////console.log(e)
           const coordinates = e.features[0].geometry.coordinates.slice();
           
 
@@ -1403,8 +1403,8 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
           
      }
       /************************************************************ CAPA DOWNS ************************************************************************ */
-      // console.log("downs map")
-      // console.log(downs)
+      // //console.log("downs map")
+      // //console.log(downs)
       const size = 200;
 
     const pulsingDot = {

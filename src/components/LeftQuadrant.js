@@ -42,13 +42,13 @@ const infoMarkerStyles = {
 };
 const LeftQuadrant =(props)=>{
  
-console.log(props.dataProblems.data)
-console.log(props.dataProblems.data.filter(elemento => elemento.tipo === 1))
-console.log( props.dataProblems.data.filter(elemento => elemento.tipo === 1).length)
+//console.log(props.dataProblems.data)
+//console.log(props.dataProblems.data.filter(elemento => elemento.tipo === 1))
+//console.log( props.dataProblems.data.filter(elemento => elemento.tipo === 1).length)
 function eliminarPorAtributo(objeto, atributo, valor) {
-  console.log(objeto)
+  //console.log(objeto)
   for (var i = 0; i < objeto.length; i++) {
-    console.log(objeto[i])
+    //console.log(objeto[i])
       if (objeto[i][atributo] === valor) {
           delete objeto[i];
       }
@@ -64,7 +64,7 @@ function eliminarPorAtributo(objeto, atributo, valor) {
   let subtitle;
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [alertsIsOpen, setAlertsIsOpen] = React.useState(false);
-  // console.log("alret oper: ",alertsIsOpen)
+  // //console.log("alret oper: ",alertsIsOpen)
   
   function openModal() {
     setIsOpen(true);
@@ -84,7 +84,7 @@ function eliminarPorAtributo(objeto, atributo, valor) {
     { value: '1', label: 'Severidad 1', status: false },
   ]);
 
-  console.log(optionsSelectList)
+  //console.log(optionsSelectList)
   const [searchResults, setSearchResults] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
   // const [infoMarkerOpen, setInfoMarkerOpen] = React.useState(false);
@@ -112,7 +112,7 @@ function eliminarPorAtributo(objeto, atributo, valor) {
   // let s3= undefined
   // let s2= undefined
   // let s1=undefined
-  // console.log(props.dataHosts.data)
+  // //console.log(props.dataHosts.data)
   useEffect(()=>{
     if(props.dataHosts.data.length!=0){
       
@@ -126,14 +126,14 @@ function eliminarPorAtributo(objeto, atributo, valor) {
     }
   },[props.dataHosts.data])
   useEffect(()=>{
-    console.log("entrona separar el contador")
+    //console.log("entrona separar el contador")
     const severityActive = optionsSelectList.find(option => option.value === '6');
-    console.log(severityActive)
+    //console.log(severityActive)
     if(props.dataProblems.data.length!=0){
-      console.log("dataproblems contiene datos ",props.dataProblems.data.length)
+      //console.log("dataproblems contiene datos ",props.dataProblems.data.length)
 
       if(props.ubiActual.dispId==-1){
-        console.log(props.dataProblems.data)
+        //console.log(props.dataProblems.data)
         // eliminarPorAtributo(props.dataProblems.data, 'tipo', 0)
       }
       if(severityActive.status){
