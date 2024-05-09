@@ -29,8 +29,8 @@ const Notifications=(props)=>{
     const state_id=props.dataGlobals.find(obj => obj.name === 'state_id')
 
     function openInfoMarker() {
-      console.log("abre infomarker ....................")
-      console.log(infoMarker)
+      //console.log("abre infomarker ....................")
+      //console.log(infoMarker)
       setInfoMarkerOpen(true);
     }
   
@@ -38,11 +38,11 @@ const Notifications=(props)=>{
       setInfoMarkerOpen(false);
     }
     useEffect(()=>{
-      console.log("abrio notificaciones")
-      console.log(localStorage.getItem('data_info_marker'))
+      //console.log("abrio notificaciones")
+      //console.log(localStorage.getItem('data_info_marker'))
       if(localStorage.getItem('data_info_marker')!==null){
         var data_info_marker=JSON.parse(localStorage.getItem('data_info_marker'))
-        console.log(data_info_marker)
+        //console.log(data_info_marker)
         localStorage.removeItem('data_info_marker')
         setInfoMarker(data_info_marker)
       }
@@ -51,13 +51,13 @@ const Notifications=(props)=>{
     //     search_notifications() 
     // }, 10000);
     function search_notifications(){
-    //   console.log('request notifications')
+    //   //console.log('request notifications')
         setDataNotifications({data:dataNotifications.data,loading:true,error:dataNotifications.error})
           const fetchData = async () => {
             try {
              
                 
-          // console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/problems/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter+((ubicacion.dispId==0 && ubicacion.templateId==0)?'?':'&')+severityfilter)
+          // //console.log('http://'+server.ip+':'+server.port+'/api/v1/zabbix/problems/'+ubicacion.groupid+''+devicefilter+andAux+subtypefilter+((ubicacion.dispId==0 && ubicacion.templateId==0)?'?':'&')+severityfilter)
               const response = await fetch('http://'+props.server.ip+':'+props.server.port+'/api/v1/cassia/slack_notifications/count', {                 
                                   headers: {
                                     'Content-Type': 'application/json',
@@ -67,7 +67,7 @@ const Notifications=(props)=>{
               if (response.ok) {
                 const response_data = await response.json();
                 setDataNotifications({data:response_data.data,loading:false,error:dataNotifications.error})
-                // console.log(response_data.data.notifications_count)
+                // //console.log(response_data.data.notifications_count)
                 setCountNoti(response_data.data.notifications_count)
                 // setCountNoti(10)
                 setTimeout(() => {
@@ -96,7 +96,7 @@ const Notifications=(props)=>{
                   try {
                    
                       
-                console.log('http://'+props.server.ip+':'+props.server.port+'/api/v1/cassia/slack_notifications/?skip='+requestInterval.initial+'&limit='+requestInterval.final)
+                //console.log('http://'+props.server.ip+':'+props.server.port+'/api/v1/cassia/slack_notifications/?skip='+requestInterval.initial+'&limit='+requestInterval.final)
                     const response = await fetch('http://'+props.server.ip+':'+props.server.port+'/api/v1/cassia/slack_notifications/?skip='+requestInterval.initial+'&limit='+requestInterval.final, {                 
                                         headers: {
                                           'Content-Type': 'application/json',
@@ -108,7 +108,7 @@ const Notifications=(props)=>{
                       // setDataNotiGeneral(response_data.data)
                       setDataNotiGeneral([...dataNotiGeneral,...response_data.data])
                       setDataInfoNoti({data:response_data.data,loading:false,error:dataInfoNoti.error})
-                      console.log(response_data.data)
+                      //console.log(response_data.data)
                       
                     } else {
                       throw new Error('Error en la solicitud');
@@ -145,7 +145,7 @@ const Notifications=(props)=>{
     const eventNoti=(elemento)=>{
       
       var state=props.estados_list.data.data.find(obj => obj.name.toLowerCase() === elemento.state.toLowerCase())     
-      console.log(state)
+      //console.log(state)
      
       const data={
         "hostidC": parseInt(elemento.hostid),
@@ -159,7 +159,7 @@ const Notifications=(props)=>{
       }
       localStorage.setItem('data_info_marker',JSON.stringify(data))
       
-      console.log(localStorage.getItem('aux_change_state'),elemento.state_id,state_id.value)
+      //console.log(localStorage.getItem('aux_change_state'),elemento.state_id,state_id.value)
       if(localStorage.getItem('aux_change_state')==1 && elemento.state_id!=state_id.value){
         props.setEstadoSelected(state)
       }else if(localStorage.getItem('aux_change_state')==1 || elemento.state_id==state_id.value){
