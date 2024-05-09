@@ -9,15 +9,15 @@ import mapboxgl from 'mapbox-gl';
 
 
 const SearchHost =(props)=>{
-    // console.log(props.devices.data.hosts)
-    console.log(props.downs_list)
+    // //console.log(props.devices.data.hosts)
+    //console.log(props.downs_list)
     const [resultList,setResultList]=useState([])
     const [inputIp,setInputIP]=useState("")
 
     const [chekedSearch,setChekedSearch]=useState(true)
-    // console.log(resultList)
+    // //console.log(resultList)
     const closeFindedHost=()=>{
-        console.log("cerar poppup")
+        //console.log("cerar poppup")
     }
 
     const closeFindHost=()=>{
@@ -25,7 +25,7 @@ const SearchHost =(props)=>{
       
       popups.forEach(popup => {
 
-    //    console.log(popups)
+    //    //console.log(popups)
 
       popup.remove();
       });
@@ -34,23 +34,24 @@ const SearchHost =(props)=>{
     }
 
     function closePopup() {
-        console.log('closepopip')
+        //console.log('closepopip')
       }
     const handleSelected=(element)=>{
         setResultList([])
         setChekedSearch(true)
         setFlagSearch(true)
       setInputIP("")
-        console.log(element)
+        //console.log(element)
         if( element.latitude.replace(",", ".")>=-90 && element.latitude.replace(",", ".")<=90){
 
         
 const coordinates=[element.longitude.replace(",", "."),element.latitude.replace(",", ".")]
-// console.log(coordinates)
+// //console.log(coordinates)
 const popups = document.querySelectorAll('.custom-popup-findHost');
       
       popups.forEach(popup => {
-    //    console.log(popups)
+
+    //    //console.log(popups)
 
       popup.remove();
       });
@@ -82,7 +83,8 @@ const popups = document.querySelectorAll('.custom-popup-findHost');
         const term = e.target.value;
         const {name,value}=e.target
 
-        // console.log(value)
+        // //console.log(value)
+
         setInputIP(value)
         validateIp(value)
 
@@ -105,7 +107,7 @@ const popups = document.querySelectorAll('.custom-popup-findHost');
       }
 
       const validateIp= (ip) => {
-        // console.log("validando correo: ",ip )
+        // //console.log("validando correo: ",ip )
         const ipRegex = /^$/;
         // const ipRegex = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
         let result = ipRegex.test(ip);

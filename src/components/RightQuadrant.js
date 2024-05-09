@@ -9,20 +9,18 @@ import {permisos_codigo_id,servidores_id} from './generales/GroupsId'
 const RightQuadrant =(props)=>{
     const dispId_default=-1
 
-    // console.log(servidores_id)
-    // console.log(props.token)
+    console.log(props.markersWOR)
+    // //console.log(props.token)
     const dataLocations=useFetch('zabbix/groups/municipios','',props.token,'GET',props.server)
     const [dataTec,setDataTec]=useState({data:[],loading:true,error:null})
     const [dataTecFiltrado,setDataTecFiltrado]=useState({})
     const [dataDisp,setDataDisp]=useState({data:[],loading:true,error:null})
 
-//     console.log(dataTecFiltrado)
-//    console.log(dataTec.data)
-
-   console.log(props.downs_list)
-
+//     //console.log(dataTecFiltrado)
+//    //console.log(dataTec.data)
+//    //console.log(props.downs_list)
    const metrica=dataDisp.data.find(obj => obj.template_id === props.ubiActual.templateId)
-//    console.log(metrica)
+//    //console.log(metrica)
 
    if( typeof(metrica) !=="undefined"){
     props.setMetricaSelected(metrica.nickname) 
@@ -34,6 +32,7 @@ const RightQuadrant =(props)=>{
     let s1=undefined
     const token_item=localStorage.getItem('access_token')
     console.log(props.dataHosts.data)
+    console.log(props.downs_list.data)
     if(props.dataHosts.data.length!=0){
      s4= props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 4)
      s3= props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 3)
@@ -48,14 +47,21 @@ const RightQuadrant =(props)=>{
         }
         props.setUbiActual({municipio:aux_municipio.name,groupid:props.ubicacion.groupid,dispId:props.ubicacion.dispId,templateId:props.ubicacion.templateId})
         props.search_problems()
-        props.search_devices()
+        
         props.search_downs()
+        if(props.ubicacion.dispId!==-1){
+            props.search_devices()
+        }else{
+            props.setDevices({data:[],loading:false,error:null})
+        }
         if(props.ubicacion.dispId===1){
             props.search_lpr()
-        }if(props.ubicacion.dispId===9){
+        }
+        if(props.ubicacion.dispId===9){
             props.search_rfid()
-        } if(props.ubicacion.dispId===12){
-            console.log('switches')
+        } 
+        if(props.ubicacion.dispId===12){
+            //console.log('switches')
             props.search_switches()
         }else{
             props.setRfid([])
@@ -81,7 +87,7 @@ const RightQuadrant =(props)=>{
        
         let aux_deft=dataTec.data.find(obj => obj.dispId === dispId_default)
         if(aux_deft===undefined){
-            console.log("undefined",dataTec.data[0].dispId)
+            //console.log("undefined",dataTec.data[0].dispId)
 
             props.setUbicacion({latitud:props.ubicacion.latitud,longitud:props.ubicacion.longitud,groupid:props.ubicacion.groupid,dispId:dispId_default,templateId:props.ubicacion.templateId})
         }else{
@@ -103,12 +109,12 @@ const RightQuadrant =(props)=>{
                                     Authorization: `Bearer ${token_item}`,
                                   },
                                 });
-                                // console.log(response)
+                                // //console.log(response)
               if (response.ok) {
                 const response_data = await response.json();
                 setDataTec({data:response_data.data,loading:false,error:dataTec.error})
                
-                // console.log(response_data)
+                // //console.log(response_data)
                 
               } else {
                 throw new Error('Error en la solicitud');
@@ -150,12 +156,12 @@ const RightQuadrant =(props)=>{
                                     Authorization: `Bearer ${token_item}`,
                                   },
                                 });
-                                // console.log(response)
+                                // //console.log(response)
               if (response.ok) {
                 const response_data = await response.json();
                 setDataDisp({data:response_data.data,loading:false,error:dataTec.error})
                
-                // //console.log(response_data)
+                // ////console.log(response_data)
                 
               } else {
                 throw new Error('Error en la solicitud');
@@ -228,12 +234,23 @@ const RightQuadrant =(props)=>{
                         <div className='dataContent tooltiptab'  style={{borderRadius:' 0px 0px 10px 0px'}}>
                         <span class="tooltiptext">Dispositivos totales afectados</span>
                             {/* <InfoStatus titulo={'DOWN'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?'...':(props.dataHosts.data.host_availables[0].Down==""?0:props.dataHosts.data.host_availables[0].Down)}/> */}
-                            <InfoStatus titulo={'DOWNS'} tipo={'DOWND'} size='max' value={props.markersWOR.length==0?((props.downs_list.data.length==0)?'...':props.downs_list.data.global_count.downs_totales):props.dataHosts.data.global_host_availables[0].Down}/>
+                            {/* <InfoStatus titulo={'DOWNS'} tipo={'DOWND'} size='max' value={props.downs_list.loading?'...':(props.markersWOR.length==0?((props.downs_list.data.length==0)?'...':props.downs_list.data.global_count.downs_totales):props.dataHosts.data.global_host_availables[0].Down)}/> */}
+                            <InfoStatus titulo={'DOWNS'} tipo={'DOWND'} size='max' value={
+                                props.downs_list.loading?'...':
+                                ((props.markersWOR.length==0)?
+                                    props.downs_list.data.global_count.downs_totales:
+                                    props.dataHosts.data.global_host_availables[0].Down)
+                                }/>
                         </div>
                         <div className='dataContent tooltiptab'  style={{borderRadius:' 0px 0px 10px 0px'}}>
                         <span class="tooltiptext">Origin Device Down</span>
                             {/* <InfoStatus titulo={'DOWN'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?'...':(props.dataHosts.data.host_availables[0].Down==""?0:props.dataHosts.data.host_availables[0].Down)}/> */}
-                            <InfoStatus titulo={'ODD'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?((props.ubiActual.dispId==-1)?((props.downs_list.data.length==0)?'...':props.downs_list.data.global_count.downs_origen):'...'):props.dataHosts.data.global_host_availables[0].Downs_origen}/>
+                            <InfoStatus titulo={'ODD'} tipo={'DOWN'} size='max' value={
+                               ((props.downs_list.loading)?'...':
+                                (props.markersWOR.length==0)?
+                                props.downs_list.data.global_count.downs_origen:
+                                props.dataHosts.data.global_host_availables[0].Downs_origen)
+                                }/>
                         </div>
                         
                     </div>
