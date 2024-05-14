@@ -356,7 +356,7 @@ animation: pulse-txt-main 5s infinite ease-in-out;
 }
 
 .theme__toggle:checked ~ .theme__fill {
-  transform: translateX(0);
+  /* transform: translateX(0); */
 }
 
 .theme__toggle:checked ~ .theme__icon .theme__icon-part:nth-child(1) {
