@@ -273,11 +273,21 @@ const RightQuadrant =(props)=>{
                             {/* <InfoStatus titulo={'UP'} tipo={'UP'}  size='max' value={props.markersWOR.length==0?'...':(props.markersWOR.length)}/> */}
                         </div>
                         {<div className='dataContent'  style={{borderRadius:' 0px 0px 10px 0px'}}>
-                            <InfoStatus titulo={'DOWNS'} tipo={'DOWND'} size='max' value={props.markersWOR.length==0?((props.downs_list.data.length==0)?'...':props.downs_list.data.filter_count.downs_totales):(props.dataHosts.data.host_availables[0].Down==""?0:props.dataHosts.data.host_availables[0].Down)}/>
+                            <InfoStatus titulo={'DOWNS'} tipo={'DOWND'} size='max' value={
+                                 ((props.downs_list.loading)?'...':
+                                 (props.markersWOR.length==0)?
+                                 props.downs_list.data.filter_count.downs_origen:
+                                 props.dataHosts.data.host_availables[0].Downs_origen)
+                                }/>
                             {/* <InfoStatus titulo={'DOWN'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?'...':props.downs.length}/> */}
                         </div>}
                         <div className='dataContent'  style={{borderRadius:' 0px 0px 10px 0px'}}>
-                            <InfoStatus titulo={'ODD'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?((props.ubiActual.dispId==-1)?((props.downs_list.data.length==0)?'...':props.downs_list.data.filter_count.downs_origen):'...'):(props.dataHosts.data.host_availables[0].Downs_origen==""?0:props.dataHosts.data.host_availables[0].Downs_origen)}/>
+                            <InfoStatus titulo={'ODD'} tipo={'DOWN'} size='max' value={
+                                ((props.downs_list.loading)?'...':
+                                (props.markersWOR.length==0)?
+                                props.downs_list.data.filter_count.downs_origen:
+                                props.dataHosts.data.host_availables[0].Downs_origen)
+                                }/>
                             {/* <InfoStatus titulo={'DOWN'} tipo={'DOWN'} size='max' value={props.markersWOR.length==0?'...':props.downs.length}/> */}
                         </div>
                         

@@ -15,7 +15,9 @@
     width: 4%;
     /* background-color: rgba(242, 242, 242, 0.777); */
     /* background: linear-gradient(90deg, #003757 0%, #01273d 100%); */
-    background: linear-gradient(90deg, #5b5b5b 0%, #464646 100%);
+    /* background: linear-gradient(90deg, #5b5b5b 0%, #464646 100%); */
+    /* background: linear-gradient(90deg, #003757 0%, #04133e 100%); */
+    background-color: #003757;
     position: absolute;
     height: 100px;
     height: 92%;
@@ -89,7 +91,7 @@
 .sidebarWhite:hover{
   width: 10%;
   z-index: 3;
-  background-color: #444;
+  background-color: #003757;
   transition: width 0.3s ease;
 }
   .sideLogo img{
