@@ -7,7 +7,7 @@ import RowProblem from './RowProblem'
 import LoadAlerts from './LoadAlerts'
 const AlertsByHost=({mode,hostId,userPermissions ,mapAux,ubiActual,setmapAux,server,search_problems})=>{
     // const alerts_list=useFetch('zabbix/hosts/detail/alerts',hostId,'','GET',server)
-    const dataAgencies=useFetch('zabbix/exception_agencies','','props.token','GET',server)
+    const dataAgencies=useFetch('cassia/exception_agencies','','props.token','GET',server)
     const [orderAsc,setOrderAsc]=useState(true)
   const [problems,setProblems]=useState()
   const [dataProblems,setDataProblems]=useState({data:[],loading:true,error:null})

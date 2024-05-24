@@ -95,7 +95,7 @@ const popups = document.querySelectorAll('.custom-popup-findHost');
         const filteredResults = hostArray.filter((item) => {
           // Convierte todos los valores a cadenas para realizar una búsqueda sin distinción entre mayúsculas y minúsculas
           return Object.entries(item).some(([key, value]) => {
-            if (key === 'ip' || key=== 'Host' || key=== 'name') {
+            if (key === 'ip' || key=== 'Host' || key=== 'name' || key=== 'hostid') {
               return String(value).toLowerCase().includes(term.toLowerCase());
             }
             return false; // Si no es el atributo 'ip', retorna falso para continuar buscando en otros atributos

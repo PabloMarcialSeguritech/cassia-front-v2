@@ -199,3 +199,47 @@ display: block;
     visibility: visible;
     opacity: 1;
   }
+
+  .contIncidTab{
+    position: relative;
+    display: block;
+  width: 100%;
+  height: 65%;
+  }
+  .contExcepTab{
+    position: relative;
+    display: block;
+  width: 100%;
+  height: 35%;
+  /* border: 1px solid rgba(255, 0, 0, 0.642); */
+  border-radius: 0px 0px 10px 10px;
+  }
+  .contExcepTab .menuActionData{
+    display: flex;
+    /* width: 100%; Ajusta esto según sea necesario */
+    overflow: auto; /* Habilita el scroll horizontal */
+    white-space: nowrap; /* Evita que el contenido se ajuste en múltiples líneas */
+    /* border: 1px solid #ccc; */
+    justify-content: start;
+  }
+  .contExcepTab .menuActionData .menuActionCell{
+    display: inline-block; /* Asegura que los elementos estén en una sola línea */
+    vertical-align: top; /* Alinea los elementos en la parte superior */
+    width: 80px; /* Ancho de cada elemento */
+    /* Ajusta otros estilos según sea necesario */
+   height: 85%;
+  }
+  .contExcepTab .menuActionData .menuActionCell .dataContentColumn, .compactData {
+    display: block; /* Asegura que estos elementos mantengan su comportamiento de bloque */
+}
+
+.contExcepTab .menuActionData .menuActionCell .compactData {
+    margin: 10px; /* Opcional: para dar espacio entre elementos */
+}
+.compactMenuActionData{
+position: relative;
+width: auto;
+display: flex;
+height: 100%;
+justify-self: start;
+}

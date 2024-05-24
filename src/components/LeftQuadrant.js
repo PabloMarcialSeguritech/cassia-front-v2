@@ -168,8 +168,9 @@ function eliminarPorAtributo(objeto, atributo, valor) {
               
             </div>
           </div> */}
-          <div className='column columnEstatusProblem' style={{height:'30%'}}>
+          <div className='column columnEstatusProblem' style={{height:'40%'}}>
                 <div className={'card'+props.mode+' menuAction'}>
+                  <div className='contIncidTab'>
                     <div className='menuActiontitle'>
                         <div className='cardTitle'>
                             <div className='textCardTitle'>
@@ -201,6 +202,44 @@ function eliminarPorAtributo(objeto, atributo, valor) {
                             {/* <InfoStatus titulo={'Sin Incidencias'} tipo={'UP'} size='min' value={props.markersWOR.length==0?'...':(props.markersWOR.length===undefined ?0:(props.markersWOR.length-((s1===undefined ?0:s1.Severities)+(s2===undefined ?0:s2.Severities)+(s3===undefined ?0:s3.Severities)+(s4===undefined ?0:s4.Severities)+(s5===undefined ?0:s5.Severities))))}/> */}
                         </div>
                     </div> 
+                    </div>
+                    <div className='contExcepTab'>
+                    <div className='menuActiontitle'>
+                        <div className='cardTitle'>
+                            <div className='textCardTitle'>
+                            
+                            Conteo de Excepciónes
+                            </div>
+                        </div>
+                    </div>
+                   <div className='menuActionData'>
+                    <div className='compactMenuActionData'>
+
+                    
+                   {
+                    (props.dataExceptions.loading)?'':
+                    props.dataExceptions.data.map((element,index)=>(
+                      <div className='menuActionCell exceptionCell' >
+                            <InfoStatus titulo={element.name} tipo={element.name} size='min' value={props.dataProblems.loading?'...':(element.count===undefined ?0:element.count)}/>
+                        </div>
+                    ))
+                   }
+                        {/* <div className='menuActionCell' >
+                            <InfoStatus titulo={'CFE'} tipo={'CFE'} size='min' value={props.dataProblems.loading?'...':(s5===undefined ?0:s5)}/>
+                        </div>
+                        <div className='menuActionCell' >
+                            <InfoStatus titulo={'CFE'} tipo={'CFE'} size='min' value={props.dataProblems.loading?'...':(s5===undefined ?0:s5)}/>
+                        </div> */}
+                        {/* <div className='menuActionCell'>
+                            <InfoStatus titulo={'CONAGUA'} tipo={'CONAGUA'} size='min' value={props.dataProblems.loading?'...':(s4===undefined ?0:s4)}/>
+                        </div>
+                        <div className='menuActionCell'>
+                        
+                        <InfoStatus titulo={''} tipo={'DOWN3'} size='min' value={props.dataProblems.loading?'...':(s3===undefined ?0:s3)}/>
+                           </div> */}
+                        </div>
+                    </div> 
+                    </div>
                 </div>
             </div>
           <div className={`columnLeft ${alertsIsOpen ? 'columnAlert' : 'columnAlertMin'}`}>
