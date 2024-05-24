@@ -9,7 +9,7 @@ import {permisos_codigo_id,servidores_id} from './generales/GroupsId'
 const RightQuadrant =(props)=>{
     const dispId_default=-1
 
-    console.log(props.markersWOR)
+    // console.log(props.dataExceptions)
     // //console.log(props.token)
     const dataLocations=useFetch('zabbix/groups/municipios','',props.token,'GET',props.server)
     const [dataTec,setDataTec]=useState({data:[],loading:true,error:null})
@@ -29,8 +29,8 @@ const RightQuadrant =(props)=>{
     let s2= undefined
     let s1=undefined
     const token_item=localStorage.getItem('access_token')
-    console.log(props.dataHosts.data)
-    console.log(props.downs_list.data)
+    // console.log(props.dataHosts.data)
+    // console.log(props.downs_list.data)
     if(props.dataHosts.data.length!=0){
      s4= props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 4)
      s3= props.dataHosts.data.problems_by_severity.find(obj => obj.severity === 3)
@@ -47,6 +47,7 @@ const RightQuadrant =(props)=>{
         props.search_problems()
         
         props.search_downs()
+       
         if(props.ubicacion.dispId!==-1){
             props.search_devices()
         }else{

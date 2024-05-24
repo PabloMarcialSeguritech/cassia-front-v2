@@ -7,7 +7,7 @@ const FlujoModal = ({ eventId ,props}) => {
    console.log(dataFlujo.data.history)
    console.log(props)
 //    eventId=34990088
-
+    const [flujoList,setFlujoList]=useState([])
     useEffect(()=>{
         console.log('data')
         search_event()
@@ -27,7 +27,7 @@ const FlujoModal = ({ eventId ,props}) => {
               if (response.ok) {
                 const response_data = await response.json();
                 console.log(response_data.data)
-                
+                flujoObject(response_data.data)
                 setDataFlujo({data:response_data.data,loading:false,error:dataFlujo.error})
                 
                 // setDataFlujo(response_data.data)
@@ -40,6 +40,31 @@ const FlujoModal = ({ eventId ,props}) => {
             }
           };
           fetchData();
+      }
+      const flujoObject=(data)=>{
+//         const fecha1 = new Date(data.tickets.created_at);
+// const fecha2 = new Date(data.history.Time);
+const objeto1ConFechas = data.tickets.map(obj => ({ ...obj, comparativeTime: new Date(obj.created_at)  }));
+const objeto2ConFechas = data.history.map(obj => {
+    const [dia, mes, anio, hora, minuto, segundo] = obj.Time.split(/\/|\s|:/);
+    const fecha = new Date(`${anio}-${mes}-${dia}T${hora}:${minuto}:${segundo}`);
+    return { ...obj, comparativeTime: fecha };
+  });
+// const objeto2ConFechas = data.history.map(obj => ({ ...obj, Time: obj.Time }));
+
+// Combinar los arreglos de objetos
+const objetosCombinados = [...objeto1ConFechas, ...objeto2ConFechas];
+
+// Ordenar el arreglo combinado por fecha
+objetosCombinados.sort((a, b) => {
+  if (a.comparativeTime && b.comparativeTime) {
+    return a.comparativeTime - b.comparativeTime;
+  }
+  return 0;
+});
+
+console.log(objetosCombinados);
+setFlujoList(objetosCombinados)
       }
     return(
         <div className='contFlujoModal'>
@@ -83,7 +108,8 @@ const FlujoModal = ({ eventId ,props}) => {
                     </div>
                 </div>
                {
-                 dataFlujo.data.history.map((element, index) => {
+                //  dataFlujo.data.history.map((element, index) => {
+                    flujoList.map((element, index) => {
                     if(index%2==0){
                         return <>
                         {/* der */}
@@ -99,12 +125,12 @@ const FlujoModal = ({ eventId ,props}) => {
                                 </div>
                                 <div className='contTopRightFlujo par'>
                                         <div className='txtTimeFlujo '>
-                                            {element.Time}
+                                            {(element.ticket_id===undefined)?element.Time:element.clock.replace("T", " ")}
                                         </div>
                                 </div>
                             </div>
                             <div className='contBotInfoFlujo'>
-                            <div className='contBotLeftFlujo'>
+                            {/* <div className='contBotLeftFlujo'>
                             <div className='contTicketInfo'>
                                             {
                                                 (element.tickets!="")?'Tickets:':''
@@ -116,13 +142,13 @@ const FlujoModal = ({ eventId ,props}) => {
                                         </div>
                                         }
                                             )}
-                                </div>
+                                </div> */}
                                 <div className='contBotRightFlujo'>
                                         <div className='contMsgFlujo par'>
-                                            {element.message}
+                                            {(element.ticket_id===undefined)?element.message:'Tracker ID: '+element.tracker_id}
                                         </div>   
                                         <div className='contMsgBotFlujo par'>
-                                        {element.user}
+                                        {(element.ticket_id===undefined)?element.user:'Ticket'}
                                         </div>  
                                 </div>
                             </div>
@@ -146,7 +172,7 @@ const FlujoModal = ({ eventId ,props}) => {
                             <div className='contTopInfoFlujo'>
                             <div className='contTopRightFlujo impar'>
                                         <div className='txtTimeFlujo '>
-                                        {element.Time}
+                                        {(element.ticket_id===undefined)?element.Time:element.clock}
                                         </div>
                                 </div>
                                 <div className='contTopLeftFlujo'>
@@ -160,13 +186,13 @@ const FlujoModal = ({ eventId ,props}) => {
                             
                                 <div className='contBotRightFlujo'>
                                         <div className='contMsgFlujo impar'>
-                                        {element.message}
+                                        {(element.ticket_id===undefined)?element.message:'Tracker ID: '+element.tracker_id}
                                         </div>   
                                         <div className='contMsgBotFlujo impar'>
-                                        {element.user}
+                                        {(element.ticket_id===undefined)?element.user:'Ticket'}
                                         </div>  
                                 </div>
-                                <div className='contBotLeftFlujo'>
+                                {/* <div className='contBotLeftFlujo'>
                                 <div className='contTicketInfo'>
                                 {
                                                 (element.tickets!="")?'Tickets:':''
@@ -179,7 +205,7 @@ const FlujoModal = ({ eventId ,props}) => {
                                         }
                                             )}
                                             
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>
@@ -192,7 +218,7 @@ const FlujoModal = ({ eventId ,props}) => {
                }
  
                  
-                {/* fijo */}
+              
                 <div className='rowLevel' style={{height:'auto'}}>
                     <div className='rowSide leftSideRow' style={{height:'auto',width:'100%',border:'unset'}}>
                     {/* <div className='consArrowflujo arrowRight'></div> */}

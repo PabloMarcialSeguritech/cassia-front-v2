@@ -1,6 +1,6 @@
 
 import { useState,useEffect,useRef } from 'react'
-import './styles/disponibilidad.css'
+import './styles/alineacion.css'
 import Action from '../Action'
 import SearchHost from '../SearchHost'
 import { useFetch } from '../../hooks/useFetch'
@@ -38,8 +38,8 @@ const CustomTooltip = ({ active, payload, label }) => {
     
     if (active && payload) {
       return (
-        <div className="custom-tooltip-disponibilidad">
-          <div className="cont-tooltip-disponibilidad">
+        <div className="custom-tooltip-alineacion">
+          <div className="cont-tooltip-alineacion">
           <div className='row-tooltip'><p className='title-tooltip' style={{color:'#505050',fontSize:'small'}}>Fecha:&nbsp;</p><p style={{color:'#505050',fontSize:'small'}}>{label}</p></div>
           {objetoOrdenado.slice(0, 15).map((element, index) => (
             <div className='row-tooltip'><p style={{color:element.stroke,fontSize:'x-small'}} >{`  ${element.name}: `}&nbsp;</p><p style={{color:'#505050',fontSize:'x-small',fontWeight:'bold'}}>{element.value.toFixed(2)}</p></div>
@@ -61,7 +61,7 @@ const CustomTooltip = ({ active, payload, label }) => {
   }
   
 };
-const Disponibilidad=({server})=>{
+const Alineacion=({server})=>{
   const color_graf={
     1:"#c680ff",2:"#80cfff",3:"#56e1ad",4:"#3b83bd",5:"#6285aa",
     6:"#7a8697",7:"#8c8884",8:"#9a8a71",9:"#a68d5d",10:"#b18f47",
@@ -134,6 +134,7 @@ const Disponibilidad=({server})=>{
     const [indexSelected,setIndexSelected] =useState(0)
     const [flagTodos,setFlagTodos]=useState(true)
     const [flagGeneral,setFlagGeneral]=useState(false)
+   
     const [periodoSeleccionado, setPeriodoSeleccionado] = useState(null);
     const [devices,setDevices]=useState({data:[],loading:true,error:null});
     const [arrayHost,setArrayHost]=useState([])
@@ -141,12 +142,13 @@ const Disponibilidad=({server})=>{
     const [reportbyHost,setReportByHost]=useState(false)
     const [databyHost,setDataByHost]=useState([])
     const [msgError,setMsgError]=useState("Ingrese un host para buscar datos")
-    console.log(arrayHost)
-    console.log(dataInfo)
+    console.log(reportbyHost)
+    // console.log(arrayHost)
+    // console.log(dataInfo)
     // console.log(opcionesTxtArray)
     // console.log(opcionesArray.municipio[0])
     // console.log("total.metr ",totalLienas)
-    console.log('flag general',viewArrayHost)
+    // console.log('flag general',viewArrayHost)
     // console.log('flag todos',flagTodos)
     const Ampliar = () => {
       // Aquí puedes realizar la búsqueda usando el valor de 'query'
@@ -292,22 +294,22 @@ const formatDate=(date)=>{
  
 useEffect(()=>{
   // setSeriesKeys(countArray[elementos.length]) 
-  search_reporte_disponibilidad()
+  search_reporte_alineacion()
   search_devices()
 },[])
 const Buscar=()=>{
   
-  search_reporte_disponibilidad()
+  search_reporte_alineacion()
 }
 const accionar_reporte=()=>{
     if(reportbyHost){
 
       search_reporte_host()
     }else{
-      search_reporte_disponibilidad()
+      search_reporte_alineacion()
     }
 }
-function search_reporte_disponibilidad(){
+function search_reporte_alineacion(){
  opcionesTxtArrayFijo.municipio=[...opcionesTxtArray.municipio]
  opcionesTxtArrayFijo.tecnologia=[...opcionesTxtArray.tecnologia]
  opcionesTxtArrayFijo.modelo=[...opcionesTxtArray.modelo]
@@ -321,6 +323,7 @@ function search_reporte_disponibilidad(){
   // }
   if(opcionesArray.municipio[0]==0){
     setFlagTodos(true)
+    console.log('#1')
     setFlagGeneral(false)
   }else{
     setFlagTodos(false)
@@ -390,6 +393,7 @@ function search_reporte_host(hostID){
                            // console.log(response)
          if (response.ok) {
            const response_data = await response.json();
+           console.log(response_data.data)
            setDataByHost(response_data.data)
           //  setTotalLineas(1)
            setDataInfo({data:response_data.data,loading:false,error:dataInfo.error})
@@ -462,7 +466,7 @@ function search_reporte_host(hostID){
     };
     fetchData();
 }
-function download_reporte_disponibilidad(){
+function download_reporte_alineacion(){
   let baseURL
   // setSeriesKeys(countArray[elementos.length])
   // if(elementos.length==1){
@@ -521,7 +525,7 @@ const download=()=>{
   if(reportbyHost){
     download_reporte_host()
   }else{
-    download_reporte_disponibilidad()
+    download_reporte_alineacion()
   }
 }
       const handleChangeOption=(index)=>{
@@ -561,7 +565,7 @@ const download=()=>{
       const progress = 0.5;
       const [elementos, setElementos] = useState(['Serie 1']);
       
-      const [elementosToRender,setElementosToRender]=useState(['Disponibilidad_1']);
+      const [elementosToRender,setElementosToRender]=useState(['num_1']);
       const [disabled,setDisabled]=useState(true)
       // console.log(elementos)
       // console.log(elementosToRender)
@@ -569,7 +573,7 @@ const download=()=>{
     // console.log(dataLocations.data.data[0].id,dataLocations.data.data[0].name)
     
     setElementos([...elementos, 'Serie '+(parseInt(elementos.length,10) +1)]);
-    setElementosToRender([...elementosToRender, 'Disponibilidad_'+(parseInt(elementosToRender.length,10) +1)]);
+    setElementosToRender([...elementosToRender, 'num_'+(parseInt(elementosToRender.length,10) +1)]);
     setOpcionesArray(prevState => {
       return {
         ...prevState,
@@ -811,18 +815,19 @@ const porHost=()=>{
   setOpcionesTxtArray({municipio:['TODOS'],tecnologia:['SUSCRIPTORES'],marca:['TODAS'],modelo:['TODOS']})
   setOpcionesTxtArrayFijo({municipio:['TODOS'],tecnologia:['SUSCRIPTORES'],marca:['TODAS'],modelo:['TODOS']})
   setDataInfo({data:[],loading:false,error:null})
+  console.log('#2')
   setFlagGeneral(!flagGeneral)
   if(reportbyHost){
     setArrayHost([])
     setDataByHost([])
-    search_reporte_disponibilidad()
+    search_reporte_alineacion()
   }
   setReportByHost(!reportbyHost);
  
 }
     return (
       <>
-        <div className="main-reporte-disp">
+        <div className="main-reporte-alineacion">
         
               
             
@@ -883,8 +888,8 @@ const porHost=()=>{
 
              
         }
-            <div className='cont-reporte-disp'>
-            <div className='cont-menu-disp'>
+            <div className='cont-reporte-alineacion'>
+            <div className='cont-menu-alineacion'>
               <div className='cont-controls'>
                         <div className='row-controls '>
                   {(elementos.length<3 && (opcionesArray.municipio[0]!=0))?<img
@@ -1059,7 +1064,7 @@ const porHost=()=>{
 
                   <div className='menuSearchOption' style={{height:'unset'}}>
                   <div className='compact-option-date'>
-                      <div className="user-box-disp">
+                      <div className="user-box-alineacion">
                           <input required name="fecha_ini"  type="datetime-local" value={opciones.fecha_ini}
                           onChange={handleChangeGraf} />
                                           <label className=' active lbl-option-date' >Desde:</label>
@@ -1067,7 +1072,7 @@ const porHost=()=>{
                   </div>
                   </div>
                   <div className='compact-option-date'>
-                    <div className="user-box-disp">
+                    <div className="user-box-alineacion">
                           <input required name="fecha_fin"  type="datetime-local" value={opciones.fecha_fin}
                           onChange={handleChangeGraf} />
                                           <label className=' active lbl-option-date ' >Hasta:</label>
@@ -1123,7 +1128,7 @@ const porHost=()=>{
                 
             </div>
              
-            <div className='cont-graf-disp' style={{zIndex:'1'}}>
+            <div className='cont-graf-alineacion' style={{zIndex:'1'}}>
                 <div className='cont-info-graf'>
                     {/* <div className='cont-info-top'>
 
@@ -1143,7 +1148,7 @@ const porHost=()=>{
                                   height={200}
                                   // data={dataInfo.data.metrics[0].dataset}
                                   data={(flagGeneral)?dataInfo.data.metrics[indexSelected].dataset:dataInfo.data.metrics[indexSelected].dataset2}
-                                  // data={data}
+                                  // data={dataInfo.data.metrics[indexSelected].dataset}
                                   margin={{
                                     top: 5,
                                     right: 30,
@@ -1154,13 +1159,13 @@ const porHost=()=>{
                                   <CartesianGrid strokeDasharray="3 3" />
                                   {/* <XAxis dataKey="Tiempo" /> */}
                                   <XAxis dataKey="Tiempo" />
-                                  <YAxis domain={[0, 100]}/>
+                                  <YAxis />
                                   <Tooltip content={<CustomTooltip />} />
                                   
                                   <Legend />
 
-                                  {/* <Line type="monotone" dataKey="Disponibilidad_1" stroke="#8884d8" strokeWidth={2}  /> */}
-                                  {/* <Area type="monotone" dataKey="Disponibilidad" fill="#8884d8" fillOpacity={0.3} /> */}
+                                  {/* <Line type="monotone" dataKey="Alineacion_1" stroke="#8884d8" strokeWidth={2}  /> */}
+                                  {/* <Area type="monotone" dataKey="Alineacion" fill="#8884d8" fillOpacity={0.3} /> */}
                                   {/* <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
                                   <Line type="monotone" dataKey="pv" stroke="#82ca9d" /> */}
                                   
@@ -1170,11 +1175,11 @@ const porHost=()=>{
                                       <Line
                                       key={index}
                                         type="monotone"
-                                        // dataKey={elementosToRender[index]}
-                                        dataKey={((reportbyHost)?dataInfo.data.metrics[indexSelected].hostids[index]:"Disponibilidad_"+key)}
+                                        dataKey={"num_"+key}
+                                        // dataKey={((reportbyHost)?dataInfo.data.metrics[indexSelected].hostids[index]:"num_"+key)}
                                         // stroke={`#${Math.floor(Math.random()*16777215).toString(16)}`} // Color aleatorio
                                       // stroke={color_graf[index+1]}
-                                      stroke={color_graf[key]}
+                                      stroke={'#a0015a'}
                                       strokeWidth={2}
                                       activeDot={{ onClick: (e)=>{console.log(e)}, r: 8 }}
                                       />
@@ -1185,9 +1190,11 @@ const porHost=()=>{
                                       key={index}
                                         type="monotone"
                                         // dataKey={elementosToRender[index]}
-                                        dataKey={key}
+                                        dataKey={"num_"+key}
+                                        
                                         // stroke={`#${Math.floor(Math.random()*16777215).toString(16)}`} // Color aleatorio
                                       stroke={color_graf[((index+1)>50)?(index+1)-50:(index+1)]}
+                                      name={key}
                                       // stroke={generateColorOptions()}
                                       />
                                     ))
@@ -1198,20 +1205,16 @@ const porHost=()=>{
                               </>:''
                         }
                     </div>
-                    <div className='cont-info-bottom'>
+                    {/* <div className='cont-info-bottom'>
                         <div className='cont-text-info'>
                             <div className='txt-info-fijo'>Funcionalidad Promedio:    </div>
                             {
                               (typeof dataInfo.data.metrics !== 'undefined' && dataInfo.loading==false)?
                                 dataInfo.data.general_funcionality_average.map((key, index) => (
-                                  // console.log(dataInfo.data.metrics[0].availability_average.length,index)
+                                  
                                   <div className='txt-info-dinamic' id={'fp'+index} style={{color:color_graf[index+1]}}> &nbsp; {typeof dataInfo.data.general_funcionality_average === 'undefined' ?'---':((dataInfo.data.general_funcionality_average[index]==="" ?0:dataInfo.data.general_funcionality_average[index].toFixed(2)))}%</div>
                                 )):''}
                               
-                               
-                            
-                            
-                            {/* <div className='txt-info-dinamic' style={{color:'red'}}> &nbsp; {typeof dataInfo.data.general_funcionality_average === 'undefined'?'---':((dataInfo.data.general_funcionality_average===""?0:dataInfo.data.general_funcionality_average.toFixed(2)))}%</div> */}
                         </div>
                         <div className='cont-text-info'>
                             <div className='txt-info-fijo'>Lapso de tiempo:    </div>
@@ -1230,11 +1233,11 @@ const porHost=()=>{
                                 // console.log(dataInfo.data.metrics[0].availability_average.length,index)
                                 <div className='txt-info-dinamic' id={'dis'+index} style={{color:color_graf[index+1]}}> &nbsp; {typeof dataInfo.data.metrics === 'undefined' ?'---':((dataInfo.data.metrics[0].device_count[index]==="" ?0:dataInfo.data.metrics[0].device_count[index]))}</div>
                               )):''}
-                          </div>
-                    </div>
+                        </div>
+                    </div> */}
                 </div>
             </div>
-            <div className='cont-table-disp'>
+            <div className='cont-table-alineacion'>
             <div className='bodyInfoTable'>
                   <div className='contTableDisp'>
                     
@@ -1254,7 +1257,7 @@ const porHost=()=>{
                           </div>
                           <div className='headerCellDisp' style={{width:'25%'}}>
                             <div className='txtHeaderCellDisp'>
-                                Disponibilidad promedio
+                                 Promedio
                             </div>
                           </div>
                           <div className='headerCellDisp' style={{width:'20%'}}>
@@ -1347,4 +1350,4 @@ const porHost=()=>{
     )
 }
 
-export default Disponibilidad
+export default Alineacion

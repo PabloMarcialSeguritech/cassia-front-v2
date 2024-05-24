@@ -24,7 +24,7 @@ const customStyles = {
 
 const TableAlerts=(props)=>{
   // console.log(props)
-  const dataAgencies=useFetch('zabbix/exception_agencies','',props.token,'GET',props.server)
+  const dataAgencies=useFetch('cassia/exception_agencies','',props.token,'GET',props.server)
   // console.log(dataAgencies)
   
   const [openSelectList,setOpenSelect]=useState(false)
@@ -93,7 +93,7 @@ const selectOptionList=(element)=>{
   const [countList,setCountList]=useState(0)
   var dataList=(props.searchTerm==='')?problems:props.searchResults;
   // var dataList=props.searchResults;
-  // console.log("datalist desde table alert *********************************************************")
+  // console.log("datalist desde table alert ************************s*********************************")
   // console.log(dataList)
   // console.log(dataList.length)
   const contOrigen = dataList.filter(elemento => elemento.tipo === 1).length;

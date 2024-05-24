@@ -1,0 +1,704 @@
+.main-reporte-alineacion{
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.cont-reporte-alineacion{
+    width: 95%;
+    height: 100%;
+    position: relative;
+    background-color: transparent;
+    display: block;
+    justify-content: center;
+    align-items: center;
+}
+.cont-menu-alineacion{
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 24%;
+justify-content: center;
+align-items: center;
+border-bottom: 1px solid rgba(128, 128, 128, 0.37);
+}
+.cont-selectores{
+  position: relative;
+  display: block;
+  justify-content: center;
+  align-items: center;
+  width: 55%;
+  height: 100%;
+  
+}
+.cont-title-selectores{
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 15%;
+  background-color: #0166a0;
+}
+.cont-title-numeric-menu{
+  position: relative;
+  height: 100%;
+  width: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color:aliceblue;
+
+  font-weight: bold;
+}
+.cont-list-selectores{
+  position: relative;
+  height: 85%;
+  width: 100%;
+  display: block;
+  justify-content: center;
+  align-items: center;
+  /* overflow-y: scroll;
+  scrollbar-width: thin; */
+}
+.cont-title-options-menu
+{
+  position: relative;
+  height: 100%;
+  width: 22%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color:aliceblue;
+}
+.cont-periodos{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 35%;
+  height: 100%;
+  border-left: 1px solid rgba(128, 128, 128, 0.37); ;
+}
+.cont-periodo-manual{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40%;
+  height: 100%;
+}
+.compact-periodo-manual{
+  position: relative;
+  display: block;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  height: 100%;
+}
+.cont-periodo-opciones{
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 60%;
+  height: 100%;
+}
+.cont-list-periodo{
+  position: relative;
+  display: block;
+  justify-content: center;
+  align-items: center;
+  width: 45%;
+  height: 90%;
+  /* overflow-y: scroll; */
+  border: #50505081 1px solid;
+  border-radius: 5px;
+  scrollbar-width: thin; 
+}
+.row-option-periodo{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height:16.66%;
+  color: #003757;
+}
+.row-option-periodo:hover{
+  color:aliceblue;
+  background-color: #6b6b6b9a !important;
+  cursor: pointer;
+}
+.row-option-periodo:nth-child(odd){
+  background-color: #f8f9fa;
+}
+.row-option-periodo:nth-child(even){
+  background-color: #eeeeee;
+}
+.compact-menu-alineacion{
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+justify-content: center;
+align-items: center;
+
+}
+.cont-graf-alineacion{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 50%;
+    /* left: 4%; */
+}
+.cont-add-graf{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 5%;
+  height: 10%;
+  top: 0%;
+  left: 0;
+}
+.cont-download-graf{
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 5%;
+  height: 10%;
+  top: 55%;
+  left: 92%;
+  z-index: 1;
+}
+.img-field-download-graf {
+  position: relative;
+  height: 50%;
+}
+.img-field-download-graf:hover{
+  height: 55%;
+  cursor: pointer;
+  transform: scale(1.1)
+}
+.cont-expand-graf{
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 5%;
+  height: 10%;
+  top: 25%;
+  left: 92%;
+  z-index: 1;
+}
+.img-field-expand-graf {
+  position: relative;
+  height: 50%;
+}
+.img-field-expand-graf:hover{
+  height: 55%;
+  cursor: pointer;
+  transform: scale(1.1)
+}
+.cont-print-graf{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 5%;
+  height: 10%;
+  top: 10%;
+  left: 0;
+}
+.cont-list-graf{
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 15%;
+  height: 50%;
+  top: 25%;
+  left: 0;
+}
+.compact-list-graf{
+  display: block;
+  position: relative;
+  width: 90%;
+  height: 95%;
+}
+.cont-row-graf{
+  position: relative;
+  width: 100%;
+  height: 15%;
+ display: flex;
+ 
+}
+.separate-rof-graf{
+  width: 80%;
+  height: 15;
+  border-color: #9494943f;
+}
+.cont-color-graf{
+  position: relative;
+  width: 10%;
+  height: 100%;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+}
+.square-color-graf{
+  position: relative;
+  width: 60%;
+  height: 30%;
+  
+  border-radius: 30%;
+}
+.cont-name-graf{
+  position: relative;
+  width: 80%;
+  height: 100%;
+ display: flex;
+ justify-content: left;
+ align-items: center;
+ text-align: left;
+ color: #505050;
+ font-size: 10px;
+}
+.cont-table-alineacion{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 25%;
+}
+.compact-option-date{
+  position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 50%;
+    padding: 10px 10px 0px 0px;
+}
+.lbl-option-date{
+  font-size: medium !important;
+  color: #003757;
+  position: absolute;
+}
+.compact-option{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 16%;
+    height: 100%;
+    padding: 10px;
+}
+.compact-option-large{
+  position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 22%;
+    height: 100%;
+    padding: 10px;
+}
+.user-box-alineacion {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+.user-box-alineacion .label-alineacion {
+    position: absolute;
+    top: 0px !important;
+    left: 0;
+    padding: 10px 0;
+    /* font-size: 10px !important; */
+    /* font-weight: bolder; */
+    color: #003757;
+    pointer-events: none;
+    transition: .5s;
+  }
+   .user-box-alineacion input:focus ~ .label-alineacion,  .user-box-alineacion input:valid ~ .label-alineacion {
+    top: -25px !important;
+    left: 0px;
+    color: #003757;
+    font-size: 12px;
+  }
+   
+   .user-box-alineacion input:focus ~ .label-alineacion,
+ .user-box-alineacion input:valid ~ .label-alineacion,
+ .user-box-alineacion .active {
+    top: -10px !important;
+    left: 0px;
+    /* font-size: 12px; */
+}
+
+
+ .user-box-alineacion input {
+  width: 100%;
+  padding: 10px 0;
+  font-size: 12px;
+  color: #003757;
+  margin-bottom: 30px;
+  border: none;
+  border-bottom: 2px solid #003757;
+  border-right: 2px solid #003757;
+  outline: none;
+  background: transparent;
+  /* top: 30%; */
+  position: relative;
+}
+
+ .user-box-alineacion input:focus ~ .label-alineacion,
+ .user-box-alineacion input:valid ~ .label-alineacion {
+  top: -10px;
+  left: 0;
+  color: #003757;
+  font-size: 12px;
+}
+
+/**********************************************/
+.cont-info-graf{
+  position: relative;
+  display: block;
+  width: 85%;
+  height: 95%;
+  top: 5%;
+  left: 1%;
+}
+.cont-info-top{
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 10%;
+}
+.cont-info-center{
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 90%;
+}
+.cont-info-bottom{
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 10%;
+}
+.cont-text-info{
+    position: relative;
+    display: flex;
+    width: 33.33%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/*********************************************************/
+.bodyInfoTable{
+    position: relative;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height:100%;
+    
+  }
+  .contTableDisp{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+  .contCheckDisp{
+    position: relative;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    width: 5%;
+    height: 70%;
+  }
+
+  .contInfoDisp{
+    position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 95%;
+  height: 90%;
+  border: 2px solid #003757;
+  }
+  .infoDisp{
+    position: relative;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    border: #ffffff33 1px solid;
+    border-radius: 10px;
+  }
+  .rowInfoDisp {
+    justify-content: center;
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    height:26.666%;
+    /* background: #5d5c69; */
+    background-color: #43434d79;
+    background-size: 400%;
+    color: #003757;
+    font-size: medium !important;
+    /* border-radius: 0px 0px 10px 10px; */
+    width: 100%;
+  }
+  .rowInfoDisp:nth-child(odd){
+    background-color: #f8f9fa;
+  }
+  .rowInfoDisp:nth-child(even){
+    background-color: #eeeeee;
+  }
+  .titlesInfoDisp{
+    height: 15%;
+    position: relative;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    background-color: #003757;
+    /* max-height: 25px; */
+  }
+  .DispInfoCell{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  .txtDispInfoCell{
+    text-align: center;
+    position: relative;
+    width: 100%;
+    height: auto;
+    word-break: break-all;
+    margin: 0 0 1em 1em;
+    display: flex;
+    font-size: medium;
+    letter-spacing: 0.5px;
+    justify-content: center;
+    margin: 2%;
+  }
+  .lblInfoDisp{
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    top: 0;
+    color: aliceblue;
+    margin-left: 1%;
+  }
+  .headerCellDisp {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 15%;
+    border-left: 1px solid white;
+    color: white;
+    font-weight: bold;
+  }
+  .txtHeaderCellDisp {
+    font-weight: unset;
+    font-size: small;
+    letter-spacing: 1px;
+  }
+  /******************************estilos de radiocheck************************************/
+.checkTableDisp {
+    -webkit-appearance: none;
+   /* remove default */
+    display: block;
+    margin: 10px;
+    width: 24px;
+    height: 24px;
+    border-radius: 12px;
+    cursor: pointer;
+    vertical-align: middle;
+    box-shadow: hsla(0,0%,100%,.15) 0 1px 1px, inset hsla(0,0%,0%,.5) 0 0 0 1px;
+    background-color: #003757;
+    /* border-color: ; */
+    background-image: -webkit-radial-gradient( hsla(200,100%,90%,1) 0%, hsla(200,100%,70%,1) 15%, hsla(200,100%,60%,.3) 28%, hsla(200,100%,30%,0) 70% );
+    background-repeat: no-repeat;
+    -webkit-transition: background-position .15s cubic-bezier(.8, 0, 1, 1),
+      -webkit-transform .25s cubic-bezier(.8, 0, 1, 1);
+    outline: none;
+  }
+  
+  .checkTableDisp:checked {
+    -webkit-transition: background-position .2s .15s cubic-bezier(0, 0, .2, 1),
+      -webkit-transform .25s cubic-bezier(0, 0, .2, 1);
+  }
+  
+  .checkTableDisp:active {
+    -webkit-transform: scale(1.5);
+    -webkit-transition: -webkit-transform .1s cubic-bezier(0, 0, .2, 1);
+  }
+  
+  
+  
+  /* The up/down direction logic */
+  
+  .checkTableDisp,
+  .checkTableDisp:active {
+    background-position: 0 24px;
+  }
+  
+  .checkTableDisp:checked {
+    background-position: 0 0;
+  }
+  
+  .checkTableDisp:checked ~ .checkTableDisp,
+  .checkTableDisp:checked ~ .checkTableDisp:active {
+    background-position: 0 -24px;
+  }
+  
+
+.cont-option-todos{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  color: #003757;
+  font-size: large;
+  top: 30%;
+  height: 10%;
+  position: absolute;
+
+}
+.cont-option-todos input:hover{
+  cursor: pointer;
+}
+
+
+/************* tooltip ****************/
+.recharts-responsive-container{
+  z-index: 3 !important;
+}
+.recharts-legend-item{
+  font-size: 10px;
+  font-weight: bold;
+}
+.custom-tooltip-alineacion{
+  background-color: white;
+  border-radius: 10px;
+  border: 2px solid #003757;
+  padding: 5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+  z-index: 3;
+  /* overflow: auto; */
+  /* max-height: auto; */
+}
+.cont-tooltip-alineacion{
+position:relative;
+display: block;
+width: 95%;
+height: 95%;
+max-height: 400px;
+overflow: auto;
+/* border-color: 1px solid #003757;
+background-color: red;
+border: 1px; */
+}
+.row-tooltip{
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  width: 200px;
+  height: 20px;
+  
+}
+.title-tooltip{
+  color: #505050;
+}
+/* *********************************************************** */
+.contSearchHostReporte{
+  position: relative;
+  height: 100%;
+  width: 30%;
+  z-index: 2;
+  display: block;
+  padding-left: 3%;
+}
+.mainbox-searchHostReporte {
+  box-sizing: border-box;
+  position: relative;
+  width: 230px;
+  height: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: center;
+  border-radius: 160px;
+  background-color: #03040b66;
+  transition: all 0.3s ease;
+  box-shadow: 3px 3px 10px rgba(67, 67, 67, 0.4);
+  border: 1px solid #f0f8ff3d;
+}
+.row-searchHost-listReporte {
+  background-color: #0e182dcc;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 30px;
+  color: #088eee;
+}
+.row-searchHost-listReporte:hover {
+  background-color: aliceblue;
+  cursor: pointer;
+}
+.cont-list-selectoresHost {
+  position: relative;
+  height: 85%;
+  width: 100%;
+  display: block;
+  justify-content: center;
+  align-items: center;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+}
+
+/*******************************************/
+.cont-controls{
+  position: relative;
+  display: block;
+  justify-content: center;
+  align-items: center;
+  width: 10%;
+  height: 100%;
+  border: 1px solid rgba(128, 128, 128, 0.37); 
+
+}
+.row-controls{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 33.33%;
+}

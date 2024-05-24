@@ -4,7 +4,7 @@ import './styles/admin.css'
 import UsersAdmin from '../components/admin-components/UsersAdmin'
 import Herramienta1 from '../components/admin-components/Herramienta1'
 import RolesAdmin from '../components/admin-components/RolesAdmin'
-import ArrastreHost from '../components/admin-components/ArrastreHost'
+import NotifiAdmin from '../components/admin-components/NotifiAdmin'
 const Admin=({server,dataGlobals})=>{
     const [listSelected,setListSelected]=useState(1)
     const hadleChangeList=(e)=>{
@@ -22,8 +22,7 @@ const Admin=({server,dataGlobals})=>{
                      <ol className='compact-menu-list' style={{justifyContent:'start'}}>
                         <li className={listSelected===1?'list-selected':''} onClick={() =>hadleChangeList(1)}>Usuarios</li>
                         <li className={listSelected===2?'list-selected':''} onClick={() =>hadleChangeList(2)}>Roles</li>
-                        {/* <li className={listSelected===3?'list-selected':''} onClick={() =>hadleChangeList(3)}>Arrastre Hosts</li>
-                        <li className={listSelected===4?'list-selected':''} onClick={() =>hadleChangeList(4)}>Herramienta 3</li> */}
+                        {/* <li className={listSelected===3?'list-selected':''} onClick={() =>hadleChangeList(3)}>Notificaciones</li> */}
                     </ol>
                 </div>
                 <hr className='head-line'></hr>
@@ -34,7 +33,7 @@ const Admin=({server,dataGlobals})=>{
                 ) : listSelected === 2 ? (
                     <RolesAdmin server={server}/>
                 ) : listSelected === 3 ? (
-                    <ArrastreHost server={server}/>
+                    <NotifiAdmin server={server}/>
                 ) : (
                     <Herramienta1 server={server}/>
                 )}
