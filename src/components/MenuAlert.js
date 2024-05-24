@@ -8,6 +8,7 @@ import LoadAdding from './LoadAdding';
 import FlujoModal from './modals-monitoreo/FlujoModal';
 import AnalisisModal from './modals-monitoreo/AnalisisModal';
 import {permisos_codigo_id} from './generales/GroupsId'
+import React from 'react';
 const customStyles = {
     content: {
       top: '50%',
@@ -53,9 +54,33 @@ const customStyles = {
       border:'unset'
     },
   };
-
+  class ErrorBoundary extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = { hasError: false };
+    }
+  
+    static getDerivedStateFromError(error) {
+      return { hasError: true };
+    }
+  
+    componentDidCatch(error, errorInfo) {
+      console.error("Error capturado:", error, errorInfo);
+      // Puedes enviar el error a un servicio de monitoreo de errores aquí
+    }
+  
+    render() {
+      if (this.state.hasError) {
+        // Puedes renderizar un mensaje de error personalizado aquí
+        return <h1>Oops! Algo salió mal.</h1>;
+      }
+  
+      return this.props.children;
+    }
+  }
 const MenuAlert = ({ isOpen, onClose,props }) => {
-
+ 
+  
     const [exeptionOpen, setExeptionOpen] = useState(false);
     const [ackOpen, setAckOpen] = useState(false);
     const [ticketOpen, setTicketOpen] = useState(false);
@@ -92,30 +117,20 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
       
       setTextAreaValue(event.target.value);
     };
-    // const addException=()=>{
-    //   ////console.log("exepcio" )
-    //   ////console.log(props)
-    //   setAddingException(true)
-      
-    // }}
-    // //console.log(props.data)
+   
     const addException=async(e)=>{
       //console.log('ejecuta la excepcion')
       setAddingException(true)
-      // //console.log(props.data)
-      // ////console.log("element_id:"+cisSelected.element_id+" | ci-relation:"+cisRelation)
-        
+
         var exceptData={
           "exception_agency_id": agenciaId,
           "description":excepcion,
           "hostid": props.data.hostid,
           "created_at": currentDateTime
         }
-        //console.log(exceptData)
-        //console.log('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/exceptions')
       
         try {
-          const response = await fetch('http://'+props.server.ip+':'+props.server.port+'/api/v1/zabbix/exceptions', {
+          const response = await fetch('http://'+props.server.ip+':'+props.server.port+'/api/v1/cassia/exceptions', {
             method: "POST",
             headers: {
               "Accept": "application/json",
@@ -128,10 +143,9 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
           if (response.ok) {
             props.setSearchTerm("")
             const data = await response.json();
-            ////console.log(data)
             setCloseEvent(false)
             setExeptionOpen(false);
-            // setAddingException(false)
+            setAddingException(false)
             props.search_problems()
           } else {
             const data = await response.json();
@@ -177,7 +191,7 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
             setCloseEvent(false)
             setAckOpen(false);
             props.setSearchTerm("")
-            // setAddingException(false)
+            setAddingException(false)
             props.search_problems()
           } else {
             const data = await response.json();
@@ -212,13 +226,11 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
             const data = await response.json();
             ////console.log(data)
             setTicketOpen(false);
-            // setAddingException(false)
+            setAddingException(false)
             setClock('')
             setTracker('')
           } else {
-            // const data = await response.json();
-            // ////console.log(data.detail)
-            // setResponseDetail({text:data.detail,value:false})
+            setAddingException(false)
             throw new Error('Error en la solicitud');
           }
         
@@ -247,11 +259,8 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
       // subtitle.style.color = '#f00';
     }
   const cerrarExeption=async(e)=>{
-    //console.log('ejecuta la excepcion')
     setCerrandoEvento(true)
-    // //console.log(props.data)
-    // ////console.log("element_id:"+cisSelected.element_id+" | ci-relation:"+cisRelation)
-      
+    
       var exceptData={
         
         "closed_at": currentDateTime
@@ -273,10 +282,8 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
         if (response.ok) {
           props.setSearchTerm("")
           const data = await response.json();
-          ////console.log(data)
-          // setCloseEvent(false)
-          // setExeptionOpen(false);
-          // setAddingException(false)
+          
+          setAddingException(false)
           setCerrandoEvento(false)
           props.search_problems()
         } else {
@@ -649,7 +656,10 @@ const MenuAlert = ({ isOpen, onClose,props }) => {
           contentLabel="Example Modal"
           // shouldCloseOnOverlayClick={true}
             >
-                <FlujoModal eventId={props.data.eventid} props={props}></FlujoModal>
+              <ErrorBoundary>
+              <FlujoModal eventId={props.data.eventid} props={props}></FlujoModal>
+              </ErrorBoundary>
+                
             </Modal>
             <Modal
           isOpen={AnalisisOpen}

@@ -38,15 +38,17 @@ function bitsToGigabits(bits) {
   return gigabits;
 }
 
-const MapBox = ({capas,switchesFO,switchesMO,setCapas,actualizar_rfi,actualizar_lpr,mapAux,setmapAux,search_rfid,global_longitud,global_latitude,global_zoom,devices,markers,markersWOR,lines,downs,towers,rfid,lpr,ubicacion,switches,handleMarkerClick}) => {
+const MapBox = ({exceptions,capas,switchesFO,switchesMO,setCapas,actualizar_rfi,actualizar_lpr,mapAux,setmapAux,search_rfid,global_longitud,global_latitude,global_zoom,devices,markers,markersWOR,lines,downs,towers,rfid,lpr,ubicacion,switches,handleMarkerClick}) => {
+
 
 
 
 
   
 
-  //console.log("markers*****************************************************")
-  // //console.log(towers)
+  console.log("markers*****************************************************")
+  console.log(exceptions)
+
   // //console.log(switches)
   // //console.log(switchesMO)
   // //console.log(markers)
@@ -1723,7 +1725,79 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
       );
       // // setMapInstance(map)
       
-     
+      /************************************************************ CAPA exceptions ************************************************************************ */
+      console.log(exceptions)
+      var except;
+      if(exceptions.length!==0){
+        // console.log("add layer except")
+        const exceptLayer={
+          id: 'host-except',
+          type: 'circle',
+          source:  {
+            type: 'geojson',
+            data: {
+              type: 'FeatureCollection',
+              features: exceptions
+            },
+          },
+          filter: ['!', ['has', 'point_count']],
+          paint: {
+            'circle-color': "#cacaca",
+            'circle-radius': 3,
+            'circle-stroke-width':1,
+            'circle-stroke-color': '#fff',
+          },
+        };
+        map.addLayer(exceptLayer);
+      if(!idCapaExistente('host-except')){
+        setCapas((prevCapas) => ({
+          ...prevCapas,
+          [Object.keys(prevCapas).length ]: { show: true, name: 'Excepciones',id:`host-except`,layer:exceptLayer,source:null ,nivel:3},
+        }));
+      }
+        var popup;
+        exceptions.forEach((feature) => {
+          const coordinates = feature.geometry.coordinates.slice();
+          const val = feature.properties.lecturas; // Asegúrate de tener esta propiedad en tus datos
+          const agency_id = feature.properties.exception_agency_id; 
+          const activo=feature.properties.activo;
+          
+          const agencys={
+            1:'',
+            2:'CONAGUA',
+            3:'CFE',
+            5:'CFE 2',
+          }
+          const agencys_colors={
+            1:'',
+            2:'#00b7e1',
+            3:'#00da19b7',
+            5:'#00da19b7',
+          }
+          popup = new mapboxgl.Popup({
+            className: 'custom-popup-except',
+            closeButton: false,
+            closeOnClick: false
+        })
+            .setLngLat(coordinates)
+            // .setHTML(`<div class='cont-rfid' style='border: 1px solid #ffffff;'>
+            // <div class='titleRFID'><div class='txtTitleRfid'>Trafico</div><br></div>
+            // <div class='valRFID' style='background: ${severity_colors[severity]}'><div class='txtRfid'>${val}</div><br><br></div>
+            //     </div>`)
+                .setHTML(`<div class='cont-except' style='border: 1px solid #ffffff;'>
+            
+            <div class='valexcept' style='background: ${agencys_colors[agency_id]}'><div class='txtexcept'  >${agencys[agency_id]}</div><br><br></div>
+                </div>`)
+                .addTo(map);
+        });
+        
+        
+        // //console.log(rfidInterval)
+      }else{
+        //console.log("******** no existe rfid *************",lprInterval)
+      
+      }
+      
       
     })
    
