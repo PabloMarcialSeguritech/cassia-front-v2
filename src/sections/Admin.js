@@ -22,7 +22,7 @@ const Admin=({server,dataGlobals})=>{
                      <ol className='compact-menu-list' style={{justifyContent:'start'}}>
                         <li className={listSelected===1?'list-selected':''} onClick={() =>hadleChangeList(1)}>Usuarios</li>
                         <li className={listSelected===2?'list-selected':''} onClick={() =>hadleChangeList(2)}>Roles</li>
-                        {/* <li className={listSelected===3?'list-selected':''} onClick={() =>hadleChangeList(3)}>Notificaciones</li> */}
+                        <li className={listSelected===3?'list-selected':''} onClick={() =>hadleChangeList(3)}>Notificaciones</li>
                     </ol>
                 </div>
                 <hr className='head-line'></hr>
