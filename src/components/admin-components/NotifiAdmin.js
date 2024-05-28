@@ -92,8 +92,9 @@ const NotifiAdmin=({server})=>{
             setDisabled(true)
         }
       }
-      
-      
+      const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
+      const [idUsers,setIdUsers]=useState([])
+      console.log(idUsers)
   const getRoles=()=>{
     console.log('solicita permisos')
     setDataRoles({data:dataRoles.data,loading:true,error:''})
@@ -102,7 +103,7 @@ const NotifiAdmin=({server})=>{
      try {
         console.log('http://'+server.ip+':'+server.port+'/api/v1/cassia/users')
       
-          const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/cassia/users', {
+          const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/cassia/reports/notifications/user_reports', {
             method: 'GET',  
             headers: {
               'Content-Type': 'application/json',
@@ -114,8 +115,9 @@ const NotifiAdmin=({server})=>{
             
             const data1 = await response.json();
             console.log(data1)
+            setIdUsers(data1.data.map(obj => obj.user_id))
             setDataRoles({data:data1,loading:false,error:''})
-           
+            setSelectedCheckboxes(data1.data.filter(obj => obj["1"] === 1).map(obj => obj.user_id))
           } else {
             throw new Error('Error en la solicitud');
           }
@@ -135,7 +137,8 @@ const NotifiAdmin=({server})=>{
     getRoles()
 },[])
  
-const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
+
+console.log(selectedCheckboxes)
 const handleSelectAll = (event) => {
     console.log(event)
     if (event.target.checked ) {
@@ -154,8 +157,61 @@ const handleSelectAll = (event) => {
         : [...prevSelected, rol_id]
     );
   };
-  const selectAll=(id)=>{
+  const [arraySave,setArraySet]=useState({users_ids:[],cassia_report_frequency_schedule_ids:[]})
+  const guardar=()=>{
+    const  result = {
+      user_ids: idUsers,
+      cassia_report_frequency_schedule_ids: idUsers.map(user_id => selectedCheckboxes.includes(user_id) ? [1] : [])
+    }
+    console.log(result)
 
+    
+    console.log("registra")
+    let method='POST'
+    
+    setDataRoles({data:dataRoles.data,loading:true,error:''})
+   
+      const fetchDataPost = async () => {
+        
+     try {
+        console.log(method,'http://'+server.ip+':'+server.port+'/api/v1/cassia/reports/notifications/user_reports')
+        console.log(JSON.stringify(result))
+        console.log(localStorage.getItem('access_token'))
+          const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/cassia/reports/notifications/user_reports', {
+            method: method,  
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+            },
+            body: JSON.stringify(result),
+          });
+         console.log(response)
+          if (response.ok) {
+            
+            const data1 = await response.json();
+            // setLoading(false)
+            // setUserData({name:"",description:"",permissions:""})
+            // setPermisos([])
+           
+            getRoles()
+           
+            setDataRoles({data:dataRoles.data,loading:false,error:''})
+           
+            console.log(data1);
+          } else {
+            throw new Error('Error en la solicitud');
+          }
+        } catch (error) {
+            // setUserData({name:"",description:"",permissions:""})
+            // setPermisos([])
+            // setDataPermisos({data:dataPermisos.data,loading:false,error:''})
+    setLoading(false)
+          console.error(error);
+        }
+      };
+  
+      fetchDataPost();
+      
   }
       const {name,description,permissions}=userData
     return (
@@ -168,6 +224,9 @@ const handleSelectAll = (event) => {
                                 <div className='title-head-card-users'>
                                     Notificaciones por Usuario
                                 </div>
+                                <div className='cont-search-buttons' style={{position: 'absolute'}}>
+                <Action disabled={false} origen='Blanco' titulo='Guardar'  action={guardar}/>
+                </div>
                             </div>
                             <div className='content-card-users' style={{height: '90%'}}>
                             <div className='cont-table-users-main NotifiAdmin'>
@@ -190,7 +249,7 @@ const handleSelectAll = (event) => {
                                         </div> */}
                                         <div className='field-head-table-users field-nombre' style={{width:'15%'}}>
                                             <div className='headNotifiAdmi'>
-                                            Permiso 1
+                                            Reporte ODD semanal
                                             </div>
                                             <div className='contCheckNotifiAdmi'>
                                                 <div className='title'>
@@ -219,7 +278,7 @@ const handleSelectAll = (event) => {
                                                     </div>
                                                     
                                             <div className='field-body-table-users field-correo' style={{width:'15%',fontWeight:'bold'}}>
-                                                   <input type='checkbox' className='NotifiCheckBox noti1' checked={selectedCheckboxes.includes(element.user_id)}
+                                                   <input    type='checkbox' className='NotifiCheckBox noti1' checked={selectedCheckboxes.includes(element.user_id)} defaultChecked={true} 
                   onChange={() => handleCheckboxChange(element.user_id)}></input>
                                                     </div>
                                             
