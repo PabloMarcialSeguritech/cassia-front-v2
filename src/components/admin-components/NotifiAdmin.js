@@ -224,7 +224,7 @@ const handleSelectAll = (event) => {
                                 <div className='title-head-card-users'>
                                     Notificaciones por Usuario
                                 </div>
-                                <div className='cont-search-buttons' style={{position: 'absolute'}}>
+                                <div className='cont-search-buttons' style={{position: 'absolute',right: '0%'}}>
                 <Action disabled={false} origen='Blanco' titulo='Guardar'  action={guardar}/>
                 </div>
                             </div>
