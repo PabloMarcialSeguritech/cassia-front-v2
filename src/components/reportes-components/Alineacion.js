@@ -131,7 +131,7 @@ const Alineacion=({server})=>{
     const [dataTec,setDataTec]=useState({data:[[]],loading:[true],error:[null]})
     const [dataMarca,setDataMarca]=useState({data:[[]],loading:[true],error:[null]})
     const [dataModelo,setDataModelo]=useState({data:[[]],loading:[true],error:[null]})
-    const [indexSelected,setIndexSelected] =useState(0)
+    const [indexSelected,setIndexSelected] =useState(1)
     const [flagTodos,setFlagTodos]=useState(true)
     const [flagGeneral,setFlagGeneral]=useState(false)
    
@@ -1136,7 +1136,7 @@ const porHost=()=>{
                     <div className='cont-info-center'>
                       
                       {
-                            (dataInfo.loading || typeof(dataInfo.data.metrics)=='undefined' )?<div style={{width:'100%',height:'95%',display:'flex',justifyContent:'center',alignItems:'center',color:'gray'}}>{(reportbyHost && databyHost.length==0)?msgError:<LoadSimple></LoadSimple>}</div>:
+                            (dataInfo.loading || typeof(dataInfo.data.metrics)=='undefined' || typeof(dataInfo.data.metrics[indexSelected])=='undefined')?<div style={{width:'100%',height:'95%',display:'flex',justifyContent:'center',alignItems:'center',color:'gray'}}>{((reportbyHost && databyHost.length==0) || (typeof(dataInfo.data.metrics)!='undefined' && dataInfo.data.metrics.length==1 ))?(typeof(dataInfo.data.metrics)!='undefined' && dataInfo.data.metrics.length==1 )?'Sin metrica para mostrar':msgError:<LoadSimple></LoadSimple>}</div>:
                               (!reportbyHost || (reportbyHost && arrayHost.length>0))?
                               <>
                                 {
@@ -1179,6 +1179,7 @@ const porHost=()=>{
                                         // dataKey={((reportbyHost)?dataInfo.data.metrics[indexSelected].hostids[index]:"num_"+key)}
                                         // stroke={`#${Math.floor(Math.random()*16777215).toString(16)}`} // Color aleatorio
                                       // stroke={color_graf[index+1]}
+                                      name={'metrica'}
                                       stroke={'#a0015a'}
                                       strokeWidth={2}
                                       activeDot={{ onClick: (e)=>{console.log(e)}, r: 8 }}
@@ -1275,51 +1276,51 @@ const porHost=()=>{
                         </div>
                         { (dataInfo.data.length==0 || dataInfo.loading )?'':
                         dataInfo.data.metrics.map((key, index) => (
-                          <>
-                          <div className='rowInfoDisp'>
-                          <div className='DispInfoCell' style={{width:'5%'}}>
-                            <input name="radio" type="radio" className="checkTableDisp" defaultChecked={(index===0)?true:false} onClick={()=>handleChangeOption(index)} />
-                          </div>
-                          <div className='DispInfoCell' style={{width:'25%'}}>
-                              
-                              <div className='txtDispInfoCell' >
-                              {dataInfo.data.metrics[index].metric_name  }
-                              </div> 
-                          </div>
-                          <div className='DispInfoCell' style={{width:'25%'}}>
-                              <div className='txtDispInfoCell'>
-                              {
-                            (typeof dataInfo.data.metrics !== 'undefined')?
-                            dataInfo.data.metrics[index].availability_average.map((key, index2) => (
-                              <div className='txt-info-dinamic' id={'avail'+index2} style={{color:color_graf[dataInfo.data.metrics[index].indices[index2]]}}> &nbsp; {typeof dataInfo.data.metrics === 'undefined' ?'---':((dataInfo.data.metrics[index].availability_average[index2]==="" ?0:dataInfo.data.metrics[index].availability_average[index2].toFixed(2)))}%</div>
-                            )):''}
-                              {/* {typeof dataInfo.data.general_funcionality_average === 'undefined'?'---':(dataInfo.data.general_funcionality_average.toFixed(2))}% */}
-                              </div>
-                          </div>
-                          <div className='DispInfoCell' style={{width:'20%'}}>
-                              <div className='txtDispInfoCell'>
-                              {
-                            (typeof dataInfo.data.metrics !== 'undefined')?
-                            dataInfo.data.metrics[index].days.map((key, index2) => (
-                              // console.log(dataInfo.data.metrics[0].availability_average.length,index)
-                              <div className='txt-info-dinamic' id={'dias'+key} style={{color:color_graf[dataInfo.data.metrics[index].indices[index2]]}}> &nbsp; {typeof dataInfo.data.metrics === 'undefined' ?'---':((dataInfo.data.metrics[index].days[index2]==="" ?0:dataInfo.data.metrics[index].days[index2].toFixed(2)))}dias</div>
-                            )):''}
-                              {/* {typeof dataInfo.data.days === 'undefined'?'---': (''+(dataInfo.data.days===""?0:dataInfo.data.days.toFixed(2))+' dias')} */}
-                              </div>
-                          </div>
-                          <div className='DispInfoCell' style={{width:'25%'}}>
-                              <div className='txtDispInfoCell'>
-                              {
-                            (typeof dataInfo.data.metrics !== 'undefined')?
-                            dataInfo.data.metrics[index].device_count.map((key, index2) => (
-                              // console.log(dataInfo.data.metrics[0].availability_average.length,index)
-                              <div className='txt-info-dinamic' id={'dev'+index2} style={{color:color_graf[dataInfo.data.metrics[index].indices[index2]]}}> &nbsp; {typeof dataInfo.data.metrics === 'undefined' ?'---':((dataInfo.data.metrics[index].device_count[index2]==="" ?0:dataInfo.data.metrics[index].device_count[index2]))} </div>
-                            )):''}
-                              {/* {dataInfo.data.device_count} */}
-                              </div>
-                          </div>
-                      </div>
-                          </>
+                         (index>0)? <>
+                         <div className='rowInfoDisp'>
+                         <div className='DispInfoCell' style={{width:'5%'}}>
+                           <input name="radio" type="radio" className="checkTableDisp" defaultChecked={(index===1)?true:false} onClick={()=>handleChangeOption(index)} />
+                         </div>
+                         <div className='DispInfoCell' style={{width:'25%'}}>
+                             
+                             <div className='txtDispInfoCell' >
+                             {dataInfo.data.metrics[index].metric_name  }
+                             </div> 
+                         </div>
+                         <div className='DispInfoCell' style={{width:'25%'}}>
+                             <div className='txtDispInfoCell'>
+                             {
+                           (typeof dataInfo.data.metrics !== 'undefined')?
+                           dataInfo.data.metrics[index].availability_average.map((key, index2) => (
+                             <div className='txt-info-dinamic' id={'avail'+index2} style={{color:color_graf[dataInfo.data.metrics[index].indices[index2]]}}> &nbsp; {typeof dataInfo.data.metrics === 'undefined' ?'---':((dataInfo.data.metrics[index].availability_average[index2]==="" ?0:dataInfo.data.metrics[index].availability_average[index2].toFixed(2)))}%</div>
+                           )):''}
+                             {/* {typeof dataInfo.data.general_funcionality_average === 'undefined'?'---':(dataInfo.data.general_funcionality_average.toFixed(2))}% */}
+                             </div>
+                         </div>
+                         <div className='DispInfoCell' style={{width:'20%'}}>
+                             <div className='txtDispInfoCell'>
+                             {
+                           (typeof dataInfo.data.metrics !== 'undefined')?
+                           dataInfo.data.metrics[index].days.map((key, index2) => (
+                             // console.log(dataInfo.data.metrics[0].availability_average.length,index)
+                             <div className='txt-info-dinamic' id={'dias'+key} style={{color:color_graf[dataInfo.data.metrics[index].indices[index2]]}}> &nbsp; {typeof dataInfo.data.metrics === 'undefined' ?'---':((dataInfo.data.metrics[index].days[index2]==="" ?0:dataInfo.data.metrics[index].days[index2].toFixed(2)))}dias</div>
+                           )):''}
+                             {/* {typeof dataInfo.data.days === 'undefined'?'---': (''+(dataInfo.data.days===""?0:dataInfo.data.days.toFixed(2))+' dias')} */}
+                             </div>
+                         </div>
+                         <div className='DispInfoCell' style={{width:'25%'}}>
+                             <div className='txtDispInfoCell'>
+                             {
+                           (typeof dataInfo.data.metrics !== 'undefined')?
+                           dataInfo.data.metrics[index].device_count.map((key, index2) => (
+                             // console.log(dataInfo.data.metrics[0].availability_average.length,index)
+                             <div className='txt-info-dinamic' id={'dev'+index2} style={{color:color_graf[dataInfo.data.metrics[index].indices[index2]]}}> &nbsp; {typeof dataInfo.data.metrics === 'undefined' ?'---':((dataInfo.data.metrics[index].device_count[index2]==="" ?0:dataInfo.data.metrics[index].device_count[index2]))} </div>
+                           )):''}
+                             {/* {dataInfo.data.device_count} */}
+                             </div>
+                         </div>
+                     </div>
+                         </>:''
                           ))
                         
                         }

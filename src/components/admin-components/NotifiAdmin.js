@@ -28,6 +28,7 @@ const NotifiAdmin=({server})=>{
       const [infoPermission,setInfoPermission]=useState('')
     const [dataPermisos,setDataPermisos]=useState({data:[],loading:true,error:''})
     const [dataRoles,setDataRoles]=useState({data:[],loading:true,error:''})
+    const [dataReports,setDataReports]=useState({data:[],loading:true,error:''})
     const [RolData,setRolData]=useState({data:[],loading:true,error:''})
     // const dataPermisos=useFetch('cassia/users/roles/permissions/get','',localStorage.getItem('access_token'),'GET',server)
     // const dataRoles=useFetch('cassia/users/roles','',localStorage.getItem('access_token'),'GET',server)
@@ -131,9 +132,47 @@ const NotifiAdmin=({server})=>{
       
 
 }
+
+const getReportesInfo=()=>{
+  console.log('solicita permisos')
+  setDataReports({data:dataReports.data,loading:true,error:''})
+    const fetchDataPost = async () => {
+      
+   try {
+      console.log('http://'+server.ip+':'+server.port+'/api/v1/cassia/users')
+    
+        const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/cassia/reports/notifications/report_names', {
+          method: 'GET',  
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+          },
+        });
+       
+        if (response.ok) {
+          
+          const data1 = await response.json();
+          console.log(data1)
+        
+          setDataReports({data:data1,loading:false,error:''})
+          
+        } else {
+          throw new Error('Error en la solicitud');
+        }
+      } catch (error) {
+        setDataReports({data:dataReports.data,loading:false,error:''})
+        console.error(error);
+      }
+    };
+
+    fetchDataPost();
+    
+
+}
   useEffect(()=>{
     console.log('inicia roles')
     // getPermisos()
+    getReportesInfo()
     getRoles()
 },[])
  
@@ -236,34 +275,30 @@ const handleSelectAll = (event) => {
                                             Acciones
                                         </div> */}
                                         <div className='field-head-table-users field-nombre' style={{width:'30%'}}>
-                                            Rol
+                                            Usuarios
                                         </div>
-                                        {/* { (dataPermisos.loading)?<div style={{width:'100%',height:'95%',display:'flex',justifyContent:'center'}}><LoadSimple></LoadSimple></div>:
-                                                dataPermisos.data.data.map((element,index)=>(
-                                                    <div className='field-head-table-users field-nombre' style={{width:'20%',fontSize:'small', display:'flex',justifyContent:'center',alignItems:'center',textAlign:'center'}}>
-                                            {element.module_name}
-                                        </div>
-                                            ))} */}
-                                             {/* <div className='field-head-table-users field-nombre' style={{width:'20%'}}>
-                                            
-                                        </div> */}
-                                        <div className='field-head-table-users field-nombre' style={{width:'15%'}}>
-                                            <div className='headNotifiAdmi'>
-                                            Reporte ODD semanal
-                                            </div>
-                                            <div className='contCheckNotifiAdmi'>
-                                                <div className='title'>
-                                                    TODOS
-                                                </div>
-                                                <div className='input'>
-                                                {
-                                                   (dataRoles.loading)?<></>:
-                                                    <input type='checkbox' className='NotifiCheckBox' onClick={handleSelectAll} checked={selectedCheckboxes.length === dataRoles.data.data.length}></input>
-                                                }
-                                                </div>
-                                           
-                                            </div>
-                                        </div>
+                                       
+                                        {(dataReports.loading)?'':
+                                        dataReports.data.data.map((element,index)=>(
+                                          <div className='field-head-table-users field-nombre' style={{width:'15%'}}>
+                                          <div className='headNotifiAdmi '>
+                                          <div class="tooltiptextNotifi" >{element.description}</div>
+                                          {element.name}
+                                          </div>
+                                          <div className='contCheckNotifiAdmi'>
+                                              <div className='title'>
+                                                  TODOS
+                                              </div>
+                                              <div className='input'>
+                                              {
+                                                 (dataRoles.loading)?<></>:
+                                                  <input type='checkbox' className='NotifiCheckBox' onClick={handleSelectAll} checked={selectedCheckboxes.length === dataRoles.data.data.length}></input>
+                                              }
+                                              </div>
+                                         
+                                          </div>
+                                      </div>))
+                                        }
                                          
                                         
 
