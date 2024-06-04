@@ -95,12 +95,12 @@ letter-spacing: 1px;
 .exceptionCell .inpCFE{
     border-color: #02500b;
     background-color: #00da19b7;
-    color: #012906;
+    color: #ffffff;
     height: 100%;
     top: 0%;
 }
 .exceptionCell .lblCFE{
-    color:  #013308;
+    color:  #ffffff;
     top: 10%;
     left:5%;
     z-index: 2;
@@ -111,12 +111,12 @@ letter-spacing: 1px;
    
     border-color: #002a33;
     background-color: #00b7e1;
-    color: #002a33;
+    color: #ffffff;
     height: 100%;
     top: 0%;
 }
 .exceptionCell .lblCONAGUA{
-    color:  #002a33;
+    color:  #ffffff;
     top: 10%;
     left:5%;
     z-index: 2;
