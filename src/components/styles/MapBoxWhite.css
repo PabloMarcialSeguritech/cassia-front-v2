@@ -1,0 +1,291 @@
+@font-face {
+    font-family: 'Digital-7';
+    src: url('../fonts/Digital7Italic.ttf') format('truetype');
+  }
+  .custom-popup {
+      background-color: transparent;
+      /* border: 1px solid #ccc; */
+      /* padding: 10px; */
+      font-size: small;
+      font-weight: bold;
+      width: auto;
+      height: auto;
+      
+    }
+    /* .mapboxgl-map{
+      z-index: -1 !important;
+    } */
+    /* Estilos para la clase "poop" dentro del contenido del popup */
+    .cont-pop {
+      background-color: rgba(4, 23, 24, 0.89) !important;
+      font-weight: bold;
+      width: 100%;
+      height: 100%;
+      position: relative;
+      /* padding: 3px; */
+  
+    }
+  .mapboxgl-popup-content{
+      /* border: 1px solid #ccc !important; */
+      /* background-color: rgba(4, 23, 24, 0.89) !important;  */
+      background-color: transparent !important; 
+      color: white !important;
+      width: auto;
+      height: auto;
+      padding: unset !important;
+      text-align: center !important;
+  }
+  
+  .custom-popup-rfid {
+    font-weight: bold;
+    width: auto !important;
+    height: 7% !important;;
+    position: relative;
+    padding: 3px;
+  
+  }
+  .custom-popup-rfid .mapboxgl-popup-content {
+    
+    width: 100%;
+    height: 100%;
+    position: relative;
+    /* padding: 3px; */
+   /* background-color: rgba(228, 228, 228, 0.774) !important;  */
+   background-color: rgba(20, 20, 20, 0.904) !important; 
+  
+    top: 2%;
+    min-width: 40px;
+   width: auto;
+   height: auto;
+   padding: unset !important;
+   border-radius: 0px 0px 10px 10px;
+  }
+  .cont-rfid {
+    font-weight: bold;
+    border-radius: 0px 0px 10px 10px;
+    position: relative;
+    /* padding: 3px; */
+    display: block;
+    justify-content: center;
+    height: 30px !important;
+  }
+  .titleRFID{
+    background-color: aliceblue;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0px 0px 0px 0px;
+    height: 30%;
+  }
+  .txtTitleRfid{
+  font-size: x-small;
+  margin: 2%;
+  color: rgb(26, 25, 25);
+  }
+  
+  .valRFID{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70%;
+    border-radius: 0px 0px 10px 10px;
+    font-family: 'Digital-7', sans-serif;
+    
+  }
+  .txtRfid{
+    /* color: rgb(17, 26, 51) !important; */
+    /* color:rgb(46, 46, 46) !important ; */
+    color:limegreen !important ;
+    font-size: medium;
+    font-weight: bold;
+   text-align: center !important;
+   width: auto;
+   height: 100%;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+  }
+  /***************************LPR*********************************/
+  .custom-popup-lpr {
+    font-weight: bold;
+    width: auto !important;
+    height: 7% !important;;
+    position: relative;
+    padding: 3px;
+  
+  }
+  .custom-popup-lpr .mapboxgl-popup-content {
+    
+    width: 100%;
+    height: 100%;
+    position: relative;
+    /* padding: 3px; */
+   /* background-color: rgba(228, 228, 228, 0.774) !important;  */
+   background-color: rgba(158, 157, 157, 0.781) !important; 
+  
+    top: 2%;
+    min-width: 50px;
+   width: auto;
+   height: auto;
+   padding: unset !important;
+   border-radius: 20px 20px 20px 20px;
+  }
+  .cont-lpr {
+    font-weight: bold;
+    border-radius: 20px 20px 20px 20px;
+    position: relative;
+    /* padding: 3px; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px !important;
+  }
+  .titleLPR{
+    display: none;
+    background-color: aliceblue;
+    position: relative;
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+    border-radius: 0px 0px 0px 0px;
+    height: 30%;
+  }
+  .txtTitleLpr{
+    
+  font-size: x-small;
+  margin: 2%;
+  color: rgb(26, 25, 25);
+  }
+  
+  .valLPR{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80%;
+    width: 80%;
+    border-radius: 20px 20px 20px 20px;
+    font-family: 'Digital-7', sans-serif;
+    background-color: rgba(20, 20, 20, 0.904);
+  }
+  .txtLpr{
+    /* color: rgb(17, 26, 51) !important; */
+    /* color:rgb(46, 46, 46) !important ; */
+    color:limegreen !important ;
+    font-size: medium;
+    font-weight: bold;
+   text-align: center !important;
+   width: auto;
+   height: 100%;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+  }
+  
+  /***************************except*********************************/
+  .custom-popup-except {
+    font-weight: bold;
+    width: auto !important;
+    height: 7% !important;;
+    position: relative;
+    padding: 3px;
+  
+  }
+  .custom-popup-except .mapboxgl-popup-content {
+    
+    width: 100%;
+    height: 100%;
+    position: relative;
+    /* padding: 3px; */
+   /* background-color: rgba(228, 228, 228, 0.774) !important;  */
+   background-color: rgba(158, 157, 157, 0.781) !important; 
+  
+    top: 2%;
+    min-width: 50px;
+   width: auto;
+   height: auto;
+   padding: unset !important;
+   /* border-radius: 20px 20px 20px 20px; */
+  }
+  .cont-except {
+    font-weight: bold;
+    /* border-radius: 20px 20px 20px 20px; */
+    position: relative;
+    /* padding: 3px; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 20px !important;
+    /* width: 40px !important; */
+  }
+  .titleexcept{
+    display: none;
+    background-color: aliceblue;
+    position: relative;
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+    /* border-radius: 0px 0px 0px 0px; */
+    height: 30%;
+  }
+  .txtTitleexcept{
+    
+  font-size: x-small;
+  margin: 2%;
+  color: rgb(26, 25, 25);
+  }
+  
+  .valexcept{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    /* border-radius: 20px 20px 20px 20px; */
+    /* font-family: 'Digital-7', sans-serif; */
+    background-color: rgba(255, 255, 255, 0.904);
+    border: solid 1px rgb(175, 175, 175);
+  }
+  
+  
+  .txtexcept{
+    /* color: rgb(17, 26, 51) !important; */
+    /* color:rgb(46, 46, 46) !important ; */
+    color:white !important ;
+    font-size: small;
+    font-weight: bold;
+   text-align: center !important;
+   width: auto;
+   height: 100%;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+  }
+  
+  
+  
+  .pulsing-dot-element {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulsate 1s infinite alternate;
+  }
+  
+  @keyframes pulsate {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(1.1);
+    }
+  }
+  
+  
+  /**********************************white****************************************/
+   .mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip{
+    border-top-color: #b6b6b6 !important;
+
+  }
