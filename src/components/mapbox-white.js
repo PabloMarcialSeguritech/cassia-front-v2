@@ -2,7 +2,7 @@
 import React, { useRef, useEffect,useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import './styles/MapBoxWhite.css'
+import './styles/MapBox.css'
 import towerImg from '../img/torre2_azul2.png';
 import serverImg from '../img/server_up_3.png';
 import serverImg0 from '../img/server_0.png';
