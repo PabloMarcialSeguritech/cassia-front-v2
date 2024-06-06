@@ -125,14 +125,17 @@ letter-spacing: 1px;
 .exceptionCell input {
     border-color: #330015;
     background-color: #9e0143;
-    color: #330015;
+    color: #fdfdfd;
     height: 100%;
     top: 0%;
 }
 .exceptionCell label {
-    color:  #280011;
+    color:  #ffffff;
     top: 10%;
     left:5%;
     z-index: 2;
-    font-weight: bold;
+    /* font-weight: bold; */
+    word-break: break-all;
+  word-wrap: anywhere;
+  white-space:wrap;
 }
