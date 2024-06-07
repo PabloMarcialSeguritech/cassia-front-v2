@@ -1741,13 +1741,13 @@ map.on('mouseenter', 'line-throughtput2D2', (e) => {
             1:'',
             2:'CONAGUA',
             3:'CFE',
-            5:'CFE 2',
+            8:'Mantenimiento',
           }
           const agencys_colors={
             1:'',
             2:'#00b7e1',
             3:'#00da19b7',
-            5:'#00da19b7',
+            8:'#c6124d',
           }
           popup = new mapboxgl.Popup({
             className: 'custom-popup-except-white',

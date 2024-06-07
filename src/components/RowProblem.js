@@ -83,6 +83,19 @@ const popups = document.querySelectorAll('.custom-popup-findHost');
   };
   const fechaDada = '2023-17-11';//2023-05-09
     const horaDada = '12:30:20';
+    const agencys={
+      1:'',
+      2:'conagua.png',
+      3:'cfe.png',
+      8:'manto.png',
+    }
+    const agencys_colors={
+      1:'',
+      2:'#00b7e1',
+      3:'#00da19b7',
+      8:'#c6124d',
+    }
+    // console.log(props.data)
     return(
       <>
       {
@@ -96,7 +109,7 @@ const popups = document.querySelectorAll('.custom-popup-findHost');
                     
                     {
                       (props.data.exception_id==null)?<img  src={'/iconos/alerts'+props.data.severity+'.svg'} className={' s'+props.data.severity} alt="Logo"></img>:
-                      <div style={{border:'1px solid white', fontSize:'x-small', fontWeight:'bold',borderRadius:'50%',width:(props.data.exception_agency_id==2)?'50px':'30px',height:'30px',background:(props.data.exception_agency_id==2)?'blue':'green',display:'flex',justifyContent:'center',alignItems:'center' }}>{props.data.agency_name}</div>
+                      <div style={{border:'1px solid white', fontSize:'x-small', fontWeight:'bold',borderRadius:'50%',width:'30px',height:'30px',background:agencys_colors[props.data.exception_agency_id],display:'flex',justifyContent:'center',alignItems:'center' }}><img  src={'/iconos/'+agencys[props.data.exception_agency_id]} className={'iconAgencyProblem'} alt="Logo"></img>{agencys[props.data.exception_id]}</div>
                     }
                     
                     <p className='txtSeverity'>{'S-'+props.data.severity}</p>

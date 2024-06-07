@@ -128,9 +128,12 @@ useEffect(()=>{
     
     
   }, [markersWOR]); 
+  
   useEffect(() => {
     console.log(exceptions)
+   
     if(exceptions.length!==0){
+      
       ////console.log('El proceso de markersWOR ha terminado',markersWOR.length);
       setRenderCapas(prevState => ({
         ...prevState,
@@ -590,7 +593,7 @@ useEffect(()=>{
     }
     function search_exceptions(){
       console.log('***************** search exceptions')
-      console.log(downs_list)
+      // console.log(downs_list)
       setExceptions([])
       // ////console.log()
       // ////console.log("borra rfid")
@@ -609,14 +612,25 @@ useEffect(()=>{
             if (response.ok) {
               const response_data = await response.json();
               console.log(response_data)
+              if(response_data.data.length===0){
+                console.log("sin excepciones")
+                setRenderCapas(prevState => ({
+                  ...prevState,
+                  exceptions: true 
+                }));
+              }else{
+                console.log("con excepciones")
               setExceptionsList({data:response_data.data,loading:false,error:exceptions_list.error})
-              // setSwitchList({data:data_switches,loading:false,error:'rfid_list.error'})
-              
+            }
             } else {
               throw new Error('Error en la solicitud');
             }
           } catch (error) {
             // Manejo de errores
+            setRenderCapas(prevState => ({
+              ...prevState,
+              exceptions: true 
+            }));
             setExceptionsList({data:exceptions_list.data,loading:exceptions_list.loading,error:error})
             //console.error(error);
           }
@@ -1147,7 +1161,9 @@ useEffect(()=>{
       //console.log(devices_data.subgroup_info)
       devices_data.subgroup_info.map((host, index, array)=>
           {
+            console.log(host)
             if(ubicacion.dispId===12){
+              
               if(host.length!==0 && host.latitudeP.replace(",", ".")>=-90 && host.latitudeP.replace(",", ".")<=90 && host.latitudeC.replace(",", ".")>=-90 && host.latitudeC.replace(",", ".")<=90){
               
                 
