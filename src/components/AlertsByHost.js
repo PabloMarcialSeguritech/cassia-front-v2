@@ -153,7 +153,9 @@ useEffect(()=>{
                   dataProblems.loading?<LoadAlerts/>:(problems.length===0?<div className='txtLoader'>Sin Resultados</div>:
                   problems.map((elemento, indice)=>(
                     
+
                     <RowProblem mode={mode} filtraOrigen={false} userPermissions={userPermissions}  ubiActual={ubiActual}mapAux={mapAux} setmapAux={setmapAux} search_problems={search_problems} key={indice} severity={elemento.severity} dataAgencies={dataAgencies} data={elemento} server={server}/>
+
                   )))
                   }
                 </div>

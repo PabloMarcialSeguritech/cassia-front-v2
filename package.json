@@ -29,12 +29,16 @@
     "stream-http": "^3.2.0",
     "turf": "^3.0.14",
     "web-vitals": "^2.1.4",
-    "xterm": "^5.3.0"
+    "xterm": "^5.3.0",
+    "os-browserify": "^0.3.0",
+    "process": "^0.11.10",
+    "react-app-rewired": "^2.2.1",
+    "url": "^0.11.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import './styles/FlujoModal.css'
+
 import LoadSimple from '../LoadSimple'
+
 const FlujoModal = ({ eventId ,props}) => {
     const token_item=localStorage.getItem('access_token')
    const [dataFlujo,setDataFlujo]=useState({data:[],loading:true,error:null})
@@ -75,7 +77,9 @@ setFlujoList(objetosCombinados)
             
             <div className='bodyContFlujoModal'>
                 {
+
                 (dataFlujo.loading)?<div className='contflujoload'><LoadSimple/></div>:
+
                 <>
                 {/* Inicio */}
                 <div className='rowLevel' style={{height:'10%'}}>
@@ -119,9 +123,11 @@ setFlujoList(objetosCombinados)
                         <div className='contInfoFlujo'>
                             <div className='contTopInfoFlujo'>
                                 <div className='contTopLeftFlujo'>
+
                                         {/* <div className='txtStatusFlujo FINALIZADO'>
                                             FINALIZADO 
                                         </div> */}
+
                                 </div>
                                 <div className='contTopRightFlujo par'>
                                         <div className='txtTimeFlujo '>
@@ -132,9 +138,11 @@ setFlujoList(objetosCombinados)
                             <div className='contBotInfoFlujo'>
                             {/* <div className='contBotLeftFlujo'>
                             <div className='contTicketInfo'>
+
                                             {
                                                 (element.tickets!="")?'Tickets:':''
                                             } 
+
                                         </div>
                                         {element.tickets.slice(2).split(',').map(item =>{ 
                                             return <div className='contTicketInfo'>
@@ -176,9 +184,11 @@ setFlujoList(objetosCombinados)
                                         </div>
                                 </div>
                                 <div className='contTopLeftFlujo'>
+
                                         {/* <div className='txtStatusFlujo FINALIZADO'>
                                             FINALIZADO
                                         </div> */}
+
                                 </div>
                                 
                             </div>
@@ -194,9 +204,11 @@ setFlujoList(objetosCombinados)
                                 </div>
                                 {/* <div className='contBotLeftFlujo'>
                                 <div className='contTicketInfo'>
+
                                 {
                                                 (element.tickets!="")?'Tickets:':''
                                             } 
+
                                         </div>
                                         {element.tickets.slice(2).split(',').map(item =>{ 
                                             return <div className='contTicketInfo'>
@@ -218,11 +230,14 @@ setFlujoList(objetosCombinados)
                }
  
                  
+
               
+
                 <div className='rowLevel' style={{height:'auto'}}>
                     <div className='rowSide leftSideRow' style={{height:'auto',width:'100%',border:'unset'}}>
                     {/* <div className='consArrowflujo arrowRight'></div> */}
                         <div className='contInfoFlujo' style={{height:'auto',top:'10px',width:'50%'}}>
+
                             <div className='contTopInfoFlujo' style={{height: '30px'}}>
                                 <div className='contTopLeftFlujo'>
                                         <div className='txtStatusFlujo  ENPROCESO'>
@@ -254,9 +269,11 @@ setFlujoList(objetosCombinados)
                             </div>
                         </div>
                     </div>
+
                     {/* <div className='rowSide RightSideRow'  style={{height:'auto'}}>
                         
                     </div> */}
+
                 </div>
                 <div style={{height:'30px'}}></div>
 
