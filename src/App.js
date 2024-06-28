@@ -13,7 +13,7 @@ function App() {
   const [msgErrorLogin, setMsgErrorLogin] = useState("");
   // const [server,setServer]=useState({ip:'10.60.20.250',port:8000})//Hidalgo
   // const [server,setServer]=useState({ip:'172.16.4.249',port:8000})//EDOMEX
-  const [server, setServer] = useState({ ip: "localhost", port: 8002 }); //Guanajuato
+  const [server, setServer] = useState({ ip: "172.18.200.14", port: 8002 }); //Guanajuato
   // const [server,setServer]=useState({ip:'10.12.1.61',port:8000})//Zacatecas
   // const [server,setServer]=useState({ip:'10.3.152.197',port:8000})//BajaCalifornia
   // const [server,setServer]=useState({ip:'10.169.208.8',port:8000})//Chihuahua

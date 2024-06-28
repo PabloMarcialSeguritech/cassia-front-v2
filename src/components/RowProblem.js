@@ -105,7 +105,7 @@ const popups = document.querySelectorAll('.custom-popup-findHost');
       
         <div className={'rowProblem '/*+props.data.Estatus*/} style={{background:menuAlertOpen?((props.mode=='')?'#82829160':'#bbbbbb'):((props.mode=='')?'#43434d60':'#dddddd')}} onClick={menuAlertOpen?closeMenuAlert:openMenuAlert}>
         <span className="rowProblem-hover"> </span>
-                  <div className={'problemCell'+props.mode} style={{width:'6%'}}>
+                  <div className={'problemCell'+props.mode} style={{width:'7%'}}>
                     
                     {
                       (props.data.exception_id==null)?<img  src={'/iconos/alerts'+props.data.severity+'.svg'} className={' s'+props.data.severity} alt="Logo"></img>:
