@@ -114,13 +114,13 @@ const delteException=(elemento)=>{
                   {elemento.name}
                 </div>
                 <div className="field-body-table-cis field-larger">
-                <img
+                {/* <img
                     src={
                       "/iconos/delete.png"
                     } 
                     onClick={()=>delteException(elemento.exception_id)}
                     name="eliminar" className="delteException" style={{width:'15%'}}
-                  />
+                  /> */}
                 </div>
               </div>
             ))
