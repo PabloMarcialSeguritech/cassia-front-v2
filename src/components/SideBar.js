@@ -24,6 +24,7 @@ const SideBar = ({
   var hosts = 0;
   var buzon = 0;
   var portafolio = 1;
+  var excepciones = 1;
   if (dataGlobals.data.data !== undefined) {
     console.log(dataGlobals.data.data);
     estado = dataGlobals.data.data.find((obj) => obj.name === "estado");
@@ -219,7 +220,7 @@ const SideBar = ({
           ) */ ? (
             <div
               className={
-                "sidebarRow" +
+                "sidebarRow " +
                 (pageSelected === "portafolio" ? "sideRowSelected" + mode : "")
               }
             >
@@ -236,7 +237,7 @@ const SideBar = ({
                 <div className="imgSideCont" name="portafolio">
                   <img
                     src={
-                      "/iconos/cis" +
+                      "/iconos/portafolio" +
                       (pageSelected === "portafolio"
                         ? mode == ""
                           ? "-blanco.png"
@@ -250,6 +251,50 @@ const SideBar = ({
                 </div>
                 <div className="textSideCont" name="portafolio">
                   Portafolio
+                </div>
+              </div>
+            </div>
+          ) : (
+            ""
+          )}
+          {excepciones == 1 /* &&
+          userPermissions.some(
+            (objeto) =>
+              objeto.permission_id === permisos_codigo_id["portafolio"]
+          ) */ ? (
+            <div
+              className={
+                "sidebarRow " +
+                (pageSelected === "excepciones" ? "sideRowSelected" + mode : "")
+              }
+            >
+              <div
+                className={
+                  "sidebarCont" +
+                  mode +
+                  " " +
+                  (pageSelected === "excepciones" ? "sideSelected" + mode : "")
+                }
+                name="excepciones"
+                onClick={handleSection}
+              >
+                <div className="imgSideCont" name="excepciones">
+                  <img
+                    src={
+                      "/iconos/excepciones" +
+                      (pageSelected === "excepciones"
+                        ? mode == ""
+                          ? "-blanco.png"
+                          : ".png"
+                        : mode != ""
+                        ? "-blanco.png"
+                        : ".png")
+                    }
+                    name="excepciones"
+                  />
+                </div>
+                <div className="textSideCont" name="excepciones">
+                Excepciones
                 </div>
               </div>
             </div>

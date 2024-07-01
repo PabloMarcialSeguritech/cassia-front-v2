@@ -40,14 +40,14 @@ const PortafolioList = ({
             server.ip +
             ":" +
             server.port +
-            "/api/v1/cassia/technologies"
+            "/api/v1/cassia/exceptions/list/detail"
         );
         const response = await fetch(
           "http://" +
             server.ip +
             ":" +
             server.port +
-            "/api/v1/cassia/technologies",
+            "/api/v1/cassia/exceptions/list/detail",
           {
             method: "GET",
             headers: {
@@ -80,7 +80,9 @@ const PortafolioList = ({
     console.log(elemento);
     setCisSelected(elemento);
   };
+const delteException=(elemento)=>{
 
+}
   return (
     <>
       <div className="cont-row-user-list">
@@ -97,16 +99,28 @@ const PortafolioList = ({
                 key={indice}
               >
                 <div className="field-body-table-cis field-larger">
-                  {elemento.tech_id}
+                  {elemento.exception_id}
                 </div>
                 <div className="field-body-table-cis field-larger">
-                  {elemento.tech_name}
+                  {elemento.hostid}
                 </div>
-                <div className="field-body-table-cis field-larger">
+                <div className="field-body-table-cis field-larger" style={{width:'17%'}}>
+                  {elemento.host}
+                </div>
+                <div className="field-body-table-cis field-larger" style={{width:'17%'}}>
                   {elemento.description}
                 </div>
                 <div className="field-body-table-cis field-larger">
-                  {elemento.sla}
+                  {elemento.name}
+                </div>
+                <div className="field-body-table-cis field-larger">
+                {/* <img
+                    src={
+                      "/iconos/delete.png"
+                    } 
+                    onClick={()=>delteException(elemento.exception_id)}
+                    name="eliminar" className="delteException" style={{width:'15%'}}
+                  /> */}
                 </div>
               </div>
             ))

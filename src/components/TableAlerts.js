@@ -115,6 +115,34 @@ const selectOptionList=(element)=>{
     return formattedDateTime;
   };
  
+  const orderByAtter = (attr) => {
+    if (dataList.length === 0) {
+        console.log('No hay datos para ordenar');
+        return;
+    }
+
+    const sortedData = [...dataList].sort((a, b) => {
+        if (orderAsc) {
+          setOrderAsc(false)
+            if (a[attr] > b[attr]) return 1;
+            if (a[attr] < b[attr]) return -1;
+        } else {
+          setOrderAsc(true)
+            if (a[attr] < b[attr]) return 1;
+            if (a[attr] > b[attr]) return -1;
+        }
+        return 0
+    });
+
+    if (orderAsc) {
+        console.log('Ascendente', sortedData);
+    } else {
+        console.log('Descendente', sortedData);
+    }
+
+    // Actualizar estado o hacer lo que necesites con sortedData
+    setProblems(sortedData);
+};
   const orderBy = (attr) => {
     if (dataList.length === 0) {
         console.log('No hay datos para ordenar');
@@ -304,10 +332,11 @@ const selectOptionList=(element)=>{
               <div className={(props.modalIsOpen || props.alertsIsOpen )?'menuAlertTabla':'menuAlertTablaMin'}  >
                 <div className='TableHeader'>
                   
-                  <div className='headerCell' style={{width:'6%'}}>
-                    <div className='txtHeaderCell' >
+                  <div className='headerCell' style={{width:'7%'}} onClick={()=>orderByAtter('severity')}>
+                    <div className='txtHeaderCell'  >
                         Severidad
                     </div>
+                    <img className='img-field-acciones' src={'/iconos/'+((!orderAsc)?'up':'down')+'-arrow-select.png'} title='expand' alt='expand' name='expand'   />
                   </div>
                   <div className='headerCell' style={{width:'19%'}}>
                     <div className='txtHeaderCell'>
@@ -320,11 +349,12 @@ const selectOptionList=(element)=>{
                     </div>
                   </div>
                   
-                  <div className='headerCell' style={{width:'10%'}}>
+                  <div className='headerCell' style={{width:'10%'}} onClick={()=>orderByAtter('Estatus')}>
                     <div className='txtHeaderCell'>
                         {/* IP */}
                         Estatus
                     </div>
+                    <img className='img-field-acciones' src={'/iconos/'+((!orderAsc)?'up':'down')+'-arrow-select.png'} title='expand' alt='expand' name='expand'   />
                   </div>
                   <div className='headerCell' style={{width:'4%'}}>
                     <div className='txtHeaderCell'>

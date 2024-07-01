@@ -12,6 +12,7 @@ import Monitoreo from "../sections/Monitoreo";
 import Modal from "react-modal";
 import ModalVerificateUser from "../components/main-components/ModalVerificateUser";
 import Portafolio from "../sections/Portafolio";
+import Excepciones from "../sections/Excepciones";
 import { useState, useEffect, Component } from "react";
 import { useFetch } from "../hooks/useFetch";
 import Acciones from "../sections/Acciones";
@@ -723,6 +724,14 @@ const Main = ({
                 } else if (pageSelected === "portafolio") {
                   return (
                     <Portafolio
+                      server={server}
+                      userPermissions={userPermissions}
+                      dataGlobals={globals.data.data}
+                    />
+                  );
+                } else if (pageSelected === "excepciones") {
+                  return (
+                    <Excepciones
                       server={server}
                       userPermissions={userPermissions}
                       dataGlobals={globals.data.data}

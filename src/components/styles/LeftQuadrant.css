@@ -111,7 +111,9 @@ right: 0;
     scrollbar-width: thin;
     
 }
-
+.headerCell:hover{
+  cursor: pointer;
+}
 .headerCell{
     position: relative;
     display: flex;
