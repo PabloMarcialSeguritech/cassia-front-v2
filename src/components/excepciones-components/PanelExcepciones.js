@@ -1,15 +1,12 @@
 import { useState, useEffect } from "react";
-import "./styles/PanelCis.css";
+import "./styles/PanelPortafolio.css";
 import Search from "../generales/Search";
 import Action from "../Action";
-import Modal from "react-modal";
-import ModalCreateCis from "./ModalCreateCis";
-import CisList from "./CisList";
+
 import LoadSimple from "../LoadSimple";
-import TableCis from "./TableCis";
-import InfoCis from "./InfoCis";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
+
+import TablePortafolio from "./TablePortafolio";
+import InfoPortafolio from "./InfoPortafolio";
 import Paginador from "../generales/Paginador";
 const CreateCisModalStyles = {
   content: {
@@ -25,7 +22,7 @@ const CreateCisModalStyles = {
     padding: "20px",
   },
 };
-const PanelCis = ({ server }) => {
+const PanelExcepciones = ({ server }) => {
   const limitList = 200;
   const [pageActual, setPageActual] = useState(1);
   const [CreateCisModalOpen, setCreateCisModalOpen] = useState(false);
@@ -148,30 +145,6 @@ const PanelCis = ({ server }) => {
     // setLoadingCis(true)
   };
 
-  const generatePDF = () => {
-    const input = document.getElementById("content");
-
-    // Guardar el estado actual de visibilidad de los elementos que deseas ocultar
-    const originalDisplay = [];
-    const elementsToHide = input.querySelectorAll(".hiddenPDF");
-    elementsToHide.forEach((element) => {
-      originalDisplay.push(element.style.display);
-      element.style.display = "none";
-    });
-
-    html2canvas(input).then((canvas) => {
-      // Restaurar el estado original de visibilidad
-      elementsToHide.forEach((element, index) => {
-        element.style.display = originalDisplay[index];
-      });
-
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF();
-      pdf.addImage(imgData, "PNG", 10, 10, 190, 100);
-      pdf.save("CIs-" + obtenerFechaActualLocal() + ".pdf");
-    });
-  };
-
   function search_devices() {
     setDevices({ data: devices.data, loading: true, error: devices.error });
 
@@ -181,15 +154,19 @@ const PanelCis = ({ server }) => {
         const token =
           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWFuLm1hcmNpYWwiLCJleHAiOjE2OTExNjg3ODZ9.LETk5Nu-2WXF571qMqTd__RxHGcyOHzg4GfAbiFejJY"; // Reemplaza con tu token de autenticación
         // const response = await fetch('http://'+server.ip+':'+server.port+'/api/v1/zabbix/db/hosts/relations/'+ubicacion.groupid, {
-        const devicefilter = "";
-        const subtypefilter = "";
-        let andAux = devicefilter !== "" ? "&" : "?";
-        andAux = subtypefilter !== "" ? andAux : "";
         console.log(
-          "http://" + server.ip + ":" + server.port + "/api/v1/zabbix/hosts/0"
+          "http://" +
+            server.ip +
+            ":" +
+            server.port +
+            "/api/v1/cassia/exceptions/list/detail"
         );
         const response = await fetch(
-          "http://" + server.ip + ":" + server.port + "/api/v1/zabbix/hosts/0",
+          "http://" +
+            server.ip +
+            ":" +
+            server.port +
+            "/api/v1/cassia/exceptions/list/detail",
           {
             headers: {
               "Content-Type": "application/json",
@@ -259,14 +236,7 @@ const PanelCis = ({ server }) => {
                     setPageActual={setPageActual}
                   />
                 </div>
-                <div className="cont-search-buttons">
-                  <Action
-                    disabled={false}
-                    origen="Blanco"
-                    titulo="+ Crear Registro"
-                    action={crear}
-                  />
-                </div>
+                <div className="cont-search-buttons"></div>
               </>
             ) : (
               <>
@@ -286,14 +256,7 @@ const PanelCis = ({ server }) => {
                     <div className="txt-back-users">Regresar</div>
                   </div>
                 </div>
-                <div className="pdf-download">
-                  <img
-                    className="img-down-pdf"
-                    src={"/iconos/pdf.png"}
-                    name="PDF"
-                    onClick={generatePDF}
-                  />
-                </div>
+                <div className="txt-back-users">{cisSelected.tech_name}</div>
               </>
             )}
           </div>
@@ -305,7 +268,7 @@ const PanelCis = ({ server }) => {
               ) : (
                 <>
                   {cisSelected.length === 0 ? (
-                    <TableCis
+                    <TablePortafolio
                       pageActual={startLimit}
                       limitList={limitList}
                       dataList={dataList}
@@ -325,9 +288,9 @@ const PanelCis = ({ server }) => {
                       setError={setError}
                       handleChangEdit={handleChangEdit}
                       devices={devices}
-                    ></TableCis>
+                    ></TablePortafolio>
                   ) : (
-                    <InfoCis
+                    <InfoPortafolio
                       server={server}
                       portfolioSelected={cisSelected}
                       searchResults={searchResults}
@@ -339,7 +302,7 @@ const PanelCis = ({ server }) => {
                       setDataUsers={setDataUsers}
                       setCisSelected={setCisSelected}
                       registerIsValid={registerIsValid}
-                    ></InfoCis>
+                    ></InfoPortafolio>
                   )}
                 </>
               )}
@@ -347,31 +310,8 @@ const PanelCis = ({ server }) => {
           </div>
         </div>
       </div>
-      <Modal
-        isOpen={CreateCisModalOpen}
-        // isOpen={false}
-        // onAfterOpen={afterOpenExeption}
-        onRequestClose={closCreateCisModal}
-        style={CreateCisModalStyles}
-        contentLabel="Example Modal2"
-        // shouldCloseOnOverlayClick={false}
-      >
-        <ModalCreateCis
-          devices={devices}
-          server={server}
-          editActive={editActive}
-          setEditActive={setEditActive}
-          dataCis={dataCis}
-          setData={setData}
-          loading={loading}
-          setLoading={setLoading}
-          setError={setError}
-          setRegisterIsValid={setRegisterIsValid}
-          closCreateCisModal={closCreateCisModal}
-        ></ModalCreateCis>
-      </Modal>
     </>
   );
 };
 
-export default PanelCis;
+export default PanelExcepciones;
